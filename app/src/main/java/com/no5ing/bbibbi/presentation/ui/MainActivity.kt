@@ -35,7 +35,9 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenRequest
-import com.no5ing.bbibbi.presentation.ui.navigation.destination.CameraDialogDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.CameraViewDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.cameraViewRoute
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.dialog
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.landingPageRoute
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.mainPageRoute
@@ -123,7 +125,6 @@ class MainActivity : ComponentActivity() {
                 mainPageRoute
             else
                 landingPageRoute
-
             val navController = rememberAnimatedNavController()
             val hostState = remember {
                 SnackbarHostState()
@@ -184,9 +185,9 @@ class MainActivity : ComponentActivity() {
                                         postGraph(
                                             navController = navController,
                                         )
-                                        dialog(
+                                        composable(
                                             controller = navController,
-                                            destination = CameraDialogDestination
+                                            destination = CameraViewDestination
                                         )
                                     }
                                 }

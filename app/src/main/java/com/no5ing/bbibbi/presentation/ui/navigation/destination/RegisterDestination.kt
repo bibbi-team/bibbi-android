@@ -76,8 +76,8 @@ object RegisterProfileImageDestination : NavigationDestination(
                 )
             },
             onTapCamera = {
-                navController.dialog(
-                    destination = CameraDialogDestination,
+                navController.navigate(
+                    destination = CameraViewDestination,
                 )
             }
         )

@@ -37,8 +37,8 @@ object MainHomeDestination : NavigationDestination(
             },
             onTapUpload = {
                 navController.navigate(PostUploadDestination)
-                navController.dialog(
-                    destination = CameraDialogDestination,
+                navController.navigate(
+                    destination = CameraViewDestination,
                 )
             },
             onTapInvite = {
@@ -80,8 +80,8 @@ object MainProfileDestination : NavigationDestination(
                 )
             },
             onTapCamera = {
-                navController.dialog(
-                    destination = CameraDialogDestination,
+                navController.navigate(
+                    destination = CameraViewDestination,
                 )
             },
             changeableUriState = imgState,

@@ -60,7 +60,7 @@ abstract class NavigationDestination(
         internal const val settingNotificationPageRoute = "setting/notification"
         internal const val settingTOSPageRoute = "setting/tos"
 
-        internal const val cameraDialogRoute = "dialog/camera"
+        internal const val cameraViewRoute = "common/camera"
 
 
         @OptIn(ExperimentalAnimationApi::class)
