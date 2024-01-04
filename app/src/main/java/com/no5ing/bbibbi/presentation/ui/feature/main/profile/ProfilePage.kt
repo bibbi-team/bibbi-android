@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -31,6 +32,7 @@ fun ProfilePage(
     onTapChangeNickname: () -> Unit = {},
     onTapCamera: () -> Unit = {},
     changeableUriState: MutableState<Uri?> = remember { mutableStateOf(null) },
+    isMe: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -40,18 +42,25 @@ fun ProfilePage(
                 onDispose = onDispose,
                 title = stringResource(id = R.string.profile_title),
                 rightButton = {
-                    Box(
-                        modifier = Modifier
-                            .size(52.dp)
-                            .clickable { onTapSetting() },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.setting_icon),
-                            contentDescription = null,
+                    if(isMe.value) {
+                        Box(
                             modifier = Modifier
-                                .size(24.dp),
-                            tint = MaterialTheme.colorScheme.onSurface
+                                .size(52.dp)
+                                .clickable { onTapSetting() },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.setting_icon),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(24.dp),
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .width(52.dp)
                         )
                     }
                 }
@@ -61,6 +70,7 @@ fun ProfilePage(
                 onTapChangeNickname = onTapChangeNickname,
                 onTapCamera = onTapCamera,
                 changeableUriState = changeableUriState,
+                isMe = isMe,
             )
             ProfilePageContent(
                 memberId = memberId,

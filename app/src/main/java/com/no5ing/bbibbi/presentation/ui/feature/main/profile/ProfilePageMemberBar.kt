@@ -56,10 +56,12 @@ fun ProfilePageMemberBar(
     memberState: State<APIResponse<Member>> = familyMemberViewModel.uiState.collectAsState(),
     onTapChangeNickname: () -> Unit = {},
     onTapCamera: () -> Unit = {},
-    changeableUriState: MutableState<Uri?> = remember { mutableStateOf(null) }
+    changeableUriState: MutableState<Uri?> = remember { mutableStateOf(null) },
+    isMe: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     LaunchedEffect(Unit) {
         familyMemberViewModel.invoke(Arguments(resourceId = memberId))
+        isMe.value = familyMemberViewModel.me?.memberId == memberId
     }
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
