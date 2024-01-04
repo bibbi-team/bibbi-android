@@ -73,6 +73,7 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
+import com.no5ing.bbibbi.presentation.ui.feature.dialog.ReactionListDialog
 import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
 import com.no5ing.bbibbi.presentation.viewmodel.members.PostViewReactionMemberViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
@@ -82,202 +83,6 @@ import com.no5ing.bbibbi.util.CustomDialogPosition
 import com.no5ing.bbibbi.util.customDialogModifier
 import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.getEmojiResource
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun PostViewReactionDialog(
-    selectedEmoji: String,
-    isEnabled: MutableState<Boolean> = remember { mutableStateOf(false) },
-    emojiMap: Map<String, List<PostReactionUiState>>,
-    postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
-) {
-    if (isEnabled.value) {
-        var showAnimate by remember {
-            mutableStateOf(false)
-        }
-        var goDispose by remember {
-            mutableStateOf(false)
-        }
-        LaunchedEffect(goDispose) {
-            if(goDispose) {
-                isEnabled.value = false
-            }
-        }
-        val parentBarPadding = WindowInsets.systemBars.asPaddingValues()
-        Dialog(
-            onDismissRequest = { showAnimate = false },
-            properties = DialogProperties(
-                usePlatformDefaultWidth = false,
-                decorFitsSystemWindows = false
-            )
-        ) {
-            (LocalView.current.parent as? DialogWindowProvider)?.window?.let { window ->
-                window.setWindowAnimations(-1)
-            }
-            val context = LocalContext.current
-            val windowManager =
-                remember { context.getSystemService(Context.WINDOW_SERVICE) as WindowManager }
-
-            val metrics = DisplayMetrics().apply {
-                windowManager.defaultDisplay.getRealMetrics(this)
-            }
-            val (width, height) = with(LocalDensity.current) {
-                Pair(metrics.widthPixels.toDp(), metrics.heightPixels.toDp())
-            }
-            
-
-            val memberState = postViewReactionMemberViewModel.uiState.collectAsState()
-            val myGroup = emojiMap[selectedEmoji] ?: emptyList()
-            val totalCntMessage = stringResource(id = R.string.emoji_reaction_total, myGroup.size)
-//            AnimatedVisibility (
-//                modalVisible.value,
-//                enter = slideInVertically { it },
-//                exit = slideOutVertically { it }
-//            ) {
-            Box(
-                modifier = Modifier
-                    .requiredSize(width, height)
-                    .background(Color.Black.copy(alpha = 0.5f))
-            ) {
-                LaunchedEffect(Unit) {
-                    showAnimate = true
-                }
-                AnimatedVisibility(
-                    showAnimate,
-                    enter = slideInVertically { it },
-                    exit = slideOutVertically { it }
-                ) {
-                    val swipeableState = rememberSwipeableState(initialValue = 0)
-                    val point = LocalDensity.current.run { LocalConfiguration.current.screenHeightDp.dp.toPx() }
-                    // 위치 to 상태
-                    val anchors = mapOf(0f to 0, point to 1)
-
-                    DisposableEffect(Unit) {
-                        onDispose {
-                            goDispose = true
-                        }
-                    }
-                    LaunchedEffect(swipeableState.currentValue) {
-                        if (swipeableState.currentValue == 1) {
-                            goDispose = true
-                        }
-                    }
-
-                    Surface(
-                        modifier = Modifier
-                            .customDialogModifier(CustomDialogPosition.BOTTOM)
-                            .fillMaxWidth()
-                            .fillMaxHeight(0.6f)
-                            .swipeable(
-                                state = swipeableState,
-                                anchors = anchors,
-                                thresholds = { _, _ -> FractionalThreshold(0.4f) },
-                                orientation = Orientation.Vertical
-                            )
-                            .offset { IntOffset(0, swipeableState.offset.value.toInt()) }
-                        ,
-                        shape = RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp),
-                        color = MaterialTheme.colorScheme.background,
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    bottom = parentBarPadding.calculateBottomPadding()
-                                )
-                                .padding(vertical = 6.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Box(
-                                Modifier
-                                    .size(width = 32.dp, height = 4.dp)
-                                    .clip(RoundedCornerShape(2.dp))
-                                    .background(MaterialTheme.colorScheme.surface)
-                            )
-                            Box(
-                                modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp),
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.Start,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Image(
-                                        painter = getEmojiResource(emojiName = selectedEmoji),
-                                        contentDescription = null, // 필수 param
-                                        modifier = Modifier
-                                            .size(width = 42.dp, height = 42.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(20.dp))
-                                    Text(
-                                        text = totalCntMessage,
-                                        fontWeight = FontWeight.SemiBold,
-                                        fontSize = 18.sp,
-                                        color = Color.White,
-                                    )
-                                }
-                            }
-                            LazyColumn(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxWidth()
-                            ) {
-                                items(myGroup.size) {
-                                    val item = myGroup[it]
-                                    val currentMember = if (memberState.value.isReady())
-                                        memberState.value.data[item.memberId] ?: Member.unknown()
-                                    else Member.unknown()
-                                    Box(Modifier.padding(vertical = 14.dp, horizontal = 20.dp)) {
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically,
-                                        ) {
-                                            CircleProfileImage(
-                                                member = currentMember,
-                                                modifier = Modifier.size(52.dp)
-                                            )
-                                            Spacer(modifier = Modifier.width(12.dp))
-                                            Column {
-                                                Text(
-                                                    text = currentMember.name,
-                                                    fontSize = 16.sp,
-                                                    color = MaterialTheme.colorScheme.secondary,
-                                                )
-                                                if (item.isMe) {
-                                                    Text(
-                                                        text = stringResource(id = R.string.family_me),
-                                                        fontSize = 14.sp,
-                                                        color = MaterialTheme.colorScheme.onSurface,
-                                                    )
-                                                }
-                                            }
-
-                                        }
-                                    }
-
-                                }
-
-                            }
-                            CTAButton(
-                                text = stringResource(id = R.string.close),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 12.dp)
-                                    .height(56.dp),
-                                onClick = {
-                                    showAnimate = false
-                                }
-                            )
-                        }
-                    }
-
-                }
-
-            }
-
-            // }
-        }
-    }
-}
 
 @Composable
 fun PostViewReactionBar(
@@ -298,7 +103,7 @@ fun PostViewReactionBar(
     val emojiMap = uiState.value.groupBy { it.emojiType }
     val groupEmoji = emojiMap.toList()
     val reactionDialogState = remember { mutableStateOf(false) }
-    PostViewReactionDialog(
+    ReactionListDialog(
         isEnabled = reactionDialogState,
         emojiMap = emojiMap,
         selectedEmoji = selectedEmoji.value,

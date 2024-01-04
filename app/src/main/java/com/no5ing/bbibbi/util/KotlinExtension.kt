@@ -6,15 +6,20 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
+import android.util.DisplayMetrics
 import android.view.Window
+import android.view.WindowManager
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogWindowProvider
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -96,3 +101,17 @@ private tailrec fun Context.getActivityWindow(): Window? =
         is ContextWrapper -> baseContext.getActivityWindow()
         else -> null
     }
+
+@Composable
+fun getScreenSize(): Pair<Dp, Dp> {
+    val context = LocalContext.current
+    val windowManager =
+        remember { context.getSystemService(Context.WINDOW_SERVICE) as WindowManager }
+
+    val metrics = DisplayMetrics().apply {
+        windowManager.defaultDisplay.getRealMetrics(this)
+    }
+    return with(LocalDensity.current) {
+        Pair(metrics.widthPixels.toDp(), metrics.heightPixels.toDp())
+    }
+}

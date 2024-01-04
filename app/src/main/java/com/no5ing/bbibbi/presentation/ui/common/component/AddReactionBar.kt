@@ -3,6 +3,7 @@ package com.no5ing.bbibbi.presentation.ui.common.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -13,15 +14,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.getEmojiResource
+import timber.log.Timber
 
 @Composable
 fun AddReactionBar(
     onTapEmoji: (String) -> Unit,
+    onDispose: () -> Unit,
 ) {
     Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+        OuterClickListener(onClick = onDispose)
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(1000.dp))
