@@ -92,7 +92,7 @@ fun StoryBarIcon(
     ) {
         CircleProfileImage(
             member = member,
-            modifier = Modifier.size(64.dp)
+            size = 64.dp,
         )
         Text(
             text = member.name,

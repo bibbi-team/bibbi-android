@@ -207,7 +207,7 @@ fun ReactionListDialog(
                                         ) {
                                             CircleProfileImage(
                                                 member = currentMember,
-                                                modifier = Modifier.size(52.dp)
+                                                size = 52.dp,
                                             )
                                             Spacer(modifier = Modifier.width(12.dp))
                                             Column {

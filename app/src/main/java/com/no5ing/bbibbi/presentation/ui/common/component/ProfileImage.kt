@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -22,6 +23,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.uploadGreen
 @Composable
 fun CircleProfileImage(
     modifier: Modifier = Modifier,
+    size: Dp,
     member: Member,
     backgroundColor: Color = MaterialTheme.colorScheme.onBackground,
 ) {
@@ -31,6 +33,7 @@ fun CircleProfileImage(
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = modifier
+                .size(size)
                 .clip(CircleShape)
                 .background(backgroundColor),
         )
@@ -38,13 +41,14 @@ fun CircleProfileImage(
         Box {
             Box(
                 modifier = modifier
+                    .size(size)
                     .clip(CircleShape)
                     .background(uploadGreen)
             )
             Box(modifier = Modifier.align(Alignment.Center)) {
                 Text(
                     text = "${member.name.first()}",
-                    fontSize = 28.sp,
+                    fontSize = 28.sp * (size / 90.dp),
                     color = Color.White,
                     fontWeight = FontWeight.SemiBold,
                 )

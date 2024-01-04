@@ -108,7 +108,6 @@ fun OnBoardingPage(
                         start = 12.dp,
                         top = 12.dp,
                         end = 12.dp,
-                        bottom = 10.dp
                     )
                 ) {
                     CTAButton(

@@ -137,7 +137,7 @@ fun PostViewTopBar(
         )
         CircleProfileImage(
             member = member,
-            modifier = Modifier.size(40.dp)
+            size = 40.dp,
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column {

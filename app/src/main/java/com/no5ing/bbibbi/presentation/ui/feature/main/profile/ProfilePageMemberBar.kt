@@ -133,8 +133,7 @@ fun ProfilePageMemberBar(
                 Box {
                     CircleProfileImage(
                         member = memberState.value.data,
-                        modifier = Modifier
-                            .size(90.dp)
+                        size = 90.dp,
                     )
                 }
                 if (familyMemberViewModel.me?.memberId == memberState.value.data.memberId) {
