@@ -1,5 +1,7 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.profile
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,8 +11,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -27,9 +31,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -63,21 +69,48 @@ fun ProfilePageContent(
         }
     )
     Box(modifier = Modifier.pullRefresh(pullRefreshStyle)) {
-        LazyVerticalGrid(
-            modifier = Modifier.fillMaxSize(),
-            columns = GridCells.Fixed(count = 2),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(postItems.itemCount) {
-                val item = postItems[it] ?: throw RuntimeException()
-                ProfilePageContentItem(
-                    imageUrl = item.imageUrl,
-                    emojiCnt = item.emojiCount,
-                    time = toLocalizedDate(time = item.createdAt),
-                    onTap = { onTapContent(item) }
+        if(postItems.itemCount == 0) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .systemBarsPadding(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ppippi),
+                    contentDescription = null, // 필수 param
+                    modifier = Modifier
+                        .size(171.dp),
                 )
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = stringResource(id = R.string.profile_image_not_exists),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.tertiary,
+                    ),
+                )
+
+            }
+        } else {
+            LazyVerticalGrid(
+                modifier = Modifier.fillMaxSize(),
+                columns = GridCells.Fixed(count = 2),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(postItems.itemCount) {
+                    val item = postItems[it] ?: throw RuntimeException()
+                    ProfilePageContentItem(
+                        imageUrl = item.imageUrl,
+                        emojiCnt = item.emojiCount,
+                        time = toLocalizedDate(time = item.createdAt),
+                        onTap = { onTapContent(item) }
+                    )
+                }
             }
         }
+
         PullRefreshIndicator(
             refreshing = postItems.loadState.refresh is LoadState.Loading,
             state = pullRefreshStyle,

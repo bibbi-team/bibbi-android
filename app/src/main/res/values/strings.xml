@@ -90,4 +90,5 @@
     <string name="home_empty_family_description">이런, 아직 아무도 없군요!</string>
     <string name="close">닫기</string>
     <string name="emoji_reaction_total">총 %1$d명이 반응을 남겼어요</string>
+    <string name="profile_image_not_exists">아직 업로드한 사진이 없어요</string>
 </resources>
