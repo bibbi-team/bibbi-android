@@ -2,7 +2,9 @@ package com.no5ing.bbibbi.presentation.ui.navigation.graph
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Stable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -29,13 +31,23 @@ fun NavGraphBuilder.mainGraph(
             destination = MainHomeDestination,
             exitTransition = {
                 val destination = targetState.destination.route ?: ""
-                slideOutHorizontally {
+                if (destination == MainFamilyDestination.route) {
+                    slideOutHorizontally {
+                        +it
+                    }
+                }
+                else slideOutHorizontally {
                     -it
                 }
             },
             popEnterTransition = {
                 val initial = initialState.destination.route ?: ""
-                slideInHorizontally {
+                if (initial == MainFamilyDestination.route) {
+                    slideInHorizontally {
+                        +it
+                    }
+                }
+                else slideInHorizontally {
                     -it
                 }
             }
@@ -44,12 +56,12 @@ fun NavGraphBuilder.mainGraph(
             controller = navController,
             destination = MainProfileDestination,
             enterTransition = {
-                slideInHorizontally {
+                slideInVertically {
                     it
                 }
             },
             popExitTransition = {
-                slideOutHorizontally {
+                slideOutVertically {
                     it
                 }
             }
@@ -59,12 +71,12 @@ fun NavGraphBuilder.mainGraph(
             destination = MainFamilyDestination,
             enterTransition = {
                 slideInHorizontally {
-                    it
+                    -it
                 }
             },
             popExitTransition = {
                 slideOutHorizontally {
-                    it
+                    -it
                 }
             }
         )

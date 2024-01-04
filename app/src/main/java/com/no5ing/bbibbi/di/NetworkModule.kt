@@ -57,6 +57,7 @@ object NetworkModule {
                 if (me != null) {
                     builder
                         .header("X-USER-ID", me.memberId)
+                        .header("X-USER-PLATFORM", "AOS")
                 }
             }
 
