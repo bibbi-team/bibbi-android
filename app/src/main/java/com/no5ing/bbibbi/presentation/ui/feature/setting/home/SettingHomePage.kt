@@ -46,6 +46,7 @@ fun SettingHomePage(
     onDispose: () -> Unit,
     onLogout: () -> Unit,
     onQuitCompleted: () -> Unit,
+    onTerm: () -> Unit,
     logoutViewModel: LogoutViewModel = hiltViewModel(),
     quitViewModel: QuitViewModel = hiltViewModel(),
 ) {
@@ -118,9 +119,7 @@ fun SettingHomePage(
                 )
                 SettingItem(
                     name = stringResource(id = R.string.setting_terms_of_service),
-                    onClick = {
-                        context.openBrowser(BuildConfig.privacyUrl)
-                    }
+                    onClick = onTerm,
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))

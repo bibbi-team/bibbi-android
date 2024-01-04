@@ -1,8 +1,12 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.destination
 
+import androidx.navigation.navArgument
+import com.no5ing.bbibbi.BuildConfig
 import com.no5ing.bbibbi.presentation.ui.feature.setting.change_nickname.ChangeNicknamePage
 import com.no5ing.bbibbi.presentation.ui.feature.setting.home.SettingHomePage
+import com.no5ing.bbibbi.presentation.ui.feature.setting.webview.WebViewPage
 import com.no5ing.bbibbi.util.forceRestart
+import java.lang.IllegalArgumentException
 
 object SettingDestination : NavigationDestination(
     route = settingHomePageRoute,
@@ -16,6 +20,14 @@ object SettingDestination : NavigationDestination(
             },
             onQuitCompleted = {
                 navController.context.forceRestart()
+            },
+            onTerm = {
+                navController.navigate(
+                    WebViewDestination,
+                    params = listOf(
+                        "webViewUrl" to BuildConfig.privacyUrl
+                    )
+                )
             }
         )
     }
@@ -32,3 +44,17 @@ object ChangeNicknameDestination : NavigationDestination(
     }
 )
 
+object WebViewDestination : NavigationDestination(
+    route = settingWebViewPageRoute,
+    arguments = listOf(navArgument("webViewUrl") {}),
+    content = { navController, backStackEntry ->
+        WebViewPage(
+            onDispose = {
+                navController.popBackStack()
+            },
+            webViewUrl = backStackEntry.arguments?.getString("webViewUrl")
+                ?: throw IllegalArgumentException("webViewUrl is null")
+        )
+
+    }
+)

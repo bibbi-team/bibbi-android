@@ -55,11 +55,13 @@ abstract class NavigationDestination(
         internal const val settingPageRoute = "setting"
         internal const val settingHomePageRoute = "setting/home"
         internal const val settingNickNameRoute = "setting/nickname"
+        internal const val settingWebViewPageRoute = "setting/webview"
         internal const val settingVersionPageRoute = "setting/version"
         internal const val settingNotificationPageRoute = "setting/notification"
         internal const val settingTOSPageRoute = "setting/tos"
 
         internal const val cameraDialogRoute = "dialog/camera"
+
 
         @OptIn(ExperimentalAnimationApi::class)
         @Stable
@@ -142,11 +144,14 @@ abstract class NavigationDestination(
         fun NavHostController.dialog(
             destination: DialogDestination,
             params: List<Pair<String, String>> = emptyList(),
-        ) = navigate(
-            if (params.isEmpty())
-                destination.route
-            else
-                "${destination.route}?${params.joinToString("&") { "${it.first}=${it.second}" }}"
-        )
+        ) {
+            navigate(
+                if (params.isEmpty())
+                    destination.route
+                else
+                    "${destination.route}?${params.joinToString("&") { "${it.first}=${it.second}" }}",
+            )
+        }
+
     }
 }
