@@ -1,7 +1,9 @@
 package com.no5ing.bbibbi.presentation.ui.feature.post.view
 
+import android.content.Context
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -16,13 +18,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -31,14 +36,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
-
 import androidx.compose.material3.Icon
-
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -54,6 +55,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
@@ -80,7 +82,6 @@ import com.no5ing.bbibbi.util.CustomDialogPosition
 import com.no5ing.bbibbi.util.customDialogModifier
 import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.getEmojiResource
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -102,6 +103,7 @@ fun PostViewReactionDialog(
                 isEnabled.value = false
             }
         }
+        val parentBarPadding = WindowInsets.systemBars.asPaddingValues()
         Dialog(
             onDismissRequest = { showAnimate = false },
             properties = DialogProperties(
@@ -111,8 +113,19 @@ fun PostViewReactionDialog(
         ) {
             (LocalView.current.parent as? DialogWindowProvider)?.window?.let { window ->
                 window.setWindowAnimations(-1)
-                //window.setDimAmount(0f)
             }
+            val context = LocalContext.current
+            val windowManager =
+                remember { context.getSystemService(Context.WINDOW_SERVICE) as WindowManager }
+
+            val metrics = DisplayMetrics().apply {
+                windowManager.defaultDisplay.getRealMetrics(this)
+            }
+            val (width, height) = with(LocalDensity.current) {
+                Pair(metrics.widthPixels.toDp(), metrics.heightPixels.toDp())
+            }
+            
+
             val memberState = postViewReactionMemberViewModel.uiState.collectAsState()
             val myGroup = emojiMap[selectedEmoji] ?: emptyList()
             val totalCntMessage = stringResource(id = R.string.emoji_reaction_total, myGroup.size)
@@ -123,7 +136,8 @@ fun PostViewReactionDialog(
 //            ) {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .requiredSize(width, height)
+                    .background(Color.Black.copy(alpha = 0.5f))
             ) {
                 LaunchedEffect(Unit) {
                     showAnimate = true
@@ -148,6 +162,7 @@ fun PostViewReactionDialog(
                             goDispose = true
                         }
                     }
+
                     Surface(
                         modifier = Modifier
                             .customDialogModifier(CustomDialogPosition.BOTTOM)
@@ -167,6 +182,9 @@ fun PostViewReactionDialog(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .padding(
+                                    bottom = parentBarPadding.calculateBottomPadding()
+                                )
                                 .padding(vertical = 6.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
