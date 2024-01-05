@@ -1,14 +1,19 @@
 package com.no5ing.bbibbi.di
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializer
+import com.no5ing.bbibbi.BBiBBiApplication
 import com.no5ing.bbibbi.BuildConfig
+import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.auth.AuthResult
 import com.no5ing.bbibbi.util.ZonedDateTimeAdapter
+import com.no5ing.bbibbi.util.findAndroidActivity
 import com.no5ing.bbibbi.util.forceRestart
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
@@ -16,6 +21,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.Authenticator
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -40,7 +48,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideInterceptor(localDataStorage: LocalDataStorage): Interceptor = Interceptor {
+    fun provideInterceptor(
+        localDataStorage: LocalDataStorage,
+        context: Context,
+    ): Interceptor = Interceptor {
         val request = it.request()
         val modifiedRequest = with(request) {
             val builder = newBuilder()
@@ -65,7 +76,30 @@ object NetworkModule {
         }
 
         val response = it.proceed(modifiedRequest)
+        if(response.code == 426) {
+            CoroutineScope(Dispatchers.Main).launch {
+                if (context is BBiBBiApplication) {
+                    val foundActivity = context.findAndroidActivity()
+                    Timber.e(foundActivity?.toString()?:"E")
+                    foundActivity?.apply {
+                        AlertDialog
+                            .Builder(this)
+                            .setTitle(this.getString(R.string.app_update_dialog_title))
+                            .setMessage(this.getString(R.string.app_update_dialog_message))
+                            .setPositiveButton(this.getString(R.string.app_update_dialog_positive)) { _, _ ->
+                                val intent = Intent(Intent.ACTION_VIEW)
+                                intent.data = Uri.parse("market://details?id=com.no5ing.bbibbi")
+                                this.startActivity(intent)
+                                Runtime.getRuntime().exit(0)
+                            }
+                            .create()
+                            .show()
+                    }
 
+                }
+
+            }
+        }
         response
     }
 

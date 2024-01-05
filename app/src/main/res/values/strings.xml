@@ -91,4 +91,8 @@
     <string name="close">닫기</string>
     <string name="emoji_reaction_total">총 %1$d명이 반응을 남겼어요</string>
     <string name="profile_image_not_exists">아직 업로드한 사진이 없어요</string>
+
+    <string name="app_update_dialog_title">앱 업데이트</string>
+    <string name="app_update_dialog_message">새로운 버전이 있어요. PlayStore로 이동합니다</string>
+    <string name="app_update_dialog_positive">업데이트</string>
 </resources>

@@ -3,7 +3,6 @@ package com.no5ing.bbibbi.util
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.util.DisplayMetrics
@@ -114,4 +113,13 @@ fun getScreenSize(): Pair<Dp, Dp> {
     return with(LocalDensity.current) {
         Pair(metrics.widthPixels.toDp(), metrics.heightPixels.toDp())
     }
+}
+
+fun Context.findAndroidActivity(): Activity? {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is Activity) return context
+        context = context.baseContext
+    }
+    return null
 }
