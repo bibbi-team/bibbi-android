@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.util.Properties
 
 plugins {
@@ -20,6 +19,11 @@ val secretProperties = Properties().apply {
     load(secretFile.inputStream())
 }
 
+val majorVersion = 1
+val minorVersion = 0
+val patchVersion = 0
+val buildVersion = 0
+
 android {
     namespace = "com.no5ing.bbibbi"
     compileSdk = 34
@@ -37,8 +41,8 @@ android {
         applicationId = "com.no5ing.bbibbi"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = majorVersion * 10000 + minorVersion * 1000 + patchVersion * 100 + buildVersion
+        versionName = "$majorVersion.$minorVersion.$patchVersion"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
