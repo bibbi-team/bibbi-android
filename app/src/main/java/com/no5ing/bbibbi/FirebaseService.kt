@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.no5ing.bbibbi.presentation.ui.MainActivity
+import timber.log.Timber
 
 class FirebaseService : FirebaseMessagingService() {
     companion object {
@@ -16,6 +17,8 @@ class FirebaseService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        Timber.d("onMessageReceived: ${remoteMessage.notification}")
+        Timber.d("onMessageReceived: ${remoteMessage.data.toString()}")
         remoteMessage.notification?.apply {
             val intent = Intent(this@FirebaseService, MainActivity::class.java).apply{
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -32,12 +35,12 @@ class FirebaseService : FirebaseMessagingService() {
 
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             createNotificationChannel()
-            notificationManager.notify(101, builder.build())
+            notificationManager.notify(1, builder.build())
         }
     }
 
     private fun createNotificationChannel() {
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val importance = NotificationManager.IMPORTANCE_HIGH
         val channel = NotificationChannel(channel_id, BuildConfig.notifyChannelName, importance)
 
         val notificationManager: NotificationManager
