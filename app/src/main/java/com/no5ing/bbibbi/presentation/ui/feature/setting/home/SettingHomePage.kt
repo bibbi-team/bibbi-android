@@ -1,6 +1,9 @@
 package com.no5ing.bbibbi.presentation.ui.feature.setting.home
 
-import androidx.appcompat.app.AlertDialog
+import android.Manifest
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,9 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,18 +30,30 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.no5ing.bbibbi.BuildConfig
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.OperationStatus
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.CustomAlertDialog
+import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
+import com.no5ing.bbibbi.presentation.ui.snackBarInfo
 import com.no5ing.bbibbi.presentation.ui.theme.criticalRed
 import com.no5ing.bbibbi.presentation.viewmodel.auth.LogoutViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.auth.QuitViewModel
-import com.no5ing.bbibbi.util.openBrowser
+import com.no5ing.bbibbi.util.LocalSnackbarHostState
+import com.no5ing.bbibbi.util.emptyPermissionState
+import com.no5ing.bbibbi.util.localResources
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
+
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SettingHomePage(
     onDispose: () -> Unit,
@@ -52,6 +65,9 @@ fun SettingHomePage(
 ) {
     val logOutState = logoutViewModel.uiState.collectAsState()
     val quitState = quitViewModel.uiState.collectAsState()
+    val resources = localResources()
+    val snackBarHost = LocalSnackbarHostState.current
+    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(logOutState.value) {
         when (logOutState.value) {
             OperationStatus.SUCCESS -> onLogout()
@@ -64,6 +80,11 @@ fun SettingHomePage(
             else -> {}
         }
     }
+
+    val notificationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+    else
+        remember { emptyPermissionState }
 
     val logoutModalEnabled = remember { mutableStateOf(false) }
     CustomAlertDialog(
@@ -115,7 +136,23 @@ fun SettingHomePage(
                 )
                 SettingItem(
                     name = stringResource(id = R.string.setting_notification_setting),
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        if (notificationPermission.status.isGranted) {
+                            coroutineScope.launch {
+                                snackBarHost.showSnackBarWithDismiss(
+                                    resources.getString(R.string.snack_bar_alreday_accepted),
+                                    snackBarInfo
+                                )
+                            }
+                        } else {
+                            val settingsIntent =
+                                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    .putExtra(Settings.EXTRA_APP_PACKAGE, BuildConfig.APPLICATION_ID)
+                            context.startActivity(settingsIntent)
+                        }
+
+                    }
                 )
                 SettingItem(
                     name = stringResource(id = R.string.setting_terms_of_service),

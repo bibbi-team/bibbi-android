@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,7 +35,9 @@ fun CustomSnackBarHost(
 ) {
     SnackbarHost(
         hostState = hostState,
-        modifier = Modifier.imePadding()
+        modifier = Modifier
+            .imePadding()
+            .navigationBarsPadding()
     ) { snackbarData ->
         Box(
             modifier = Modifier

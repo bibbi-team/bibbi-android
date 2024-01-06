@@ -93,6 +93,7 @@ fun StoryBarIcon(
         CircleProfileImage(
             member = member,
             size = 64.dp,
+            onTap = onTap,
         )
         Text(
             text = member.name,

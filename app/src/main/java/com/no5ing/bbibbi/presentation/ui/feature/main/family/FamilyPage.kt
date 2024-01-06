@@ -108,6 +108,9 @@ fun FamilyPage(
                             isMe = familyMembersViewModel.me?.memberId == item.memberId,
                             modifier = Modifier.clickable {
                                 onTapFamily(item)
+                            },
+                            onTap = {
+                                onTapFamily(item)
                             }
                         )
                     }
@@ -131,6 +134,7 @@ fun MemberItem(
     modifier: Modifier,
     member: Member,
     isMe: Boolean,
+    onTap: () -> Unit,
 ) {
     Row(
         modifier = modifier.padding(vertical = 14.dp, horizontal = 20.dp)
@@ -138,6 +142,7 @@ fun MemberItem(
         CircleProfileImage(
             member = member,
             size = 52.dp,
+            onTap = onTap,
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column(

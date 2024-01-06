@@ -239,6 +239,7 @@ fun PostViewDetailTopBar(
         CircleProfileImage(
             member = member,
             size = 35.dp,
+            onTap = onTap,
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
