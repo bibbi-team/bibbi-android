@@ -60,13 +60,17 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.MainProfileDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
 import com.no5ing.bbibbi.presentation.viewmodel.members.PostViewReactionMemberViewModel
 import com.no5ing.bbibbi.util.CustomDialogPosition
+import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.customDialogModifier
 import com.no5ing.bbibbi.util.getEmojiResource
 import com.no5ing.bbibbi.util.getScreenSize
@@ -80,6 +84,7 @@ fun ReactionListDialog(
     postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
 ) {
     if (isEnabled.value) {
+        val navController = LocalNavigateControllerState.current
         var showAnimate by remember {
             mutableStateOf(false)
         }
@@ -208,6 +213,12 @@ fun ReactionListDialog(
                                             CircleProfileImage(
                                                 member = currentMember,
                                                 size = 52.dp,
+                                                onTap = {
+                                                    navController.navigate(
+                                                        destination = MainProfileDestination,
+                                                        path = currentMember.memberId
+                                                    )
+                                                }
                                             )
                                             Spacer(modifier = Modifier.width(12.dp))
                                             Column {
@@ -247,8 +258,6 @@ fun ReactionListDialog(
                 }
 
             }
-
-            // }
         }
     }
 }

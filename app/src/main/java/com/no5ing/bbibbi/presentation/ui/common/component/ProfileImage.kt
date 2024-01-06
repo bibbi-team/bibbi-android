@@ -1,6 +1,7 @@
 package com.no5ing.bbibbi.presentation.ui.common.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -26,6 +27,7 @@ fun CircleProfileImage(
     size: Dp,
     member: Member,
     backgroundColor: Color = MaterialTheme.colorScheme.onBackground,
+    onTap: () -> Unit = {},
 ) {
     if (member.imageUrl != null) {
         AsyncImage(
@@ -35,10 +37,13 @@ fun CircleProfileImage(
             modifier = modifier
                 .size(size)
                 .clip(CircleShape)
-                .background(backgroundColor),
+                .background(backgroundColor)
+                .clickable { onTap() },
         )
     } else {
-        Box {
+        Box(
+            modifier = Modifier.clickable { onTap() }
+        ) {
             Box(
                 modifier = modifier
                     .size(size)
