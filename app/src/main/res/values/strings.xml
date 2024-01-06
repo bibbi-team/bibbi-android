@@ -97,4 +97,8 @@
     <string name="app_update_dialog_title">앱 업데이트</string>
     <string name="app_update_dialog_message">새로운 버전이 있어요. PlayStore로 이동합니다</string>
     <string name="app_update_dialog_positive">업데이트</string>
+
+    <string name="token_invalid_dialog_title">토큰 만료됨</string>
+    <string name="token_invalid_dialog_message">토큰이 만료되었어요. 로그인 화면으로 이동합니다.</string>
+    <string name="token_invalid_dialog_positive">확인</string>
 </resources>

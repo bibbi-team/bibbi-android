@@ -39,12 +39,12 @@ object NetworkModule {
     private const val timeout_write = 10L
 
     val requireUpdateState = MutableStateFlow(false)
+    val requireTokenInvalidRestart = MutableStateFlow(false)
 
     @Provides
     @Singleton
     fun provideInterceptor(
         localDataStorage: LocalDataStorage,
-        context: Context,
     ): Interceptor = Interceptor {
         val request = it.request()
         val modifiedRequest = with(request) {
@@ -109,6 +109,7 @@ object NetworkModule {
                     } else throw RuntimeException()
                 }.onFailure {
                     localDataStorage.logOut()
+                    requireTokenInvalidRestart.value = true
                     context.forceRestart()
                 }
             }

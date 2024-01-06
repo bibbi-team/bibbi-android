@@ -56,6 +56,7 @@ import com.no5ing.bbibbi.presentation.ui.navigation.graph.settingGraph
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
+import com.no5ing.bbibbi.util.forceRestart
 import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.AndroidEntryPoint
@@ -129,6 +130,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val updateState = NetworkModule.requireUpdateState.collectAsState()
+            val tokenInvalidState = NetworkModule.requireTokenInvalidRestart.collectAsState()
             val startDestination = if (landingSkippable.value)
                 mainPageRoute
             else
@@ -147,6 +149,12 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(updateState.value) {
                 if (updateState.value) {
                     openRequireUpdateDialog()
+                }
+            }
+
+            LaunchedEffect(tokenInvalidState.value) {
+                if (tokenInvalidState.value) {
+                    openRequireLoginDialog()
                 }
             }
 
@@ -229,12 +237,34 @@ class MainActivity : ComponentActivity() {
             .setTitle(this.getString(R.string.app_update_dialog_title))
             .setMessage(this.getString(R.string.app_update_dialog_message))
             .setPositiveButton(this.getString(R.string.app_update_dialog_positive)) { _, _ ->
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse("market://details?id=com.no5ing.bbibbi")
-                this.startActivity(intent)
-                Runtime.getRuntime().exit(0)
+                openMarketAndShutdown()
+            }
+            .setOnCancelListener {
+                openMarketAndShutdown()
             }
             .create()
             .show()
+    }
+
+    private fun openRequireLoginDialog() {
+        AlertDialog
+            .Builder(this)
+            .setTitle(this.getString(R.string.token_invalid_dialog_title))
+            .setMessage(this.getString(R.string.token_invalid_dialog_message))
+            .setPositiveButton(this.getString(R.string.token_invalid_dialog_positive)) { _, _ ->
+                forceRestart()
+            }
+            .setOnCancelListener {
+                forceRestart()
+            }
+            .create()
+            .show()
+    }
+
+    private fun openMarketAndShutdown() {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse("market://details?id=com.no5ing.bbibbi")
+        this.startActivity(intent)
+        Runtime.getRuntime().exit(0)
     }
 }
