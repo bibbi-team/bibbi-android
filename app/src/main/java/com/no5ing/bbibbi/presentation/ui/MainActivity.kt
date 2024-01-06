@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -26,8 +27,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -61,6 +64,7 @@ import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
@@ -113,10 +117,12 @@ class MainActivity : ComponentActivity() {
 
         val keepSplash = mutableStateOf(true)
         val landingSkippable = mutableStateOf(false)
+        var isReady by mutableStateOf(false)
 
         lifecycleScope.launch(Dispatchers.IO) {
             landingSkippable.value = initializeDefault()
             keepSplash.value = false
+            isReady = true
         }
 
         installSplashScreen().apply {
@@ -172,55 +178,59 @@ class MainActivity : ComponentActivity() {
                         CompositionLocalProvider(
                             LocalNavigateControllerState provides navController
                         ) {
-                            Scaffold(
-                                snackbarHost = {
-                                    CustomSnackBarHost(
-                                        hostState = hostState
-                                    )
-                                }
-                            ) { innerPadding ->
-                                Box(
-                                    Modifier.padding(
-                                        start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
-                                        top = 0.dp,
-                                        end = innerPadding.calculateEndPadding(LayoutDirection.Ltr)
-                                    )
-                                ) {
-                                    AnimatedNavHost(
-                                        navController = navController,
-                                        startDestination = startDestination,
-                                        enterTransition = { fadeIn(animationSpec = tween(250)) },
-                                        exitTransition = { fadeOut(animationSpec = tween(200)) },
+                            AnimatedVisibility(visible = isReady) {
+                                Scaffold(
+                                    snackbarHost = {
+                                        CustomSnackBarHost(
+                                            hostState = hostState
+                                        )
+                                    }
+                                ) { innerPadding ->
+                                    Box(
+                                        Modifier.padding(
+                                            start = innerPadding.calculateStartPadding(
+                                                LayoutDirection.Ltr
+                                            ),
+                                            top = 0.dp,
+                                            end = innerPadding.calculateEndPadding(LayoutDirection.Ltr)
+                                        )
                                     ) {
-                                        landingGraph(
+                                        AnimatedNavHost(
                                             navController = navController,
-                                        )
-                                        registerGraph(
-                                            navController = navController,
-                                        )
-                                        mainGraph(
-                                            navController = navController,
-                                        )
-                                        settingGraph(
-                                            navController = navController,
-                                        )
-                                        postGraph(
-                                            navController = navController,
-                                        )
-                                        composable(
-                                            controller = navController,
-                                            destination = CameraViewDestination,
-                                            enterTransition = {
-                                                slideInVertically {
-                                                    it
+                                            startDestination = startDestination,
+                                            enterTransition = { fadeIn(animationSpec = tween(250)) },
+                                            exitTransition = { fadeOut(animationSpec = tween(200)) },
+                                        ) {
+                                            landingGraph(
+                                                navController = navController,
+                                            )
+                                            registerGraph(
+                                                navController = navController,
+                                            )
+                                            mainGraph(
+                                                navController = navController,
+                                            )
+                                            settingGraph(
+                                                navController = navController,
+                                            )
+                                            postGraph(
+                                                navController = navController,
+                                            )
+                                            composable(
+                                                controller = navController,
+                                                destination = CameraViewDestination,
+                                                enterTransition = {
+                                                    slideInVertically {
+                                                        it
+                                                    }
+                                                },
+                                                popExitTransition = {
+                                                    slideOutVertically {
+                                                        it
+                                                    }
                                                 }
-                                            },
-                                            popExitTransition = {
-                                                slideOutVertically {
-                                                    it
-                                                }
-                                            }
-                                        )
+                                            )
+                                        }
                                     }
                                 }
                             }
