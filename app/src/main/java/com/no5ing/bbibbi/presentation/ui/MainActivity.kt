@@ -39,6 +39,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
+import com.android.installreferrer.api.InstallReferrerClient
+import com.android.installreferrer.api.InstallReferrerStateListener
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.firebase.messaging.FirebaseMessaging
@@ -69,11 +71,15 @@ import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
+import java.lang.Exception
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -129,6 +135,25 @@ class MainActivity : ComponentActivity() {
 
     private suspend fun initializeDefault(): Boolean {
         var landingSkippable = false
+        if (!localDataStorage.getLandingSeen()) {
+            localDataStorage.setLandingSeen()
+            Timber.d("Initial installation! get referrer")
+            try {
+                invokeReferrer()?.apply {
+                    val response = installReferrer.installReferrer
+                    response.split("&").forEach {
+                        val keyVal = it.split("=")
+                        if (keyVal.size == 2) {
+                            val key = keyVal[0]
+                            if (key == "referrer") {
+                                handleDeepLinkId(keyVal[1])
+                            }
+                        }
+                    }
+                    Timber.d("Install referrer: $response")
+                }
+            } catch(e: Exception) { }
+        }
         //TODO: CHECK VERSION FIRST
         if (localDataStorage.getAuthTokens() != null) {
             val fcm = FirebaseMessaging.getInstance().token.await()
@@ -150,6 +175,30 @@ class MainActivity : ComponentActivity() {
             }
         }
         return landingSkippable
+    }
+
+    private suspend fun invokeReferrer() = suspendCoroutine<InstallReferrerClient?> {
+        val referrerClient = InstallReferrerClient.newBuilder(this).build()
+        referrerClient.startConnection(object : InstallReferrerStateListener {
+
+            override fun onInstallReferrerSetupFinished(responseCode: Int) {
+                when (responseCode) {
+                    InstallReferrerClient.InstallReferrerResponse.OK -> {
+                        // Connection established.
+                        it.resume(referrerClient)
+                    }
+                    else -> {
+                        it.resume(null)
+                    }
+                }
+            }
+
+            override fun onInstallReferrerServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                it.resume(null)
+            }
+        })
     }
 
     @OptIn(ExperimentalAnimationApi::class)

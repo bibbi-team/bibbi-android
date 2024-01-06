@@ -134,4 +134,5 @@ dependencies {
     implementation("com.github.skydoves:balloon-compose:1.6.4")
     implementation("io.github.boguszpawlowski.composecalendar:composecalendar:1.1.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("com.android.installreferrer:installreferrer:2.2")
 }
