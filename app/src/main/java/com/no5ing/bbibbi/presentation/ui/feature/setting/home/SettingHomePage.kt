@@ -131,7 +131,13 @@ fun SettingHomePage(
                 )
                 SettingItem(
                     name = stringResource(id = R.string.setting_version_info),
-                    onClick = {
+                    onClick = {},
+                    rightButton = {
+                        Text(
+                            text = BuildConfig.VERSION_NAME,
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
                 )
                 SettingItem(
@@ -195,24 +201,25 @@ fun SettingItem(
     name: String,
     onClick: () -> Unit,
     isCritical: Boolean = false,
+    rightButton: @Composable () -> Unit = { Icon(
+        painter = painterResource(id = R.drawable.arrow_right),
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.onSurface,
+    ) }
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 12.dp)
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .padding(horizontal = 20.dp, vertical = 12.dp),
     ) {
         Text(
             text = name,
             color = if (isCritical) criticalRed else MaterialTheme.colorScheme.secondary,
             fontSize = 18.sp,
         )
-        Icon(
-            painter = painterResource(id = R.drawable.arrow_right),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurface,
-        )
+        rightButton()
     }
 }
