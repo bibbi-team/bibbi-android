@@ -110,6 +110,10 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         return token
     }
 
+    fun hasRegistrationToken(): Boolean {
+        return preferences.contains(REGISTRATION_TOKEN_KEY)
+    }
+
     fun setLandingSeen() {
         val editor = preferences.edit()
         editor.putBoolean(LANDING_SEEN_KEY, true)

@@ -42,6 +42,7 @@
     <string name="family_your_family">당신의 가족</string>
 
     <string name="onboarding_next">알림 허용하고 그룹 생성하기</string>
+    <string name="onboarding_next_join">알림 허용하고 입장하기</string>
     <string name="family_me">Me</string>
 
     <string name="time_now">방금 전</string>

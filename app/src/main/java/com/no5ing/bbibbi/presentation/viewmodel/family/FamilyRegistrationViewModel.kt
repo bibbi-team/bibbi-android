@@ -17,6 +17,7 @@ class FamilyRegistrationViewModel @Inject constructor(
     private val restAPI: RestAPI,
     private val localDataStorage: LocalDataStorage,
 ) : BaseViewModel<APIResponse<Family>>() {
+    val hasRegistrationToken = localDataStorage.hasRegistrationToken()
     override fun initState(): APIResponse<Family> {
         return APIResponse.idle()
     }

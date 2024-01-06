@@ -111,7 +111,10 @@ fun OnBoardingPage(
                     )
                 ) {
                     CTAButton(
-                        text = stringResource(id = R.string.onboarding_next),
+                        text = if(familyRegistrationViewModel.hasRegistrationToken)
+                            stringResource(id = R.string.onboarding_next_join)
+                        else
+                            stringResource(id = R.string.onboarding_next),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 12.dp),
