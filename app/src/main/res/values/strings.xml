@@ -101,4 +101,8 @@
     <string name="token_invalid_dialog_title">토큰 만료됨</string>
     <string name="token_invalid_dialog_message">토큰이 만료되었어요. 로그인 화면으로 이동합니다.</string>
     <string name="token_invalid_dialog_positive">확인</string>
+
+    <string name="already_family_exists_title">이미 가입된 그룹이 있어요</string>
+    <string name="already_family_exists_subtitle">하나의 그룹에만 소속될 수 있어요</string>
+    <string name="already_family_exists_confirm">확인</string>
 </resources>

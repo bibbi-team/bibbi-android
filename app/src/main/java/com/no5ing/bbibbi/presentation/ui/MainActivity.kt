@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.firebase.messaging.FirebaseMessaging
@@ -46,11 +48,13 @@ import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenRequest
 import com.no5ing.bbibbi.di.NetworkModule
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.CameraViewDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingAlreadyFamilyExistsDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.cameraViewRoute
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.dialog
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.landingPageRoute
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.mainPageRoute
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.landingGraph
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.mainGraph
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.postGraph
@@ -60,6 +64,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.forceRestart
+import com.no5ing.bbibbi.util.getLinkIdFromUrl
 import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,6 +82,50 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var restAPI: RestAPI
+
+    private var localNavController: NavHostController? = null
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        //HANDLE FOREGROUND INTENT (already app is active)
+        Timber.d("onNewIntent: $intent")
+        onAppStartIntent(intent)
+    }
+
+    private fun onAppStartIntent(intent: Intent?) {
+        Timber.d("onAppStartIntent: $intent")
+        val appLinkData: Uri? = intent?.data
+        val linkId = appLinkData?.let {
+            getLinkIdFromUrl(it.toString())
+        }
+        if(linkId != null) {
+            handleDeepLinkId(linkId)
+        }
+    }
+
+    private fun handleDeepLinkId(linkId: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            restAPI.getLinkApi().getLink(linkId).suspendOnSuccess {
+                val deepLinkPayload = data
+                when(deepLinkPayload.type) {
+                    "FAMILY_REGISTRATION" -> {
+                        val previousMe = localDataStorage.getMe()
+                        if (previousMe == null || !previousMe.hasFamily()) {
+                            localDataStorage.setRegistrationToken(linkId)
+                        } else {
+                            //님머함?
+                            runOnUiThread {
+                                localNavController?.navigate(LandingAlreadyFamilyExistsDestination)
+                            }
+                        }
+                    }
+                    else -> {}
+                }
+            }.suspendOnFailure {
+
+            }
+        }
+    }
 
     private suspend fun initializeDefault(): Boolean {
         var landingSkippable = false
@@ -111,6 +160,7 @@ class MainActivity : ComponentActivity() {
         val appLinkIntent: Intent = intent
         val appLinkAction: String? = appLinkIntent.action
         val appLinkData: Uri? = appLinkIntent.data
+        onAppStartIntent(appLinkIntent)
 
         Timber.d("appLinkAction: $appLinkAction")
         Timber.d("appLinkData: $appLinkData")
@@ -118,11 +168,16 @@ class MainActivity : ComponentActivity() {
         val keepSplash = mutableStateOf(true)
         val landingSkippable = mutableStateOf(false)
         var isReady by mutableStateOf(false)
+        var isInitialBootstrap by mutableStateOf(true)
 
         lifecycleScope.launch(Dispatchers.IO) {
             landingSkippable.value = initializeDefault()
             keepSplash.value = false
             isReady = true
+        }
+
+        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            Timber.d("FirebaseMessaging token: $it")
         }
 
         installSplashScreen().apply {
@@ -142,6 +197,13 @@ class MainActivity : ComponentActivity() {
             else
                 landingPageRoute
             val navController = rememberAnimatedNavController()
+            DisposableEffect(navController) {
+                localNavController = navController
+                onDispose {
+                    localNavController = null
+                }
+            }
+
             val hostState = remember {
                 SnackbarHostState()
             }
@@ -161,6 +223,13 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(tokenInvalidState.value) {
                 if (tokenInvalidState.value) {
                     openRequireLoginDialog()
+                }
+            }
+
+            LaunchedEffect(isInitialBootstrap, isReady) {
+                if (isInitialBootstrap && isReady) {
+                    isInitialBootstrap = false
+                    onAppStartIntent(appLinkIntent)
                 }
             }
 

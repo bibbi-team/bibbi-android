@@ -1,6 +1,7 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.destination
 
 import com.no5ing.bbibbi.presentation.state.landing.login.LoginSucceedResult
+import com.no5ing.bbibbi.presentation.ui.feature.landing.already_family_exists.AlreadyFamilyExistsView
 import com.no5ing.bbibbi.presentation.ui.feature.landing.login.LoginPage
 import com.no5ing.bbibbi.presentation.ui.feature.landing.onboarding.OnBoardingPage
 
@@ -37,6 +38,18 @@ object LandingOnBoardingDestination : NavigationDestination(
         OnBoardingPage(
             onDispose = {
                 navController.navigate(MainHomeDestination)
+            }
+        )
+    }
+)
+
+
+object LandingAlreadyFamilyExistsDestination : NavigationDestination(
+    route = landingAlreadyFamilyExistsRoute,
+    content = { navController, _ ->
+        AlreadyFamilyExistsView(
+            onTapDispose = {
+                navController.popBackStack()
             }
         )
     }

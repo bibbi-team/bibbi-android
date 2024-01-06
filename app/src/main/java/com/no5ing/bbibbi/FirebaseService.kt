@@ -8,6 +8,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.no5ing.bbibbi.presentation.ui.DeepLinkActivity
 import com.no5ing.bbibbi.presentation.ui.MainActivity
 import timber.log.Timber
 
@@ -21,7 +22,7 @@ class FirebaseService : FirebaseMessagingService() {
         Timber.d("onMessageReceived: ${remoteMessage.data.toString()}")
         remoteMessage.notification?.apply {
             val intent = Intent(this@FirebaseService, MainActivity::class.java).apply{
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             }
             val pendingIntent = PendingIntent
                 .getActivity(this@FirebaseService, 0, intent, PendingIntent.FLAG_IMMUTABLE)

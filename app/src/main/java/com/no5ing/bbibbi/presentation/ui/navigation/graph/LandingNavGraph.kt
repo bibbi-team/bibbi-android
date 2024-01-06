@@ -5,6 +5,7 @@ import androidx.compose.runtime.Stable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.navigation
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingAlreadyFamilyExistsDestination
 
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingLoginDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingOnBoardingDestination
@@ -27,6 +28,10 @@ fun NavGraphBuilder.landingGraph(
         composable(
             controller = navController,
             destination = LandingOnBoardingDestination,
+        )
+        composable(
+            controller = navController,
+            destination = LandingAlreadyFamilyExistsDestination,
         )
     }
 }

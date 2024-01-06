@@ -38,6 +38,8 @@ class LocalDataStorage @Inject constructor(val context: Context) {
     companion object {
         const val AUTH_RESULT_KEY = "auth_result_key"
         const val ME_KEY = "me_key"
+        const val REGISTRATION_TOKEN_KEY = "registration_token"
+        const val LANDING_SEEN_KEY = "landing_seen"
     }
 
     fun login(member: Member, authToken: AuthResult) {
@@ -55,7 +57,9 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         Timber.d("Clear preference")
         val editor = preferences.edit()
 
-        editor.clear()
+        editor.remove(AUTH_RESULT_KEY)
+        editor.remove(ME_KEY)
+        editor.remove(REGISTRATION_TOKEN_KEY)
         editor.apply()
         editor.commit()
     }
@@ -90,19 +94,30 @@ class LocalDataStorage @Inject constructor(val context: Context) {
 
     fun setRegistrationToken(token: String) {
         val editor = preferences.edit()
-        editor.putString("registration_token", token)
+        editor.putString(REGISTRATION_TOKEN_KEY, token)
         editor.apply()
         editor.commit()
     }
 
     fun getAndDeleteRegistrationToken(): String? {
-        val token = preferences.getString("registration_token", null)
+        val token = preferences.getString(REGISTRATION_TOKEN_KEY, null)
         if (token != null) {
             val editor = preferences.edit()
-            editor.remove("registration_token")
+            editor.remove(REGISTRATION_TOKEN_KEY)
             editor.apply()
             editor.commit()
         }
         return token
+    }
+
+    fun setLandingSeen() {
+        val editor = preferences.edit()
+        editor.putBoolean(LANDING_SEEN_KEY, true)
+        editor.apply()
+        editor.commit()
+    }
+
+    fun getLandingSeen(): Boolean {
+        return preferences.getBoolean(LANDING_SEEN_KEY, false)
     }
 }

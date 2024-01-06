@@ -123,3 +123,7 @@ fun Context.findAndroidActivity(): Activity? {
     }
     return null
 }
+
+fun getLinkIdFromUrl(url: String): String {
+    return url.split("/").last()
+}
