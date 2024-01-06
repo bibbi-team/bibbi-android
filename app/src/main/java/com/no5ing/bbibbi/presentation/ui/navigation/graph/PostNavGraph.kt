@@ -7,6 +7,8 @@ import androidx.compose.runtime.Stable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.navigation
+import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideInToLeft
+import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideOutToRight
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.postPageRoute
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.postViewPageRoute
@@ -26,14 +28,10 @@ fun NavGraphBuilder.postGraph(
             controller = navController,
             destination = PostViewDestination,
             enterTransition = {
-                slideInHorizontally {
-                    it
-                }
+                fullHorizontalSlideInToLeft()
             },
             popExitTransition = {
-                slideOutHorizontally {
-                    it
-                }
+                fullHorizontalSlideOutToRight()
             }
         )
         composable(

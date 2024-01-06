@@ -9,6 +9,12 @@ import androidx.compose.runtime.Stable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.navigation
+import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideInToLeft
+import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideInToRight
+import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideOutToLeft
+import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideOutToRight
+import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullSlideInVertically
+import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullSlideOutVertically
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.MainCalendarDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.MainCalendarDetailDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.MainFamilyDestination
@@ -31,81 +37,53 @@ fun NavGraphBuilder.mainGraph(
             destination = MainHomeDestination,
             exitTransition = {
                 val destination = targetState.destination.route ?: ""
-                if (destination == MainFamilyDestination.route) {
-                    slideOutHorizontally {
-                        +it
-                    }
-                }
-                else slideOutHorizontally {
-                    -it
-                }
+                if (destination == MainFamilyDestination.route) fullHorizontalSlideOutToRight()
+                else fullHorizontalSlideOutToLeft()
             },
             popEnterTransition = {
                 val initial = initialState.destination.route ?: ""
-                if (initial == MainFamilyDestination.route) {
-                    slideInHorizontally {
-                        +it
-                    }
-                }
-                else slideInHorizontally {
-                    -it
-                }
+                if (initial == MainFamilyDestination.route) fullHorizontalSlideInToLeft()
+                else fullHorizontalSlideInToRight()
             }
         )
         composable(
             controller = navController,
             destination = MainProfileDestination,
             enterTransition = {
-                slideInVertically {
-                    it
-                }
+                fullSlideInVertically()
             },
             popExitTransition = {
-                slideOutVertically {
-                    it
-                }
+                fullSlideOutVertically()
             }
         )
         composable(
             controller = navController,
             destination = MainFamilyDestination,
             enterTransition = {
-                slideInHorizontally {
-                    -it
-                }
+                fullHorizontalSlideInToRight()
             },
             popExitTransition = {
-                slideOutHorizontally {
-                    -it
-                }
+                fullHorizontalSlideOutToLeft()
             }
         )
         composable(
             controller = navController,
             destination = MainCalendarDestination,
             enterTransition = {
-                slideInHorizontally {
-                    it
-                }
+                fullHorizontalSlideInToLeft()
             },
             popExitTransition = {
-                slideOutHorizontally {
-                    it
-                }
+                fullHorizontalSlideOutToRight()
             }
         )
         composable(
             controller = navController,
             destination = MainCalendarDetailDestination,
             enterTransition = {
-                slideInHorizontally {
-                    it
-                }
+                fullHorizontalSlideInToLeft()
             },
             popExitTransition = {
-                slideOutHorizontally {
-                    it
-                }
+                fullHorizontalSlideOutToRight()
             }
         )
     }
