@@ -52,6 +52,7 @@
     <string name="time_years">년 전</string>
 
     <string name="snack_bar_word_limit">%1$d자까지 입력 가능해요</string>
+    <string name="snack_bar_no_space">띄어쓰기는 할 수 없어요</string>
     <string name="snack_bar_saved">앨범에 저장되었어요</string>
 
     <string name="server_already_uploaded">이미 오늘 게시물을 업로드했어요</string>

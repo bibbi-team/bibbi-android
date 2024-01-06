@@ -88,6 +88,7 @@ fun PostUploadPage(
     val snackBarHost = LocalSnackbarHostState.current
     val maxWord = 8
     val snackWarningMessage = stringResource(id = R.string.snack_bar_word_limit, maxWord)
+    val snackNoSpaceMessage = stringResource(id = R.string.snack_bar_no_space)
     val snackSavedMessage = stringResource(id = R.string.snack_bar_saved)
     LaunchedEffect(Unit) {
         if (imageUrl.value == null) {
@@ -292,6 +293,15 @@ fun PostUploadPage(
                                     },
                                 onValueChange = { nextValue ->
                                     if (nextValue.length <= 8) {
+                                        if(nextValue.contains(" ")) {
+                                            coroutineScope.launch {
+                                                snackBarHost.showSnackBarWithDismiss(
+                                                    message = snackNoSpaceMessage,
+                                                    actionLabel = snackBarWarning
+                                                )
+                                            }
+                                            return@BasicTextField
+                                        }
                                         imageText.value = nextValue
                                     } else {
                                         coroutineScope.launch {
