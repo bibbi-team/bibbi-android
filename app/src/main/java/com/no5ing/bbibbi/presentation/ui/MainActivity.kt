@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -23,6 +24,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -34,9 +37,11 @@ import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.firebase.messaging.FirebaseMessaging
+import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenRequest
+import com.no5ing.bbibbi.di.NetworkModule
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.CameraViewDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.cameraViewRoute
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
@@ -123,6 +128,7 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
+            val updateState = NetworkModule.requireUpdateState.collectAsState()
             val startDestination = if (landingSkippable.value)
                 mainPageRoute
             else
@@ -136,6 +142,12 @@ class MainActivity : ComponentActivity() {
                     it.destination.route ?: "START"
                 }
                 Timber.e(routes + "->${destination.route ?: "END"}")
+            }
+
+            LaunchedEffect(updateState.value) {
+                if (updateState.value) {
+                    openRequireUpdateDialog()
+                }
             }
 
             BbibbiTheme {
@@ -209,5 +221,20 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun openRequireUpdateDialog() {
+        AlertDialog
+            .Builder(this)
+            .setTitle(this.getString(R.string.app_update_dialog_title))
+            .setMessage(this.getString(R.string.app_update_dialog_message))
+            .setPositiveButton(this.getString(R.string.app_update_dialog_positive)) { _, _ ->
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse("market://details?id=com.no5ing.bbibbi")
+                this.startActivity(intent)
+                Runtime.getRuntime().exit(0)
+            }
+            .create()
+            .show()
     }
 }
