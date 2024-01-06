@@ -88,7 +88,8 @@ fun HomePageContent(
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
             columns = GridCells.Fixed(count = 2),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
         ) {
             item(span = { GridItemSpan(2) }) {
                 HomePageStoryBar(
@@ -176,7 +177,10 @@ fun HomePageContentItem(
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(vertical = 8.dp)
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 20.dp)
         ) {
             Text(
                 text = writerName,
