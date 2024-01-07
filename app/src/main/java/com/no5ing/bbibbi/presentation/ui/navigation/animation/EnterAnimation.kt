@@ -18,3 +18,8 @@ fun fullHorizontalSlideInToLeft() = slideInHorizontally {
 fun fullSlideInVertically() = slideInVertically {
     + it
 }
+
+@Stable
+fun miniHorizontalSlideInToRight() = slideInHorizontally(
+    initialOffsetX = { -it / 2 },
+)

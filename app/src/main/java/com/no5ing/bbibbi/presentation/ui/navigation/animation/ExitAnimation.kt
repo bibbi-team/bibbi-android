@@ -18,3 +18,13 @@ fun fullHorizontalSlideOutToLeft() = slideOutHorizontally {
 fun fullSlideOutVertically() = slideOutVertically {
     + it
 }
+
+@Stable
+fun miniHorizontalSlideOutToRight() = slideOutHorizontally {
+    + it / 2
+}
+
+@Stable
+fun miniHorizontalSlideOutToLeft() = slideOutHorizontally {
+    - it / 2
+}
