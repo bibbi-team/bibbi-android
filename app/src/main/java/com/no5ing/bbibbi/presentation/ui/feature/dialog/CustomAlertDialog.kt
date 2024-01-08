@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
@@ -40,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.presentation.ui.theme.uploadGreen
 import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,21 +72,30 @@ fun CustomAlertDialog(
                         Button(
                             onClick = dismissRequest,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.Transparent
-                            )
+                                containerColor = MaterialTheme.colorScheme.surface
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier.size(width = 126.dp, height = 44.dp)
                         ) {
                             Text(
-                                cancelMessage
+                                cancelMessage,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 17.sp
                             )
                         }
                         Button(
                             onClick = confirmRequest,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.Transparent
+                                containerColor = uploadGreen
                             ),
-                            contentPadding = PaddingValues()
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier.size(width = 126.dp, height = 44.dp)
                         ) {
-                            Text(confirmMessage)
+                            Text(
+                                confirmMessage,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 17.sp
+                            )
                         }
                     }
                 },
@@ -92,12 +104,15 @@ fun CustomAlertDialog(
                     Text(
                         title,
                         color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 17.sp
                     )
                 },
                 text = {
                     Text(
                         description,
                         color = MaterialTheme.colorScheme.secondary,
+                        fontSize = 13.sp
                     )
                 },
                 shape = RoundedCornerShape(14.dp),
@@ -162,11 +177,7 @@ internal fun AlertDialogContent(
                             Modifier
                                 .padding(TitlePadding)
                                 .align(
-                                    if (icon == null) {
-                                        Alignment.Start
-                                    } else {
-                                        Alignment.CenterHorizontally
-                                    }
+                                    Alignment.CenterHorizontally
                                 )
                         ) {
                             title()
@@ -183,19 +194,15 @@ internal fun AlertDialogContent(
                             Modifier
                                 .weight(weight = 1f, fill = false)
                                 .padding(TextPadding)
-                                .align(Alignment.Start)
+                                .align(Alignment.CenterHorizontally)
                         ) {
                             text()
                         }
                     }
                 }
             }
-            Box(modifier = Modifier.align(Alignment.End)) {
-                CompositionLocalProvider(LocalContentColor provides buttonContentColor) {
-                    val textStyle =
-                        MaterialTheme.typography.bodyMedium
-                    ProvideTextStyle(value = textStyle, content = buttons)
-                }
+            Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                buttons()
             }
         }
     }
