@@ -6,17 +6,17 @@ import androidx.compose.runtime.Stable
 
 @Stable
 fun fullHorizontalSlideInToRight() = slideInHorizontally {
-    - it
+    -it
 }
 
 @Stable
 fun fullHorizontalSlideInToLeft() = slideInHorizontally {
-    + it
+    +it
 }
 
 @Stable
 fun fullSlideInVertically() = slideInVertically {
-    + it
+    +it
 }
 
 @Stable

@@ -34,7 +34,12 @@ class IsMeUploadedTodayViewModel @Inject constructor(
                     date = todayAsString()
                 ).suspendOnSuccess {
                     val isMeUploadedToday = data.results.isNotEmpty()
-                    setState(APIResponse(status = APIResponse.Status.SUCCESS, data = isMeUploadedToday))
+                    setState(
+                        APIResponse(
+                            status = APIResponse.Status.SUCCESS,
+                            data = isMeUploadedToday
+                        )
+                    )
                 }
         }
     }

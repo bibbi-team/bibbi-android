@@ -13,10 +13,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 typealias CalenderDetailContentUiState = Triple<MainFeedUiState?, MainFeedUiState?, MainFeedUiState?>
+
 @HiltViewModel
 class CalendarDetailContentViewModel @Inject constructor(
     private val restAPI: RestAPI,

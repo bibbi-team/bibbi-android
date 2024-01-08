@@ -32,13 +32,16 @@ class FamilyRegistrationViewModel @Inject constructor(
 
     override fun invoke(arguments: Arguments) {
         withMutexScope(Dispatchers.IO, uiState.value.isIdle()) {
-            if(isReLogin()) {
+            if (isReLogin()) {
                 Timber.d("[FamilyReg] Already has Family!")
-                setState(APIResponse.success(
-                    Family(
-                        familyID = localDataStorage.getMe()?.familyId!!,
-                        createdAt = ZonedDateTime.now()
-                    )))
+                setState(
+                    APIResponse.success(
+                        Family(
+                            familyID = localDataStorage.getMe()?.familyId!!,
+                            createdAt = ZonedDateTime.now()
+                        )
+                    )
+                )
                 return@withMutexScope
             }
             val registrationToken = localDataStorage.getAndDeleteRegistrationToken()

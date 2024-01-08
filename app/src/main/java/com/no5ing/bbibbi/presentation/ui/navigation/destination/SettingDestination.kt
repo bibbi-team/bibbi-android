@@ -6,7 +6,6 @@ import com.no5ing.bbibbi.presentation.ui.feature.setting.change_nickname.ChangeN
 import com.no5ing.bbibbi.presentation.ui.feature.setting.home.SettingHomePage
 import com.no5ing.bbibbi.presentation.ui.feature.setting.webview.WebViewPage
 import com.no5ing.bbibbi.util.forceRestart
-import java.lang.IllegalArgumentException
 
 object SettingDestination : NavigationDestination(
     route = settingHomePageRoute,

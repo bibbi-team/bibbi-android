@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.destination
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition

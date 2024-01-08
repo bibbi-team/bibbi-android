@@ -74,15 +74,17 @@ fun CameraView(
     val cameraState = remember { mutableStateOf<Camera?>(null) }
     val captureState = remember { mutableStateOf(ImageCapture.Builder().build()) }
     var isCapturing by remember { mutableStateOf(false) }
-    val previewView = remember { PreviewView(
-        context,
-    ).apply {
-        implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-        scaleType = PreviewView.ScaleType.FIT_CENTER
-    } }
+    val previewView = remember {
+        PreviewView(
+            context,
+        ).apply {
+            implementationMode = PreviewView.ImplementationMode.COMPATIBLE
+            scaleType = PreviewView.ScaleType.FIT_CENTER
+        }
+    }
 
     LaunchedEffect(cameraDirection.value, isPermissionGranted.value) {
-        if(!isPermissionGranted.value) return@LaunchedEffect
+        if (!isPermissionGranted.value) return@LaunchedEffect
         val cameraProvider = context.getCameraProvider()
         cameraProvider.unbindAll()
 
@@ -182,7 +184,7 @@ fun CameraView(
                                 onImageCaptured(uri)
                             }
                         },
-                    alpha = if(isCapturing) 0.3f else 1.0f,
+                    alpha = if (isCapturing) 0.3f else 1.0f,
                 )
                 Image(
                     painter = painterResource(R.drawable.rotate_button),

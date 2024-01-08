@@ -6,7 +6,6 @@ import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.APIResponse.Companion.wrapToAPIResponse
 import com.no5ing.bbibbi.data.model.member.Member
 import kotlinx.coroutines.runBlocking
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton

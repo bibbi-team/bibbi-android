@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.presentation.viewmodel.auth
 
-import androidx.lifecycle.viewModelScope
 import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.auth.SocialLoginRequest
@@ -12,8 +11,6 @@ import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,7 +27,7 @@ class LoginWithCredentialsViewModel @Inject constructor(
         val authKey = arguments.get("authKey") ?: throw RuntimeException()
         val provider = arguments.get("provider") ?: throw RuntimeException()
         withMutexScope(Dispatchers.IO) {
-            val authResult = if(provider == "kakao") restAPI.getAuthApi().kakaoLogin(
+            val authResult = if (provider == "kakao") restAPI.getAuthApi().kakaoLogin(
                 SocialLoginRequest(
                     accessToken = authKey,
                 )

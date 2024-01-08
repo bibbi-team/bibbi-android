@@ -72,7 +72,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
-import java.lang.Exception
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -100,7 +99,7 @@ class MainActivity : ComponentActivity() {
         val linkId = appLinkData?.let {
             getLinkIdFromUrl(it.toString())
         }
-        if(linkId != null) {
+        if (linkId != null) {
             handleDeepLinkId(linkId)
         }
     }
@@ -109,7 +108,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             restAPI.getLinkApi().getLink(linkId).suspendOnSuccess {
                 val deepLinkPayload = data
-                when(deepLinkPayload.type) {
+                when (deepLinkPayload.type) {
                     "FAMILY_REGISTRATION" -> {
                         val previousMe = localDataStorage.getMe()
                         if (previousMe == null || !previousMe.hasFamily()) {
@@ -121,6 +120,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
+
                     else -> {}
                 }
             }.suspendOnFailure {
@@ -148,7 +148,8 @@ class MainActivity : ComponentActivity() {
                     }
                     Timber.d("Install referrer: $response")
                 }
-            } catch(e: Exception) { }
+            } catch (e: Exception) {
+            }
         }
         //TODO: CHECK VERSION FIRST
         if (localDataStorage.getAuthTokens() != null) {
@@ -183,6 +184,7 @@ class MainActivity : ComponentActivity() {
                         // Connection established.
                         it.resume(referrerClient)
                     }
+
                     else -> {
                         it.resume(null)
                     }

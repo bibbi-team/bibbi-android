@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.presentation.ui.feature.setting.webview
 
-import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Composable
 fun WebViewPage(

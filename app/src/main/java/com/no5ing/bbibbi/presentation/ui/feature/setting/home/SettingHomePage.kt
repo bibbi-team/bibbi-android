@@ -30,7 +30,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -50,7 +49,6 @@ import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.emptyPermissionState
 import com.no5ing.bbibbi.util.localResources
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -154,7 +152,10 @@ fun SettingHomePage(
                             val settingsIntent =
                                 Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    .putExtra(Settings.EXTRA_APP_PACKAGE, BuildConfig.APPLICATION_ID)
+                                    .putExtra(
+                                        Settings.EXTRA_APP_PACKAGE,
+                                        BuildConfig.APPLICATION_ID
+                                    )
                             context.startActivity(settingsIntent)
                         }
 
@@ -201,11 +202,13 @@ fun SettingItem(
     name: String,
     onClick: () -> Unit,
     isCritical: Boolean = false,
-    rightButton: @Composable () -> Unit = { Icon(
-        painter = painterResource(id = R.drawable.arrow_right),
-        contentDescription = null,
-        tint = MaterialTheme.colorScheme.onSurface,
-    ) }
+    rightButton: @Composable () -> Unit = {
+        Icon(
+            painter = painterResource(id = R.drawable.arrow_right),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurface,
+        )
+    }
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,

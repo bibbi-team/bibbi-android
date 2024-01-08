@@ -8,15 +8,15 @@ import timber.log.Timber
 
 
 @AndroidEntryPoint
-class DeepLinkActivity: ComponentActivity() {
+class DeepLinkActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if(isTaskRoot) {
+        if (isTaskRoot) {
             Timber.d("[DeepLink] New Intent Activity!!")
-        } else{
+        } else {
             Timber.d("[DeepLink] Already Task Exists!!")
-           // finish()
+            // finish()
         }
 
         val mainIntent = intent

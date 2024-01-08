@@ -1,8 +1,5 @@
 package com.no5ing.bbibbi.presentation.ui.feature.dialog
 
-import android.content.Context
-import android.util.DisplayMetrics
-import android.view.WindowManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -48,7 +45,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -60,7 +56,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.compose.rememberNavController
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
@@ -92,7 +87,7 @@ fun ReactionListDialog(
             mutableStateOf(false)
         }
         LaunchedEffect(goDispose) {
-            if(goDispose) {
+            if (goDispose) {
                 isEnabled.value = false
             }
         }
@@ -127,7 +122,8 @@ fun ReactionListDialog(
                     exit = slideOutVertically { it }
                 ) {
                     val swipeableState = rememberSwipeableState(initialValue = 0)
-                    val point = LocalDensity.current.run { LocalConfiguration.current.screenHeightDp.dp.toPx() }
+                    val point =
+                        LocalDensity.current.run { LocalConfiguration.current.screenHeightDp.dp.toPx() }
                     // 위치 to 상태
                     val anchors = mapOf(0f to 0, point to 1)
 
@@ -153,8 +149,7 @@ fun ReactionListDialog(
                                 thresholds = { _, _ -> FractionalThreshold(0.4f) },
                                 orientation = Orientation.Vertical
                             )
-                            .offset { IntOffset(0, swipeableState.offset.value.toInt()) }
-                        ,
+                            .offset { IntOffset(0, swipeableState.offset.value.toInt()) },
                         shape = RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp),
                         color = MaterialTheme.colorScheme.background,
                     ) {

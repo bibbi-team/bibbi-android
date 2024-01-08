@@ -2,7 +2,6 @@ package com.no5ing.bbibbi.data.repository
 
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import kotlinx.coroutines.flow.Flow
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 

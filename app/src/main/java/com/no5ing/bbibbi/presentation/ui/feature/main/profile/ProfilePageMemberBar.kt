@@ -85,7 +85,7 @@ fun ProfilePageMemberBar(
     val snackBarHost = LocalSnackbarHostState.current
     val changeImageState = profileImageChangeViewModel.uiState.collectAsState()
     LaunchedEffect(changeImageState.value) {
-        when(changeImageState.value.status) {
+        when (changeImageState.value.status) {
             is APIResponse.Status.SUCCESS -> {
                 snackBarHost.showSnackBarWithDismiss(
                     message = resources.getString(R.string.profile_image_changed_successfully),
@@ -94,6 +94,7 @@ fun ProfilePageMemberBar(
                 profileImageChangeViewModel.resetState()
                 familyMemberViewModel.invoke(Arguments(resourceId = memberId))
             }
+
             is APIResponse.Status.ERROR -> {
                 val errorCode = changeImageState.value.errorCode
                 val errorMessage = resources.getErrorMessage(errorCode)
@@ -103,6 +104,7 @@ fun ProfilePageMemberBar(
                 )
                 profileImageChangeViewModel.resetState()
             }
+
             else -> {}
         }
     }

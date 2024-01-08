@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -52,9 +51,6 @@ import com.no5ing.bbibbi.presentation.ui.theme.warningRed
 import com.no5ing.bbibbi.presentation.viewmodel.members.ChangeNicknameViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun ChangeNicknamePage(
@@ -77,10 +73,10 @@ fun ChangeNicknamePage(
     LaunchedEffect(uiState.value) {
         when (uiState.value.status) {
             is APIResponse.Status.SUCCESS -> {
-                    snackBarHost.showSnackBarWithDismiss(
-                        successMessage,
-                        actionLabel = snackBarSuccess,
-                    )
+                snackBarHost.showSnackBarWithDismiss(
+                    successMessage,
+                    actionLabel = snackBarSuccess,
+                )
                 onDispose()
             }
 

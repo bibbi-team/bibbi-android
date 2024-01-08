@@ -6,23 +6,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
-
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-
 import androidx.compose.material3.ExperimentalMaterial3Api
-
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
@@ -118,13 +112,13 @@ fun CustomAlertDialog(
                 shape = RoundedCornerShape(14.dp),
                 containerColor = MaterialTheme.colorScheme.onBackground,
                 tonalElevation = AlertDialogDefaults.TonalElevation,
-                buttonContentColor =  MaterialTheme.colorScheme.secondary,
+                buttonContentColor = MaterialTheme.colorScheme.secondary,
                 iconContentColor = AlertDialogDefaults.iconContentColor,
                 titleContentColor = AlertDialogDefaults.titleContentColor,
                 textContentColor = AlertDialogDefaults.textContentColor,
                 modifier = Modifier.padding(0.dp)
             )
-            
+
         }
     }
 }
@@ -283,8 +277,10 @@ internal fun AlertDialogFlowRow(
                 val arrangement = Arrangement.End
                 val mainAxisPositions = IntArray(childrenMainAxisSizes.size) { 0 }
                 with(arrangement) {
-                    arrange(mainAxisLayoutSize, childrenMainAxisSizes,
-                        layoutDirection, mainAxisPositions)
+                    arrange(
+                        mainAxisLayoutSize, childrenMainAxisSizes,
+                        layoutDirection, mainAxisPositions
+                    )
                 }
                 placeables.forEachIndexed { j, placeable ->
                     placeable.place(

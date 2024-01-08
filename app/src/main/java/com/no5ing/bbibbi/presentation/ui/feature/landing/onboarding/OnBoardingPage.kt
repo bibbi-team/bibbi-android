@@ -79,9 +79,10 @@ fun OnBoardingPage(
             else -> {}
         }
     }
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .systemBarsPadding()
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
     ) {
         Column(
             modifier = Modifier.fillMaxHeight(),
@@ -109,7 +110,7 @@ fun OnBoardingPage(
                     )
                 ) {
                     CTAButton(
-                        text = if(familyRegistrationViewModel.hasRegistrationToken)
+                        text = if (familyRegistrationViewModel.hasRegistrationToken)
                             stringResource(id = R.string.onboarding_next_join)
                         else
                             stringResource(id = R.string.onboarding_next),

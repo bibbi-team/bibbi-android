@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
@@ -41,7 +40,7 @@ fun HomePageStoryBar(
         familyMembersViewModel.invoke(Arguments())
     }
     val items = storyBarState.uiState.collectAsLazyPagingItems()
-    if(items.itemCount == 1) {
+    if (items.itemCount == 1) {
         HomePageNoFamilyBar(
             modifier = Modifier
                 .fillMaxWidth()
@@ -49,7 +48,7 @@ fun HomePageStoryBar(
                 .padding(horizontal = 16.dp),
             onTap = onTapInvite,
         )
-    }else {
+    } else {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()

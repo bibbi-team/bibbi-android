@@ -42,7 +42,7 @@ fun ProfilePage(
                 onDispose = onDispose,
                 title = stringResource(id = R.string.profile_title),
                 rightButton = {
-                    if(isMe.value) {
+                    if (isMe.value) {
                         Box(
                             modifier = Modifier
                                 .size(52.dp)

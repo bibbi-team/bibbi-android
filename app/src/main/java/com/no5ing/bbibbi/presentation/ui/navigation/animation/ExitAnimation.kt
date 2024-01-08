@@ -6,25 +6,25 @@ import androidx.compose.runtime.Stable
 
 @Stable
 fun fullHorizontalSlideOutToRight() = slideOutHorizontally {
-    + it
+    +it
 }
 
 @Stable
 fun fullHorizontalSlideOutToLeft() = slideOutHorizontally {
-    - it
+    -it
 }
 
 @Stable
 fun fullSlideOutVertically() = slideOutVertically {
-    + it
+    +it
 }
 
 @Stable
 fun miniHorizontalSlideOutToRight() = slideOutHorizontally {
-    + it / 2
+    +it / 2
 }
 
 @Stable
 fun miniHorizontalSlideOutToLeft() = slideOutHorizontally {
-    - it / 2
+    -it / 2
 }

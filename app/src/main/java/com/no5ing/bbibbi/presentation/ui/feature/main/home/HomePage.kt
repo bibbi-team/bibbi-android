@@ -22,7 +22,6 @@ import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageState
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.IsMeUploadedTodayViewModel
-import timber.log.Timber
 
 @Composable
 fun HomePage(

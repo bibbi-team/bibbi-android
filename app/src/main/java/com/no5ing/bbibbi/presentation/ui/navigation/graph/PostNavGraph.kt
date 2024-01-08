@@ -1,8 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.graph
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Stable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController

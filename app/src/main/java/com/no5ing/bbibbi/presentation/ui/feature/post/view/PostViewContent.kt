@@ -21,11 +21,9 @@ import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.component.AddReactionBar
 import com.no5ing.bbibbi.presentation.ui.common.component.MiniTextBubbleBox
-import com.no5ing.bbibbi.presentation.ui.common.component.OuterClickListener
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
-import timber.log.Timber
 
 @Composable
 fun PostViewContent(

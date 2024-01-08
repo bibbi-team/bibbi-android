@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,7 +28,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -79,12 +76,12 @@ fun CalendarDetailPage(
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
     calendarWeekViewModel: CalendarWeekViewModel = hiltViewModel(),
 ) {
-   // val postState = familyPostViewModel.uiState.collectAsState()
+    // val postState = familyPostViewModel.uiState.collectAsState()
     val snackBarState = LocalSnackbarHostState.current
     val uiState = calendarWeekViewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
-        pageCount = {3},
+        pageCount = { 3 },
         initialPage = 1,
     )
     val scrollEnabled = remember {
@@ -145,7 +142,7 @@ fun CalendarDetailPage(
 
     LaunchedEffect(calendarDetailState.value) {
         val actualValue = calendarDetailState.value
-        if(actualValue.isReady()) {
+        if (actualValue.isReady()) {
             Timber.d("[CalendarDetailPage] hasLeft = ${actualValue.data.first != null}, hasRight = ${actualValue.data.third != null}")
             currentPostState.value = actualValue.data
             pagerState.scrollToPage(1)
@@ -155,12 +152,12 @@ fun CalendarDetailPage(
         }
     }
 
-    val noMoreItemMessage =   stringResource(id = R.string.no_more_calendar_items)
+    val noMoreItemMessage = stringResource(id = R.string.no_more_calendar_items)
     LaunchedEffect(pagerState.currentPage) {
         Timber.d("[CalendarDetailPage] CurrentPage: ${pagerState.currentPage}")
-        if(pagerState.currentPage != 1) {
+        if (pagerState.currentPage != 1) {
             scrollEnabled.value = false
-            val item = when(pagerState.currentPage) {
+            val item = when (pagerState.currentPage) {
                 0 -> currentPostState.value.first
                 2 -> currentPostState.value.third
                 else -> null
@@ -245,38 +242,38 @@ fun CalendarDetailPage(
 //                        }, label = ""
 //                    ) {
 
-                    HorizontalPager(
-                        state = pagerState,
-                        userScrollEnabled = scrollEnabled.value,
-                    ) { index ->
-                        val item = when(index) {
-                            0 -> currentPostState.value.first
-                            1 -> currentPostState.value.second
-                            2 -> currentPostState.value.third
-                            else -> null
-                        }
-                        Column(
-                            modifier = Modifier
-                        ) {
-                            Spacer(modifier = Modifier.height(12.dp))
-                            if (item != null) {
-                                PostViewDetailTopBar(
-                                    member = item.writer,
-                                    onTap = {
-                                        onTapProfile(item.writer)
-                                    }
-                                )
-                                PostViewContent(
-                                    post = item.post,
-                                    familyPostReactionBarViewModel = familyPostReactionBarViewModel,
-                                    removePostReactionViewModel = removePostReactionViewModel,
-                                    addPostReactionViewModel = addPostReactionViewModel,
-                                )
-                            }
+                HorizontalPager(
+                    state = pagerState,
+                    userScrollEnabled = scrollEnabled.value,
+                ) { index ->
+                    val item = when (index) {
+                        0 -> currentPostState.value.first
+                        1 -> currentPostState.value.second
+                        2 -> currentPostState.value.third
+                        else -> null
+                    }
+                    Column(
+                        modifier = Modifier
+                    ) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        if (item != null) {
+                            PostViewDetailTopBar(
+                                member = item.writer,
+                                onTap = {
+                                    onTapProfile(item.writer)
+                                }
+                            )
+                            PostViewContent(
+                                post = item.post,
+                                familyPostReactionBarViewModel = familyPostReactionBarViewModel,
+                                removePostReactionViewModel = removePostReactionViewModel,
+                                addPostReactionViewModel = addPostReactionViewModel,
+                            )
                         }
                     }
+                }
 
-                 //   }
+                //   }
 
 
             }

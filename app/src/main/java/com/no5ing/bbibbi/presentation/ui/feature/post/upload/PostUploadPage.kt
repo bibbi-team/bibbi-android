@@ -67,7 +67,6 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.CreatePostViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Composable
 fun PostUploadPage(
@@ -290,7 +289,7 @@ fun PostUploadPage(
                                     },
                                 onValueChange = { nextValue ->
                                     if (nextValue.length <= 8) {
-                                        if(nextValue.contains(" ")) {
+                                        if (nextValue.contains(" ")) {
                                             coroutineScope.launch {
                                                 snackBarHost.showSnackBarWithDismiss(
                                                     message = snackNoSpaceMessage,

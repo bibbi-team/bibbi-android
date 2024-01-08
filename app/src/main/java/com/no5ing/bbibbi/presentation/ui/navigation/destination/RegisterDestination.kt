@@ -9,7 +9,6 @@ import com.no5ing.bbibbi.presentation.state.register.profile_image.rememberRegis
 import com.no5ing.bbibbi.presentation.ui.feature.register.day_of_birth.RegisterDayOfBirthPage
 import com.no5ing.bbibbi.presentation.ui.feature.register.nickname.RegisterNickNamePage
 import com.no5ing.bbibbi.presentation.ui.feature.register.profile_image.RegisterProfileImagePage
-import timber.log.Timber
 
 object RegisterNicknameDestination : NavigationDestination(
     route = registerNickNameRoute,

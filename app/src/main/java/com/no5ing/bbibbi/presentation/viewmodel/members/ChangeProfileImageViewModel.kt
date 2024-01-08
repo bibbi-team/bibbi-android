@@ -14,9 +14,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import com.no5ing.bbibbi.util.fileFromContentUriStr
 import com.no5ing.bbibbi.util.uploadImage
 import com.skydoves.sandwich.onSuccess
-import com.skydoves.sandwich.retrofit.body
 import com.skydoves.sandwich.suspendOnError
-import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +48,7 @@ class ChangeProfileImageViewModel @Inject constructor(
                     targetFile = file,
                     targetUrl = data.url
                 )
-                if(uploadedUrl != null) {
+                if (uploadedUrl != null) {
                     val result = restAPI.getMemberApi().changeProfileImage(
                         memberId = memberId,
                         body = ChangeProfileImageRequest(
