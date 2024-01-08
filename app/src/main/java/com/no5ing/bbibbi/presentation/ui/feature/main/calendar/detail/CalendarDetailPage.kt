@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,9 +26,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,12 +45,15 @@ import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.feature.main.calendar.MainCalendarDay
 import com.no5ing.bbibbi.presentation.ui.feature.post.view.PostViewContent
+import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
+import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarDetailContentViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarWeekViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalenderDetailContentUiState
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
+import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.weekDates
 import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
 import io.github.boguszpawlowski.composecalendar.WeekCalendarState
@@ -55,6 +61,8 @@ import io.github.boguszpawlowski.composecalendar.header.WeekState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import io.github.boguszpawlowski.composecalendar.week.Week
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDate
 
@@ -72,7 +80,9 @@ fun CalendarDetailPage(
     calendarWeekViewModel: CalendarWeekViewModel = hiltViewModel(),
 ) {
    // val postState = familyPostViewModel.uiState.collectAsState()
+    val snackBarState = LocalSnackbarHostState.current
     val uiState = calendarWeekViewModel.uiState.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
         pageCount = {3},
         initialPage = 1,
@@ -157,23 +167,39 @@ fun CalendarDetailPage(
         }
     }
 
+    val noMoreItemMessage =   stringResource(id = R.string.no_more_calendar_items)
     LaunchedEffect(pagerState.currentPage) {
         Timber.d("CurrentPage: ${pagerState.currentPage}")
         if(pagerState.currentPage != 1) {
+            scrollEnabled.value = false
             Timber.d("Scroll!!")
             val item = when(pagerState.currentPage) {
                 0 -> currentPostState.value.first
                 2 -> currentPostState.value.third
                 else -> null
             }
-            scrollEnabled.value = false
             item?.let { newItem ->
                 val newItemDate = newItem.post.createdAt.toLocalDate()
                 Timber.d("New Item Date: $newItemDate")
                 currentCalendarState.selectionState.onDateSelected(newItemDate)
                 currentCalendarState.weekState.currentWeek = Week(newItemDate.weekDates())
-            }
+            } ?: Unit.apply {
+                coroutineScope.launch {
+                    delay(50L)
+                    Timber.d("Going first page!!")
+                    launch {
+                        snackBarState.showSnackBarWithDismiss(
+                            noMoreItemMessage,
+                            snackBarWarning
+                        )
+                    }
+                    pagerState.animateScrollToPage(1)
+                    scrollEnabled.value = true
+                    Timber.d("Going fidrst page!!")
 
+                }
+
+            }
         }
 
     }
