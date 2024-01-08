@@ -23,5 +23,4 @@ val emojiList = listOf(
     "emoji_3",
     "emoji_4",
     "emoji_5",
-    "emoji_6",
 )
