@@ -34,3 +34,4 @@ google-services.json
 .idea/
 .DS_Store
 secrets.properties
+play_keyfile.json
