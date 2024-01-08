@@ -92,7 +92,6 @@ fun PostUploadPage(
     val snackSavedMessage = stringResource(id = R.string.snack_bar_saved)
     LaunchedEffect(Unit) {
         if (imageUrl.value == null) {
-            Timber.e("IMAGE IS NULL!!")
             onDispose()
         }
     }
@@ -285,9 +284,7 @@ fun PostUploadPage(
                                 modifier = Modifier
                                     .focusRequester(textBoxFocus)
                                     .onFocusChanged {
-                                        Timber.d("onFocusChanged: $it")
                                         if (!it.hasFocus && focusState.value) {
-                                            Timber.d("Lost !! onFocusChanged: $it")
                                             textOverlayShown.value = false
                                         }
                                     },

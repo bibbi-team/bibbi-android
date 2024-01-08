@@ -9,6 +9,7 @@ import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingAlreadyFa
 
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingLoginDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingOnBoardingDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.landingPageRoute
 

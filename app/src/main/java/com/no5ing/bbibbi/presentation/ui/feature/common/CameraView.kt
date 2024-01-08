@@ -239,7 +239,7 @@ private suspend fun ImageCapture.takePhoto(context: Context): Uri? =
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(e: ImageCaptureException) {
-                    Timber.e("photo capture failed", e)
+                    Timber.e("[CameraView] photo capture failed", e)
                     continuation.resume(null)
                 }
 

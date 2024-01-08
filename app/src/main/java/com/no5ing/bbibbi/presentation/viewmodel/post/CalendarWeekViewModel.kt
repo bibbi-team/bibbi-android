@@ -35,9 +35,6 @@ class CalendarWeekViewModel @Inject constructor(
             retrieveAndAppend(backMonth, priorMap)
             retrieveAndAppend(startDate, priorMap)
             retrieveAndAppend(nextMonth, priorMap)
-
-
-            Timber.d("joiner => ${priorMap.keys.joinToString("->")}")
             setState(priorMap)
         }
     }

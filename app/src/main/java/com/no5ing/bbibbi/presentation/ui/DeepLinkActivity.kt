@@ -13,9 +13,9 @@ class DeepLinkActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         if(isTaskRoot) {
-            Timber.d("New Intent Activity!!")
+            Timber.d("[DeepLink] New Intent Activity!!")
         } else{
-            Timber.d("Already Task Exists!!")
+            Timber.d("[DeepLink] Already Task Exists!!")
            // finish()
         }
 

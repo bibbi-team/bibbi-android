@@ -63,7 +63,7 @@ val emptyPermissionState = object : PermissionState {
 
 fun Context.forceRestart() {
     if (this is Activity) {
-        Timber.d("Restarting!!")
+        Timber.d("[Activity] Restarting application...")
         this.finish()
         this.startActivity(this.intent)
     }

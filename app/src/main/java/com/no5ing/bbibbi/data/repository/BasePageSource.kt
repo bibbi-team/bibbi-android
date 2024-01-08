@@ -62,14 +62,13 @@ abstract class BasePageSource<T : BaseModel>(
                 )
             }
 
-            Status.ERROR -> {
-                Timber.d("ERROR")
-                return LoadResult.Error(RuntimeException(resource.error?.message))
-            }
-
-            Status.LOADING -> {
-                Timber.d("WTF")
-                throw RuntimeException()
+            Status.ERROR, Status.LOADING -> {
+                Timber.e("[BasePageSource] ${resource.error}")
+                LoadResult.Page(
+                    data = emptyList(),
+                    prevKey = if (page == PAGE_START_INDEX) null else page - 1,
+                    nextKey = page + 1
+                )
             }
         }
     }

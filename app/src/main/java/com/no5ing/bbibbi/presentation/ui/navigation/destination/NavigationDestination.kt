@@ -74,7 +74,7 @@ abstract class NavigationDestination(
             popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
             popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
         ) = composable(
-            route = destination.routeWithQuery.apply { Log.d("ERRD", this) },
+            route = destination.routeWithQuery,
             arguments = destination.combinedArguments,
             enterTransition = enterTransition,
             exitTransition = exitTransition,
@@ -90,7 +90,7 @@ abstract class NavigationDestination(
             controller: NavHostController,
             destination: NavigationDestination,
         ) = composable(
-            route = destination.routeWithQuery.apply { Log.d("ERRD", this) },
+            route = destination.routeWithQuery,
             arguments = destination.arguments,
         ) {
             destination.content(controller, it)
@@ -123,8 +123,7 @@ abstract class NavigationDestination(
                         && it.destination.route == deepLinkMatch.destination.route
             }
             if (priorStack != null) {
-                Timber.e("MATCH FOUND $targetRoute")
-                Timber.e("PRIOR : ${priorStack.arguments}")
+                Timber.d("[NavRouter] Going back prior opened stack..")
                 popBackStack(
                     destinationId = priorStack.destination.id,
                     inclusive = false,

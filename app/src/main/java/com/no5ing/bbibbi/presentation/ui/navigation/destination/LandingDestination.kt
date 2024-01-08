@@ -10,12 +10,11 @@ object LandingLoginDestination : NavigationDestination(
     content = { navController, _ ->
         LoginPage(
             onCompleted = { result ->
-
                 when (result) {
                     LoginSucceedResult.PERMANENT_HAS_FAMILY -> {
                         //navController.navigate(RegisterNicknameDestination)
                         navController.popAll()
-                        navController.navigate(MainHomeDestination)
+                        navController.navigate(LandingOnBoardingDestination)
                     }
 
                     LoginSucceedResult.PERMANENT_NO_FAMILY -> {

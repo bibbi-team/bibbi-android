@@ -18,8 +18,8 @@ class FirebaseService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Timber.d("onMessageReceived: ${remoteMessage.notification}")
-        Timber.d("onMessageReceived: ${remoteMessage.data.toString()}")
+        Timber.d("[FirebaseService] onMessageReceived notification: ${remoteMessage.notification}")
+        Timber.d("[FirebaseService] onMessageReceived data: ${remoteMessage.data}")
         remoteMessage.notification?.apply {
             val intent = Intent(this@FirebaseService, MainActivity::class.java).apply{
                 flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT

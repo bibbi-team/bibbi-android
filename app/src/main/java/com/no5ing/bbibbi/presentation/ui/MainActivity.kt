@@ -51,9 +51,7 @@ import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenReque
 import com.no5ing.bbibbi.di.NetworkModule
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.CameraViewDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingAlreadyFamilyExistsDestination
-import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.cameraViewRoute
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
-import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.dialog
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.landingPageRoute
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.mainPageRoute
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.navigate
@@ -71,8 +69,6 @@ import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
@@ -177,7 +173,7 @@ class MainActivity : ComponentActivity() {
         return landingSkippable
     }
 
-    private suspend fun invokeReferrer() = suspendCoroutine<InstallReferrerClient?> {
+    private suspend fun invokeReferrer() = suspendCoroutine {
         val referrerClient = InstallReferrerClient.newBuilder(this).build()
         referrerClient.startConnection(object : InstallReferrerStateListener {
 
@@ -215,18 +211,14 @@ class MainActivity : ComponentActivity() {
         Timber.d("appLinkData: $appLinkData")
 
         val keepSplash = mutableStateOf(true)
-        val landingSkippable = mutableStateOf(false)
+        val isAlreadyLoggedIn = mutableStateOf(false)
         var isReady by mutableStateOf(false)
         var isInitialBootstrap by mutableStateOf(true)
 
         lifecycleScope.launch(Dispatchers.IO) {
-            landingSkippable.value = initializeDefault()
+            isAlreadyLoggedIn.value = initializeDefault()
             keepSplash.value = false
             isReady = true
-        }
-
-        FirebaseMessaging.getInstance().token.addOnSuccessListener {
-            Timber.d("FirebaseMessaging token: $it")
         }
 
         installSplashScreen().apply {
@@ -241,7 +233,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val updateState = NetworkModule.requireUpdateState.collectAsState()
             val tokenInvalidState = NetworkModule.requireTokenInvalidRestart.collectAsState()
-            val startDestination = if (landingSkippable.value)
+            val startDestination = if (isAlreadyLoggedIn.value)
                 mainPageRoute
             else
                 landingPageRoute
@@ -260,7 +252,9 @@ class MainActivity : ComponentActivity() {
                 val routes = controller.currentBackStack.value.joinToString("->") {
                     it.destination.route ?: "START"
                 }
-                Timber.e(routes + "->${destination.route ?: "END"}")
+                val routeString = "${routes}->${destination.route ?: "END"}"
+
+                Timber.d("[NavRoute] $routeString")
             }
 
             LaunchedEffect(updateState.value) {

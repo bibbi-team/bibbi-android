@@ -21,7 +21,6 @@ class MemberCacheProvider @Inject constructor(
         .build(object : CacheLoader<String, Member>() {
             override fun load(key: String): Member {
                 return runBlocking {
-                    Timber.d("Invoking member cache load : ${key} in thread ${Thread.currentThread().name}")
                     restApi.getMemberApi().getMember(key).wrapToAPIResponse().data
                 }
             }

@@ -14,6 +14,6 @@ abstract class BaseRepository<T> {
     abstract fun fetch(arguments: Arguments): Flow<T>
 
     open fun closeResources() {
-        Timber.d("closeResources")
+        //Timber.d("[BaseRepository] closeResources")
     }
 }

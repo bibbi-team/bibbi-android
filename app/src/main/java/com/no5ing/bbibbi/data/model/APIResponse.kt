@@ -61,6 +61,11 @@ class APIResponse<T : Any>(
             data = null,
         )
 
+        inline fun <reified T : Any> success(data: T) = APIResponse<T>(
+            status = Status.SUCCESS,
+            data = data,
+        )
+
         inline fun <reified T : Any> errorOfOther(
             otherResponse: ApiResponse.Failure.Error
         ): APIResponse<T> {

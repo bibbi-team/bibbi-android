@@ -68,9 +68,9 @@ fun LoginPage(
     }
     val onKakaoFailed: (Boolean) -> Unit = { isCancelled ->
         if (isCancelled) {
-            Timber.e("Cancelled")
+            Timber.d("[LoginPage] Kakao Login Cancelled by user")
         } else {
-            Timber.e("Failed")
+            Timber.e("[LoginPage] Kakao Login Failed")
         }
     }
     val startForResult =
@@ -87,7 +87,7 @@ fun LoginPage(
                         ))
                     )
                 } catch (e: ApiException) {
-                    Timber.e("${e.status}")
+                    Timber.e("[LoginPage] Google Login Failed", e)
                 }
             }
         }
@@ -95,7 +95,7 @@ fun LoginPage(
 
     BackToExitHandler()
     LaunchedEffect(loginPageState.uiState.value) {
-        Timber.e("Changed State : ${loginPageState.uiState.value}")
+        Timber.d("[LoginPage] uiState = ${loginPageState.uiState.value}")
         when (loginPageState.uiState.value) {
             LoginStatus.REJECTED -> {
 

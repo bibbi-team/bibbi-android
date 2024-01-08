@@ -17,7 +17,7 @@ import javax.inject.Singleton
 @Singleton
 abstract class BaseViewModel<T> : ViewModel() {
     init {
-        super.addCloseable(::release)
+        super.addCloseable(::releaseInternal)
         Timber.d("[InitViewModel] $this")
     }
 
@@ -48,7 +48,7 @@ abstract class BaseViewModel<T> : ViewModel() {
         block: suspend () -> Unit
     ) {
         if (!condition) {
-            Timber.e("Scope Condition Mismatch!!!")
+            Timber.e("[BaseViewModel] invoke condition failed : ${this}")
             return
         }
         viewModelScope.launch(dispatcher) {
@@ -60,7 +60,11 @@ abstract class BaseViewModel<T> : ViewModel() {
 
     abstract fun invoke(arguments: Arguments)
 
+    private fun releaseInternal() {
+        Timber.d("[ReleaseViewModel] $this")
+        this.release()
+    }
+
     open fun release() {
-        Timber.d("release")
     }
 }

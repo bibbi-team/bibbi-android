@@ -66,7 +66,7 @@ fun MainCalendarPage(
     val uiState = calendarMonthViewModel.uiState.collectAsState()
 
     LaunchedEffect(currentCalendarState.monthState.currentMonth) {
-        Timber.d("CHANGED MONTH!!")
+        Timber.d("[MainCalendarPage] Changed month!")
         calendarMonthViewModel.invoke(
             Arguments(
                 arguments = mapOf("yearMonth" to currentCalendarState.monthState.currentMonth.toString()),

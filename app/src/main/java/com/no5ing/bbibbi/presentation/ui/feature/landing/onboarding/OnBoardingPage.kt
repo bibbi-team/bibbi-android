@@ -53,7 +53,7 @@ fun OnBoardingPage(
         rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS) { isAccepted ->
             if (!isAccepted) {
                 //먼가 메세지 띄우나?
-                Timber.d("Not Accepted!!")
+                Timber.d("[OnBoarding] Noti Perm Not Accepted!!")
             }
             familyRegistrationViewModel.invoke(Arguments())
         }
@@ -64,12 +64,10 @@ fun OnBoardingPage(
     LaunchedEffect(registrationState.value) {
         when (registrationState.value.status) {
             is APIResponse.Status.SUCCESS -> {
-                Timber.d("Success")
                 onDispose()
             }
 
             is APIResponse.Status.ERROR -> {
-                Timber.d("Fail")
                 val errMessage = resources.getErrorMessage(registrationState.value.errorCode)
                 snackBarHost.showSnackBarWithDismiss(
                     message = errMessage,

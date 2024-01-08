@@ -29,7 +29,6 @@ class CalendarDetailContentViewModel @Inject constructor(
     override fun invoke(arguments: Arguments) {
         val left = arguments.get("left")
         val right = arguments.get("right")
-        Timber.d("left: $left, right: $right")
         viewModelScope.launch(Dispatchers.IO) {
             val resId = arguments.resourceId ?: throw RuntimeException()
             val mainPost = async {

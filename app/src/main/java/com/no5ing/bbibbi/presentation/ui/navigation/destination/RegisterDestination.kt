@@ -51,7 +51,6 @@ object RegisterProfileImageDestination : NavigationDestination(
         val imgState = remember { mutableStateOf<Uri?>(null) }
         val imgUrl = backStackEntry.savedStateHandle.remove<Uri?>("imageUrl")
         if (imgUrl != null) {
-            Timber.d("Img state updated")
             imgState.value = imgUrl
         }
 

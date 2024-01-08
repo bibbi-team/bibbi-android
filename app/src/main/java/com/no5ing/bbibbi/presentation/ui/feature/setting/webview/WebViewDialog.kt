@@ -34,7 +34,6 @@ fun WebViewPage(
                         object {
                             @android.webkit.JavascriptInterface
                             fun goBack() {
-                                Timber.d("okh")
                                 scope.launch {
                                     onDispose()
                                 }

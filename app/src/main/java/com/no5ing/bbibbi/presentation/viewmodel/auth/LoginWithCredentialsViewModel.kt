@@ -40,7 +40,6 @@ class LoginWithCredentialsViewModel @Inject constructor(
                 )
             )
             authResult.suspendOnSuccess {
-                Timber.d("Oh success!!")
                 val authToken = body
                 localDataStorage.setAuthTokens(authToken)
                 if (body.isTemporaryToken) {

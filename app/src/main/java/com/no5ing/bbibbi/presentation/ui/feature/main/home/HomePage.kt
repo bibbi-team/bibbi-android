@@ -39,7 +39,6 @@ fun HomePage(
     val meUploadedState = isMeUploadedTodayViewModel.uiState.collectAsState()
     BackToExitHandler()
     LaunchedEffect(Unit) {
-        Timber.d("HomePage LaunchedEffect")
         isMeUploadedTodayViewModel.invoke(Arguments())
         retrieveMeViewModel.invoke(Arguments())
     }

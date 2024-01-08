@@ -43,18 +43,18 @@ class LocalDataStorage @Inject constructor(val context: Context) {
     }
 
     fun login(member: Member, authToken: AuthResult) {
-        Timber.e("LocalDataSource - Login")
+        Timber.d("[LocalDataSource] logged in with ${member.memberId}")
         setAuthTokens(authToken)
         setMe(member)
     }
 
     fun logOut() {
-        Timber.e("LocalDataSource - Log out")
+        Timber.d("[LocalDataSource] logged out")
         clearPreference()
     }
 
     private fun clearPreference() {
-        Timber.d("Clear preference")
+        Timber.d("[LocalDataSource] clear internal preferences")
         val editor = preferences.edit()
 
         editor.remove(AUTH_RESULT_KEY)

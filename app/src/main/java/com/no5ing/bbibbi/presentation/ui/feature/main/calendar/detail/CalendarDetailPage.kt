@@ -95,7 +95,7 @@ fun CalendarDetailPage(
         mutableStateOf(CalenderDetailContentUiState(null, null, null))
     }
     val currentCalendarState = remember {
-        WeekCalendarState<DynamicSelectionState>(
+        WeekCalendarState(
             weekState = WeekState(
                 initialWeek = Week(initialDay.weekDates()),
             ),
@@ -103,7 +103,6 @@ fun CalendarDetailPage(
                 selectionMode = SelectionMode.Single,
                 selection = listOf(initialDay),
                 confirmSelectionChange = {
-                    Timber.d("YOU SELECTED!")
                     val selection = it.firstOrNull() ?: return@DynamicSelectionState false
                     uiState.value.containsKey(selection)
                 }
@@ -112,7 +111,7 @@ fun CalendarDetailPage(
     }
 
     LaunchedEffect(currentCalendarState.weekState.currentWeek) {
-        Timber.d("CHANGED WEEK!!")
+        Timber.d("[CalendarDetailPage] Changed week!")
         val start = currentCalendarState.weekState.currentWeek.start
         calendarWeekViewModel.invoke(
             Arguments(
@@ -132,8 +131,7 @@ fun CalendarDetailPage(
         val left = uiStateList.getOrNull(centerIdx - 1)
         val right = uiStateList.getOrNull(centerIdx + 1)
 
-        Timber.e("Loaded Pager State")
-        Timber.d("idx = $centerIdx")
+        Timber.d("[CalendarDetailPage] Invoking detail content with idx = $centerIdx")
         calendarDetailContentViewModel.invoke(
             Arguments(
                 resourceId = uiValue.representativePostId,
@@ -143,23 +141,13 @@ fun CalendarDetailPage(
                 )
             )
         )
-
-
-//        familyPostViewModel.invoke(
-//            Arguments(
-//                resourceId = postId,
-//            )
-//        )
     }
 
     LaunchedEffect(calendarDetailState.value) {
         val actualValue = calendarDetailState.value
         if(actualValue.isReady()) {
-            Timber.e("Recalculated Pager State")
+            Timber.d("[CalendarDetailPage] hasLeft = ${actualValue.data.first != null}, hasRight = ${actualValue.data.third != null}")
             currentPostState.value = actualValue.data
-            Timber.d("hasLeft = ${actualValue.data.first != null}")
-            Timber.d("hasRight = ${actualValue.data.third != null}")
-           // scrollEnabled.value = true
             pagerState.scrollToPage(1)
             calendarDetailContentViewModel.resetState()
             scrollEnabled.value = true
@@ -169,10 +157,9 @@ fun CalendarDetailPage(
 
     val noMoreItemMessage =   stringResource(id = R.string.no_more_calendar_items)
     LaunchedEffect(pagerState.currentPage) {
-        Timber.d("CurrentPage: ${pagerState.currentPage}")
+        Timber.d("[CalendarDetailPage] CurrentPage: ${pagerState.currentPage}")
         if(pagerState.currentPage != 1) {
             scrollEnabled.value = false
-            Timber.d("Scroll!!")
             val item = when(pagerState.currentPage) {
                 0 -> currentPostState.value.first
                 2 -> currentPostState.value.third
@@ -180,7 +167,7 @@ fun CalendarDetailPage(
             }
             item?.let { newItem ->
                 val newItemDate = newItem.post.createdAt.toLocalDate()
-                Timber.d("New Item Date: $newItemDate")
+                Timber.d("[CalendarDetailPage] New Item Date: $newItemDate")
                 currentCalendarState.selectionState.onDateSelected(newItemDate)
                 currentCalendarState.weekState.currentWeek = Week(newItemDate.weekDates())
             } ?: Unit.apply {
@@ -190,10 +177,8 @@ fun CalendarDetailPage(
                 )
                 coroutineScope.launch {
                     delay(50L)
-                    Timber.d("Going first page!!")
                     pagerState.animateScrollToPage(1)
                     scrollEnabled.value = true
-                    Timber.d("Going fidrst page!!")
 
                 }
 

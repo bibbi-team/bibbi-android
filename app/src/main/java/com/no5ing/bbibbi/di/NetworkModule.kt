@@ -47,6 +47,7 @@ object NetworkModule {
         localDataStorage: LocalDataStorage,
     ): Interceptor = Interceptor {
         val request = it.request()
+        val start = System.currentTimeMillis()
         val modifiedRequest = with(request) {
             val builder = newBuilder()
             val currentToken = localDataStorage.getAuthTokens()
@@ -70,6 +71,8 @@ object NetworkModule {
         }
 
         val response = it.proceed(modifiedRequest)
+        val elapsed = System.currentTimeMillis() - start
+        Timber.d("[NetworkModule] ${request.method} ${request.url} ${response.code} ${elapsed}ms")
         if(response.code == 426) {
             requireUpdateState.value = true
         }
@@ -85,7 +88,7 @@ object NetworkModule {
         val authenticatorClient = createOkHttpClient(null, null)
         return Authenticator { route, response ->
             if (response.code == 401) {
-                Timber.d("Refresh tokens with Authenticator")
+                Timber.d("[NetworkModule] Refresh tokens with Authenticator")
                 val previousToken = localDataStorage.getAuthTokens() ?: return@Authenticator null
                 val refreshRequest = Request.Builder()
                     .url(BuildConfig.apiBaseUrl + "v1/auth/refresh")
@@ -133,11 +136,11 @@ object NetworkModule {
         val client = OkHttpClient.Builder()
         if (authenticator != null) client.authenticator(authenticator)
         if (interceptor != null) client.addInterceptor(interceptor)
-        val httpLoggingInterceptor =
-            HttpLoggingInterceptor { message -> Timber.d("%s", message) }
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+//        val httpLoggingInterceptor =
+//            HttpLoggingInterceptor { message -> Timber.d("%s", message) }
+//        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
         return client
-            .addInterceptor(httpLoggingInterceptor)
+           // .addInterceptor(httpLoggingInterceptor)
             .connectTimeout(timeout_connect, TimeUnit.SECONDS)
             .readTimeout(timeout_read, TimeUnit.SECONDS)
             .writeTimeout(timeout_write, TimeUnit.SECONDS)
