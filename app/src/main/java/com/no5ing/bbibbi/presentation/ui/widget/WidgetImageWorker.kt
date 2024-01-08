@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
 import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.glance.GlanceId
@@ -92,17 +91,18 @@ class WidgetImageWorker(
             withContext(Dispatchers.IO) {
                 fetchDetails()
             }.use { apiResult ->
-                if(apiResult.isSuccessful) {
-                    if(apiResult.code == 200) {
+                if (apiResult.isSuccessful) {
+                    if (apiResult.code == 200) {
                         val newToken = apiResult.body!!.string()
                         val newWidget = Gson().fromJson(newToken, WidgetResult::class.java)
                         updateImageWidget { prefs ->
                             prefs[AppWidget.resultKey] = AppWidget.WIDGET_SUCCESS
                             prefs[AppWidget.imageKey] = loadImage(newWidget.postImageUrl, force)
                             prefs[AppWidget.postContentKey] = newWidget.postContent
-                            prefs[AppWidget.profileImageKey] = loadImage(newWidget.profileImageUrl, force)
+                            prefs[AppWidget.profileImageKey] =
+                                loadImage(newWidget.profileImageUrl, force)
                         }
-                    } else if(apiResult.code == 204) {
+                    } else if (apiResult.code == 204) {
                         updateImageWidget { prefs ->
                             prefs[AppWidget.resultKey] = AppWidget.WIDGET_NO_RESULT
                         }
@@ -158,7 +158,7 @@ class WidgetImageWorker(
         }
 
         // Get the path of the loaded image from DiskCache.
-        val path = context.imageLoader.diskCache?.get(imageUrl)?.use { snapshot ->
+        val path = context.imageLoader.diskCache?.openSnapshot(imageUrl)?.use { snapshot ->
             val imageFile = snapshot.data.toFile()
 
             // Use the FileProvider to create a content URI
@@ -190,7 +190,7 @@ class WidgetImageWorker(
         }
     }
 
-    private suspend fun fetchDetails(): Response {
+    private fun fetchDetails(): Response {
         val client = createOkHttpClient()
         val widgetRequest = Request.Builder()
             .url(BuildConfig.apiBaseUrl + "v1/widgets/single-recent-family-post")
@@ -208,7 +208,7 @@ class WidgetImageWorker(
             .build()
     }
 
-    private fun createInterceptor(): Interceptor = Interceptor  {
+    private fun createInterceptor(): Interceptor = Interceptor {
         val request = it.request()
         val localDataStorage = LocalDataStorage(context)
         val modifiedRequest = with(request) {

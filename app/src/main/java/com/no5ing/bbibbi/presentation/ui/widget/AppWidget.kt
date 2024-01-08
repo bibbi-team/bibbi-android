@@ -23,7 +23,6 @@ import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.LocalGlanceId
 import androidx.glance.LocalSize
-import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.CircularProgressIndicator
@@ -31,11 +30,8 @@ import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.ImageProvider
 import androidx.glance.appwidget.SizeMode
-import androidx.glance.appwidget.action.ActionCallback
-import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
-import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
@@ -61,7 +57,7 @@ import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 import java.time.Duration
 
-class AppWidget: GlanceAppWidget() {
+class AppWidget : GlanceAppWidget() {
     companion object {
         const val WIDGET_UNAUTHENTICATED = "unauthenticated"
         const val WIDGET_SUCCESS = "success"
@@ -120,10 +116,11 @@ class AppWidget: GlanceAppWidget() {
                     .background(Color(0xFF262626))
                     .clickable(actionStartActivity<MainActivity>())
             ) {
-                when(result) {
+                when (result) {
                     WIDGET_SUCCESS -> {
                         ImagePreviewBox(size)
                     }
+
                     WIDGET_LOADING -> {
                         Box(
                             modifier = GlanceModifier.fillMaxSize(),
@@ -134,6 +131,7 @@ class AppWidget: GlanceAppWidget() {
                             )
                         }
                     }
+
                     null -> {
                         //INITIAL
                         val context = LocalContext.current
@@ -150,6 +148,7 @@ class AppWidget: GlanceAppWidget() {
                             )
                         }
                     }
+
                     else -> {
                         EmptyBox(size)
                     }
@@ -178,13 +177,13 @@ class AppWidget: GlanceAppWidget() {
             Box(
                 modifier = GlanceModifier
                     .fillMaxSize()
-            ){
+            ) {
                 Image(
                     provider = getImageProvider(postImagePath),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = GlanceModifier.fillMaxSize()
-                      //  .clickable(actionRunCallback<RefreshAction>())
+                    //  .clickable(actionRunCallback<RefreshAction>())
                 )
             }
             Box(
@@ -285,7 +284,7 @@ class AppWidget: GlanceAppWidget() {
         ) {
             Column(
                 modifier = GlanceModifier.fillMaxSize()
-            ){
+            ) {
                 val evaluatedFontSize = autoSizeFont(
                     "생존신고 할 시간!",
                     size.width.value.toPx.toInt() - 32.dp.value.toPx.toInt(),
@@ -321,26 +320,29 @@ fun autoSizeFont(text: String, availableWidthInPx: Int, fontSize: Float = 30.0F)
 
     val scale = Resources.getSystem().configuration.fontScale
 
-    while(true)
-    {
-        paint.textSize = (fontSizeReturn * Resources.getSystem().displayMetrics.density) //Try fontsize as sp
+    while (true) {
+        paint.textSize =
+            (fontSizeReturn * Resources.getSystem().displayMetrics.density) //Try fontsize as sp
         paint.getTextBounds(text, 0, text.length, bounds) //In pixels
-        if(availableWidthInPx >= bounds.width())
-        {
+        if (availableWidthInPx >= bounds.width()) {
             fontSizeReturn /= scale //Remove scalefactor before returning fontSize
             return fontSizeReturn.sp
-        }
-        else
-        {
+        } else {
             fontSizeReturn *= 0.95F //Did not fit, try 5% off
         }
-        if(fontSizeReturn <= 1.0F) break
+        if (fontSizeReturn <= 1.0F) break
     }
 
     return TextUnit.Unspecified
 }
 
-fun autoSizeBox(text: String, availableWidthInPx: Int, fontSize: Float = 30.0F, itemPadding: Int, textPadding: Int): TextUnit {
+fun autoSizeBox(
+    text: String,
+    availableWidthInPx: Int,
+    fontSize: Float = 30.0F,
+    itemPadding: Int,
+    textPadding: Int
+): TextUnit {
     val bounds = Rect()
     val paint = TextPaint()
     var fontSizeReturn = fontSize
@@ -350,20 +352,17 @@ fun autoSizeBox(text: String, availableWidthInPx: Int, fontSize: Float = 30.0F, 
     val textPaddingTotal = text.length * (textPadding * 2)
     val paddingTotal = itemPaddingTotal + textPaddingTotal
 
-    while(true)
-    {
-        paint.textSize = (fontSizeReturn * Resources.getSystem().displayMetrics.density) //Try fontsize as sp
+    while (true) {
+        paint.textSize =
+            (fontSizeReturn * Resources.getSystem().displayMetrics.density) //Try fontsize as sp
         paint.getTextBounds(text, 0, text.length, bounds) //In pixels
-        if(availableWidthInPx >= bounds.width() + paddingTotal)
-        {
+        if (availableWidthInPx >= bounds.width() + paddingTotal) {
             fontSizeReturn /= scale //Remove scalefactor before returning fontSize
             return fontSizeReturn.sp
-        }
-        else
-        {
+        } else {
             fontSizeReturn *= 0.95F //Did not fit, try 5% off
         }
-        if(fontSizeReturn <= 1.0F) break
+        if (fontSizeReturn <= 1.0F) break
     }
 
     return TextUnit.Unspecified

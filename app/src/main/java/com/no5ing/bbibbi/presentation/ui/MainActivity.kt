@@ -148,7 +148,8 @@ class MainActivity : ComponentActivity() {
                     }
                     Timber.d("Install referrer: $response")
                 }
-            } catch (_: Exception) { }
+            } catch (_: Exception) {
+            }
         }
         if (localDataStorage.getAuthTokens() != null) {
             val fcm = FirebaseMessaging.getInstance().token.await()
@@ -189,7 +190,7 @@ class MainActivity : ComponentActivity() {
             override fun onInstallReferrerServiceDisconnected() {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
-              //  it.resume(null)
+                //  it.resume(null)
             }
         })
     }

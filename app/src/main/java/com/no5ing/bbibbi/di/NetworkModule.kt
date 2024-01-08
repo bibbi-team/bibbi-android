@@ -17,6 +17,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.MutableStateFlow
 import okhttp3.Authenticator
+import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -89,8 +90,17 @@ object NetworkModule {
             if (response.code == 401) {
                 Timber.d("[NetworkModule] Refresh tokens with Authenticator")
                 val previousToken = localDataStorage.getAuthTokens() ?: return@Authenticator null
+                val headers = Headers.headersOf(
+                    "Accept", "application/json",
+                    "X-APP-KEY", BuildConfig.appKey,
+                    "X-APP-VERSION", BuildConfig.VERSION_NAME,
+                    "X-AUTH-TOKEN", previousToken.accessToken,
+                    "X-USER-PLATFORM", "AOS",
+                    "X-USER-ID", localDataStorage.getMe()?.memberId ?: "WIDGET",
+                )
                 val refreshRequest = Request.Builder()
                     .url(BuildConfig.apiBaseUrl + "v1/auth/refresh")
+                    .headers(headers)
                     .post(
                         "{\"refreshToken\": \"${previousToken.refreshToken}\"}"
                             .toRequestBody("application/json".toMediaType())
