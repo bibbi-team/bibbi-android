@@ -184,15 +184,13 @@ fun CalendarDetailPage(
                 currentCalendarState.selectionState.onDateSelected(newItemDate)
                 currentCalendarState.weekState.currentWeek = Week(newItemDate.weekDates())
             } ?: Unit.apply {
+                snackBarState.showSnackBarWithDismiss(
+                    noMoreItemMessage,
+                    snackBarWarning
+                )
                 coroutineScope.launch {
                     delay(50L)
                     Timber.d("Going first page!!")
-                    launch {
-                        snackBarState.showSnackBarWithDismiss(
-                            noMoreItemMessage,
-                            snackBarWarning
-                        )
-                    }
                     pagerState.animateScrollToPage(1)
                     scrollEnabled.value = true
                     Timber.d("Going fidrst page!!")

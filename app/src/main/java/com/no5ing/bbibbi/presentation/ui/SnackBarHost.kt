@@ -28,6 +28,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.ui.theme.warningRed
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun CustomSnackBarHost(
@@ -95,15 +98,17 @@ fun SnackbarHostState.dismissIfShown() {
     }
 }
 
-suspend fun SnackbarHostState.showSnackBarWithDismiss(
+fun SnackbarHostState.showSnackBarWithDismiss(
     message: String,
     actionLabel: String,
     duration: SnackbarDuration = SnackbarDuration.Short
 ) {
-    dismissIfShown()
-    showSnackbar(
-        message = message,
-        actionLabel = actionLabel,
-        duration = duration
-    )
+    CoroutineScope(Dispatchers.Main).launch {
+        dismissIfShown()
+        showSnackbar(
+            message = message,
+            actionLabel = actionLabel,
+            duration = duration
+        )
+    }
 }
