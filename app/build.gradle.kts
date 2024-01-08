@@ -135,4 +135,8 @@ dependencies {
     implementation("io.github.boguszpawlowski.composecalendar:composecalendar:1.1.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.android.installreferrer:installreferrer:2.2")
+
+    implementation("androidx.glance:glance-appwidget:1.0.0")
+    implementation("androidx.glance:glance-material3:1.0.0")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 }

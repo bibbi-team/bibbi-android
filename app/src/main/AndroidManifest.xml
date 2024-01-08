@@ -4,8 +4,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature android:name="android.hardware.camera.any" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.HOME" />
+        </intent>
+    </queries>
 
     <application
         android:name=".BBiBBiApplication"
@@ -71,7 +77,27 @@
             </intent-filter>
         </service>
 
+        <receiver android:name=".WidgetReceiver"
+            android:label="@string/widget_name"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+
         <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="bbibbi_channel" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.no5ing.bbibbi.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/image_paths" />
+        </provider>
     </application>
 
 </manifest>

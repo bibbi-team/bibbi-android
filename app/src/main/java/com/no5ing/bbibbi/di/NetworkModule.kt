@@ -97,18 +97,19 @@ object NetworkModule {
                     )
                     .build()
                 kotlin.runCatching {
-                    val refreshResponse = authenticatorClient.newCall(refreshRequest).execute()
-                    if (refreshResponse.isSuccessful) {
-                        val newToken = refreshResponse.body!!.string()
-                        val newTokenObject = Gson().fromJson(newToken, AuthResult::class.java)
+                    authenticatorClient.newCall(refreshRequest).execute().use { refreshResponse ->
+                        if (refreshResponse.isSuccessful) {
+                            val newToken = refreshResponse.body!!.string()
+                            val newTokenObject = Gson().fromJson(newToken, AuthResult::class.java)
 
-                        localDataStorage.setAuthTokens(newTokenObject)
-                        return@Authenticator response.request
-                            .newBuilder()
-                            .removeHeader("X-AUTH-TOKEN")
-                            .addHeader("X-AUTH-TOKEN", newTokenObject.accessToken)
-                            .build()
-                    } else throw RuntimeException()
+                            localDataStorage.setAuthTokens(newTokenObject)
+                            return@Authenticator response.request
+                                .newBuilder()
+                                .removeHeader("X-AUTH-TOKEN")
+                                .addHeader("X-AUTH-TOKEN", newTokenObject.accessToken)
+                                .build()
+                        } else throw RuntimeException()
+                    }
                 }.onFailure {
                     localDataStorage.logOut()
                     requireTokenInvalidRestart.value = true

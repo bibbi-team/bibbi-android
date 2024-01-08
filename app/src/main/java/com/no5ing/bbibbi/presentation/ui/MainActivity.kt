@@ -148,10 +148,8 @@ class MainActivity : ComponentActivity() {
                     }
                     Timber.d("Install referrer: $response")
                 }
-            } catch (e: Exception) {
-            }
+            } catch (_: Exception) { }
         }
-        //TODO: CHECK VERSION FIRST
         if (localDataStorage.getAuthTokens() != null) {
             val fcm = FirebaseMessaging.getInstance().token.await()
             restAPI.getMemberApi().getMeInfo().suspendOnSuccess {
@@ -166,9 +164,6 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 landingSkippable = isValidUser
-            }.suspendOnFailure {
-                //TODO: SOME operation?
-                localDataStorage.logOut()
             }
         }
         return landingSkippable
@@ -194,7 +189,7 @@ class MainActivity : ComponentActivity() {
             override fun onInstallReferrerServiceDisconnected() {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
-                it.resume(null)
+              //  it.resume(null)
             }
         })
     }
