@@ -28,8 +28,13 @@ class LoginWithCredentialsViewModel @Inject constructor(
     override fun invoke(arguments: Arguments) {
         setState(LoginStatus.REQUESTED)
         val authKey = arguments.get("authKey") ?: throw RuntimeException()
-        viewModelScope.launch(Dispatchers.IO) {
-            val authResult = restAPI.getAuthApi().kakaoLogin(
+        val provider = arguments.get("provider") ?: throw RuntimeException()
+        withMutexScope(Dispatchers.IO) {
+            val authResult = if(provider == "kakao") restAPI.getAuthApi().kakaoLogin(
+                SocialLoginRequest(
+                    accessToken = authKey,
+                )
+            ) else restAPI.getAuthApi().googleLogin(
                 SocialLoginRequest(
                     accessToken = authKey,
                 )

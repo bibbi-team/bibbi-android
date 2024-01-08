@@ -180,6 +180,11 @@ interface RestAPI {
             @Body body: SocialLoginRequest,
         ): ApiResponse<AuthResult>
 
+        @POST("v1/auth/social/google")
+        suspend fun googleLogin(
+            @Body body: SocialLoginRequest,
+        ): ApiResponse<AuthResult>
+
         @POST("v1/auth/force-token")
         suspend fun temporaryLogin(
             @Query("memberId") memberId: String,

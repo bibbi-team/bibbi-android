@@ -60,7 +60,10 @@ fun LoginPage(
     val context = LocalContext.current
     val onKakaoSuccess: (String) -> Unit = {
         loginViewModel.invoke(
-            Arguments(arguments = mapOf("authKey" to it))
+            Arguments(arguments = mapOf(
+                "authKey" to it,
+                "provider" to "kakao"
+            ))
         )
     }
     val onKakaoFailed: (Boolean) -> Unit = { isCancelled ->
@@ -75,8 +78,14 @@ fun LoginPage(
             val signInResult = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             signInResult.addOnCompleteListener {
                 try {
-                    val result = it.getResult(ApiException::class.java)
-                    result.idToken?.let { it1 -> Timber.e("idt ${it1}") }
+                    val authResult = it.getResult(ApiException::class.java)
+                    val idToken = authResult.idToken?: return@addOnCompleteListener
+                    loginViewModel.invoke(
+                        Arguments(arguments = mapOf(
+                            "authKey" to idToken,
+                            "provider" to "google"
+                        ))
+                    )
                 } catch (e: ApiException) {
                     Timber.e("${e.status}")
                 }
