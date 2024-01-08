@@ -1,13 +1,9 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.calendar.detail
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,13 +14,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,13 +43,12 @@ import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.feature.main.calendar.MainCalendarDay
 import com.no5ing.bbibbi.presentation.ui.feature.post.view.PostViewContent
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarDetailContentViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarWeekViewModel
-import com.no5ing.bbibbi.presentation.viewmodel.post.FamilyPostViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.post.CalenderDetailContentUiState
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
-import com.no5ing.bbibbi.util.toYearMonth
 import com.no5ing.bbibbi.util.weekDates
-import com.no5ing.bbibbi.util.weekOfMonth
 import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
 import io.github.boguszpawlowski.composecalendar.WeekCalendarState
 import io.github.boguszpawlowski.composecalendar.header.WeekState
@@ -60,19 +58,32 @@ import io.github.boguszpawlowski.composecalendar.week.Week
 import timber.log.Timber
 import java.time.LocalDate
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CalendarDetailPage(
     initialDay: LocalDate,
     onDispose: () -> Unit,
     onTapProfile: (Member) -> Unit,
-    familyPostViewModel: FamilyPostViewModel = hiltViewModel(),
+    //familyPostViewModel: FamilyPostViewModel = hiltViewModel(),
+    calendarDetailContentViewModel: CalendarDetailContentViewModel = hiltViewModel(),
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
     calendarWeekViewModel: CalendarWeekViewModel = hiltViewModel(),
 ) {
-    val postState = familyPostViewModel.uiState.collectAsState()
+   // val postState = familyPostViewModel.uiState.collectAsState()
     val uiState = calendarWeekViewModel.uiState.collectAsState()
+    val pagerState = rememberPagerState(
+        pageCount = {3},
+        initialPage = 1,
+    )
+    val scrollEnabled = remember {
+        mutableStateOf(true)
+    }
+    val calendarDetailState = calendarDetailContentViewModel.uiState.collectAsState()
+    val currentPostState = remember {
+        mutableStateOf(CalenderDetailContentUiState(null, null, null))
+    }
     val currentCalendarState = remember {
         WeekCalendarState<DynamicSelectionState>(
             weekState = WeekState(
@@ -93,64 +104,92 @@ fun CalendarDetailPage(
     LaunchedEffect(currentCalendarState.weekState.currentWeek) {
         Timber.d("CHANGED WEEK!!")
         val start = currentCalendarState.weekState.currentWeek.start
-        val startBefore = start.minusWeeks(1L)
-        val startNext = start.plusWeeks(1L)
         calendarWeekViewModel.invoke(
             Arguments(
                 arguments = mapOf(
-                    "yearMonth" to start.toYearMonth().toString(),
-                    "week" to start.weekOfMonth().toString(),
+                    "date" to start.toString(),
                 ),
             )
         )
-        if (start.toYearMonth() != startBefore.toYearMonth()
-            || start.weekOfMonth() != startBefore.weekOfMonth()
-        ) {
-            calendarWeekViewModel.invoke(
-                Arguments(
-                    arguments = mapOf(
-                        "yearMonth" to startBefore.toYearMonth().toString(),
-                        "week" to startBefore.weekOfMonth().toString(),
-                    ),
-                )
-            )
-        }
-        if (start.toYearMonth() != startNext.toYearMonth()
-            || start.weekOfMonth() != startNext.weekOfMonth()
-        ) {
-            calendarWeekViewModel.invoke(
-                Arguments(
-                    arguments = mapOf(
-                        "yearMonth" to startNext.toYearMonth().toString(),
-                        "week" to startNext.weekOfMonth().toString(),
-                    ),
-                )
-            )
-        }
     }
 
     val currentSelection = currentCalendarState.selectionState.selection.first()
     LaunchedEffect(uiState.value[currentSelection], currentSelection) {
+        val uiValue = uiState.value[currentSelection] ?: return@LaunchedEffect
+        val uiStateList = uiState.value.toList()
+        val centerIdx = uiStateList.indexOf(currentSelection to uiValue)
 
-        val postId = uiState.value[currentSelection]?.representativePostId ?: return@LaunchedEffect
-        familyPostViewModel.invoke(
+        val left = uiStateList.getOrNull(centerIdx - 1)
+        val right = uiStateList.getOrNull(centerIdx + 1)
+
+        Timber.e("Loaded Pager State")
+        Timber.d("idx = $centerIdx")
+        calendarDetailContentViewModel.invoke(
             Arguments(
-                resourceId = postId,
+                resourceId = uiValue.representativePostId,
+                arguments = mapOf(
+                    "left" to left?.second?.representativePostId,
+                    "right" to right?.second?.representativePostId,
+                )
             )
         )
+
+
+//        familyPostViewModel.invoke(
+//            Arguments(
+//                resourceId = postId,
+//            )
+//        )
+    }
+
+    LaunchedEffect(calendarDetailState.value) {
+        val actualValue = calendarDetailState.value
+        if(actualValue.isReady()) {
+            Timber.e("Recalculated Pager State")
+            currentPostState.value = actualValue.data
+            Timber.d("hasLeft = ${actualValue.data.first != null}")
+            Timber.d("hasRight = ${actualValue.data.third != null}")
+           // scrollEnabled.value = true
+            pagerState.scrollToPage(1)
+            calendarDetailContentViewModel.resetState()
+            scrollEnabled.value = true
+
+        }
+    }
+
+    LaunchedEffect(pagerState.currentPage) {
+        Timber.d("CurrentPage: ${pagerState.currentPage}")
+        if(pagerState.currentPage != 1) {
+            Timber.d("Scroll!!")
+            val item = when(pagerState.currentPage) {
+                0 -> currentPostState.value.first
+                2 -> currentPostState.value.third
+                else -> null
+            }
+            scrollEnabled.value = false
+            item?.let { newItem ->
+                val newItemDate = newItem.post.createdAt.toLocalDate()
+                Timber.d("New Item Date: $newItemDate")
+                currentCalendarState.selectionState.onDateSelected(newItemDate)
+                currentCalendarState.weekState.currentWeek = Week(newItemDate.weekDates())
+            }
+
+        }
+
     }
     val yearStr = stringResource(id = R.string.year)
     val monthStr = stringResource(id = R.string.month)
     val currentYearMonth = currentCalendarState.weekState.currentWeek.yearMonth
+
     Box(modifier = Modifier.fillMaxSize()) {
         AnimatedVisibility(
-            visible = postState.value.isReady(),
+            visible = currentPostState.value.second != null,
             enter = fadeIn(),
             exit = fadeOut()
         ) {
             Box {
                 AsyncImage(
-                    model = postState.value.data.post.imageUrl,
+                    model = currentPostState.value.second?.post?.imageUrl,
                     contentDescription = null,
                     modifier = Modifier
                         .blur(50.dp)
@@ -183,36 +222,54 @@ fun CalendarDetailPage(
                     weekHeader = {},
                     daysOfWeekHeader = {}
                 )
-                if (postState.value.isReady()) {
-                    AnimatedContent(
-                        targetState = postState.value,
-                        transitionSpec = {
-                            val direction = this.initialState.data.post.createdAt
-                                .isAfter(this.targetState.data.post.createdAt)
-                            (slideInHorizontally { if (direction) -it else it } togetherWith slideOutHorizontally { if (direction) it else -it })
-                                .using(
-                                    SizeTransform(clip = false)
-                                )
-                        }, label = ""
-                    ) {
-                        Column {
+
+
+//                    AnimatedContent(
+//                        targetState = postState.value,
+//                        transitionSpec = {
+//                            val direction = this.initialState.data.post.createdAt
+//                                .isAfter(this.targetState.data.post.createdAt)
+//                            (slideInHorizontally { if (direction) -it else it } togetherWith slideOutHorizontally { if (direction) it else -it })
+//                                .using(
+//                                    SizeTransform(clip = false)
+//                                )
+//                        }, label = ""
+//                    ) {
+
+                    HorizontalPager(
+                        state = pagerState,
+                        userScrollEnabled = scrollEnabled.value,
+                    ) { index ->
+                        val item = when(index) {
+                            0 -> currentPostState.value.first
+                            1 -> currentPostState.value.second
+                            2 -> currentPostState.value.third
+                            else -> null
+                        }
+                        Column(
+                            modifier = Modifier
+                        ) {
                             Spacer(modifier = Modifier.height(12.dp))
-                            PostViewDetailTopBar(
-                                member = it.data.writer,
-                                onTap = {
-                                    onTapProfile(it.data.writer)
-                                }
-                            )
-                            PostViewContent(
-                                post = it.data.post,
-                                familyPostReactionBarViewModel = familyPostReactionBarViewModel,
-                                removePostReactionViewModel = removePostReactionViewModel,
-                                addPostReactionViewModel = addPostReactionViewModel,
-                            )
+                            if (item != null) {
+                                PostViewDetailTopBar(
+                                    member = item.writer,
+                                    onTap = {
+                                        onTapProfile(item.writer)
+                                    }
+                                )
+                                PostViewContent(
+                                    post = item.post,
+                                    familyPostReactionBarViewModel = familyPostReactionBarViewModel,
+                                    removePostReactionViewModel = removePostReactionViewModel,
+                                    addPostReactionViewModel = addPostReactionViewModel,
+                                )
+                            }
                         }
                     }
 
-                }
+                 //   }
+
+
             }
         }
 

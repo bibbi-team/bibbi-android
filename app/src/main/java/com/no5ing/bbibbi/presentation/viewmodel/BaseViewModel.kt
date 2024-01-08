@@ -18,6 +18,7 @@ import javax.inject.Singleton
 abstract class BaseViewModel<T> : ViewModel() {
     init {
         super.addCloseable(::release)
+        Timber.d("[InitViewModel] $this")
     }
 
     private val _uiState = MutableStateFlow<T>(initState())

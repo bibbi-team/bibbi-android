@@ -271,6 +271,7 @@ class MainActivity : ComponentActivity() {
 
             LaunchedEffect(tokenInvalidState.value) {
                 if (tokenInvalidState.value) {
+                    NetworkModule.requireTokenInvalidRestart.value = false
                     openRequireLoginDialog()
                 }
             }

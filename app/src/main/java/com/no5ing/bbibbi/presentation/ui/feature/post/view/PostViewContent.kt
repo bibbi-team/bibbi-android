@@ -30,12 +30,15 @@ import timber.log.Timber
 @Composable
 fun PostViewContent(
     post: Post,
+    modifier: Modifier = Modifier,
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
     addEmojiBarState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
-    Column {
+    Column(
+        modifier = modifier,
+    ) {
         Box {
             Box {
                 AsyncImage(

@@ -1,44 +1,59 @@
 package com.no5ing.bbibbi.presentation.viewmodel.post
 
-import androidx.lifecycle.viewModelScope
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.post.CalendarElement
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
+import com.no5ing.bbibbi.util.toYearMonth
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import timber.log.Timber
 import java.time.LocalDate
+import java.time.YearMonth
+import java.util.TreeMap
 import javax.inject.Inject
 
 @HiltViewModel
 class CalendarWeekViewModel @Inject constructor(
     private val restAPI: RestAPI,
-) : BaseViewModel<Map<LocalDate, CalendarElement>>() {
-    private val mutex = Mutex()
-    override fun initState(): Map<LocalDate, CalendarElement> {
-        return emptyMap()
+) : BaseViewModel<TreeMap<LocalDate, CalendarElement>>() {
+    private val queriedMonths = mutableSetOf<YearMonth>()
+    override fun initState(): TreeMap<LocalDate, CalendarElement> {
+        return TreeMap()
     }
 
     override fun invoke(arguments: Arguments) {
-        val yearMonth = arguments.get("yearMonth") ?: throw RuntimeException()
-        val week = arguments.get("week")?.toIntOrNull() ?: throw RuntimeException()
-        viewModelScope.launch(Dispatchers.IO) {
-            mutex.withLock {
-                val priorMap = uiState.value.toMutableMap()
-                restAPI.getPostApi().getWeeklyCalendar(
-                    yearMonth = yearMonth,
-                    week = week,
-                ).suspendOnSuccess {
-                    data.results.forEach {
-                        val date = LocalDate.parse(it.date)
-                        priorMap[date] = it
-                    }
-                    setState(priorMap)
-                }
+        val targetDate = arguments.get("date") ?: throw RuntimeException()
+        val startDate = LocalDate.parse(targetDate).toYearMonth()
+        val backMonth = startDate.minusMonths(1)
+        val nextMonth = startDate.plusMonths(1)
+
+        Timber.d("Invoke date: $startDate")
+        withMutexScope(Dispatchers.IO) {
+            val priorMap = TreeMap(uiState.value)
+            retrieveAndAppend(backMonth, priorMap)
+            retrieveAndAppend(startDate, priorMap)
+            retrieveAndAppend(nextMonth, priorMap)
+
+
+            Timber.d("joiner => ${priorMap.keys.joinToString("->")}")
+            setState(priorMap)
+        }
+    }
+
+    private suspend fun retrieveAndAppend(
+        yearMonth: YearMonth,
+        priorMap: MutableMap<LocalDate, CalendarElement>
+    ) {
+        if (queriedMonths.contains(yearMonth)) return
+        queriedMonths.add(yearMonth)
+        restAPI.getPostApi().getMonthlyCalendar(
+            yearMonth = yearMonth.toString(),
+        ).suspendOnSuccess {
+            data.results.forEach {
+                val date = LocalDate.parse(it.date)
+                priorMap[date] = it
             }
         }
     }
