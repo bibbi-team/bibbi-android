@@ -132,8 +132,7 @@ fun RegisterProfileImagePage(
                         nickName
                     ),
                     color = MaterialTheme.colorScheme.tertiary,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.headlineMedium,
                     textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(20.dp))

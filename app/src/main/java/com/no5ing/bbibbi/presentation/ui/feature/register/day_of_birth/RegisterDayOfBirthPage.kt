@@ -70,8 +70,7 @@ fun RegisterDayOfBirthPage(
                 Text(
                     text = "안녕하세요 ${nickName}님, 생일이 언제신가요?",
                     color = MaterialTheme.colorScheme.tertiary,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.headlineMedium,
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -136,8 +135,8 @@ fun RegisterDayOfBirthPage(
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(id = R.string.register_dob_correct_date),
-                            fontSize = 16.sp,
                             color = warningRed,
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                     }
                 }
@@ -149,7 +148,7 @@ fun RegisterDayOfBirthPage(
                     text = stringResource(id = R.string.register_dob_description),
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 CTAButton(
                     text = stringResource(id = R.string.register_continue),
@@ -196,9 +195,7 @@ fun DigitizedNumberInput(
             modifier = Modifier
                 .width(IntrinsicSize.Min)
                 .focusRequester(focusRequester),
-            textStyle = TextStyle(
-                fontSize = 36.sp,
-                fontWeight = FontWeight.SemiBold,
+            textStyle = MaterialTheme.typography.titleMedium.copy(
                 color = if (isInvalidInput)
                     warningRed
                 else
@@ -217,8 +214,7 @@ fun DigitizedNumberInput(
                                 Text(
                                     text = "0".repeat(baseDigit),
                                     textAlign = TextAlign.Center,
-                                    fontSize = 36.sp,
-                                    fontWeight = FontWeight.SemiBold,
+                                    style = MaterialTheme.typography.titleMedium,
                                     color = MaterialTheme.colorScheme.surface
                                 )
                             }
@@ -232,8 +228,7 @@ fun DigitizedNumberInput(
         Text(
             modifier = Modifier.clickable { focusRequester.requestFocus() },
             text = digitName,
-            fontSize = 36.sp,
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.titleMedium,
             color = if (value == 0)
                 MaterialTheme.colorScheme.surface
             else if (isInvalidInput)

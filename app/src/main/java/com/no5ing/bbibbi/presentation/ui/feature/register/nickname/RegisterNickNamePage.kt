@@ -72,8 +72,7 @@ fun RegisterNickNamePage(
                 Text(
                     text = stringResource(id = R.string.register_nickname_enter_nickname),
                     color = MaterialTheme.colorScheme.tertiary,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.headlineMedium,
                 )
                 BasicTextField(
                     value = state.nicknameTextState.value,
@@ -106,8 +105,7 @@ fun RegisterNickNamePage(
                                         Text(
                                             text = stringResource(id = R.string.register_nickname_sample_text),
                                             textAlign = TextAlign.Center,
-                                            fontSize = 36.sp,
-                                            fontWeight = FontWeight.SemiBold,
+                                            style = MaterialTheme.typography.titleMedium,
                                         )
                                     }
 
@@ -121,10 +119,8 @@ fun RegisterNickNamePage(
                         0.00f to MaterialTheme.colorScheme.surface,
                         1.00f to MaterialTheme.colorScheme.surface,
                     ),
-                    textStyle = TextStyle(
+                    textStyle = MaterialTheme.typography.titleMedium.copy(
                         textAlign = TextAlign.Center,
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.SemiBold,
                         color = if (state.isInvalidInputState.value)
                             warningRed
                         else
@@ -147,8 +143,8 @@ fun RegisterNickNamePage(
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = state.invalidInputDescState.value,
-                            fontSize = 16.sp,
                             color = warningRed,
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
 
@@ -162,7 +158,7 @@ fun RegisterNickNamePage(
                     text = stringResource(id = R.string.register_nickname_description),
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 CTAButton(
                     text = stringResource(id = R.string.register_continue),
