@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Rect
 import android.text.TextPaint
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
@@ -20,8 +19,6 @@ import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.Image
 import androidx.glance.ImageProvider
-import androidx.glance.LocalContext
-import androidx.glance.LocalGlanceId
 import androidx.glance.LocalSize
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
@@ -134,11 +131,6 @@ class AppWidget : GlanceAppWidget() {
 
                     null -> {
                         //INITIAL
-                        val context = LocalContext.current
-                        val glanceId = LocalGlanceId.current
-                        SideEffect {
-                            WidgetImageWorker.enqueue(context, glanceId, force = true)
-                        }
                         Box(
                             modifier = GlanceModifier.fillMaxSize(),
                             contentAlignment = Alignment.Center

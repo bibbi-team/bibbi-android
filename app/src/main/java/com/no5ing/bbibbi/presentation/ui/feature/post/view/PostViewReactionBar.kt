@@ -32,6 +32,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.ReactionListDialog
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
 import com.no5ing.bbibbi.presentation.viewmodel.members.PostViewReactionMemberViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
@@ -109,7 +111,7 @@ fun PostViewReactionBar(
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(100.dp))
-                        .background(color = MaterialTheme.colorScheme.onBackground)
+                        .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
                         .padding(vertical = 6.dp, horizontal = 8.dp)
                         .clickable { onTapAddEmojiButton() },
                     contentAlignment = Alignment.Center
@@ -117,7 +119,7 @@ fun PostViewReactionBar(
                     Icon(
                         painter = painterResource(id = R.drawable.add_emoji_icon),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.secondary,
+                        tint = MaterialTheme.bbibbiScheme.textPrimary,
                         modifier = Modifier.size(25.dp)
                     )
                 }
@@ -139,11 +141,11 @@ fun PostViewReactionElement(
         modifier = Modifier
             .border(
                 width = if (isMeReacted) 1.dp else 0.dp,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.bbibbiScheme.iconSelected,
                 RoundedCornerShape(100.dp)
             )
             .background(
-                color = if (isMeReacted) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background,
+                color = if (isMeReacted) MaterialTheme.bbibbiScheme.button else MaterialTheme.bbibbiScheme.backgroundPrimary,
                 RoundedCornerShape(100.dp)
             )
             .padding(vertical = 6.dp, horizontal = 8.dp)
@@ -164,9 +166,9 @@ fun PostViewReactionElement(
             )
             Text(
                 text = emojiCnt.toString(),
-                color = if (isMeReacted) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.tertiary,
-                style = MaterialTheme.typography.bodyLarge,
+                color = if (isMeReacted) MaterialTheme.bbibbiScheme.iconSelected
+                else MaterialTheme.bbibbiScheme.textSecondary,
+                style = MaterialTheme.bbibbiTypo.bodyOneBold,
             )
         }
 

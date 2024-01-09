@@ -60,6 +60,8 @@ import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.MainProfileDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.navigate
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
 import com.no5ing.bbibbi.presentation.viewmodel.members.PostViewReactionMemberViewModel
 import com.no5ing.bbibbi.util.CustomDialogPosition
@@ -149,7 +151,7 @@ fun ReactionListDialog(
                             )
                             .offset { IntOffset(0, swipeableState.offset.value.toInt()) },
                         shape = RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp),
-                        color = MaterialTheme.colorScheme.background,
+                        color = MaterialTheme.bbibbiScheme.backgroundPrimary,
                     ) {
                         Column(
                             modifier = Modifier
@@ -164,7 +166,7 @@ fun ReactionListDialog(
                                 Modifier
                                     .size(width = 32.dp, height = 4.dp)
                                     .clip(RoundedCornerShape(2.dp))
-                                    .background(MaterialTheme.colorScheme.surface)
+                                    .background(MaterialTheme.bbibbiScheme.button)
                             )
                             Box(
                                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp),
@@ -183,8 +185,8 @@ fun ReactionListDialog(
                                     Spacer(modifier = Modifier.width(20.dp))
                                     Text(
                                         text = totalCntMessage,
-                                        color = Color.White,
-                                        style = MaterialTheme.typography.headlineMedium,
+                                        color = MaterialTheme.bbibbiScheme.white,
+                                        style = MaterialTheme.bbibbiTypo.headTwoBold,
                                     )
                                 }
                             }
@@ -216,14 +218,14 @@ fun ReactionListDialog(
                                             Column {
                                                 Text(
                                                     text = currentMember.name,
-                                                    style = MaterialTheme.typography.bodyLarge,
-                                                    color = Color.White,
+                                                    style = MaterialTheme.bbibbiTypo.bodyOneBold,
+                                                    color = MaterialTheme.bbibbiScheme.white,
                                                 )
                                                 if (item.isMe) {
                                                     Text(
                                                         text = stringResource(id = R.string.family_me),
-                                                        style = MaterialTheme.typography.bodySmall,
-                                                        color = MaterialTheme.colorScheme.onSurface,
+                                                        style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
+                                                        color = MaterialTheme.bbibbiScheme.icon,
                                                     )
                                                 }
                                             }

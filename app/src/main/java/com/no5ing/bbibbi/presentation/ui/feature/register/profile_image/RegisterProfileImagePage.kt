@@ -30,7 +30,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,7 +48,8 @@ import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.AlbumCameraSelectDialog
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
-import com.no5ing.bbibbi.presentation.ui.theme.mainGreen
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RegisterMemberViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
@@ -131,8 +131,8 @@ fun RegisterProfileImagePage(
                         id = R.string.register_profile_image_description,
                         nickName
                     ),
-                    color = MaterialTheme.colorScheme.tertiary,
-                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.bbibbiScheme.textSecondary,
+                    style = MaterialTheme.bbibbiTypo.headTwoBold,
                     textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(20.dp))
@@ -140,9 +140,6 @@ fun RegisterProfileImagePage(
                     Box(
                         modifier = Modifier.clickable {
                             albumCameraSelectState.value = true
-
-
-                            //  onTapCamera()
                         }
                     ) {
                         if (state.profileImageUri.value == null) {
@@ -150,13 +147,13 @@ fun RegisterProfileImagePage(
                                 modifier = Modifier
                                     .clip(CircleShape)
                                     .size(90.dp)
-                                    .background(mainGreen)
+                                    .background(MaterialTheme.bbibbiScheme.mainGreen)
                             )
                             Box(modifier = Modifier.align(Alignment.Center)) {
                                 Text(
                                     text = "${nickName.first()}",
                                     fontSize = 28.sp,
-                                    color = Color.White,
+                                    color = MaterialTheme.bbibbiScheme.white,
                                     fontWeight = FontWeight.SemiBold,
                                 )
                             }
@@ -166,7 +163,7 @@ fun RegisterProfileImagePage(
                                 modifier = Modifier
                                     .clip(CircleShape)
                                     .size(90.dp)
-                                    .background(mainGreen),
+                                    .background(MaterialTheme.bbibbiScheme.mainGreen),
                                 painter = rememberAsyncImagePainter(model = state.profileImageUri.value),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop
@@ -205,7 +202,6 @@ fun RegisterProfileImagePage(
                                     "imageUri" to state.profileImageUri.value?.toString(),
                                     "memberName" to nickName,
                                     "dayOfBirth" to dayOfBirth
-
                                 )
                             )
                         )

@@ -31,6 +31,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.main.family.FamilyPageInvitationState
 import com.no5ing.bbibbi.presentation.state.main.family.rememberFamilyPageInvitationState
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.viewmodel.family.FamilyInviteLinkViewModel
 
 @Composable
@@ -48,7 +49,7 @@ fun FamilyPageInviteButton(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = MaterialTheme.colorScheme.onBackground,
+                color = MaterialTheme.bbibbiScheme.backgroundSecondary,
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(
@@ -79,13 +80,13 @@ fun FamilyPageInviteButton(
                 Column {
                     Text(
                         text = stringResource(id = R.string.family_copy_link),
-                        color = MaterialTheme.colorScheme.secondary,
+                        color = MaterialTheme.bbibbiScheme.textPrimary,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 18.sp,
                     )
                     Text(
                         text = familyPageInvitationState.uiState.value.url,
-                        color = MaterialTheme.colorScheme.tertiary,
+                        color = MaterialTheme.bbibbiScheme.textSecondary,
                         fontSize = 14.sp,
                     )
                 }
@@ -93,7 +94,7 @@ fun FamilyPageInviteButton(
             Icon(
                 painter = painterResource(id = R.drawable.share_icon),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = MaterialTheme.bbibbiScheme.icon,
                 modifier = Modifier.size(23.dp)
             )
         }

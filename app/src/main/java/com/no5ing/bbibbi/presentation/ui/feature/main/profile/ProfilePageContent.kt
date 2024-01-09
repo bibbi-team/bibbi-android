@@ -43,6 +43,8 @@ import coil.request.ImageRequest
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.FamilyPostsViewModel
 import com.no5ing.bbibbi.util.toLocalizedDate
 
@@ -81,8 +83,8 @@ fun ProfilePageContent(
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = stringResource(id = R.string.profile_image_not_exists),
-                    color = MaterialTheme.colorScheme.tertiary,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.bbibbiScheme.textSecondary,
+                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                 )
 
             }
@@ -108,8 +110,8 @@ fun ProfilePageContent(
             refreshing = postItems.loadState.refresh is LoadState.Loading,
             state = pullRefreshStyle,
             modifier = Modifier.align(Alignment.TopCenter),
-            backgroundColor = MaterialTheme.colorScheme.onBackground,
-            contentColor = MaterialTheme.colorScheme.primary,
+            backgroundColor = MaterialTheme.bbibbiScheme.backgroundSecondary,
+            contentColor = MaterialTheme.bbibbiScheme.iconSelected,
         )
     }
 }
@@ -152,20 +154,20 @@ fun ProfilePageContentItem(
                     contentDescription = null,
                     modifier = Modifier
                         .size(16.dp),
-                    tint = MaterialTheme.colorScheme.onSurface
+                    tint = MaterialTheme.bbibbiScheme.icon
                 )
                 Spacer(modifier = Modifier.width(3.dp))
                 Text(
                     text = emojiCnt.toString(),
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.bbibbiScheme.textPrimary,
+                    style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                 )
             }
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = time,
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.bbibbiScheme.icon,
+                style = MaterialTheme.bbibbiTypo.caption,
             )
         }
     }

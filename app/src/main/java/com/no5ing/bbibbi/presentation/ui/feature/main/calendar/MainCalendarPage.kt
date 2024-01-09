@@ -20,7 +20,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +29,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarMonthViewModel
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
@@ -102,8 +103,8 @@ fun MainCalendarPage(
                                 modifier = Modifier
                                     .weight(1f)
                                     .wrapContentHeight(),
-                                color = MaterialTheme.colorScheme.tertiary,
-                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.bbibbiScheme.textSecondary,
+                                style = MaterialTheme.bbibbiTypo.caption,
                             )
                         }
                     }
@@ -128,7 +129,7 @@ fun MainCalendarPage(
 fun MainCalendarYearMonthBar(
     yearMonthState: YearMonth,
 ) {
-    val balloonColor = MaterialTheme.colorScheme.surface
+    val balloonColor = MaterialTheme.bbibbiScheme.button
     val balloonText = stringResource(id = R.string.calendar_everyday_info)
     val builder = rememberBalloonBuilder {
         setArrowSize(10)
@@ -156,10 +157,10 @@ fun MainCalendarYearMonthBar(
         Text(
             text = "${yearMonthState.year}${yearStr} ${yearMonthState.month.value}${monthStr}",
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.headlineLarge.copy(
+            style = MaterialTheme.bbibbiTypo.headOne.copy(
                 fontWeight = FontWeight.SemiBold
             ),
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.bbibbiScheme.textPrimary
         )
         Balloon(
             builder = builder,
@@ -167,14 +168,14 @@ fun MainCalendarYearMonthBar(
                 Text(
                     text = balloonText,
                     textAlign = TextAlign.Center,
-                    color = Color.White,
-                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.bbibbiScheme.white,
+                    style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                 )
             }
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.warning_circle_icon),
-                tint = MaterialTheme.colorScheme.tertiary,
+                tint = MaterialTheme.bbibbiScheme.textSecondary,
                 contentDescription = null,
                 modifier = Modifier
                     .size(20.dp)

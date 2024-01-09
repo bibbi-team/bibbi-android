@@ -35,6 +35,8 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -58,7 +60,7 @@ fun FamilyPage(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
     ) {
         Column {
             DisposableTopBar(
@@ -75,7 +77,7 @@ fun FamilyPage(
                     onTapShare = onTapShare
                 )
             }
-            Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.onBackground)
+            Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
             Box(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
@@ -86,16 +88,16 @@ fun FamilyPage(
                 ) {
                     Text(
                         text = stringResource(id = R.string.family_your_family),
-                        style = MaterialTheme.typography.headlineLarge.copy(
+                        style = MaterialTheme.bbibbiTypo.headOne.copy(
                             fontWeight = FontWeight.SemiBold,
                         ),
-                        color = MaterialTheme.colorScheme.secondary,
+                        color = MaterialTheme.bbibbiScheme.textPrimary,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = members.itemCount.toString(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+                        color = MaterialTheme.bbibbiScheme.icon,
                     )
                 }
             }
@@ -123,8 +125,8 @@ fun FamilyPage(
                     members.loadState.refresh is LoadState.Loading,
                     pullRefreshState,
                     Modifier.align(Alignment.TopCenter),
-                    backgroundColor = MaterialTheme.colorScheme.onBackground,
-                    contentColor = MaterialTheme.colorScheme.primary,
+                    backgroundColor = MaterialTheme.bbibbiScheme.backgroundSecondary,
+                    contentColor = MaterialTheme.bbibbiScheme.iconSelected,
                 )
             }
 
@@ -155,14 +157,14 @@ fun MemberItem(
         ) {
             Text(
                 text = member.name,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+                color = MaterialTheme.bbibbiScheme.textPrimary,
             )
             if (isMe)
                 Text(
                     text = stringResource(id = R.string.family_me),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
+                    color = MaterialTheme.bbibbiScheme.icon,
                 )
         }
     }

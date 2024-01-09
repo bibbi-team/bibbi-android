@@ -16,6 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
 @Composable
 fun OnBoardingFirstPage() {
@@ -25,8 +27,8 @@ fun OnBoardingFirstPage() {
         Spacer(modifier = Modifier.height(40.dp))
         Text(
             text = stringResource(id = R.string.onboarding_first_title),
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.bbibbiTypo.headOne,
+            color = MaterialTheme.bbibbiScheme.iconSelected,
             modifier = Modifier.padding(horizontal = 20.dp)
         )
         Spacer(modifier = Modifier.height(24.dp))

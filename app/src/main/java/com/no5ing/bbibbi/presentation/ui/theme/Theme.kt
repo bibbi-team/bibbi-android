@@ -6,41 +6,55 @@ import android.view.WindowManager
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+/**
+ * BackGround
+ */
+val Black = Color(0xFF242427) //background
+val Gray900 = Color(0xff2F2F32) //onbackground
+val Gray800 = Color(0xFF353538)
+val Gray700 = Color(0xff3F3F43) //surface
+val Gray600 = Color(0xFF515155)
+
+/**
+ * Text & Icon
+ */
+val Gray500 = Color(0xFF7B7B7E)
+val Gray400 = Color(0xff8C8C8E) //onsurface
+val Gray300 = Color(0xffB2B2B4) //tertiary
+val Gray200 = Color(0xffD3D3D3) //secondary
+val Gray100 = Color(0xFFE8E8E8) //primary
+val White = Color(0xFFFFFFFF)
+
 private val DarkColorScheme = darkColorScheme(
-    primary = Gray100,
-    secondary = Gray200,
-    tertiary = Gray300,
-    background = Black,
-    onBackground = Gray900,
+//    primary = Gray100,
+//    secondary = Gray200,
+//    tertiary = Gray300,
+//    background = Black,
+//    onBackground = Gray900,
 )
 
 private val LightColorScheme = lightColorScheme(
+    /**
+     * Base Colors
+     */
+    onPrimary = White,
     primary = Gray100,
     secondary = Gray200,
     tertiary = Gray300,
-    background = Black,
-    onBackground = Gray900,
-    surface = Gray700,
     onSurface = Gray400,
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    onTertiary = Gray500,
+    onSecondary = Gray600,
+    surface = Gray700,
+    surfaceTint = Gray800,
+    onBackground = Gray900,
+    background = Black,
 )
 
 @Composable
@@ -51,11 +65,6 @@ fun BbibbiTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }

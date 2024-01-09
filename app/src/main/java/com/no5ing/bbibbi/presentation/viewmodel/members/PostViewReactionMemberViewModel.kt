@@ -27,12 +27,13 @@ class PostViewReactionMemberViewModel @Inject constructor(
 
     override fun invoke(arguments: Arguments) {
         viewModelScope.launch(Dispatchers.IO) {
-            setState(restAPI.getMemberApi().getMembers(
-                page = 1,
-                size = 100
-            ).mapSuccess {
-                results.associateBy { it.memberId }
-            }.wrapToAPIResponse()
+            setState(
+                restAPI.getMemberApi().getMembers(
+                    page = 1,
+                    size = 100
+                ).mapSuccess {
+                    results.associateBy { it.memberId }
+                }.wrapToAPIResponse()
             )
         }
     }

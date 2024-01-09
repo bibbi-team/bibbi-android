@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.getEmojiResource
 
@@ -30,7 +31,7 @@ fun AddReactionBar(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .clip(RoundedCornerShape(1000.dp))
-                .background(color = MaterialTheme.colorScheme.onBackground)
+                .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
                 .padding(vertical = 10.dp, horizontal = 16.dp)
         ) {
             Row(

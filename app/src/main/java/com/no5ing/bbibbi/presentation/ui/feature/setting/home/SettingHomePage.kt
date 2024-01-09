@@ -41,7 +41,8 @@ import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarInfo
-import com.no5ing.bbibbi.presentation.ui.theme.criticalRed
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.LogoutViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.auth.QuitViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
@@ -123,8 +124,8 @@ fun SettingHomePage(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .padding(bottom = 8.dp),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.bbibbiScheme.icon,
+                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                 )
                 SettingItem(
                     name = stringResource(id = R.string.setting_version_info),
@@ -132,8 +133,8 @@ fun SettingHomePage(
                     rightButton = {
                         Text(
                             text = BuildConfig.VERSION_NAME,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.bbibbiScheme.icon,
+                            style = MaterialTheme.bbibbiTypo.headTwoRegular,
                         )
                     }
                 )
@@ -174,8 +175,8 @@ fun SettingHomePage(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .padding(bottom = 8.dp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+                    color = MaterialTheme.bbibbiScheme.icon
                 )
                 SettingItem(
                     name = stringResource(id = R.string.setting_logout),
@@ -205,7 +206,7 @@ fun SettingItem(
         Icon(
             painter = painterResource(id = R.drawable.arrow_right),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurface,
+            tint = MaterialTheme.bbibbiScheme.icon,
         )
     }
 ) {
@@ -219,8 +220,8 @@ fun SettingItem(
     ) {
         Text(
             text = name,
-            color = if (isCritical) criticalRed else MaterialTheme.colorScheme.secondary,
-            style = MaterialTheme.typography.headlineSmall,
+            color = if (isCritical) MaterialTheme.bbibbiScheme.criticalRed else MaterialTheme.bbibbiScheme.textPrimary,
+            style = MaterialTheme.bbibbiTypo.headTwoRegular,
         )
         rightButton()
     }

@@ -24,6 +24,8 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.main.home.HomePageStoryBarState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageStoryBarState
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 
 @Composable
@@ -95,11 +97,11 @@ fun StoryBarIcon(
         )
         Text(
             text = member.name,
-            color = MaterialTheme.colorScheme.tertiary,
+            color = MaterialTheme.bbibbiScheme.textSecondary,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.bbibbiTypo.caption,
         )
     }
 }

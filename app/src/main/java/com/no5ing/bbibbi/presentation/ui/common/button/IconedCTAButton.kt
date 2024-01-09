@@ -14,7 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import com.no5ing.bbibbi.presentation.ui.theme.mainGreen
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
 @Composable
 fun IconedCTAButton(
@@ -29,7 +30,9 @@ fun IconedCTAButton(
         shape = RoundedCornerShape(100.dp),
         onClick = { if (isActive) onClick() },
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isActive) mainGreen else mainGreen.copy(alpha = 0.2f)
+            containerColor = if (isActive) MaterialTheme.bbibbiScheme.mainGreen else MaterialTheme.bbibbiScheme.mainGreen.copy(
+                alpha = 0.2f
+            )
         ),
         modifier = modifier,
         contentPadding = contentPadding,
@@ -42,12 +45,12 @@ fun IconedCTAButton(
                 contentDescription = null,
                 modifier = Modifier
                     .size(20.dp),
-                tint = MaterialTheme.colorScheme.background
+                tint = MaterialTheme.bbibbiScheme.backgroundPrimary
             )
             Text(
                 text = text,
-                color = MaterialTheme.colorScheme.background,
-                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.bbibbiScheme.backgroundPrimary,
+                style = MaterialTheme.bbibbiTypo.bodyOneBold,
             )
         }
     }

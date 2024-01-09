@@ -36,6 +36,8 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.post.view.PostViewPageState
 import com.no5ing.bbibbi.presentation.state.post.view.rememberPostViewPageState
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.FamilyPostViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
@@ -144,12 +146,12 @@ fun PostViewTopBar(
         Column {
             Text(
                 text = member.name,
-                color = MaterialTheme.colorScheme.tertiary,
-                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.bbibbiScheme.textSecondary,
+                style = MaterialTheme.bbibbiTypo.bodyOneRegular,
             )
             Text(
                 text = date,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.bbibbiScheme.icon,
                 fontSize = 12.sp,
             )
 

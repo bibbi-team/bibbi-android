@@ -23,11 +23,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
-import com.no5ing.bbibbi.presentation.ui.theme.warningRed
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,7 +44,7 @@ fun CustomSnackBarHost(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(44.dp))
-                .background(MaterialTheme.colorScheme.onBackground)
+                .background(MaterialTheme.bbibbiScheme.backgroundSecondary)
                 .padding(horizontal = 20.dp, vertical = 16.dp)
         ) {
             Row(
@@ -56,14 +55,14 @@ fun CustomSnackBarHost(
                     snackBarInfo -> InfoIcon()
                     else -> Icon(
                         imageVector = Icons.Default.Email,
-                        tint = Color.White,
+                        tint = MaterialTheme.bbibbiScheme.white,
                         contentDescription = null
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = snackbarData.visuals.message,
-                    color = Color.White
+                    color = MaterialTheme.bbibbiScheme.white
                 )
             }
         }
@@ -78,7 +77,7 @@ const val snackBarSuccess = "info"
 private fun WarningIcon() {
     Icon(
         painter = painterResource(id = R.drawable.warning_circle_icon),
-        tint = warningRed,
+        tint = MaterialTheme.bbibbiScheme.warningRed,
         contentDescription = null
     )
 }
@@ -87,7 +86,7 @@ private fun WarningIcon() {
 private fun InfoIcon() {
     Icon(
         imageVector = Icons.Default.Info,
-        tint = MaterialTheme.colorScheme.onSurface,
+        tint = MaterialTheme.bbibbiScheme.icon,
         contentDescription = null
     )
 }

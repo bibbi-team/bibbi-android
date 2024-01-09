@@ -19,14 +19,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.data.model.member.Member
-import com.no5ing.bbibbi.presentation.ui.theme.mainGreen
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 
 @Composable
 fun CircleProfileImage(
     modifier: Modifier = Modifier,
     size: Dp,
     member: Member,
-    backgroundColor: Color = MaterialTheme.colorScheme.onBackground,
+    backgroundColor: Color = MaterialTheme.bbibbiScheme.backgroundSecondary,
     onTap: () -> Unit = {},
 ) {
     if (member.imageUrl != null) {
@@ -48,13 +48,13 @@ fun CircleProfileImage(
                 modifier = modifier
                     .size(size)
                     .clip(CircleShape)
-                    .background(mainGreen)
+                    .background(MaterialTheme.bbibbiScheme.mainGreen)
             )
             Box(modifier = Modifier.align(Alignment.Center)) {
                 Text(
                     text = "${member.name.first()}",
                     fontSize = 28.sp * (size / 90.dp),
-                    color = Color.White,
+                    color = MaterialTheme.bbibbiScheme.white,
                     fontWeight = FontWeight.SemiBold,
                 )
             }

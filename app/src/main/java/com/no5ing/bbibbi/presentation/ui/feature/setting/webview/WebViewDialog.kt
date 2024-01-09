@@ -10,6 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -17,7 +18,7 @@ fun WebViewPage(
     webViewUrl: String,
     onDispose: () -> Unit,
 ) {
-    val backgroundColor = MaterialTheme.colorScheme.background.toArgb()
+    val backgroundColor = MaterialTheme.bbibbiScheme.backgroundPrimary.toArgb()
     val scope = rememberCoroutineScope()
     Surface(
         modifier = Modifier

@@ -48,6 +48,8 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.main.home.HomePageContentState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageContentState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageStoryBarState
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.MainPostFeedViewModel
 import com.no5ing.bbibbi.util.gapBetweenNow
@@ -99,7 +101,7 @@ fun HomePageContent(
                 )
             }
             item(span = { GridItemSpan(2) }) {
-                Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.onBackground)
+                Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
             }
             item(span = { GridItemSpan(2) }) {
                 UploadCountDownBar()
@@ -140,8 +142,8 @@ fun HomePageContent(
             refreshing = postItems.loadState.refresh is LoadState.Loading,
             state = pullRefreshStyle,
             modifier = Modifier.align(Alignment.TopCenter),
-            backgroundColor = MaterialTheme.colorScheme.onBackground,
-            contentColor = MaterialTheme.colorScheme.primary,
+            backgroundColor = MaterialTheme.bbibbiScheme.backgroundSecondary,
+            contentColor = MaterialTheme.bbibbiScheme.iconSelected,
         )
     }
 }
@@ -181,8 +183,8 @@ fun HomePageContentItem(
         ) {
             Text(
                 text = writerName,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
+                color = MaterialTheme.bbibbiScheme.textPrimary,
                 modifier = Modifier.widthIn(max = 110.dp),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
@@ -190,8 +192,8 @@ fun HomePageContentItem(
             Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = time,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.bbibbiTypo.caption,
+                color = MaterialTheme.bbibbiScheme.icon,
             )
         }
     }

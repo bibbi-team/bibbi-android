@@ -61,6 +61,7 @@ import com.no5ing.bbibbi.presentation.ui.navigation.graph.postGraph
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.registerGraph
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.settingGraph
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.forceRestart
@@ -283,9 +284,9 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background)
+                        .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
                         .statusBarsPadding(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.bbibbiScheme.backgroundPrimary
                 ) {
                     CompositionLocalProvider(
                         LocalSnackbarHostState provides hostState

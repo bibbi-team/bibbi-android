@@ -20,6 +20,7 @@ import com.no5ing.bbibbi.presentation.BackToExitHandler
 import com.no5ing.bbibbi.presentation.state.main.home.HomePageState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageState
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.IsMeUploadedTodayViewModel
 
@@ -49,7 +50,7 @@ fun HomePage(
             modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
         ) {
             HomePageTopBar(
                 onTapLeft = onTapLeft,

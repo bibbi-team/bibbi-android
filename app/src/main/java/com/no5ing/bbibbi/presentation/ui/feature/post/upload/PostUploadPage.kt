@@ -62,6 +62,8 @@ import com.no5ing.bbibbi.presentation.ui.common.component.TextBubbleBox
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarInfo
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.CreatePostViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
@@ -107,7 +109,7 @@ fun PostUploadPage(
     }
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = MaterialTheme.bbibbiScheme.backgroundPrimary
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -135,7 +137,7 @@ fun PostUploadPage(
                                     .aspectRatio(1.0f)
                                     .fillMaxWidth()
                                     .clip(RoundedCornerShape(48.dp))
-                                    .background(Color.White),
+                                    .background(MaterialTheme.bbibbiScheme.white),
                                 painter = rememberAsyncImagePainter(model = imageUrl.value),
                                 contentDescription = null,
                             )
@@ -171,8 +173,8 @@ fun PostUploadPage(
                                     ) {
                                         Text(
                                             text = character.toString(),
-                                            color = Color.White,
-                                            style = MaterialTheme.typography.headlineMedium,
+                                            color = MaterialTheme.bbibbiScheme.white,
+                                            style = MaterialTheme.bbibbiTypo.headTwoBold,
                                         )
                                     }
                                 }
@@ -268,7 +270,7 @@ fun PostUploadPage(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(color = MaterialTheme.colorScheme.background)
+                            .background(color = MaterialTheme.bbibbiScheme.backgroundPrimary)
                             .padding(horizontal = 16.dp, vertical = 12.dp)
                     ) {
                         Row(
@@ -309,11 +311,11 @@ fun PostUploadPage(
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                                 textStyle = TextStyle(
                                     fontSize = 16.sp,
-                                    color = Color.White
+                                    color = MaterialTheme.bbibbiScheme.white
                                 ),
                                 cursorBrush = Brush.verticalGradient(
-                                    0.00f to MaterialTheme.colorScheme.surface,
-                                    1.00f to MaterialTheme.colorScheme.surface,
+                                    0.00f to MaterialTheme.bbibbiScheme.button,
+                                    1.00f to MaterialTheme.bbibbiScheme.button,
                                 ),
                                 maxLines = 1,
                             )
@@ -325,7 +327,7 @@ fun PostUploadPage(
                                     .clickable {
                                         imageText.value = ""
                                     },
-                                tint = MaterialTheme.colorScheme.onSurface
+                                tint = MaterialTheme.bbibbiScheme.icon
                             )
                         }
 

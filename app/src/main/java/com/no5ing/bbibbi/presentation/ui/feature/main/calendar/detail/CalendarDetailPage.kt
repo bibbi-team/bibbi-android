@@ -42,6 +42,8 @@ import com.no5ing.bbibbi.presentation.ui.feature.main.calendar.MainCalendarDay
 import com.no5ing.bbibbi.presentation.ui.feature.post.view.PostViewContent
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarDetailContentViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarWeekViewModel
@@ -305,8 +307,8 @@ fun PostViewDetailTopBar(
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = member.name,
-            color = MaterialTheme.colorScheme.secondary,
-            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.bbibbiScheme.textPrimary,
+            style = MaterialTheme.bbibbiTypo.caption,
         )
     }
 }

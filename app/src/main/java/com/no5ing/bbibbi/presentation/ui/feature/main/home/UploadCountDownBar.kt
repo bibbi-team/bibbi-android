@@ -13,11 +13,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
-import com.no5ing.bbibbi.presentation.ui.theme.warningRed
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import kotlinx.coroutines.delay
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
@@ -60,15 +60,15 @@ fun UploadCountDownBar(
     ) {
         Text(
             text = timeStr.value,
-            style = MaterialTheme.typography.headlineLarge,
-            color = if (warningState.value > 0) warningRed else Color.White,
+            style = MaterialTheme.bbibbiTypo.headOne,
+            color = if (warningState.value > 0) MaterialTheme.bbibbiScheme.warningRed else MaterialTheme.bbibbiScheme.white,
         )
         Text(
             text = if (warningState.value == 1) stringResource(id = R.string.home_time_not_much)
             else if (warningState.value == 2) stringResource(id = R.string.home_time_over)
             else stringResource(id = R.string.home_image_on_duration),
-            color = MaterialTheme.colorScheme.tertiary,
-            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.bbibbiScheme.textSecondary,
+            style = MaterialTheme.bbibbiTypo.bodyOneRegular,
         )
     }
 }

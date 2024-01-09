@@ -42,6 +42,7 @@ import com.no5ing.bbibbi.presentation.ui.feature.dialog.AlbumCameraSelectDialog
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarInfo
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.viewmodel.members.ChangeProfileImageViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMemberViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
@@ -164,7 +165,7 @@ fun ProfilePageMemberBar(
                     style = TextStyle(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.secondary
+                        color = MaterialTheme.bbibbiScheme.textPrimary
                     )
                 )
                 if (familyMemberViewModel.me?.memberId == memberState.value.data.memberId) {
@@ -172,7 +173,7 @@ fun ProfilePageMemberBar(
                     Icon(
                         painter = painterResource(id = R.drawable.write_icon),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface,
+                        tint = MaterialTheme.bbibbiScheme.icon,
                         modifier = Modifier
                             .size(16.dp)
                             .clickable { onTapChangeNickname() }
@@ -180,7 +181,7 @@ fun ProfilePageMemberBar(
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.onBackground)
+            Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
             Spacer(modifier = Modifier.height(20.dp))
         }
     }

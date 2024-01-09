@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 
 @Composable
 fun HomePageTopBar(
@@ -35,7 +36,7 @@ fun HomePageTopBar(
             modifier = Modifier
                 .size(26.dp)
                 .clickable { onTapLeft() },
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = MaterialTheme.bbibbiScheme.icon
         )
         Icon(
             painter = painterResource(id = R.drawable.bibbi_ci),
@@ -51,7 +52,7 @@ fun HomePageTopBar(
             modifier = Modifier
                 .size(24.dp)
                 .clickable { onTapRight() },
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = MaterialTheme.bbibbiScheme.icon
         )
     }
 }

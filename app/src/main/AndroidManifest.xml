@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera.any" />
 
     <queries>
@@ -28,8 +29,8 @@
             android:name=".presentation.ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.App.First"
             android:launchMode="singleTask"
+            android:theme="@style/Theme.App.First"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,8 +41,7 @@
         <activity
             android:name=".presentation.ui.DeepLinkActivity"
             android:exported="true"
-            android:launchMode="singleTask"
-            >
+            android:launchMode="singleTask">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -77,9 +77,10 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".WidgetReceiver"
-            android:label="@string/widget_name"
-            android:exported="false">
+        <receiver
+            android:name=".WidgetReceiver"
+            android:exported="false"
+            android:label="@string/widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -88,7 +89,9 @@
                 android:resource="@xml/widget_info" />
         </receiver>
 
-        <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="bbibbi_channel" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="bbibbi_channel" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.no5ing.bbibbi.fileprovider"

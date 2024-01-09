@@ -43,7 +43,7 @@ import com.no5ing.bbibbi.presentation.state.landing.login.LoginPageState
 import com.no5ing.bbibbi.presentation.state.landing.login.LoginStatus
 import com.no5ing.bbibbi.presentation.state.landing.login.LoginSucceedResult
 import com.no5ing.bbibbi.presentation.state.landing.login.rememberLoginPageState
-import com.no5ing.bbibbi.presentation.ui.theme.kakaoYellow
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.viewmodel.auth.LoginWithCredentialsViewModel
 import com.no5ing.bbibbi.util.googleSignInIntent
 import com.no5ing.bbibbi.util.kakaoSignIn
@@ -145,7 +145,7 @@ fun LoginPage(
                     modifier = Modifier
                         .width(225.dp)
                         .height(115.dp),
-                    tint = Color.White
+                    tint = MaterialTheme.bbibbiScheme.white
                 )
                 Image(
                     painter = painterResource(id = R.drawable.login_backgroup),
@@ -187,7 +187,7 @@ fun KakaoLoginButton(
     onClick: () -> Unit,
 ) {
     Button(
-        colors = ButtonDefaults.buttonColors(containerColor = kakaoYellow),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.bbibbiScheme.kakaoYellow),
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
@@ -208,7 +208,7 @@ fun KakaoLoginButton(
                 text = stringResource(id = R.string.login_with_kakao),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.background,
+                color = MaterialTheme.bbibbiScheme.backgroundPrimary,
             )
         }
 
@@ -220,7 +220,7 @@ fun GoogleLoginButton(
     onClick: () -> Unit,
 ) {
     Button(
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.bbibbiScheme.white),
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
@@ -240,7 +240,7 @@ fun GoogleLoginButton(
                 text = stringResource(id = R.string.login_with_google),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.background,
+                color = MaterialTheme.bbibbiScheme.backgroundPrimary,
             )
         }
 

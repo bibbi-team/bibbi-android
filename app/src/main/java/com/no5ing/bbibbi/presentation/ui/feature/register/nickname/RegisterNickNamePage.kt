@@ -38,7 +38,8 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.state.register.nickname.RegisterNickNamePageState
 import com.no5ing.bbibbi.presentation.state.register.nickname.rememberRegisterNickNamePageState
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
-import com.no5ing.bbibbi.presentation.ui.theme.warningRed
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -68,8 +69,8 @@ fun RegisterNickNamePage(
             ) {
                 Text(
                     text = stringResource(id = R.string.register_nickname_enter_nickname),
-                    color = MaterialTheme.colorScheme.tertiary,
-                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.bbibbiScheme.textSecondary,
+                    style = MaterialTheme.bbibbiTypo.headTwoBold,
                 )
                 BasicTextField(
                     value = state.nicknameTextState.value,
@@ -102,7 +103,7 @@ fun RegisterNickNamePage(
                                         Text(
                                             text = stringResource(id = R.string.register_nickname_sample_text),
                                             textAlign = TextAlign.Center,
-                                            style = MaterialTheme.typography.titleMedium,
+                                            style = MaterialTheme.bbibbiTypo.title,
                                         )
                                     }
 
@@ -113,15 +114,15 @@ fun RegisterNickNamePage(
 
                     },
                     cursorBrush = Brush.verticalGradient(
-                        0.00f to MaterialTheme.colorScheme.surface,
-                        1.00f to MaterialTheme.colorScheme.surface,
+                        0.00f to MaterialTheme.bbibbiScheme.button,
+                        1.00f to MaterialTheme.bbibbiScheme.button,
                     ),
-                    textStyle = MaterialTheme.typography.titleMedium.copy(
+                    textStyle = MaterialTheme.bbibbiTypo.title.copy(
                         textAlign = TextAlign.Center,
                         color = if (state.isInvalidInputState.value)
-                            warningRed
+                            MaterialTheme.bbibbiScheme.warningRed
                         else
-                            MaterialTheme.colorScheme.secondary
+                            MaterialTheme.bbibbiScheme.textPrimary
                     ),
                     modifier = Modifier
                         .focusRequester(textBoxFocus),
@@ -135,13 +136,13 @@ fun RegisterNickNamePage(
                             contentDescription = null,
                             modifier = Modifier
                                 .size(20.dp),
-                            tint = warningRed
+                            tint = MaterialTheme.bbibbiScheme.warningRed,
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = state.invalidInputDescState.value,
-                            color = warningRed,
-                            style = MaterialTheme.typography.bodyMedium
+                            color = MaterialTheme.bbibbiScheme.warningRed,
+                            style = MaterialTheme.bbibbiTypo.bodyOneRegular
                         )
                     }
 
@@ -153,9 +154,9 @@ fun RegisterNickNamePage(
             ) {
                 Text(
                     text = stringResource(id = R.string.register_nickname_description),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.bbibbiScheme.icon,
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                 )
                 CTAButton(
                     text = stringResource(id = R.string.register_continue),

@@ -37,7 +37,8 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.state.register.day_of_birth.RegisterDayOfBirthPageState
 import com.no5ing.bbibbi.presentation.state.register.day_of_birth.rememberRegisterDayOfBirthPageState
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
-import com.no5ing.bbibbi.presentation.ui.theme.warningRed
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
 @Composable
 fun RegisterDayOfBirthPage(
@@ -65,9 +66,12 @@ fun RegisterDayOfBirthPage(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "안녕하세요 ${nickName}님, 생일이 언제신가요?",
-                    color = MaterialTheme.colorScheme.tertiary,
-                    style = MaterialTheme.typography.headlineMedium,
+                    text = stringResource(
+                        id = R.string.register_day_of_birth_description,
+                        nickName
+                    ),
+                    color = MaterialTheme.bbibbiScheme.textSecondary,
+                    style = MaterialTheme.bbibbiTypo.headTwoBold,
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -76,7 +80,7 @@ fun RegisterDayOfBirthPage(
                 ) {
                     DigitizedNumberInput(
                         baseDigit = 4,
-                        digitName = "년",
+                        digitName = stringResource(id = R.string.register_day_of_birth_year),
                         value = state.yearTextState.value,
                         focusRequester = yearFocus,
                         onValueChange = {
@@ -91,7 +95,7 @@ fun RegisterDayOfBirthPage(
                     Spacer(modifier = Modifier.width(6.dp))
                     DigitizedNumberInput(
                         baseDigit = 1,
-                        digitName = "월",
+                        digitName = stringResource(id = R.string.register_day_of_birth_month),
                         value = state.monthTextState.value,
                         focusRequester = monthFocus,
                         onValueChange = {
@@ -106,7 +110,7 @@ fun RegisterDayOfBirthPage(
                     Spacer(modifier = Modifier.width(6.dp))
                     DigitizedNumberInput(
                         baseDigit = 1,
-                        digitName = "일",
+                        digitName = stringResource(id = R.string.register_day_of_birth_day),
                         value = state.dayTextState.value,
                         focusRequester = dayFocus,
                         onValueChange = {
@@ -127,13 +131,13 @@ fun RegisterDayOfBirthPage(
                             contentDescription = null,
                             modifier = Modifier
                                 .size(20.dp),
-                            tint = warningRed
+                            tint = MaterialTheme.bbibbiScheme.warningRed,
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(id = R.string.register_dob_correct_date),
-                            color = warningRed,
-                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.bbibbiScheme.warningRed,
+                            style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                         )
                     }
                 }
@@ -143,9 +147,9 @@ fun RegisterDayOfBirthPage(
             ) {
                 Text(
                     text = stringResource(id = R.string.register_dob_description),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.bbibbiScheme.icon,
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                 )
                 CTAButton(
                     text = stringResource(id = R.string.register_continue),
@@ -192,15 +196,15 @@ fun DigitizedNumberInput(
             modifier = Modifier
                 .width(IntrinsicSize.Min)
                 .focusRequester(focusRequester),
-            textStyle = MaterialTheme.typography.titleMedium.copy(
+            textStyle = MaterialTheme.bbibbiTypo.title.copy(
                 color = if (isInvalidInput)
-                    warningRed
+                    MaterialTheme.bbibbiScheme.warningRed
                 else
-                    MaterialTheme.colorScheme.secondary
+                    MaterialTheme.bbibbiScheme.textPrimary
             ),
             cursorBrush = Brush.verticalGradient(
-                0.00f to MaterialTheme.colorScheme.surface,
-                1.00f to MaterialTheme.colorScheme.surface,
+                0.00f to MaterialTheme.bbibbiScheme.button,
+                1.00f to MaterialTheme.bbibbiScheme.button,
             ),
             decorationBox = {
                 Row {
@@ -211,8 +215,8 @@ fun DigitizedNumberInput(
                                 Text(
                                     text = "0".repeat(baseDigit),
                                     textAlign = TextAlign.Center,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.surface
+                                    style = MaterialTheme.bbibbiTypo.title,
+                                    color = MaterialTheme.bbibbiScheme.button
                                 )
                             }
 
@@ -225,13 +229,13 @@ fun DigitizedNumberInput(
         Text(
             modifier = Modifier.clickable { focusRequester.requestFocus() },
             text = digitName,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.bbibbiTypo.title,
             color = if (value == 0)
-                MaterialTheme.colorScheme.surface
+                MaterialTheme.bbibbiScheme.button
             else if (isInvalidInput)
-                warningRed
+                MaterialTheme.bbibbiScheme.warningRed
             else
-                MaterialTheme.colorScheme.secondary
+                MaterialTheme.bbibbiScheme.textPrimary
         )
     }
 }

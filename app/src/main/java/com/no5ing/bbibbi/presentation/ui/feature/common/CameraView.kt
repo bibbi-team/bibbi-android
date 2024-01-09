@@ -53,6 +53,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.ui.common.component.ClosableTopBar
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.resume
@@ -136,7 +137,7 @@ fun CameraView(
     }
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = MaterialTheme.bbibbiScheme.backgroundPrimary
     ) {
         Column(
             modifier = Modifier

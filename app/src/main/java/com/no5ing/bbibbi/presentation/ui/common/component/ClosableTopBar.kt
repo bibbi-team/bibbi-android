@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
 @Composable
 fun ClosableTopBar(
@@ -37,8 +39,8 @@ fun ClosableTopBar(
         )
         Text(
             text = title,
-            color = MaterialTheme.colorScheme.secondary,
-            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.bbibbiScheme.textPrimary,
+            style = MaterialTheme.bbibbiTypo.headTwoBold,
         )
         rightButton()
     }

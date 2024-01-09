@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
 @Composable
 fun AlreadyFamilyExistsView(
@@ -40,13 +42,13 @@ fun AlreadyFamilyExistsView(
         ) {
             Text(
                 stringResource(id = R.string.already_family_exists_title),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.bbibbiScheme.iconSelected,
+                style = MaterialTheme.bbibbiTypo.headOne,
             )
             Text(
                 stringResource(id = R.string.already_family_exists_subtitle),
-                color = MaterialTheme.colorScheme.tertiary,
-                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.bbibbiScheme.textSecondary,
+                style = MaterialTheme.bbibbiTypo.bodyOneRegular,
             )
         }
         Image(

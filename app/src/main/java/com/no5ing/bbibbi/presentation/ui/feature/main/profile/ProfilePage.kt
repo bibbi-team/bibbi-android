@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 
 @Composable
 fun ProfilePage(
@@ -54,7 +55,7 @@ fun ProfilePage(
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(24.dp),
-                                tint = MaterialTheme.colorScheme.onSurface
+                                tint = MaterialTheme.bbibbiScheme.icon
                             )
                         }
                     } else {

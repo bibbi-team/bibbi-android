@@ -36,7 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.no5ing.bbibbi.R
-import com.no5ing.bbibbi.presentation.ui.theme.mainGreen
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +67,7 @@ fun CustomAlertDialog(
                         Button(
                             onClick = dismissRequest,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.surface
+                                containerColor = MaterialTheme.bbibbiScheme.button
                             ),
                             shape = RoundedCornerShape(10.dp),
                             modifier = Modifier.size(width = 126.dp, height = 44.dp)
@@ -80,7 +81,7 @@ fun CustomAlertDialog(
                         Button(
                             onClick = confirmRequest,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = mainGreen
+                                containerColor = MaterialTheme.bbibbiScheme.mainGreen
                             ),
                             shape = RoundedCornerShape(10.dp),
                             modifier = Modifier.size(width = 126.dp, height = 44.dp)
@@ -97,7 +98,7 @@ fun CustomAlertDialog(
                 title = {
                     Text(
                         title,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.bbibbiScheme.iconSelected,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 17.sp
                     )
@@ -105,14 +106,13 @@ fun CustomAlertDialog(
                 text = {
                     Text(
                         description,
-                        color = MaterialTheme.colorScheme.secondary,
+                        color = MaterialTheme.bbibbiScheme.textPrimary,
                         fontSize = 13.sp
                     )
                 },
                 shape = RoundedCornerShape(14.dp),
-                containerColor = MaterialTheme.colorScheme.onBackground,
+                containerColor = MaterialTheme.bbibbiScheme.backgroundSecondary,
                 tonalElevation = AlertDialogDefaults.TonalElevation,
-                buttonContentColor = MaterialTheme.colorScheme.secondary,
                 iconContentColor = AlertDialogDefaults.iconContentColor,
                 titleContentColor = AlertDialogDefaults.titleContentColor,
                 textContentColor = AlertDialogDefaults.textContentColor,
@@ -133,7 +133,6 @@ internal fun AlertDialogContent(
     shape: Shape,
     containerColor: Color,
     tonalElevation: Dp,
-    buttonContentColor: Color,
     iconContentColor: Color,
     titleContentColor: Color,
     textContentColor: Color,
@@ -182,7 +181,7 @@ internal fun AlertDialogContent(
             text?.let {
                 CompositionLocalProvider(LocalContentColor provides textContentColor) {
                     val textStyle =
-                        MaterialTheme.typography.bodyMedium
+                        MaterialTheme.bbibbiTypo.bodyOneRegular
                     ProvideTextStyle(textStyle) {
                         Box(
                             Modifier

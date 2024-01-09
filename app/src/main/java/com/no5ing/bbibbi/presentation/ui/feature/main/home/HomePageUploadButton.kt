@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
@@ -32,6 +31,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
 @Composable
 fun BoxScope.HomePageUploadButton(
@@ -71,7 +72,7 @@ fun UploadHelperPop() {
     Box(modifier = Modifier.padding(bottom = 30.dp)) {
         Box(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(6.dp))
+                .background(MaterialTheme.bbibbiScheme.button, shape = RoundedCornerShape(6.dp))
                 .padding(
                     vertical = 10.dp,
                     horizontal = 14.dp
@@ -79,8 +80,8 @@ fun UploadHelperPop() {
         ) {
             Text(
                 text = stringResource(id = R.string.home_one_image_per_day),
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.White,
+                style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+                color = MaterialTheme.bbibbiScheme.white,
             )
         }
         Box(
@@ -89,7 +90,7 @@ fun UploadHelperPop() {
                 .offset(y = 24.dp)
                 .size(24.dp, 24.dp)
         ) {
-            val surfaceColor = MaterialTheme.colorScheme.surface
+            val surfaceColor = MaterialTheme.bbibbiScheme.button
             Canvas(
                 modifier = Modifier
                     .fillMaxWidth()

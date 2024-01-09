@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
 @Composable
 fun BoxScope.TextBubbleBox(
@@ -37,8 +39,8 @@ fun BoxScope.TextBubbleBox(
                 ) {
                     Text(
                         text = character.toString(),
-                        color = Color.White,
-                        style = MaterialTheme.typography.headlineLarge,
+                        color = MaterialTheme.bbibbiScheme.white,
+                        style = MaterialTheme.bbibbiTypo.headOne,
                     )
                 }
             }
@@ -69,8 +71,8 @@ fun BoxScope.MiniTextBubbleBox(
                 ) {
                     Text(
                         text = character.toString(),
-                        color = Color.White,
-                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.bbibbiScheme.white,
+                        style = MaterialTheme.bbibbiTypo.headTwoBold,
                     )
                 }
             }

@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.post.CalendarElement
-import com.no5ing.bbibbi.presentation.ui.theme.mainGreen
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import io.github.boguszpawlowski.composecalendar.day.DayState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionState
@@ -42,22 +43,23 @@ fun <T : SelectionState> MainCalendarDay(
     val selectionState = state.selectionState
     val data = monthState[date]
     val isSelected = selectionState.isDateSelected(date)
-    val textColor = (if (state.isCurrentDay && state.isFromCurrentMonth) mainGreen
-    else if (state.isFromCurrentMonth) Color.White
-    else MaterialTheme.colorScheme.surface)
-        .copy(
-            alpha = if (isSelectableState && !isSelected) 0.3f else 1.0f
-        )
+    val textColor =
+        (if (state.isCurrentDay && state.isFromCurrentMonth) MaterialTheme.bbibbiScheme.mainGreen
+        else if (state.isFromCurrentMonth) MaterialTheme.bbibbiScheme.white
+        else MaterialTheme.bbibbiScheme.button)
+            .copy(
+                alpha = if (isSelectableState && !isSelected) 0.3f else 1.0f
+            )
 
-    val boxBorderColor = if (isSelected) Color.White
-    else if (state.isCurrentDay && state.isFromCurrentMonth) mainGreen.copy(
+    val boxBorderColor = if (isSelected) MaterialTheme.bbibbiScheme.white
+    else if (state.isCurrentDay && state.isFromCurrentMonth) MaterialTheme.bbibbiScheme.mainGreen.copy(
         alpha = if (isSelectableState && !isSelected) 0.3f else 1.0f
     )
     else Color.Transparent
 
     val boxBgColor =
-        (if (state.isFromCurrentMonth) MaterialTheme.colorScheme.onBackground
-        else MaterialTheme.colorScheme.background).copy(
+        (if (state.isFromCurrentMonth) MaterialTheme.bbibbiScheme.backgroundSecondary
+        else MaterialTheme.bbibbiScheme.backgroundPrimary).copy(
             alpha = if (isSelectableState && !isSelected) 0.3f else 1.0f
         )
 
@@ -101,20 +103,19 @@ fun <T : SelectionState> MainCalendarDay(
                     Text(
                         text = date.dayOfMonth.toString(),
                         color = textColor,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                     )
                 }
                 if (data?.allFamilyMembersUploaded == true) {
                     Box(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            //   .offset(x = (-4).dp, y = 4.dp)
                             .size(12.dp)
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.bbibbi_smile),
                             contentDescription = null,
-                            tint = mainGreen,
+                            tint = MaterialTheme.bbibbiScheme.mainGreen,
                             modifier = Modifier
                                 .fillMaxSize(),
                         )
@@ -129,7 +130,7 @@ fun <T : SelectionState> MainCalendarDay(
                 Text(
                     text = date.dayOfMonth.toString(),
                     color = textColor,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                 )
             }
         }

@@ -24,6 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
 @Composable
 fun HomePageNoFamilyBar(
@@ -33,7 +35,7 @@ fun HomePageNoFamilyBar(
     Box(
         modifier = modifier
             .background(
-                color = MaterialTheme.colorScheme.onBackground,
+                color = MaterialTheme.bbibbiScheme.backgroundSecondary,
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(
@@ -62,21 +64,21 @@ fun HomePageNoFamilyBar(
                 Column {
                     Text(
                         text = stringResource(id = R.string.home_empty_family_description),
-                        color = MaterialTheme.colorScheme.tertiary,
-                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.bbibbiScheme.textSecondary,
+                        style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = stringResource(id = R.string.home_empty_family_title),
-                        color = MaterialTheme.colorScheme.secondary,
-                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.bbibbiScheme.textPrimary,
+                        style = MaterialTheme.bbibbiTypo.headTwoBold,
                     )
                 }
             }
             Icon(
                 painter = painterResource(id = R.drawable.arrow_right),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = MaterialTheme.bbibbiScheme.icon,
                 modifier = Modifier.size(23.dp)
             )
         }
