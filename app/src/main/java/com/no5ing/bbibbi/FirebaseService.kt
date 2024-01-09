@@ -42,7 +42,7 @@ class FirebaseService : FirebaseMessagingService() {
 
     private fun createNotificationChannel() {
         val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel(channel_id, BuildConfig.notifyChannelName, importance)
+        val channel = NotificationChannel(channel_id, "삐삐", importance)
 
         val notificationManager: NotificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
