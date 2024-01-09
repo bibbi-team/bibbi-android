@@ -18,11 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FamilyMembersViewModel @Inject constructor(
-    private val localDataStorage: LocalDataStorage,
     private val getMembersRepository: GetMembersRepository,
 ) : BaseViewModel<PagingData<Member>>() {
-    val me = localDataStorage.getMe()
-
     override fun initState(): PagingData<Member> {
         return PagingData.empty()
     }

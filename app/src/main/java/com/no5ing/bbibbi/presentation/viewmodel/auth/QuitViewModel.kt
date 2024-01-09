@@ -6,6 +6,7 @@ import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.OperationStatus
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
@@ -18,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class QuitViewModel @Inject constructor(
     private val restAPI: RestAPI,
-    private val localDataStorage: LocalDataStorage,
+    private val sessionModule: SessionModule,
 ) : BaseViewModel<OperationStatus>() {
     override fun initState(): OperationStatus {
         return OperationStatus.IDLE
@@ -27,12 +28,11 @@ class QuitViewModel @Inject constructor(
     override fun invoke(arguments: Arguments) {
         setState(OperationStatus.RUNNING)
         viewModelScope.launch(Dispatchers.IO) {
-            val memberId = localDataStorage.getMe()?.memberId ?: throw RuntimeException()
             val fcmToken = FirebaseMessaging.getInstance().token.await()
             restAPI.getMemberApi().deleteFcmToken(fcmToken)
-            restAPI.getMemberApi().quitMember(memberId)
+            restAPI.getMemberApi().quitMember(sessionModule.sessionState.value.memberId)
                 .suspendOnSuccess {
-                    localDataStorage.logOut()
+                    sessionModule.invalidateSession()
                     setState(OperationStatus.SUCCESS)
                 }.suspendOnFailure {
                     setState(OperationStatus.ERROR)

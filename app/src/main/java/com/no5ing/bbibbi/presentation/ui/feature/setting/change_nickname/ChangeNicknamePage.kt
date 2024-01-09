@@ -47,6 +47,7 @@ import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.members.ChangeNicknameViewModel
+import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
 
@@ -62,8 +63,9 @@ fun ChangeNicknamePage(
     val uiState = changeNicknameViewModel.uiState.collectAsState()
     val snackBarHost = LocalSnackbarHostState.current
     val focusHost = LocalFocusManager.current
+    val sessionState = LocalSessionState.current
     LaunchedEffect(Unit) {
-        val priorNickName = changeNicknameViewModel.me?.name ?: ""
+        val priorNickName = ""
         state.nicknameTextState.value = priorNickName
     }
     val successMessage = stringResource(id = R.string.change_nickname_completed)
@@ -200,7 +202,8 @@ fun ChangeNicknamePage(
                         changeNicknameViewModel.invoke(
                             Arguments(
                                 arguments = mapOf(
-                                    "nickName" to state.nicknameTextState.value
+                                    "nickName" to state.nicknameTextState.value,
+                                    "memberId" to sessionState.memberId,
                                 )
                             )
                         )

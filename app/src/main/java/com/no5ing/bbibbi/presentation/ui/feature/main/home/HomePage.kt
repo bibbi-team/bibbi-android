@@ -23,6 +23,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.IsMeUploadedTodayViewModel
+import com.no5ing.bbibbi.util.LocalSessionState
 
 @Composable
 fun HomePage(
@@ -36,10 +37,11 @@ fun HomePage(
     onTapUpload: () -> Unit = {},
     onTapInvite: () -> Unit = {},
 ) {
+    val memberId = LocalSessionState.current.memberId
     val meUploadedState = isMeUploadedTodayViewModel.uiState.collectAsState()
     BackToExitHandler()
     LaunchedEffect(Unit) {
-        isMeUploadedTodayViewModel.invoke(Arguments())
+        isMeUploadedTodayViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
         retrieveMeViewModel.invoke(Arguments())
     }
     Box(

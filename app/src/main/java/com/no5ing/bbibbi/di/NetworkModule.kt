@@ -7,6 +7,7 @@ import com.no5ing.bbibbi.BuildConfig
 import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.auth.AuthResult
+import com.no5ing.bbibbi.presentation.uistate.common.SessionState
 import com.no5ing.bbibbi.util.ZonedDateTimeAdapter
 import com.no5ing.bbibbi.util.forceRestart
 import com.skydoves.sandwich.SandwichInitializer
@@ -44,27 +45,23 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideInterceptor(
-        localDataStorage: LocalDataStorage,
+        sessionModule: SessionModule,
     ): Interceptor = Interceptor {
         val request = it.request()
         val start = System.currentTimeMillis()
         val modifiedRequest = with(request) {
             val builder = newBuilder()
-            val currentToken = localDataStorage.getAuthTokens()
+            val sessionState = sessionModule.sessionState.value
             builder
                 .header("Accept", "application/json")
                 .header("X-APP-KEY", BuildConfig.appKey)
                 .header("X-APP-VERSION", BuildConfig.VERSION_NAME)
-            if (currentToken != null) {
-                builder
-                    .header("X-AUTH-TOKEN", currentToken.accessToken)
+                .header("X-USER-PLATFORM", "AOS")
 
-                val me = localDataStorage.getMe()
-                if (me != null) {
-                    builder
-                        .header("X-USER-ID", me.memberId)
-                        .header("X-USER-PLATFORM", "AOS")
-                }
+            if (sessionState.isLoggedIn()) {
+                builder
+                    .header("X-AUTH-TOKEN", sessionState.apiToken.accessToken)
+                    .header("X-USER-ID", sessionState.memberId)
             }
 
             builder.build()
@@ -82,27 +79,29 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideAuthenticator(
-        localDataStorage: LocalDataStorage,
+        sessionModule: SessionModule,
         context: Context,
     ): Authenticator {
         val authenticatorClient = createOkHttpClient(null, null)
         return Authenticator { route, response ->
             if (response.code == 401) {
                 Timber.d("[NetworkModule] Refresh tokens with Authenticator")
-                val previousToken = localDataStorage.getAuthTokens() ?: return@Authenticator null
+                val currentSession = sessionModule.sessionState.value
+                if (!currentSession.isLoggedIn()) return@Authenticator null
+
+                val previousApiToken = currentSession.apiToken
                 val headers = Headers.headersOf(
                     "Accept", "application/json",
                     "X-APP-KEY", BuildConfig.appKey,
                     "X-APP-VERSION", BuildConfig.VERSION_NAME,
-                    "X-AUTH-TOKEN", previousToken.accessToken,
                     "X-USER-PLATFORM", "AOS",
-                    "X-USER-ID", localDataStorage.getMe()?.memberId ?: "WIDGET",
+                    "X-USER-ID", currentSession.memberId,
                 )
                 val refreshRequest = Request.Builder()
                     .url(BuildConfig.apiBaseUrl + "v1/auth/refresh")
                     .headers(headers)
                     .post(
-                        "{\"refreshToken\": \"${previousToken.refreshToken}\"}"
+                        "{\"refreshToken\": \"${previousApiToken.refreshToken}\"}"
                             .toRequestBody("application/json".toMediaType())
                     )
                     .build()
@@ -112,7 +111,7 @@ object NetworkModule {
                             val newToken = refreshResponse.body!!.string()
                             val newTokenObject = Gson().fromJson(newToken, AuthResult::class.java)
 
-                            localDataStorage.setAuthTokens(newTokenObject)
+                            sessionModule.onRefreshToken(newTokenObject)
                             return@Authenticator response.request
                                 .newBuilder()
                                 .removeHeader("X-AUTH-TOKEN")
@@ -121,9 +120,8 @@ object NetworkModule {
                         } else throw RuntimeException()
                     }
                 }.onFailure {
-                    localDataStorage.logOut()
                     requireTokenInvalidRestart.value = true
-                    context.forceRestart()
+                    sessionModule.invalidateSession()
                 }
             }
             null

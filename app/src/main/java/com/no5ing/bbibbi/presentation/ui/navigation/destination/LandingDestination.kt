@@ -36,6 +36,7 @@ object LandingOnBoardingDestination : NavigationDestination(
     content = { navController, _ ->
         OnBoardingPage(
             onDispose = {
+                navController.popAll()
                 navController.navigate(MainHomeDestination)
             }
         )

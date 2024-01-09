@@ -218,7 +218,7 @@ class WidgetImageWorker(
                 .header("X-APP-VERSION", BuildConfig.VERSION_NAME)
                 .header("X-AUTH-TOKEN", localDataStorage.getAuthTokens()?.accessToken ?: "")
                 .header("X-USER-PLATFORM", "AOS")
-                .header("X-USER-ID", localDataStorage.getMe()?.memberId ?: "WIDGET")
+                .header("X-USER-ID", "WIDGET")
                 .build()
         }
 

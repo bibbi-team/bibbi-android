@@ -38,6 +38,7 @@ import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
+import com.no5ing.bbibbi.util.LocalSessionState
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -47,6 +48,7 @@ fun FamilyPage(
     onTapFamily: (Member) -> Unit,
     onTapShare: (String) -> Unit,
 ) {
+    val memberId = LocalSessionState.current.memberId
     val members = familyMembersViewModel.uiState.collectAsLazyPagingItems()
     val pullRefreshState = rememberPullRefreshState(
         refreshing = members.loadState.refresh is LoadState.Loading,
@@ -111,7 +113,7 @@ fun FamilyPage(
                         val item = members[it] ?: throw RuntimeException()
                         MemberItem(
                             member = item,
-                            isMe = familyMembersViewModel.me?.memberId == item.memberId,
+                            isMe = memberId == item.memberId,
                             modifier = Modifier.clickable {
                                 onTapFamily(item)
                             },

@@ -15,10 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FamilyMemberViewModel @Inject constructor(
-    private val localDataStorage: LocalDataStorage,
     private val restAPI: RestAPI,
 ) : BaseViewModel<APIResponse<Member>>() {
-    val me = localDataStorage.getMe()
 
     override fun initState(): APIResponse<Member> {
         return APIResponse.loading()

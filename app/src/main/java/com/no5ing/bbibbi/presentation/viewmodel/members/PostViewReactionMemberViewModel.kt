@@ -16,11 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostViewReactionMemberViewModel @Inject constructor(
-    private val localDataStorage: LocalDataStorage,
     private val restAPI: RestAPI,
 ) : BaseViewModel<APIResponse<Map<String, Member>>>() {
-    val me = localDataStorage.getMe()
-
     override fun initState(): APIResponse<Map<String, Member>> {
         return APIResponse.idle()
     }

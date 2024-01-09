@@ -11,6 +11,7 @@ import com.no5ing.bbibbi.data.model.APIResponse.Companion.wrapToAPIResponse
 import com.no5ing.bbibbi.data.model.auth.RegisterRequest
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import com.no5ing.bbibbi.util.fileFromContentUriStr
 import com.no5ing.bbibbi.util.uploadImage
@@ -27,7 +28,7 @@ class RegisterMemberViewModel @Inject constructor(
     private val restAPI: RestAPI,
     private val context: Context,
     private val client: OkHttpClient,
-    private val localDataStorage: LocalDataStorage,
+    private val sessionModule: SessionModule,
 ) : BaseViewModel<APIResponse<Member>>() {
     override fun initState(): APIResponse<Member> {
         return APIResponse.idle()
@@ -62,11 +63,13 @@ class RegisterMemberViewModel @Inject constructor(
                 )
             ).suspendOnSuccess {
                 val authToken = data
-                localDataStorage.setAuthTokens(authToken)
+                sessionModule.onLoginWithTemporaryCredentials(
+                    newTokenPair = authToken,
+                )
                 val res = restAPI.getMemberApi().getMeInfo().suspendOnSuccess {
-                    localDataStorage.login(
+                    sessionModule.onLoginWithCredentials(
+                        newTokenPair = authToken,
                         member = data,
-                        authToken = authToken
                     )
                 }
                 setState(res.wrapToAPIResponse())

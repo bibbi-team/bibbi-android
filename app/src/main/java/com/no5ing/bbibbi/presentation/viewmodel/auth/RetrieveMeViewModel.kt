@@ -16,7 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class RetrieveMeViewModel @Inject constructor(
     private val restAPI: RestAPI,
-    private val localDataStorage: LocalDataStorage,
 ) : BaseViewModel<APIResponse<Member>>() {
     override fun initState(): APIResponse<Member> {
         return APIResponse.loading()
@@ -26,9 +25,6 @@ class RetrieveMeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val meResult = restAPI.getMemberApi().getMeInfo()
             val apiResult = meResult.wrapToAPIResponse()
-            if (apiResult.status is APIResponse.Status.SUCCESS) {
-                localDataStorage.setMe(apiResult.data)
-            }
             setState(apiResult)
         }
     }

@@ -33,6 +33,7 @@ import com.no5ing.bbibbi.presentation.state.main.family.FamilyPageInvitationStat
 import com.no5ing.bbibbi.presentation.state.main.family.rememberFamilyPageInvitationState
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.viewmodel.family.FamilyInviteLinkViewModel
+import com.no5ing.bbibbi.util.LocalSessionState
 
 @Composable
 fun FamilyPageInviteButton(
@@ -42,8 +43,9 @@ fun FamilyPageInviteButton(
     ),
     onTapShare: (String) -> Unit,
 ) {
+    val familyId = LocalSessionState.current.familyId
     LaunchedEffect(Unit) {
-        familyInviteLinkViewModel.invoke(Arguments())
+        familyInviteLinkViewModel.invoke(Arguments(arguments = mapOf("familyId" to familyId)))
     }
     Box(
         modifier = Modifier

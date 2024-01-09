@@ -19,27 +19,24 @@ import javax.inject.Inject
 @HiltViewModel
 class ChangeNicknameViewModel @Inject constructor(
     private val restAPI: RestAPI,
-    private val localDataStorage: LocalDataStorage,
 ) : BaseViewModel<APIResponse<Member>>() {
-    val me = localDataStorage.getMe()
     override fun initState(): APIResponse<Member> {
         return APIResponse.idle()
     }
 
     override fun invoke(arguments: Arguments) {
+        val memberId = arguments.get("memberId") ?: throw RuntimeException()
         val nickName = arguments.get("nickName") ?: throw RuntimeException()
         setState(loading())
         viewModelScope.launch(Dispatchers.IO) {
             val result = restAPI
                 .getMemberApi()
                 .changeMemberName(
-                    memberId = me?.memberId ?: throw RuntimeException(),
+                    memberId = memberId,
                     body = ChangeNameRequest(
                         name = nickName,
                     )
-                ).suspendOnSuccess {
-                    localDataStorage.setMe(data)
-                }.wrapToAPIResponse()
+                ).wrapToAPIResponse()
             setState(result)
         }
     }

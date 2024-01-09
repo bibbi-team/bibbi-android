@@ -26,16 +26,14 @@ class ChangeProfileImageViewModel @Inject constructor(
     private val restAPI: RestAPI,
     private val context: Context,
     private val client: OkHttpClient,
-    private val localDataStorage: LocalDataStorage,
 ) : BaseViewModel<APIResponse<Member>>() {
-    val me = localDataStorage.getMe()
     override fun initState(): APIResponse<Member> {
         return APIResponse.idle()
     }
 
     override fun invoke(arguments: Arguments) {
         val imageUri = arguments.get("imageUri") ?: throw RuntimeException()
-        val memberId = me?.memberId ?: throw RuntimeException()
+        val memberId = arguments.get("memberId") ?: throw RuntimeException()
         withMutexScope(Dispatchers.IO, uiState.value.isIdle()) {
             setState(loading())
             val file = fileFromContentUriStr(context, imageUri)
@@ -54,9 +52,7 @@ class ChangeProfileImageViewModel @Inject constructor(
                         body = ChangeProfileImageRequest(
                             profileImageUrl = uploadedUrl,
                         )
-                    ).onSuccess {
-                        localDataStorage.setMe(data)
-                    }.wrapToAPIResponse()
+                    ).wrapToAPIResponse()
                     setState(result)
                 } else {
                     setState(APIResponse.unknownError())

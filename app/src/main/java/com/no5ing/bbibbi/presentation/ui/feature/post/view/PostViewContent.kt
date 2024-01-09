@@ -24,6 +24,7 @@ import com.no5ing.bbibbi.presentation.ui.common.component.MiniTextBubbleBox
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
+import com.no5ing.bbibbi.util.LocalSessionState
 
 @Composable
 fun PostViewContent(
@@ -34,6 +35,7 @@ fun PostViewContent(
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
     addEmojiBarState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
+    val memberId = LocalSessionState.current.memberId
     Column(
         modifier = modifier,
     ) {
@@ -74,7 +76,7 @@ fun PostViewContent(
                 AddReactionBar(
                     onTapEmoji = {
                         val toggled =
-                            familyPostReactionBarViewModel.toggleReact(emoji = it)
+                            familyPostReactionBarViewModel.toggleReact(memberId = memberId, emoji = it)
 
                         if (toggled) {
                             addPostReactionViewModel.invoke(

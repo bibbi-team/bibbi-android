@@ -17,7 +17,6 @@ import javax.inject.Inject
 @HiltViewModel
 class FamilyInviteLinkViewModel @Inject constructor(
     private val restAPI: RestAPI,
-    private val localDataStorage: LocalDataStorage,
 ) : BaseViewModel<FamilyInviteLinkUiState>() {
     override fun initState(): FamilyInviteLinkUiState {
         return FamilyInviteLinkUiState(
@@ -26,8 +25,8 @@ class FamilyInviteLinkViewModel @Inject constructor(
     }
 
     override fun invoke(arguments: Arguments) {
+        val familyId = arguments.get("familyId") ?: throw RuntimeException()
         viewModelScope.launch(Dispatchers.IO) {
-            val familyId = localDataStorage.getMe()?.familyId ?: throw RuntimeException()
             val familyLink = restAPI.getLinkApi().createFamilyLink(familyId = familyId)
             familyLink.suspendOnSuccess {
                 setState(

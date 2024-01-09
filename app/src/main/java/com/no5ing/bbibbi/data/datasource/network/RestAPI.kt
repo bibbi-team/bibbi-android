@@ -188,11 +188,6 @@ interface RestAPI {
             @Body body: SocialLoginRequest,
         ): ApiResponse<AuthResult>
 
-        @POST("v1/auth/force-token")
-        suspend fun temporaryLogin(
-            @Query("memberId") memberId: String,
-        ): ApiResponse<AuthResult>
-
         @POST("v1/auth/refresh")
         suspend fun refreshToken(
             @Body body: RefreshAuthRequest,

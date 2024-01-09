@@ -23,14 +23,14 @@ class IsMeUploadedTodayViewModel @Inject constructor(
     }
 
     override fun invoke(arguments: Arguments) {
+        val memberId = arguments.get("memberId") ?: throw RuntimeException()
         viewModelScope.launch(Dispatchers.IO) {
-            val me = localDataStorage.getMe()
             restAPI
                 .getPostApi()
                 .getPosts(
                     page = 1,
                     size = 1,
-                    memberId = me?.memberId,
+                    memberId = memberId,
                     date = todayAsString()
                 ).suspendOnSuccess {
                     val isMeUploadedToday = data.results.isNotEmpty()

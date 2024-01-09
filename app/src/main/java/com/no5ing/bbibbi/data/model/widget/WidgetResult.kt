@@ -9,4 +9,5 @@ data class WidgetResult(
     val profileImageUrl: String,
     val postImageUrl: String,
     val postContent: String,
+    val authorName: String,
 ) : Parcelable, BaseModel()

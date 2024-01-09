@@ -32,6 +32,7 @@ import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenRequest
 import com.no5ing.bbibbi.di.NetworkModule
+import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.ui.MainPage
 import com.no5ing.bbibbi.presentation.ui.navigation.NavDestinationListener
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingAlreadyFamilyExistsDestination
@@ -39,10 +40,12 @@ import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestin
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
+import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.forceRestart
 import com.no5ing.bbibbi.util.getInstallReferrerClient
 import com.no5ing.bbibbi.util.getLinkIdFromUrl
+import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -55,6 +58,9 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var localDataStorage: LocalDataStorage
+
+    @Inject
+    lateinit var sessionModule: SessionModule
 
     @Inject
     lateinit var restAPI: RestAPI
@@ -86,15 +92,15 @@ class MainActivity : ComponentActivity() {
                 val deepLinkPayload = data
                 when (deepLinkPayload.type) {
                     "FAMILY_REGISTRATION" -> {
-                        val previousMe = localDataStorage.getMe()
-                        if (previousMe == null || !previousMe.hasFamily()) {
-                            localDataStorage.setRegistrationToken(linkId)
-                        } else {
-                            //님머함?
-                            runOnUiThread {
-                                localNavController?.navigate(LandingAlreadyFamilyExistsDestination)
-                            }
-                        }
+//                        val previousMe = localDataStorage.getMe()
+//                        if (previousMe == null || !previousMe.hasFamily()) {
+//                            localDataStorage.setRegistrationToken(linkId)
+//                        } else {
+//                            //님머함?
+//                            runOnUiThread {
+//                                localNavController?.navigate(LandingAlreadyFamilyExistsDestination)
+//                            }
+//                        }
                     }
                     else -> {}
                 }
@@ -102,13 +108,18 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private suspend fun initializeDefault(): Boolean {
-        var canSkipLandingPage = false
+    private suspend fun initializeDefault() {
         handleFirstInstall()
+        initializeSession()
+    }
+
+    private suspend fun initializeSession() {
         if (localDataStorage.getAuthTokens() != null) {
             val fcm = FirebaseMessaging.getInstance().token.await()
+            sessionModule.onLoginWithTemporaryCredentials(
+                newTokenPair = localDataStorage.getAuthTokens()!!,
+            )
             restAPI.getMemberApi().getMeInfo().suspendOnSuccess {
-                localDataStorage.setMe(data)
                 val isValidUser = data.hasFamily()
                 if (isValidUser) {
                     restAPI.getMemberApi().registerFcmToken(
@@ -117,10 +128,14 @@ class MainActivity : ComponentActivity() {
                         )
                     )
                 }
-                canSkipLandingPage = isValidUser
+                sessionModule.onLoginWithCredentials(
+                    newTokenPair = localDataStorage.getAuthTokens()!!,
+                    member = data,
+                )
+            }.suspendOnFailure {
+                sessionModule.invalidateSession()
             }
         }
-        return canSkipLandingPage
     }
 
     private suspend fun handleFirstInstall() {
@@ -153,12 +168,12 @@ class MainActivity : ComponentActivity() {
         onAppStartIntent(intent)
 
         var keepSplash by mutableStateOf(true)
-        var isAlreadyLoggedIn by mutableStateOf(false)
+       // var isAlreadyLoggedIn by mutableStateOf(false)
         var isReady by mutableStateOf(false)
         var isInitialBootstrap by mutableStateOf(true)
 
         lifecycleScope.launch(Dispatchers.IO) {
-            isAlreadyLoggedIn = initializeDefault()
+            initializeDefault()
             keepSplash = false
             isReady = true
         }
@@ -174,9 +189,11 @@ class MainActivity : ComponentActivity() {
             val tokenInvalidState = NetworkModule.requireTokenInvalidRestart.collectAsState()
             val navController = rememberAnimatedNavController()
             val snackBarHostState = remember { SnackbarHostState() }
+            val sessionState by sessionModule.sessionState.collectAsState()
             DisposableEffect(navController) {
                 localNavController = navController
-                navController.addOnDestinationChangedListener(NavDestinationListener(this@MainActivity))
+                navController
+                    .addOnDestinationChangedListener(NavDestinationListener(this@MainActivity))
                 onDispose {
                     localNavController = null
                 }
@@ -216,11 +233,23 @@ class MainActivity : ComponentActivity() {
                             color = MaterialTheme.bbibbiScheme.backgroundPrimary
                         ) {
                             AnimatedVisibility(visible = isReady) {
-                                MainPage(
-                                    snackBarHostState = snackBarHostState,
-                                    navController = navController,
-                                    isAlreadyLoggedIn = isAlreadyLoggedIn,
-                                )
+                                LaunchedEffect(sessionState) {
+                                    Timber.d("[MainActivity] Session State Changed to $sessionState")
+                                    if (sessionState.isLoggedIn()) {
+                                       localDataStorage.setAuthTokens(sessionState.apiToken)
+                                    } else {
+                                        localDataStorage.logOut()
+                                    }
+                                }
+                                CompositionLocalProvider(
+                                    LocalSessionState provides sessionState
+                                ) {
+                                    MainPage(
+                                        snackBarHostState = snackBarHostState,
+                                        navController = navController,
+                                        isAlreadyLoggedIn = sessionState.isLoggedIn(),
+                                    )
+                                }
                             }
                         }
                     }

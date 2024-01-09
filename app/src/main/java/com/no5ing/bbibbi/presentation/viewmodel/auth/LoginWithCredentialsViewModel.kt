@@ -4,7 +4,9 @@ import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.auth.SocialLoginRequest
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.state.landing.login.LoginStatus
+import com.no5ing.bbibbi.presentation.uistate.common.SessionState
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import com.skydoves.sandwich.retrofit.body
 import com.skydoves.sandwich.suspendOnFailure
@@ -16,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginWithCredentialsViewModel @Inject constructor(
     private val restAPI: RestAPI,
-    private val localDataStorage: LocalDataStorage,
+    private val sessionModule: SessionModule,
 ) : BaseViewModel<LoginStatus>() {
     override fun initState(): LoginStatus {
         return LoginStatus.IDLE
@@ -38,14 +40,19 @@ class LoginWithCredentialsViewModel @Inject constructor(
             )
             authResult.suspendOnSuccess {
                 val authToken = body
-                localDataStorage.setAuthTokens(authToken)
+                sessionModule.onLoginWithTemporaryCredentials(
+                    newTokenPair = authToken,
+                )
                 if (body.isTemporaryToken) {
                     // 임시토큰이니까.. 회원가입 플로우로 넘겨야함
                     setState(LoginStatus.SUCCEED_TEMPORARY)
                 } else {
                     val meResult = restAPI.getMemberApi().getMeInfo()
                     meResult.suspendOnSuccess {
-                        localDataStorage.login(data, authToken)
+                        sessionModule.onLoginWithCredentials(
+                            newTokenPair = authToken,
+                            member = body,
+                        )
                         if (body.hasFamily()) {
                             setState(LoginStatus.SUCCEED_PERMANENT_HAS_FAMILY)
                         } else {

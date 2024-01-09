@@ -39,6 +39,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.members.PostViewReactionMemberVi
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
+import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.getEmojiResource
 
@@ -52,9 +53,9 @@ fun PostViewReactionBar(
     uiState: State<List<PostReactionUiState>> = familyPostReactionBarViewModel.uiState.collectAsState(),
     onTapAddEmojiButton: () -> Unit,
 ) {
-
+    val memberId = LocalSessionState.current.memberId
     LaunchedEffect(postId) {
-        familyPostReactionBarViewModel.invoke(Arguments(arguments = mapOf("postId" to postId)))
+        familyPostReactionBarViewModel.invoke(Arguments(arguments = mapOf("postId" to postId, "memberId" to memberId)))
         postViewReactionMemberViewModel.invoke(Arguments())
     }
     val selectedEmoji = remember { mutableStateOf(emojiList.first()) }
@@ -99,7 +100,7 @@ fun PostViewReactionBar(
                                 )
                             )
                         }
-                        familyPostReactionBarViewModel.toggleReact(emoji = item.first)
+                        familyPostReactionBarViewModel.toggleReact(memberId = memberId, emoji = item.first)
                     },
                     onLongTap = {
                         selectedEmoji.value = item.first

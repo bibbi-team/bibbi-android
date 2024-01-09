@@ -27,6 +27,6 @@ class NavDestinationListener(
             .getInstance(context)
             .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params)
 
-        Timber.d("[NavRoute] ${destination.route} $routeString")
+        Timber.d("[NavRoute] $routeString")
     }
 }

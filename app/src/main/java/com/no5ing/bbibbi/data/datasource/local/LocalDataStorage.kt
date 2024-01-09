@@ -8,6 +8,9 @@ import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
 import com.no5ing.bbibbi.data.model.auth.AuthResult
 import com.no5ing.bbibbi.data.model.member.Member
+import com.no5ing.bbibbi.presentation.uistate.common.SessionState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -42,12 +45,6 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         const val LANDING_SEEN_KEY = "landing_seen"
     }
 
-    fun login(member: Member, authToken: AuthResult) {
-        Timber.d("[LocalDataSource] logged in with ${authToken.accessToken}")
-        setAuthTokens(authToken)
-        setMe(member)
-    }
-
     fun logOut() {
         Timber.d("[LocalDataSource] logged out")
         clearPreference()
@@ -74,20 +71,6 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         val json = Gson().toJson(authResult)
 
         editor.putString(AUTH_RESULT_KEY, json)
-        editor.apply()
-        editor.commit()
-    }
-
-    fun getMe(): Member? {
-        val json = preferences.getString(ME_KEY, null)
-        return json?.let { Gson().fromJson(it, Member::class.java) }
-    }
-
-    fun setMe(member: Member) {
-        val editor = preferences.edit()
-        val json = Gson().toJson(member)
-
-        editor.putString(ME_KEY, json)
         editor.apply()
         editor.commit()
     }

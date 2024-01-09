@@ -45,6 +45,7 @@ import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.viewmodel.members.ChangeProfileImageViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMemberViewModel
+import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.localResources
@@ -60,9 +61,10 @@ fun ProfilePageMemberBar(
     changeableUriState: MutableState<Uri?> = remember { mutableStateOf(null) },
     isMe: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
+    val sessionState = LocalSessionState.current
     LaunchedEffect(Unit) {
         familyMemberViewModel.invoke(Arguments(resourceId = memberId))
-        isMe.value = familyMemberViewModel.me?.memberId == memberId
+        isMe.value = sessionState.memberId == memberId
     }
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -75,7 +77,10 @@ fun ProfilePageMemberBar(
         if (changeableUriState.value != null) {
             profileImageChangeViewModel.invoke(
                 Arguments(
-                    arguments = mapOf("imageUri" to changeableUriState.value.toString()),
+                    arguments = mapOf(
+                        "imageUri" to changeableUriState.value.toString(),
+                        "memberId" to sessionState.memberId,
+                    ),
                 )
             )
             changeableUriState.value = null
@@ -139,7 +144,7 @@ fun ProfilePageMemberBar(
                         size = 90.dp,
                     )
                 }
-                if (familyMemberViewModel.me?.memberId == memberState.value.data.memberId) {
+                if (sessionState.memberId == memberState.value.data.memberId) {
                     Box(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
@@ -168,7 +173,7 @@ fun ProfilePageMemberBar(
                         color = MaterialTheme.bbibbiScheme.textPrimary
                     )
                 )
-                if (familyMemberViewModel.me?.memberId == memberState.value.data.memberId) {
+                if (sessionState.memberId == memberState.value.data.memberId) {
                     Spacer(modifier = Modifier.width(4.dp))
                     Icon(
                         painter = painterResource(id = R.drawable.write_icon),

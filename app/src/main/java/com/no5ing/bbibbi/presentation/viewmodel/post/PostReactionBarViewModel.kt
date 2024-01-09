@@ -15,18 +15,17 @@ import javax.inject.Inject
 @HiltViewModel
 class PostReactionBarViewModel @Inject constructor(
     private val restAPI: RestAPI,
-    private val localDataStorage: LocalDataStorage,
 ) : BaseViewModel<List<PostReactionUiState>>() {
     override fun initState(): List<PostReactionUiState> {
         return emptyList()
     }
 
-    private fun reactMe(emoji: String) {
+    private fun reactMe(memberId: String, emoji: String) {
         val previousList = uiState.value.toMutableList()
         previousList.add(
             PostReactionUiState(
                 reactionId = "temp",
-                memberId = localDataStorage.getMe()?.memberId ?: throw RuntimeException(),
+                memberId = memberId,
                 emojiType = emoji,
                 isMe = true,
             )
@@ -42,7 +41,7 @@ class PostReactionBarViewModel @Inject constructor(
         setState(previousList)
     }
 
-    fun toggleReact(emoji: String): Boolean {
+    fun toggleReact(memberId: String, emoji: String): Boolean {
         val isMeReacted = uiState.value.any {
             it.emojiType == emoji && it.isMe
         }
@@ -50,16 +49,16 @@ class PostReactionBarViewModel @Inject constructor(
             unReactMe(emoji)
             return false
         } else {
-            reactMe(emoji)
+            reactMe(memberId, emoji)
             return true
         }
     }
 
     override fun invoke(arguments: Arguments) {
         val postId = arguments.get("postId") ?: throw RuntimeException()
+        val memberId = arguments.get("memberId") ?: throw RuntimeException()
         setState(emptyList())
         viewModelScope.launch(Dispatchers.IO) {
-            val me = localDataStorage.getMe()
             val reactions = restAPI
                 .getPostApi()
                 .getPostReactions(
@@ -71,7 +70,7 @@ class PostReactionBarViewModel @Inject constructor(
                         reactionId = it.reactionId,
                         memberId = it.memberId,
                         emojiType = it.emojiType,
-                        isMe = it.memberId == me?.memberId
+                        isMe = it.memberId == memberId
                     )
                 })
             }
