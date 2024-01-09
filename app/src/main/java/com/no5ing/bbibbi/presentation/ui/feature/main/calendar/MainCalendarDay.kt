@@ -102,7 +102,7 @@ fun <T : SelectionState> MainCalendarDay(
                     Text(
                         text = date.dayOfMonth.toString(),
                         color = textColor,
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 }
                 if (data?.allFamilyMembersUploaded == true) {
@@ -130,7 +130,7 @@ fun <T : SelectionState> MainCalendarDay(
                 Text(
                     text = date.dayOfMonth.toString(),
                     color = textColor,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
         }

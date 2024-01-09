@@ -104,8 +104,7 @@ fun MainCalendarPage(
                                     .weight(1f)
                                     .wrapContentHeight(),
                                 color = MaterialTheme.colorScheme.tertiary,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Medium
+                                style = MaterialTheme.typography.labelSmall,
                             )
                         }
                     }
@@ -158,7 +157,9 @@ fun MainCalendarYearMonthBar(
         Text(
             text = "${yearMonthState.year}${yearStr} ${yearMonthState.month.value}${monthStr}",
             fontWeight = FontWeight.SemiBold,
-            fontSize = 24.sp,
+            style = MaterialTheme.typography.headlineLarge.copy(
+                fontWeight = FontWeight.SemiBold
+            ),
             color = MaterialTheme.colorScheme.secondary
         )
         Balloon(
@@ -166,9 +167,9 @@ fun MainCalendarYearMonthBar(
             balloonContent = {
                 Text(
                     text = balloonText,
-                    fontSize = 14.sp,
                     textAlign = TextAlign.Center,
-                    color = Color.White
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
         ) {

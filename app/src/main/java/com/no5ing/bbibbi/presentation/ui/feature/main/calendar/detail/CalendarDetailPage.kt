@@ -307,9 +307,8 @@ fun PostViewDetailTopBar(
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = member.name,
-            fontWeight = FontWeight.Medium,
-            fontSize = 12.sp,
             color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.labelSmall,
         )
     }
 }
