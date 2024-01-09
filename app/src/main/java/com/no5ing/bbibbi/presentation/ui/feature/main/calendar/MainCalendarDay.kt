@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.post.CalendarElement
-import com.no5ing.bbibbi.presentation.ui.theme.uploadGreen
+import com.no5ing.bbibbi.presentation.ui.theme.mainGreen
 import io.github.boguszpawlowski.composecalendar.day.DayState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionState
@@ -43,7 +43,7 @@ fun <T : SelectionState> MainCalendarDay(
     val selectionState = state.selectionState
     val data = monthState[date]
     val isSelected = selectionState.isDateSelected(date)
-    val textColor = (if (state.isCurrentDay && state.isFromCurrentMonth) uploadGreen
+    val textColor = (if (state.isCurrentDay && state.isFromCurrentMonth) mainGreen
     else if (state.isFromCurrentMonth) Color.White
     else MaterialTheme.colorScheme.surface)
         .copy(
@@ -51,7 +51,7 @@ fun <T : SelectionState> MainCalendarDay(
         )
 
     val boxBorderColor = if (isSelected) Color.White
-    else if (state.isCurrentDay && state.isFromCurrentMonth) uploadGreen.copy(
+    else if (state.isCurrentDay && state.isFromCurrentMonth) mainGreen.copy(
         alpha = if (isSelectableState && !isSelected) 0.3f else 1.0f
     )
     else Color.Transparent
@@ -115,7 +115,7 @@ fun <T : SelectionState> MainCalendarDay(
                         Icon(
                             painter = painterResource(id = R.drawable.bbibbi_smile),
                             contentDescription = null,
-                            tint = uploadGreen,
+                            tint = mainGreen,
                             modifier = Modifier
                                 .fillMaxSize(),
                         )

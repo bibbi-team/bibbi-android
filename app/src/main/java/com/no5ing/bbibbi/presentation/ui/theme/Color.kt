@@ -11,7 +11,14 @@ val Gray100 = Color(0xffB2B2B4) //tertiary
 val Gray50 = Color(0xffD3D3D3) //secondary
 val White = Color(0xFFE8E8E8) //primary
 
-val uploadGreen = Color(0xFF3FD960)
+val mainGreen = Color(0xFF3FD960)
+val mainGreenHover = Color(0xFF3FD960)
+
+val graphicPink = Color(0xFFEE92EE)
+val graphicPurple = Color(0xFFCAA8FF)
+val graphicBlue = Color(0xFF658FFF)
+val emojiYellow = Color(0xFFCAED64)
+
 val kakaoYellow = Color(0xFFFEE500)
 val warningRed = Color(0xFFEB546F)
 val criticalRed = Color(0xFFFF4015)

@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.data.model.member.Member
-import com.no5ing.bbibbi.presentation.ui.theme.uploadGreen
+import com.no5ing.bbibbi.presentation.ui.theme.mainGreen
 
 @Composable
 fun CircleProfileImage(
@@ -48,7 +48,7 @@ fun CircleProfileImage(
                 modifier = modifier
                     .size(size)
                     .clip(CircleShape)
-                    .background(uploadGreen)
+                    .background(mainGreen)
             )
             Box(modifier = Modifier.align(Alignment.Center)) {
                 Text(

@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.no5ing.bbibbi.presentation.ui.theme.uploadGreen
+import com.no5ing.bbibbi.presentation.ui.theme.mainGreen
 
 @Composable
 fun CTAButton(
@@ -24,7 +24,7 @@ fun CTAButton(
         shape = RoundedCornerShape(100.dp),
         onClick = { if (isActive) onClick() },
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isActive) uploadGreen else uploadGreen.copy(alpha = 0.2f)
+            containerColor = if (isActive) mainGreen else mainGreen.copy(alpha = 0.2f)
         ),
         modifier = modifier,
         contentPadding = contentPadding,

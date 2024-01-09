@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.no5ing.bbibbi.R
-import com.no5ing.bbibbi.presentation.ui.theme.uploadGreen
+import com.no5ing.bbibbi.presentation.ui.theme.mainGreen
 import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,7 +80,7 @@ fun CustomAlertDialog(
                         Button(
                             onClick = confirmRequest,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = uploadGreen
+                                containerColor = mainGreen
                             ),
                             shape = RoundedCornerShape(10.dp),
                             modifier = Modifier.size(width = 126.dp, height = 44.dp)

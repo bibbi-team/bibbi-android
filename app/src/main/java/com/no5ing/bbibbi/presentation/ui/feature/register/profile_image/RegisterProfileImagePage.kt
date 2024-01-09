@@ -49,7 +49,7 @@ import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.AlbumCameraSelectDialog
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
-import com.no5ing.bbibbi.presentation.ui.theme.uploadGreen
+import com.no5ing.bbibbi.presentation.ui.theme.mainGreen
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RegisterMemberViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
@@ -151,7 +151,7 @@ fun RegisterProfileImagePage(
                                 modifier = Modifier
                                     .clip(CircleShape)
                                     .size(90.dp)
-                                    .background(uploadGreen)
+                                    .background(mainGreen)
                             )
                             Box(modifier = Modifier.align(Alignment.Center)) {
                                 Text(
@@ -167,7 +167,7 @@ fun RegisterProfileImagePage(
                                 modifier = Modifier
                                     .clip(CircleShape)
                                     .size(90.dp)
-                                    .background(uploadGreen),
+                                    .background(mainGreen),
                                 painter = rememberAsyncImagePainter(model = state.profileImageUri.value),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop
