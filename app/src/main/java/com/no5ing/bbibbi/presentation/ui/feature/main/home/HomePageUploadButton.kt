@@ -80,8 +80,8 @@ fun UploadHelperPop() {
         ) {
             Text(
                 text = stringResource(id = R.string.home_one_image_per_day),
-                fontSize = 14.sp,
-                color = Color(0xffFFFFFF)
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White,
             )
         }
         Box(

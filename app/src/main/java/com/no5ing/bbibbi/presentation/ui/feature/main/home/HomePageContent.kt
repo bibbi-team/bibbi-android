@@ -184,10 +184,8 @@ fun HomePageContentItem(
         ) {
             Text(
                 text = writerName,
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.secondary,
-                ),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.widthIn(max = 110.dp),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
@@ -195,11 +193,8 @@ fun HomePageContentItem(
             Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = time,
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Medium
-                )
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }

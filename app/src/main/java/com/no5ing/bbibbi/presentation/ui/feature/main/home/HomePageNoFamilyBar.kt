@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -64,13 +65,13 @@ fun HomePageNoFamilyBar(
                     Text(
                         text = stringResource(id = R.string.home_empty_family_description),
                         color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodySmall,
                     )
+                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = stringResource(id = R.string.home_empty_family_title),
                         color = MaterialTheme.colorScheme.secondary,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.headlineMedium,
                     )
                 }
             }

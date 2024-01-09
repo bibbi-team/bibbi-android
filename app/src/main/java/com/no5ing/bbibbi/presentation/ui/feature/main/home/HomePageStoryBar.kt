@@ -97,10 +97,10 @@ fun StoryBarIcon(
         Text(
             text = member.name,
             color = MaterialTheme.colorScheme.tertiary,
-            fontSize = 12.sp,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.labelSmall,
         )
     }
 }

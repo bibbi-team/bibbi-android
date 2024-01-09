@@ -224,7 +224,7 @@ fun ReactionListDialog(
                                                 if (item.isMe) {
                                                     Text(
                                                         text = stringResource(id = R.string.family_me),
-                                                        style = MaterialTheme.typography.bodyMedium,
+                                                        style = MaterialTheme.typography.bodySmall,
                                                         color = MaterialTheme.colorScheme.onSurface,
                                                     )
                                                 }

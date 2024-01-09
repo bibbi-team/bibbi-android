@@ -62,15 +62,15 @@ fun UploadCountDownBar(
     ) {
         Text(
             text = timeStr.value,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
-            color = if (warningState.value > 0) warningRed else Color(0xffFAFAFA),
+            style = MaterialTheme.typography.headlineLarge,
+            color = if (warningState.value > 0) warningRed else Color.White,
         )
         Text(
             text = if (warningState.value == 1) stringResource(id = R.string.home_time_not_much)
             else if (warningState.value == 2) stringResource(id = R.string.home_time_over)
             else stringResource(id = R.string.home_image_on_duration),
-            color = MaterialTheme.colorScheme.tertiary
+            color = MaterialTheme.colorScheme.tertiary,
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }

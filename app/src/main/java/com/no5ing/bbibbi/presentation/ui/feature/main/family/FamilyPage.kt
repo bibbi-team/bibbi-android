@@ -87,14 +87,15 @@ fun FamilyPage(
                 ) {
                     Text(
                         text = stringResource(id = R.string.family_your_family),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                            fontWeight = FontWeight.SemiBold,
+                        ),
                         color = MaterialTheme.colorScheme.secondary,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = members.itemCount.toString(),
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
@@ -155,13 +156,13 @@ fun MemberItem(
         ) {
             Text(
                 text = member.name,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.secondary,
             )
             if (isMe)
                 Text(
                     text = stringResource(id = R.string.family_me),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
         }

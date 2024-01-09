@@ -84,10 +84,8 @@ fun ProfilePageContent(
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = stringResource(id = R.string.profile_image_not_exists),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.tertiary,
-                    ),
+                    color = MaterialTheme.colorScheme.tertiary,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
 
             }
@@ -162,20 +160,15 @@ fun ProfilePageContentItem(
                 Spacer(modifier = Modifier.width(3.dp))
                 Text(
                     text = emojiCnt.toString(),
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.secondary,
-                    ),
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = time,
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Medium
-                )
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelSmall,
             )
         }
     }
