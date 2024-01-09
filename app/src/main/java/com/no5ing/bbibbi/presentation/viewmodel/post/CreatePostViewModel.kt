@@ -1,7 +1,6 @@
 package com.no5ing.bbibbi.presentation.viewmodel.post
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostRequest
@@ -16,7 +15,6 @@ import com.no5ing.bbibbi.util.uploadImage
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import timber.log.Timber
 import javax.inject.Inject

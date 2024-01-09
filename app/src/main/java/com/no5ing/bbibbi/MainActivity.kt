@@ -35,8 +35,6 @@ import com.no5ing.bbibbi.di.NetworkModule
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.ui.MainPage
 import com.no5ing.bbibbi.presentation.ui.navigation.NavDestinationListener
-import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingAlreadyFamilyExistsDestination
-import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
@@ -102,6 +100,7 @@ class MainActivity : ComponentActivity() {
 //                            }
 //                        }
                     }
+
                     else -> {}
                 }
             }
@@ -161,14 +160,13 @@ class MainActivity : ComponentActivity() {
     }
 
 
-
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         onAppStartIntent(intent)
 
         var keepSplash by mutableStateOf(true)
-       // var isAlreadyLoggedIn by mutableStateOf(false)
+        // var isAlreadyLoggedIn by mutableStateOf(false)
         var isReady by mutableStateOf(false)
         var isInitialBootstrap by mutableStateOf(true)
 
@@ -236,7 +234,7 @@ class MainActivity : ComponentActivity() {
                                 LaunchedEffect(sessionState) {
                                     Timber.d("[MainActivity] Session State Changed to $sessionState")
                                     if (sessionState.isLoggedIn()) {
-                                       localDataStorage.setAuthTokens(sessionState.apiToken)
+                                        localDataStorage.setAuthTokens(sessionState.apiToken)
                                     } else {
                                         localDataStorage.logOut()
                                     }

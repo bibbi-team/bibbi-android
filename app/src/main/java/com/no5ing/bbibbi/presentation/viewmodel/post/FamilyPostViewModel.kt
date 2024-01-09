@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.presentation.viewmodel.post
 
-import androidx.lifecycle.viewModelScope
 import com.no5ing.bbibbi.data.datasource.local.MemberCacheProvider
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.APIResponse
@@ -11,7 +10,6 @@ import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import com.skydoves.sandwich.suspendMapSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

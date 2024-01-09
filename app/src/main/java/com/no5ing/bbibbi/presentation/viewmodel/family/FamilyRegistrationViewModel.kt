@@ -52,10 +52,11 @@ class FamilyRegistrationViewModel @Inject constructor(
             val registrationToken = localDataStorage.getAndDeleteRegistrationToken()
             if (registrationToken == null) {
                 //링크 타고 온게 아니라 그냥 여까지 가입한사람
-                setState(restAPI.getMemberApi()
-                    .createAndJoinFamily()
-                    .updateMyFamilyInfo()
-                    .wrapToAPIResponse()
+                setState(
+                    restAPI.getMemberApi()
+                        .createAndJoinFamily()
+                        .updateMyFamilyInfo()
+                        .wrapToAPIResponse()
                 )
             } else {
                 setState(
@@ -74,7 +75,7 @@ class FamilyRegistrationViewModel @Inject constructor(
 
     private suspend fun ApiResponse<Family>.updateMyFamilyInfo() = this.suspendOnSuccess {
         restAPI.getMemberApi().getMeInfo().suspendOnSuccess {
-             sessionModule.onLoginWithCredentials(
+            sessionModule.onLoginWithCredentials(
                 newTokenPair = sessionModule.sessionState.value.apiToken,
                 member = data,
             )

@@ -22,6 +22,5 @@ data class SessionState(
     fun hasFamily() = _familyId != null
 
 
-
     fun isLoggedIn() = isLoggedIn
 }

@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.presentation.viewmodel.post
 
-import androidx.lifecycle.viewModelScope
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.post.CalendarElement
 import com.no5ing.bbibbi.data.repository.Arguments
@@ -8,7 +7,6 @@ import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import javax.inject.Inject

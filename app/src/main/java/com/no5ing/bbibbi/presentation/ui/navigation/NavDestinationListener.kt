@@ -9,7 +9,7 @@ import timber.log.Timber
 
 class NavDestinationListener(
     private val context: Context,
-): NavController.OnDestinationChangedListener {
+) : NavController.OnDestinationChangedListener {
     override fun onDestinationChanged(
         controller: NavController,
         destination: NavDestination,

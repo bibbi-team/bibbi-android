@@ -45,7 +45,6 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.LogoutViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.auth.QuitViewModel
-import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.emptyPermissionState
 import com.no5ing.bbibbi.util.localResources

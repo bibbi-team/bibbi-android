@@ -55,7 +55,14 @@ fun PostViewReactionBar(
 ) {
     val memberId = LocalSessionState.current.memberId
     LaunchedEffect(postId) {
-        familyPostReactionBarViewModel.invoke(Arguments(arguments = mapOf("postId" to postId, "memberId" to memberId)))
+        familyPostReactionBarViewModel.invoke(
+            Arguments(
+                arguments = mapOf(
+                    "postId" to postId,
+                    "memberId" to memberId
+                )
+            )
+        )
         postViewReactionMemberViewModel.invoke(Arguments())
     }
     val selectedEmoji = remember { mutableStateOf(emojiList.first()) }
@@ -100,7 +107,10 @@ fun PostViewReactionBar(
                                 )
                             )
                         }
-                        familyPostReactionBarViewModel.toggleReact(memberId = memberId, emoji = item.first)
+                        familyPostReactionBarViewModel.toggleReact(
+                            memberId = memberId,
+                            emoji = item.first
+                        )
                     },
                     onLongTap = {
                         selectedEmoji.value = item.first

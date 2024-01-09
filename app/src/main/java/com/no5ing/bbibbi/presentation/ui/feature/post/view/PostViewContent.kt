@@ -76,7 +76,10 @@ fun PostViewContent(
                 AddReactionBar(
                     onTapEmoji = {
                         val toggled =
-                            familyPostReactionBarViewModel.toggleReact(memberId = memberId, emoji = it)
+                            familyPostReactionBarViewModel.toggleReact(
+                                memberId = memberId,
+                                emoji = it
+                            )
 
                         if (toggled) {
                             addPostReactionViewModel.invoke(

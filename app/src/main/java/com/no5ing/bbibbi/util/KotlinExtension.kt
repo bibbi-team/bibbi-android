@@ -148,6 +148,7 @@ suspend fun getInstallReferrerClient(context: Context) = suspendCoroutine {
                 }
             }
         }
+
         override fun onInstallReferrerServiceDisconnected() {}
     })
 }

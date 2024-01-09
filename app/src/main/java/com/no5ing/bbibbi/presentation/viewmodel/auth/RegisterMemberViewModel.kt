@@ -1,7 +1,6 @@
 package com.no5ing.bbibbi.presentation.viewmodel.auth
 
 import android.content.Context
-import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
 import com.no5ing.bbibbi.data.model.APIResponse

@@ -1,12 +1,10 @@
 package com.no5ing.bbibbi.presentation.viewmodel.auth
 
-import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.auth.SocialLoginRequest
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.state.landing.login.LoginStatus
-import com.no5ing.bbibbi.presentation.uistate.common.SessionState
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import com.skydoves.sandwich.retrofit.body
 import com.skydoves.sandwich.suspendOnFailure
