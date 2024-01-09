@@ -45,7 +45,10 @@ class GetMembersPageSource @Inject constructor(
         arguments: Arguments,
         loadParams: LoadParams<Int>
     ): ApiResponse<Pagination<Member>> {
-        return restAPI.getMemberApi().getMembers()
+        return restAPI.getMemberApi().getMembers(
+            page = loadParams.key ?: 1,
+            size = loadParams.loadSize
+        )
     }
 
 }

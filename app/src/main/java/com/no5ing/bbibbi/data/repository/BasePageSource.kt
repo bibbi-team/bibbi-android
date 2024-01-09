@@ -67,7 +67,7 @@ abstract class BasePageSource<T : BaseModel>(
                 LoadResult.Page(
                     data = emptyList(),
                     prevKey = if (page == PAGE_START_INDEX) null else page - 1,
-                    nextKey = page + 1
+                    nextKey = null
                 )
             }
         }

@@ -43,7 +43,7 @@ class LocalDataStorage @Inject constructor(val context: Context) {
     }
 
     fun login(member: Member, authToken: AuthResult) {
-        Timber.d("[LocalDataSource] logged in with ${member.memberId}")
+        Timber.d("[LocalDataSource] logged in with ${authToken.accessToken}")
         setAuthTokens(authToken)
         setMe(member)
     }

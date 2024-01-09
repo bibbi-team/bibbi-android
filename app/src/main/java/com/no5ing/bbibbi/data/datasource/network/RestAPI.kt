@@ -53,7 +53,10 @@ interface RestAPI {
      */
     interface MemberApi {
         @GET("v1/members?type=FAMILY")
-        suspend fun getMembers(): ApiResponse<Pagination<Member>>
+        suspend fun getMembers(
+            @Query("page") page: Int?,
+            @Query("size") size: Int?,
+        ): ApiResponse<Pagination<Member>>
 
         @GET("v1/members/{memberId}")
         suspend fun getMember(

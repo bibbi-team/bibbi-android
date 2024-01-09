@@ -63,11 +63,6 @@ fun BbibbiTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            // window.statusBarColor = colorScheme.primary.toArgb()
-            // window.statusBarColor = 0xff242427.toInt()
-            //   window.navigationBarColor = 0xff242427.toInt()
-            //  window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            //   window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
                 window.setFlags(
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -83,10 +78,8 @@ fun BbibbiTheme(
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
                 )
             }
-
-            WindowCompat.getInsetsController(window, view).let {
-                it.isAppearanceLightStatusBars = false
-            }
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
         }
     }
 
