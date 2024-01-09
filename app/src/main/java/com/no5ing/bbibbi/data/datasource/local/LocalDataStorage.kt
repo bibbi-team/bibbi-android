@@ -50,7 +50,7 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         val editor = preferences.edit()
 
         editor.remove(AUTH_RESULT_KEY)
-        editor.remove(REGISTRATION_TOKEN_KEY)
+        //editor.remove(REGISTRATION_TOKEN_KEY)
         editor.apply()
         editor.commit()
     }

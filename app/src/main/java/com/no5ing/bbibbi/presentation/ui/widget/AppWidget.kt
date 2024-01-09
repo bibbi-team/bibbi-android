@@ -45,7 +45,9 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.no5ing.bbibbi.MainActivity
@@ -66,6 +68,7 @@ class AppWidget : GlanceAppWidget() {
         val resultKey = stringPreferencesKey("result")
 
         val imageKey = stringPreferencesKey("postImgUrl")
+        val userNameKey = stringPreferencesKey("nickName")
         val profileImageKey = stringPreferencesKey("profileImgUrl")
         val postContentKey = stringPreferencesKey("postContent")
     }
@@ -90,9 +93,10 @@ class AppWidget : GlanceAppWidget() {
                 ExistingPeriodicWorkPolicy.KEEP,
                 PeriodicWorkRequest.Builder(
                     WidgetImageWorker::class.java,
-                    Duration.ofMinutes(15)
+                    Duration.ofMinutes(15),
                 )
-                    .setInitialDelay(Duration.ofMinutes(15))
+                    .setConstraints(Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED).build())
                     .build()
             )
             provideContent {
@@ -118,19 +122,7 @@ class AppWidget : GlanceAppWidget() {
                         ImagePreviewBox(size)
                     }
 
-                    WIDGET_LOADING -> {
-                        Box(
-                            modifier = GlanceModifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(
-                                color = ColorProvider(Color.White)
-                            )
-                        }
-                    }
-
-                    null -> {
-                        //INITIAL
+                    WIDGET_LOADING, null -> {
                         Box(
                             modifier = GlanceModifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
@@ -160,7 +152,7 @@ class AppWidget : GlanceAppWidget() {
     @Composable
     fun ImagePreviewBox(size: DpSize) {
         val postImagePath = currentState(imageKey)!!
-        val profileImagePath = currentState(profileImageKey)!!
+        val profileImagePath = currentState(profileImageKey)
         val postContent = currentState(postContentKey)!!
         Box(
             modifier = GlanceModifier
@@ -198,16 +190,29 @@ class AppWidget : GlanceAppWidget() {
                     Box(
                         modifier = GlanceModifier
                             .size(iconSize)
-                            .background(Color.Red)
+                            .background(Color.Transparent)
                             .cornerRadius(iconSize)
                     ) {
-                        Image(
-                            provider = getImageProvider(profileImagePath),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = GlanceModifier
-                                .fillMaxSize()
-                        )
+                        if (profileImagePath != null) {
+                            Image(
+                                provider = getImageProvider(profileImagePath),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = GlanceModifier
+                                    .fillMaxSize()
+                            )
+                        } else {
+                            val nickName = (currentState(userNameKey) ?: "?").first()
+                            Text(
+                                text = nickName.toString(),
+                                style = TextStyle(
+                                    color = ColorProvider(Color.White),
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = (iconSize.value.toPx * 0.5).sp,
+                                )
+                            )
+                        }
+
                     }
                 }
 

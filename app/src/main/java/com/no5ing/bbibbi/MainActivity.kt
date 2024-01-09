@@ -121,6 +121,7 @@ class MainActivity : ComponentActivity() {
             restAPI.getMemberApi().getMeInfo().suspendOnSuccess {
                 val isValidUser = data.hasFamily()
                 if (isValidUser) {
+                    Timber.d("[Auth] Register FCM Token: $fcm")
                     restAPI.getMemberApi().registerFcmToken(
                         AddFcmTokenRequest(
                             fcmToken = fcm

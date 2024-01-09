@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import androidx.compose.ui.graphics.Color
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -26,7 +27,8 @@ class FirebaseService : FirebaseMessagingService() {
                 .getActivity(this@FirebaseService, 0, intent, PendingIntent.FLAG_IMMUTABLE)
             val builder = NotificationCompat
                 .Builder(this@FirebaseService, channel_id)
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setSmallIcon(R.drawable.notification_icon)
+                .setColor(0xFF3FD960.toInt())
                 .setContentTitle(title)
                 .setContentText(body)
                 .setContentIntent(pendingIntent)

@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui.widget
 
+import android.app.Notification
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
@@ -7,16 +8,11 @@ import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
 import android.content.pm.PackageManager
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.datastore.preferences.core.MutablePreferences
-import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.appwidget.updateAll
 import androidx.work.CoroutineWorker
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
-import androidx.work.WorkManager
+import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import coil.annotation.ExperimentalCoilApi
 import coil.imageLoader
@@ -34,51 +30,14 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import timber.log.Timber
-import java.time.Duration
 
 
 class WidgetImageWorker(
     private val context: Context,
     workerParameters: WorkerParameters
 ) : CoroutineWorker(context, workerParameters) {
-
-    companion object {
-
-        private val uniqueWorkName = WidgetImageWorker::class.java.simpleName
-
-        fun enqueue(context: Context, glanceId: GlanceId, force: Boolean = false) {
-            val manager = WorkManager.getInstance(context)
-            val requestBuilder = OneTimeWorkRequestBuilder<WidgetImageWorker>().apply {
-                addTag(glanceId.toString())
-                setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-                setInputData(
-                    Data.Builder()
-                        .putBoolean("force", force)
-                        .build()
-                )
-            }
-            val workPolicy = if (force) {
-                ExistingWorkPolicy.REPLACE
-            } else {
-                ExistingWorkPolicy.KEEP
-            }
-
-            manager.enqueueUniqueWork(
-                uniqueWorkName,
-                workPolicy,
-                requestBuilder.build()
-            )
-
-            // Temporary workaround to avoid WM provider to disable itself and trigger an
-            // app widget update
-            manager.enqueueUniqueWork(
-                "$uniqueWorkName-workaround",
-                ExistingWorkPolicy.KEEP,
-                OneTimeWorkRequestBuilder<WidgetImageWorker>().apply {
-                    setInitialDelay(Duration.ofDays(365))
-                }.build()
-            )
-        }
+    override suspend fun getForegroundInfo(): ForegroundInfo {
+        return ForegroundInfo(1, Notification())
     }
 
     override suspend fun doWork(): Result {
@@ -99,8 +58,12 @@ class WidgetImageWorker(
                             prefs[AppWidget.resultKey] = AppWidget.WIDGET_SUCCESS
                             prefs[AppWidget.imageKey] = loadImage(newWidget.postImageUrl, force)
                             prefs[AppWidget.postContentKey] = newWidget.postContent
-                            prefs[AppWidget.profileImageKey] =
-                                loadImage(newWidget.profileImageUrl, force)
+                            newWidget.profileImageUrl?.let { loadImage(it, force) }?.apply {
+                                prefs[AppWidget.profileImageKey] = this
+                            } ?: Unit.apply {
+                                prefs[AppWidget.userNameKey] = newWidget.authorName
+                                prefs.remove(AppWidget.profileImageKey)
+                            }
                         }
                     } else if (apiResult.code == 204) {
                         updateImageWidget { prefs ->

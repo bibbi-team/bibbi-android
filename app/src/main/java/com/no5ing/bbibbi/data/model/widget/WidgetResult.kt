@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class WidgetResult(
-    val profileImageUrl: String,
+    val profileImageUrl: String?,
     val postImageUrl: String,
     val postContent: String,
     val authorName: String,
