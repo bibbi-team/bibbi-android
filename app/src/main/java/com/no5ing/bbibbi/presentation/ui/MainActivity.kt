@@ -43,6 +43,7 @@ import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.messaging.FirebaseMessaging
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
@@ -238,6 +239,20 @@ class MainActivity : ComponentActivity() {
             val navController = rememberAnimatedNavController()
             DisposableEffect(navController) {
                 localNavController = navController
+                navController.addOnDestinationChangedListener { controller, destination, arguments ->
+                    val routes = controller.currentBackStack.value.joinToString("->") {
+                        it.destination.route ?: "START"
+                    }
+                    val routeString = "${routes}->${destination.route ?: "END"}"
+
+                    val params = Bundle()
+                    params.putString(FirebaseAnalytics.Param.SCREEN_NAME, destination.route)
+                    params.putString(FirebaseAnalytics.Param.SCREEN_CLASS, destination.route)
+                    FirebaseAnalytics.getInstance(this@MainActivity)
+                        .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params)
+
+                    Timber.d("[NavRoute] ${destination.route} $routeString")
+                }
                 onDispose {
                     localNavController = null
                 }
@@ -246,14 +261,7 @@ class MainActivity : ComponentActivity() {
             val hostState = remember {
                 SnackbarHostState()
             }
-            navController.addOnDestinationChangedListener { controller, destination, arguments ->
-                val routes = controller.currentBackStack.value.joinToString("->") {
-                    it.destination.route ?: "START"
-                }
-                val routeString = "${routes}->${destination.route ?: "END"}"
 
-                Timber.d("[NavRoute] $routeString")
-            }
 
             LaunchedEffect(updateState.value) {
                 if (updateState.value) {
