@@ -185,9 +185,8 @@ fun ReactionListDialog(
                                     Spacer(modifier = Modifier.width(20.dp))
                                     Text(
                                         text = totalCntMessage,
-                                        fontWeight = FontWeight.SemiBold,
-                                        fontSize = 18.sp,
                                         color = Color.White,
+                                        style = MaterialTheme.typography.headlineMedium,
                                     )
                                 }
                             }
@@ -219,13 +218,13 @@ fun ReactionListDialog(
                                             Column {
                                                 Text(
                                                     text = currentMember.name,
-                                                    fontSize = 16.sp,
-                                                    color = MaterialTheme.colorScheme.secondary,
+                                                    style = MaterialTheme.typography.bodyLarge,
+                                                    color = Color.White,
                                                 )
                                                 if (item.isMe) {
                                                     Text(
                                                         text = stringResource(id = R.string.family_me),
-                                                        fontSize = 14.sp,
+                                                        style = MaterialTheme.typography.bodyMedium,
                                                         color = MaterialTheme.colorScheme.onSurface,
                                                     )
                                                 }
