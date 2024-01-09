@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,10 +26,8 @@ fun OnBoardingSecondPage() {
     ) {
         Spacer(modifier = Modifier.height(40.dp))
         Text(
-            text = "홈 화면 위젯으로 \n" +
-                    "가족의 일상을 한 눈에 확인해요",
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 24.sp,
+            text = stringResource(id = R.string.onboarding_second_title),
+            style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(horizontal = 20.dp)
         )
@@ -41,29 +40,6 @@ fun OnBoardingSecondPage() {
                     .fillMaxWidth(),
                 contentScale = ContentScale.FillWidth
             )
-//            Box(
-//                modifier = Modifier
-//                    .align(Alignment.BottomCenter)
-//                    .fillMaxWidth(),
-//                contentAlignment = Alignment.TopStart
-//            ) {
-//                Box(
-//                    modifier = Modifier
-//                        .align(Alignment.TopCenter)
-//                        .fillMaxWidth()
-//                        .height(147.dp)
-//                        .background(
-//                            brush = Brush.verticalGradient(
-//                                colors = listOf(
-//                                    MaterialTheme.colorScheme.background.copy(alpha = 0f),
-//                                    MaterialTheme.colorScheme.background
-//                                ),
-//                                startY = 0.0f,
-//                                endY = with(LocalDensity.current) { 120.dp.toPx() },
-//                            ),
-//                        ),
-//                )
-//            }
         }
     }
 }

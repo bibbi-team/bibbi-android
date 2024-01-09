@@ -42,14 +42,13 @@ fun AlreadyFamilyExistsView(
         ) {
             Text(
                 stringResource(id = R.string.already_family_exists_title),
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 24.sp,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.headlineLarge,
             )
             Text(
                 stringResource(id = R.string.already_family_exists_subtitle),
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.tertiary
+                color = MaterialTheme.colorScheme.tertiary,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
         Image(
