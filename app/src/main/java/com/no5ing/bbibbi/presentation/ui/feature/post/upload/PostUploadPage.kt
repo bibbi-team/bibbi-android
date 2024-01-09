@@ -172,9 +172,8 @@ fun PostUploadPage(
                                     ) {
                                         Text(
                                             text = character.toString(),
-                                            fontSize = 18.sp,
                                             color = Color.White,
-                                            fontWeight = FontWeight.SemiBold,
+                                            style = MaterialTheme.typography.headlineMedium,
                                         )
                                     }
                                 }

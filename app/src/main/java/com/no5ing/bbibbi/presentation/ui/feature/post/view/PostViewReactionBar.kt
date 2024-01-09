@@ -141,7 +141,7 @@ fun PostViewReactionElement(
         modifier = Modifier
             .border(
                 width = if (isMeReacted) 1.dp else 0.dp,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.primary,
                 RoundedCornerShape(100.dp)
             )
             .background(
@@ -166,8 +166,9 @@ fun PostViewReactionElement(
             )
             Text(
                 text = emojiCnt.toString(),
-                fontSize = 16.sp,
-                color = if (isMeReacted) Color.White else MaterialTheme.colorScheme.tertiary,
+                color = if (isMeReacted) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.tertiary,
+                style = MaterialTheme.typography.bodyLarge,
             )
         }
 

@@ -144,13 +144,13 @@ fun PostViewTopBar(
         Column {
             Text(
                 text = member.name,
-                fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.tertiary,
+                style = MaterialTheme.typography.bodyMedium,
             )
             Text(
                 text = date,
-                fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 12.sp,
             )
 
         }
