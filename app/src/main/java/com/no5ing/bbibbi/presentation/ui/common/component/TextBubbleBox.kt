@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,9 +39,8 @@ fun BoxScope.TextBubbleBox(
                 ) {
                     Text(
                         text = character.toString(),
-                        fontSize = 24.sp,
                         color = Color.White,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.headlineLarge,
                     )
                 }
             }
@@ -71,9 +71,8 @@ fun BoxScope.MiniTextBubbleBox(
                 ) {
                     Text(
                         text = character.toString(),
-                        fontSize = 18.sp,
                         color = Color.White,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.headlineMedium,
                     )
                 }
             }

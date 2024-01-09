@@ -47,8 +47,8 @@ fun IconedCTAButton(
             )
             Text(
                 text = text,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.background
+                color = MaterialTheme.colorScheme.background,
+                style = MaterialTheme.typography.bodyLarge,
             )
         }
     }

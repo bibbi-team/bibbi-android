@@ -124,8 +124,8 @@ fun SettingHomePage(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .padding(bottom = 8.dp),
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 SettingItem(
                     name = stringResource(id = R.string.setting_version_info),
@@ -133,8 +133,8 @@ fun SettingHomePage(
                     rightButton = {
                         Text(
                             text = BuildConfig.VERSION_NAME,
-                            fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.headlineSmall,
                         )
                     }
                 )
@@ -175,7 +175,7 @@ fun SettingHomePage(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .padding(bottom = 8.dp),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 SettingItem(
@@ -221,7 +221,7 @@ fun SettingItem(
         Text(
             text = name,
             color = if (isCritical) criticalRed else MaterialTheme.colorScheme.secondary,
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.headlineSmall,
         )
         rightButton()
     }

@@ -40,8 +40,7 @@ fun ClosableTopBar(
         Text(
             text = title,
             color = MaterialTheme.colorScheme.secondary,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold
+            style = MaterialTheme.typography.headlineMedium,
         )
         rightButton()
     }
