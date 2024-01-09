@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.no5ing.bbibbi.data.model.Resource
 import com.no5ing.bbibbi.data.repository.Arguments
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,7 +46,7 @@ abstract class BaseViewModel<T> : ViewModel() {
     fun withMutexScope(
         dispatcher: CoroutineDispatcher = Dispatchers.Main,
         condition: Boolean = true,
-        block: suspend () -> Unit
+        block: suspend CoroutineScope.() -> Unit
     ) {
         if (!condition) {
             Timber.e("[BaseViewModel] invoke condition failed : ${this}")

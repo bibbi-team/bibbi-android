@@ -23,7 +23,7 @@ class PostViewReactionMemberViewModel @Inject constructor(
     }
 
     override fun invoke(arguments: Arguments) {
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             setState(
                 restAPI.getMemberApi().getMembers(
                     page = 1,

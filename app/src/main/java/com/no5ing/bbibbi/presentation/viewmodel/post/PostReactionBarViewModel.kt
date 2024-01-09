@@ -58,7 +58,7 @@ class PostReactionBarViewModel @Inject constructor(
         val postId = arguments.get("postId") ?: throw RuntimeException()
         val memberId = arguments.get("memberId") ?: throw RuntimeException()
         setState(emptyList())
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             val reactions = restAPI
                 .getPostApi()
                 .getPostReactions(

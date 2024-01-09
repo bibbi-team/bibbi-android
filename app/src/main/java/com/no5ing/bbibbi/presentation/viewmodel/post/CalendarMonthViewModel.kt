@@ -25,7 +25,7 @@ class CalendarMonthViewModel @Inject constructor(
         val yearMonth = arguments.get("yearMonth") ?: throw RuntimeException()
         val yearMonthInst = YearMonth.parse(yearMonth)
         val priorMap = uiState.value.toMutableMap()
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             priorMap.entries.removeIf {
                 it.key.year == yearMonthInst.year &&
                         it.key.monthValue == yearMonthInst.monthValue

@@ -40,7 +40,6 @@ class LocalDataStorage @Inject constructor(val context: Context) {
 
     companion object {
         const val AUTH_RESULT_KEY = "auth_result_key"
-        const val ME_KEY = "me_key"
         const val REGISTRATION_TOKEN_KEY = "registration_token"
         const val LANDING_SEEN_KEY = "landing_seen"
     }
@@ -55,7 +54,6 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         val editor = preferences.edit()
 
         editor.remove(AUTH_RESULT_KEY)
-        editor.remove(ME_KEY)
         editor.remove(REGISTRATION_TOKEN_KEY)
         editor.apply()
         editor.commit()

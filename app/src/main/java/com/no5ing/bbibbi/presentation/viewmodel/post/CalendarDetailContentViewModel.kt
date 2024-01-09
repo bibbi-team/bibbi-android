@@ -29,7 +29,7 @@ class CalendarDetailContentViewModel @Inject constructor(
     override fun invoke(arguments: Arguments) {
         val left = arguments.get("left")
         val right = arguments.get("right")
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             val resId = arguments.resourceId ?: throw RuntimeException()
             val mainPost = async {
                 val post = restAPI.getPostApi().getPost(resId)

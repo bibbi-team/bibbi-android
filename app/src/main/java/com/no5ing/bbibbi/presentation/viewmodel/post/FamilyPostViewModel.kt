@@ -24,7 +24,7 @@ class FamilyPostViewModel @Inject constructor(
     }
 
     override fun invoke(arguments: Arguments) {
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             val resId = arguments.resourceId ?: throw RuntimeException()
             val post = restAPI.getPostApi().getPost(resId)
             val viewState = post.suspendMapSuccess {

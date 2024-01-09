@@ -28,7 +28,7 @@ class ChangeNicknameViewModel @Inject constructor(
         val memberId = arguments.get("memberId") ?: throw RuntimeException()
         val nickName = arguments.get("nickName") ?: throw RuntimeException()
         setState(loading())
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             val result = restAPI
                 .getMemberApi()
                 .changeMemberName(

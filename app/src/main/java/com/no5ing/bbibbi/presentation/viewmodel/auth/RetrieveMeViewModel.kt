@@ -22,7 +22,7 @@ class RetrieveMeViewModel @Inject constructor(
     }
 
     override fun invoke(arguments: Arguments) {
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             val meResult = restAPI.getMemberApi().getMeInfo()
             val apiResult = meResult.wrapToAPIResponse()
             setState(apiResult)

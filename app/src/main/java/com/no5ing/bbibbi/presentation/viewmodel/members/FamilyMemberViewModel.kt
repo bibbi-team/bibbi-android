@@ -23,7 +23,7 @@ class FamilyMemberViewModel @Inject constructor(
     }
 
     override fun invoke(arguments: Arguments) {
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             val memberId = arguments.resourceId ?: throw RuntimeException()
             val member = restAPI.getMemberApi().getMember(memberId)
             setState(member.wrapToAPIResponse())

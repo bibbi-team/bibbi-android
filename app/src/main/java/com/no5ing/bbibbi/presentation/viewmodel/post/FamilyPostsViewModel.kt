@@ -24,7 +24,7 @@ class FamilyPostsViewModel @Inject constructor(
     }
 
     override fun invoke(arguments: Arguments) {
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             getPostsRepository
                 .fetch(arguments)
                 .cachedIn(viewModelScope)

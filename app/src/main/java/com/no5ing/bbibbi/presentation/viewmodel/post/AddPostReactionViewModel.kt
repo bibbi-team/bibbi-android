@@ -21,7 +21,7 @@ class AddPostReactionViewModel @Inject constructor(
     override fun invoke(arguments: Arguments) {
         val postId = arguments.resourceId ?: throw RuntimeException()
         val emoji = arguments.get("emoji") ?: throw RuntimeException()
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             restAPI.getPostApi().createPostReactions(
                 postId = postId,
                 body = CreatePostReactionRequest(

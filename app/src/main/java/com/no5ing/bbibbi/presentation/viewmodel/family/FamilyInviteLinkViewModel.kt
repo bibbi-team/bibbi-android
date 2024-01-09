@@ -26,7 +26,7 @@ class FamilyInviteLinkViewModel @Inject constructor(
 
     override fun invoke(arguments: Arguments) {
         val familyId = arguments.get("familyId") ?: throw RuntimeException()
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             val familyLink = restAPI.getLinkApi().createFamilyLink(familyId = familyId)
             familyLink.suspendOnSuccess {
                 setState(

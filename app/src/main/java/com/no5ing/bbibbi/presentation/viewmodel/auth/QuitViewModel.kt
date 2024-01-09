@@ -27,7 +27,7 @@ class QuitViewModel @Inject constructor(
 
     override fun invoke(arguments: Arguments) {
         setState(OperationStatus.RUNNING)
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             val fcmToken = FirebaseMessaging.getInstance().token.await()
             restAPI.getMemberApi().deleteFcmToken(fcmToken)
             restAPI.getMemberApi().quitMember(sessionModule.sessionState.value.memberId)

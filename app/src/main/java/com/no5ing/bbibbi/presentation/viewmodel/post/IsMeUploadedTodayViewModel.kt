@@ -24,7 +24,7 @@ class IsMeUploadedTodayViewModel @Inject constructor(
 
     override fun invoke(arguments: Arguments) {
         val memberId = arguments.get("memberId") ?: throw RuntimeException()
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             restAPI
                 .getPostApi()
                 .getPosts(

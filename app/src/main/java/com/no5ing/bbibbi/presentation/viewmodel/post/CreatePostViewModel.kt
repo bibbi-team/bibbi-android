@@ -34,7 +34,7 @@ class CreatePostViewModel @Inject constructor(
     override fun invoke(arguments: Arguments) {
         val imageUri = arguments.get("imageUri") ?: throw RuntimeException()
         val content = arguments.get("content") ?: throw RuntimeException()
-        viewModelScope.launch(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO) {
             Timber.d("imageUri: $imageUri")
 
             val file = fileFromContentUriStr(context, imageUri)
