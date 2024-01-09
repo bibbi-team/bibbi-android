@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.ui
+package com.no5ing.bbibbi
 
 import android.content.Intent
 import android.os.Bundle

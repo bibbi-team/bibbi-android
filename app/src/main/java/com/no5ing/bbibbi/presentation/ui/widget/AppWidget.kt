@@ -49,7 +49,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.no5ing.bbibbi.R
-import com.no5ing.bbibbi.presentation.ui.MainActivity
+import com.no5ing.bbibbi.MainActivity
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 import java.time.Duration

@@ -8,7 +8,6 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.no5ing.bbibbi.presentation.ui.MainActivity
 import timber.log.Timber
 
 class FirebaseService : FirebaseMessagingService() {

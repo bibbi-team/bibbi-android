@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation
+package com.no5ing.bbibbi.presentation.ui.util
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
@@ -34,7 +34,6 @@ fun BackToExitHandler() {
             backPressState = BackPress.Idle
         }
     }
-
 
     BackHandler(backPressState == BackPress.Idle) {
         backPressState = BackPress.InitialTouch

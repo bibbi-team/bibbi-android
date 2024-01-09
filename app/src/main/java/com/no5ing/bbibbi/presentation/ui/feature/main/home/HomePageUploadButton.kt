@@ -1,9 +1,7 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.home
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -27,10 +25,10 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.presentation.ui.common.button.CameraCaptureButton
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
@@ -46,25 +44,12 @@ fun BoxScope.HomePageUploadButton(
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             UploadHelperPop()
-            UploadButton(
-                onTap = onTap
+            CameraCaptureButton(
+                onClick = onTap,
+                isCapturing = false,
             )
         }
     }
-}
-
-
-@Composable
-fun UploadButton(
-    onTap: () -> Unit,
-) {
-    Image(
-        painter = painterResource(R.drawable.capture_button),
-        contentDescription = null, // 필수 param
-        modifier = Modifier
-            .size(80.dp)
-            .clickable { onTap() }
-    )
 }
 
 @Composable

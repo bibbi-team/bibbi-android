@@ -38,7 +38,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
-import com.no5ing.bbibbi.presentation.BackToExitHandler
+import com.no5ing.bbibbi.presentation.ui.util.BackToExitHandler
 import com.no5ing.bbibbi.presentation.state.landing.login.LoginPageState
 import com.no5ing.bbibbi.presentation.state.landing.login.LoginStatus
 import com.no5ing.bbibbi.presentation.state.landing.login.LoginSucceedResult

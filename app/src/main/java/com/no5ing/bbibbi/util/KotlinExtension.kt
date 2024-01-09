@@ -20,6 +20,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogWindowProvider
+import com.android.installreferrer.api.InstallReferrerClient
+import com.android.installreferrer.api.InstallReferrerStateListener
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.PermissionStatus
@@ -28,6 +30,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 fun <A, B> List<A>.parallelMap(
     context: CoroutineContext = Dispatchers.Default,
@@ -127,4 +131,23 @@ fun Context.findAndroidActivity(): Activity? {
 
 fun getLinkIdFromUrl(url: String): String {
     return url.split("/").last()
+}
+
+suspend fun getInstallReferrerClient(context: Context) = suspendCoroutine {
+    val referrerClient = InstallReferrerClient.newBuilder(context).build()
+    referrerClient.startConnection(object : InstallReferrerStateListener {
+        override fun onInstallReferrerSetupFinished(responseCode: Int) {
+            when (responseCode) {
+                InstallReferrerClient.InstallReferrerResponse.OK -> {
+                    // Connection established.
+                    it.resume(referrerClient)
+                }
+
+                else -> {
+                    it.resume(null)
+                }
+            }
+        }
+        override fun onInstallReferrerServiceDisconnected() {}
+    })
 }

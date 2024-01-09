@@ -52,6 +52,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.presentation.ui.common.button.CameraCaptureButton
 import com.no5ing.bbibbi.presentation.ui.common.component.ClosableTopBar
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import kotlinx.coroutines.launch
@@ -172,20 +173,16 @@ fun CameraView(
                             cameraState.value?.cameraControl?.enableTorch(torchState.value)
                         }
                 )
-                Image(
-                    painter = painterResource(R.drawable.capture_button),
-                    contentDescription = null, // 필수 param
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clickable {
-                            coroutineScope.launch {
-                                isCapturing = true
-                                val uri = captureState.value.takePhoto(context)
-                                isCapturing = false
-                                onImageCaptured(uri)
-                            }
-                        },
-                    alpha = if (isCapturing) 0.3f else 1.0f,
+                CameraCaptureButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            isCapturing = true
+                            val uri = captureState.value.takePhoto(context)
+                            isCapturing = false
+                            onImageCaptured(uri)
+                        }
+                    },
+                    isCapturing = isCapturing,
                 )
                 Image(
                     painter = painterResource(R.drawable.rotate_button),

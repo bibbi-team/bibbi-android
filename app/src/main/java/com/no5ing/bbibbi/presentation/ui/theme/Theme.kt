@@ -32,13 +32,6 @@ val Gray200 = Color(0xffD3D3D3) //secondary
 val Gray100 = Color(0xFFE8E8E8) //primary
 val White = Color(0xFFFFFFFF)
 
-private val DarkColorScheme = darkColorScheme(
-//    primary = Gray100,
-//    secondary = Gray200,
-//    tertiary = Gray300,
-//    background = Black,
-//    onBackground = Gray900,
-)
 
 private val LightColorScheme = lightColorScheme(
     /**
@@ -60,14 +53,8 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun BbibbiTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -93,7 +80,7 @@ fun BbibbiTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = LightColorScheme,
         typography = Typography,
         content = content
     )

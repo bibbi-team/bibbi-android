@@ -226,7 +226,7 @@ fun PostUploadPage(
                                             context.contentResolver,
                                             imageUrl.value
                                         )
-                                MediaStore.Images.Media.insertImage(
+                                MediaStore.Images.Media. insertImage(
                                     context.contentResolver,
                                     bitmap,
                                     imageText.value,
