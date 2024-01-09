@@ -20,7 +20,7 @@ class GetPostsRepository @Inject constructor() : BaseRepository<PagingData<Post>
     override fun fetch(arguments: Arguments): Flow<PagingData<Post>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 8,
+                pageSize = 10,
                 initialLoadSize = 10,
                 prefetchDistance = 5
             )

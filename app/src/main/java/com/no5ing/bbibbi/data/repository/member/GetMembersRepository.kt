@@ -10,6 +10,7 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.data.repository.BasePageSource
 import com.no5ing.bbibbi.data.repository.BaseRepository
 import com.skydoves.sandwich.ApiResponse
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,7 +22,7 @@ class GetMembersRepository @Inject constructor() : BaseRepository<PagingData<Mem
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
-                initialLoadSize = 10,
+                initialLoadSize = 20,
                 prefetchDistance = 5
             )
         ) {

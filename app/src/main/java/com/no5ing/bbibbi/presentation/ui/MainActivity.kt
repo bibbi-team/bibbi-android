@@ -226,9 +226,6 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-
-
-
         setContent {
             val updateState = NetworkModule.requireUpdateState.collectAsState()
             val tokenInvalidState = NetworkModule.requireTokenInvalidRestart.collectAsState()

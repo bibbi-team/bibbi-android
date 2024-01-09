@@ -27,7 +27,7 @@ class GetFeedsRepository @Inject constructor(
     override fun fetch(arguments: Arguments): Flow<PagingData<MainFeedUiState>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 8,
+                pageSize = 10,
                 initialLoadSize = 10,
                 prefetchDistance = 5
             )
