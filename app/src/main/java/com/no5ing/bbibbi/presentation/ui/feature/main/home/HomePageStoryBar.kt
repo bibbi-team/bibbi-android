@@ -12,6 +12,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +28,7 @@ import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageStoryBarSt
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 
 @Composable
@@ -33,14 +36,17 @@ fun HomePageStoryBar(
     onTapProfile: (Member) -> Unit = {},
     onTapInvite: () -> Unit = {},
     familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),
+    retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
     storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(
         uiState = familyMembersViewModel.uiState
     ),
 ) {
     LaunchedEffect(Unit) {
+        retrieveMeViewModel.invoke(Arguments())
         familyMembersViewModel.invoke(Arguments())
     }
     val items = storyBarState.uiState.collectAsLazyPagingItems()
+    val meState by retrieveMeViewModel.uiState.collectAsState()
     if (items.itemCount == 1) {
         HomePageNoFamilyBar(
             modifier = Modifier
@@ -59,6 +65,19 @@ fun HomePageStoryBar(
             item {
                 Spacer(modifier = Modifier.width(8.dp))
             }
+
+            if (meState.isReady()) {
+                val item = meState.data
+                item {
+                    StoryBarIcon(
+                        member = item,
+                        onTap = {
+                            onTapProfile(item)
+                        }
+                    )
+                }
+            }
+
 
             items(items.itemCount) { index ->
                 val item = items[index] ?: throw RuntimeException()

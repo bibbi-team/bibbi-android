@@ -22,6 +22,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -37,6 +39,7 @@ import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 
@@ -44,12 +47,13 @@ import com.no5ing.bbibbi.util.LocalSessionState
 @Composable
 fun FamilyPage(
     familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),
+    retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
     onDispose: () -> Unit,
     onTapFamily: (Member) -> Unit,
     onTapShare: (String) -> Unit,
 ) {
-    val memberId = LocalSessionState.current.memberId
     val members = familyMembersViewModel.uiState.collectAsLazyPagingItems()
+    val meState by retrieveMeViewModel.uiState.collectAsState()
     val pullRefreshState = rememberPullRefreshState(
         refreshing = members.loadState.refresh is LoadState.Loading,
         onRefresh = {
@@ -57,6 +61,7 @@ fun FamilyPage(
         }
     )
     LaunchedEffect(Unit) {
+        retrieveMeViewModel.invoke(Arguments())
         familyMembersViewModel.invoke(Arguments())
     }
     Box(
@@ -97,7 +102,7 @@ fun FamilyPage(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = members.itemCount.toString(),
+                        text = (members.itemCount + 1).toString(),
                         style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                         color = MaterialTheme.bbibbiScheme.icon,
                     )
@@ -109,11 +114,26 @@ fun FamilyPage(
                     .fillMaxWidth()
             ) {
                 LazyColumn {
+                    if (meState.isReady()) {
+                        item {
+                            val item = meState.data
+                            MemberItem(
+                                member = item,
+                                isMe = true,
+                                modifier = Modifier.clickable {
+                                    onTapFamily(item)
+                                },
+                                onTap = {
+                                    onTapFamily(item)
+                                }
+                            )
+                        }
+                    }
                     items(members.itemCount) {
                         val item = members[it] ?: throw RuntimeException()
                         MemberItem(
                             member = item,
-                            isMe = memberId == item.memberId,
+                            isMe = false,
                             modifier = Modifier.clickable {
                                 onTapFamily(item)
                             },
