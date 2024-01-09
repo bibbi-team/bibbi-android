@@ -15,7 +15,7 @@ class RetrieveMeViewModel @Inject constructor(
     private val restAPI: RestAPI,
 ) : BaseViewModel<APIResponse<Member>>() {
     override fun initState(): APIResponse<Member> {
-        return APIResponse.loading()
+        return APIResponse.idle()
     }
 
     override fun invoke(arguments: Arguments) {
@@ -25,6 +25,4 @@ class RetrieveMeViewModel @Inject constructor(
             setState(apiResult)
         }
     }
-
-
 }

@@ -1,6 +1,9 @@
 package com.no5ing.bbibbi.presentation.viewmodel.family
 
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
+import com.no5ing.bbibbi.data.model.APIResponse
+import com.no5ing.bbibbi.data.model.APIResponse.Companion.wrapToAPIResponse
+import com.no5ing.bbibbi.data.model.link.DeepLink
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.uistate.family.FamilyInviteLinkUiState
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
@@ -14,30 +17,16 @@ import javax.inject.Inject
 @HiltViewModel
 class FamilyInviteLinkViewModel @Inject constructor(
     private val restAPI: RestAPI,
-) : BaseViewModel<FamilyInviteLinkUiState>() {
-    override fun initState(): FamilyInviteLinkUiState {
-        return FamilyInviteLinkUiState(
-            url = "Loading.."
-        )
+) : BaseViewModel<APIResponse<DeepLink>>() {
+    override fun initState(): APIResponse<DeepLink>  {
+        return APIResponse.idle()
     }
 
     override fun invoke(arguments: Arguments) {
         val familyId = arguments.get("familyId") ?: throw RuntimeException()
         withMutexScope(Dispatchers.IO) {
             val familyLink = restAPI.getLinkApi().createFamilyLink(familyId = familyId)
-            familyLink.suspendOnSuccess {
-                setState(
-                    FamilyInviteLinkUiState(
-                        url = body.url
-                    )
-                )
-            }.suspendOnFailure {
-                setState(
-                    FamilyInviteLinkUiState(
-                        url = "URL Error.."
-                    )
-                )
-            }
+            setState(familyLink.wrapToAPIResponse())
         }
     }
 

@@ -46,10 +46,12 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.main.home.HomePageContentState
+import com.no5ing.bbibbi.presentation.state.main.home.HomePageStoryBarState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageContentState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageStoryBarState
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.MainPostFeedViewModel
 import com.no5ing.bbibbi.util.gapBetweenNow
@@ -62,6 +64,10 @@ fun HomePageContent(
     familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),
     homePageContentState: HomePageContentState = rememberHomePageContentState(
         uiState = familyPostsViewModel.uiState
+    ),
+    retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
+    storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(
+        uiState = familyMembersViewModel.uiState
     ),
     onTapContent: (Post) -> Unit = {},
     onTapProfile: (Member) -> Unit = {},
@@ -93,9 +99,8 @@ fun HomePageContent(
             item(span = { GridItemSpan(2) }) {
                 HomePageStoryBar(
                     familyMembersViewModel = familyMembersViewModel,
-                    storyBarState = rememberHomePageStoryBarState(
-                        uiState = familyMembersViewModel.uiState,
-                    ),
+                    retrieveMeViewModel = retrieveMeViewModel,
+                    storyBarState = storyBarState,
                     onTapProfile = onTapProfile,
                     onTapInvite = onTapInvite,
                 )

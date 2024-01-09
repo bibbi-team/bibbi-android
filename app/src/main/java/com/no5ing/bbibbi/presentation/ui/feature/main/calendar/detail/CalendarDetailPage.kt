@@ -69,7 +69,7 @@ fun CalendarDetailPage(
     initialDay: LocalDate,
     onDispose: () -> Unit,
     onTapProfile: (Member) -> Unit,
-    //familyPostViewModel: FamilyPostViewModel = hiltViewModel(),
+
     calendarDetailContentViewModel: CalendarDetailContentViewModel = hiltViewModel(),
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
@@ -228,20 +228,6 @@ fun CalendarDetailPage(
                     weekHeader = {},
                     daysOfWeekHeader = {}
                 )
-
-
-//                    AnimatedContent(
-//                        targetState = postState.value,
-//                        transitionSpec = {
-//                            val direction = this.initialState.data.post.createdAt
-//                                .isAfter(this.targetState.data.post.createdAt)
-//                            (slideInHorizontally { if (direction) -it else it } togetherWith slideOutHorizontally { if (direction) it else -it })
-//                                .using(
-//                                    SizeTransform(clip = false)
-//                                )
-//                        }, label = ""
-//                    ) {
-
                 HorizontalPager(
                     state = pagerState,
                     userScrollEnabled = scrollEnabled.value,
@@ -272,10 +258,6 @@ fun CalendarDetailPage(
                         }
                     }
                 }
-
-                //   }
-
-
             }
         }
 

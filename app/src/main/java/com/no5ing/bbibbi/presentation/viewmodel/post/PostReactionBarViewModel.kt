@@ -1,17 +1,22 @@
 package com.no5ing.bbibbi.presentation.viewmodel.post
 
+import androidx.lifecycle.viewModelScope
+import com.no5ing.bbibbi.data.datasource.local.MemberCacheProvider
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
+import com.no5ing.bbibbi.util.parallelMap
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PostReactionBarViewModel @Inject constructor(
     private val restAPI: RestAPI,
+    private val memberCacheProvider: MemberCacheProvider,
 ) : BaseViewModel<List<PostReactionUiState>>() {
     override fun initState(): List<PostReactionUiState> {
         return emptyList()
@@ -19,15 +24,18 @@ class PostReactionBarViewModel @Inject constructor(
 
     private fun reactMe(memberId: String, emoji: String) {
         val previousList = uiState.value.toMutableList()
-        previousList.add(
-            PostReactionUiState(
-                reactionId = "temp",
-                memberId = memberId,
-                emojiType = emoji,
-                isMe = true,
+        viewModelScope.launch {
+            previousList.add(
+                PostReactionUiState(
+                    reactionId = "temp",
+                    memberId = memberId,
+                    emojiType = emoji,
+                    isMe = true,
+                    member = memberCacheProvider.getMember(memberId)
+                )
             )
-        )
-        setState(previousList)
+            setState(previousList)
+        }
     }
 
     private fun unReactMe(emoji: String) {
@@ -62,12 +70,13 @@ class PostReactionBarViewModel @Inject constructor(
                     postId = postId,
                 )
             reactions.suspendOnSuccess {
-                setState(data.results.map {
+                setState(data.results.parallelMap {
                     PostReactionUiState(
                         reactionId = it.reactionId,
                         memberId = it.memberId,
                         emojiType = it.emojiType,
-                        isMe = it.memberId == memberId
+                        isMe = it.memberId == memberId,
+                        member = memberCacheProvider.getMember(it.memberId),
                     )
                 })
             }

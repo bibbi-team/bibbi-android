@@ -62,9 +62,11 @@ fun ProfilePageMemberBar(
     isMe: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     val sessionState = LocalSessionState.current
-    LaunchedEffect(Unit) {
-        familyMemberViewModel.invoke(Arguments(resourceId = memberId))
-        isMe.value = sessionState.memberId == memberId
+    LaunchedEffect(memberState) {
+        if(memberState.value.isIdle()) {
+            familyMemberViewModel.invoke(Arguments(resourceId = memberId))
+            isMe.value = sessionState.memberId == memberId
+        }
     }
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),

@@ -16,20 +16,36 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.state.main.home.HomePageContentState
 import com.no5ing.bbibbi.presentation.state.main.home.HomePageState
+import com.no5ing.bbibbi.presentation.state.main.home.HomePageStoryBarState
+import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageContentState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageState
+import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageStoryBarState
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.util.BackToExitHandler
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.IsMeUploadedTodayViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.post.MainPostFeedViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
+import timber.log.Timber
 
 @Composable
 fun HomePage(
     homePageState: HomePageState = rememberHomePageState(),
     retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
     isMeUploadedTodayViewModel: IsMeUploadedTodayViewModel = hiltViewModel(),
+    familyPostsViewModel: MainPostFeedViewModel = hiltViewModel(),
+    familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),
+    homePageContentState: HomePageContentState = rememberHomePageContentState(
+        uiState = familyPostsViewModel.uiState
+    ),
+    storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(
+        uiState = familyMembersViewModel.uiState,
+        meState = retrieveMeViewModel.uiState,
+    ),
     onTapLeft: () -> Unit = {},
     onTapRight: () -> Unit = {},
     onTapProfile: (Member) -> Unit = {},
@@ -39,10 +55,16 @@ fun HomePage(
 ) {
     val memberId = LocalSessionState.current.memberId
     val meUploadedState = isMeUploadedTodayViewModel.uiState.collectAsState()
+    //val familyMembersState = familyMembersViewModel.uiState.collectAsState()
+    val meState = retrieveMeViewModel.uiState.collectAsState()
     BackToExitHandler()
     LaunchedEffect(Unit) {
         isMeUploadedTodayViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
-        retrieveMeViewModel.invoke(Arguments())
+    }
+    LaunchedEffect(meState.value.status) {
+        if(meState.value.isIdle()) {
+            retrieveMeViewModel.invoke(Arguments())
+        }
     }
     Box(
         modifier = Modifier
@@ -59,6 +81,11 @@ fun HomePage(
                 onTapRight = onTapRight
             )
             HomePageContent(
+                familyMembersViewModel = familyMembersViewModel,
+                familyPostsViewModel = familyPostsViewModel,
+                homePageContentState = homePageContentState,
+                retrieveMeViewModel = retrieveMeViewModel,
+                storyBarState = storyBarState,
                 onTapContent = onTapContent,
                 onTapProfile = onTapProfile,
                 onTapInvite = onTapInvite,

@@ -69,6 +69,7 @@ fun LoginPage(
         )
     }
     val onKakaoFailed: (Boolean) -> Unit = { isCancelled ->
+        loginPageState.isLoggingIn.value = false
         if (isCancelled) {
             Timber.d("[LoginPage] Kakao Login Cancelled by user")
         } else {
@@ -79,6 +80,7 @@ fun LoginPage(
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val signInResult = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             signInResult.addOnCompleteListener {
+                loginPageState.isLoggingIn.value = false
                 try {
                     val authResult = it.getResult(ApiException::class.java)
                     val idToken = authResult.idToken ?: return@addOnCompleteListener
@@ -102,7 +104,7 @@ fun LoginPage(
         Timber.d("[LoginPage] uiState = ${loginPageState.uiState.value}")
         when (loginPageState.uiState.value) {
             LoginStatus.REJECTED -> {
-
+                loginPageState.isLoggingIn.value = false
             }
 
             LoginStatus.SUCCEED_PERMANENT_HAS_FAMILY -> {
@@ -162,7 +164,9 @@ fun LoginPage(
                     .padding(horizontal = 10.dp)
             ) {
                 KakaoLoginButton(
+                    isLoggingIn = loginPageState.isLoggingIn.value,
                     onClick = {
+                        loginPageState.isLoggingIn.value = true
                         kakaoSignIn(
                             context = context,
                             onSuccess = onKakaoSuccess,
@@ -172,7 +176,9 @@ fun LoginPage(
                     }
                 )
                 GoogleLoginButton(
+                    isLoggingIn = loginPageState.isLoggingIn.value,
                     onClick = {
+                        loginPageState.isLoggingIn.value = true
                         startForResult.launch(googleSignInIntent(context))
                     }
                 )
@@ -184,10 +190,13 @@ fun LoginPage(
 
 @Composable
 fun KakaoLoginButton(
+    isLoggingIn: Boolean,
     onClick: () -> Unit,
 ) {
+    val alphaValue = if (isLoggingIn) 0.5f else 1.0f
     Button(
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.bbibbiScheme.kakaoYellow),
+        colors = ButtonDefaults.buttonColors(containerColor =
+        MaterialTheme.bbibbiScheme.kakaoYellow.copy(alpha = alphaValue)),
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
@@ -202,13 +211,13 @@ fun KakaoLoginButton(
                 contentDescription = null,
                 modifier = Modifier
                     .size(19.dp),
-                tint = Color.Black
+                tint = Color.Black.copy(alpha = alphaValue)
             )
             Text(
                 text = stringResource(id = R.string.login_with_kakao),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp,
-                color = MaterialTheme.bbibbiScheme.backgroundPrimary,
+                color = MaterialTheme.bbibbiScheme.backgroundPrimary.copy(alpha = alphaValue),
             )
         }
 
@@ -217,10 +226,15 @@ fun KakaoLoginButton(
 
 @Composable
 fun GoogleLoginButton(
+    isLoggingIn: Boolean,
     onClick: () -> Unit,
 ) {
+    val alphaValue = if (isLoggingIn) 0.5f else 1.0f
     Button(
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.bbibbiScheme.white),
+        colors = ButtonDefaults
+            .buttonColors(containerColor = MaterialTheme.bbibbiScheme.white.copy(
+                alpha = alphaValue
+            )),
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
@@ -235,12 +249,15 @@ fun GoogleLoginButton(
                 contentDescription = null,
                 modifier = Modifier
                     .size(18.dp),
+                alpha = alphaValue,
             )
             Text(
                 text = stringResource(id = R.string.login_with_google),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp,
-                color = MaterialTheme.bbibbiScheme.backgroundPrimary,
+                color = MaterialTheme.bbibbiScheme.backgroundPrimary.copy(
+                    alpha = alphaValue
+                ),
             )
         }
 

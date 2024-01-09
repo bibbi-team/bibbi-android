@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,6 +35,7 @@ import com.no5ing.bbibbi.presentation.state.main.family.rememberFamilyPageInvita
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.viewmodel.family.FamilyInviteLinkViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
+import timber.log.Timber
 
 @Composable
 fun FamilyPageInviteButton(
@@ -44,8 +46,11 @@ fun FamilyPageInviteButton(
     onTapShare: (String) -> Unit,
 ) {
     val familyId = LocalSessionState.current.familyId
-    LaunchedEffect(Unit) {
-        familyInviteLinkViewModel.invoke(Arguments(arguments = mapOf("familyId" to familyId)))
+    val uiState by familyPageInvitationState.uiState
+    LaunchedEffect(uiState) {
+        if (uiState.isIdle()) {
+            familyInviteLinkViewModel.invoke(Arguments(arguments = mapOf("familyId" to familyId)))
+        }
     }
     Box(
         modifier = Modifier
@@ -59,8 +64,8 @@ fun FamilyPageInviteButton(
                 horizontal = 20.dp,
             )
             .clickable {
-                if (familyPageInvitationState.uiState.value.url.startsWith("https")) {
-                    onTapShare(familyPageInvitationState.uiState.value.url)
+                if (uiState.isReady()) {
+                    onTapShare(uiState.data.url)
                 }
             }
     ) {
@@ -87,7 +92,7 @@ fun FamilyPageInviteButton(
                         fontSize = 18.sp,
                     )
                     Text(
-                        text = familyPageInvitationState.uiState.value.url,
+                        text = if(uiState.isReady()) uiState.data.url else "Loading...",
                         color = MaterialTheme.bbibbiScheme.textSecondary,
                         fontSize = 14.sp,
                     )

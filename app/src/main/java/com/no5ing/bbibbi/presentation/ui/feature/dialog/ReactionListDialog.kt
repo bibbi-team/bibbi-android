@@ -63,7 +63,6 @@ import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestin
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
-import com.no5ing.bbibbi.presentation.viewmodel.members.PostViewReactionMemberViewModel
 import com.no5ing.bbibbi.util.CustomDialogPosition
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.customDialogModifier
@@ -76,7 +75,7 @@ fun ReactionListDialog(
     selectedEmoji: String,
     isEnabled: MutableState<Boolean> = remember { mutableStateOf(false) },
     emojiMap: Map<String, List<PostReactionUiState>>,
-    postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
+  //  postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
 ) {
     if (isEnabled.value) {
         val navController = LocalNavigateControllerState.current
@@ -105,7 +104,7 @@ fun ReactionListDialog(
             val (width, height) = getScreenSize()
 
 
-            val memberState = postViewReactionMemberViewModel.uiState.collectAsState()
+          //  val memberState = postViewReactionMemberViewModel.uiState.collectAsState()
             val myGroup = emojiMap[selectedEmoji] ?: emptyList()
             val totalCntMessage = stringResource(id = R.string.emoji_reaction_total, myGroup.size)
             Box(
@@ -197,9 +196,7 @@ fun ReactionListDialog(
                             ) {
                                 items(myGroup.size) {
                                     val item = myGroup[it]
-                                    val currentMember = if (memberState.value.isReady())
-                                        memberState.value.data[item.memberId] ?: Member.unknown()
-                                    else Member.unknown()
+                                    val currentMember = item.member ?: Member.unknown()
                                     Box(Modifier.padding(vertical = 14.dp, horizontal = 20.dp)) {
                                         Row(
                                             verticalAlignment = Alignment.CenterVertically,

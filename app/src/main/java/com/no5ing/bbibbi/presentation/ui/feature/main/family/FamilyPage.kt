@@ -60,9 +60,15 @@ fun FamilyPage(
             members.refresh()
         }
     )
-    LaunchedEffect(Unit) {
-        retrieveMeViewModel.invoke(Arguments())
-        familyMembersViewModel.invoke(Arguments())
+    LaunchedEffect(meState) {
+        if (meState.isIdle()) {
+            retrieveMeViewModel.invoke(Arguments())
+        }
+    }
+    LaunchedEffect(members) {
+        if (members.itemCount == 0) {
+            familyMembersViewModel.invoke(Arguments())
+        }
     }
     Box(
         modifier = Modifier

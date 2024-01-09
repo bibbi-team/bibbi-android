@@ -42,7 +42,7 @@ fun HomePageStoryBar(
     ),
 ) {
     LaunchedEffect(Unit) {
-        retrieveMeViewModel.invoke(Arguments())
+      //  retrieveMeViewModel.invoke(Arguments())
         familyMembersViewModel.invoke(Arguments())
     }
     val items = storyBarState.uiState.collectAsLazyPagingItems()

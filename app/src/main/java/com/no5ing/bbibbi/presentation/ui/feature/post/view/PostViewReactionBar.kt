@@ -35,7 +35,6 @@ import com.no5ing.bbibbi.presentation.ui.feature.dialog.ReactionListDialog
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
-import com.no5ing.bbibbi.presentation.viewmodel.members.PostViewReactionMemberViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
@@ -49,7 +48,7 @@ fun PostViewReactionBar(
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
-    postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
+ //   postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
     uiState: State<List<PostReactionUiState>> = familyPostReactionBarViewModel.uiState.collectAsState(),
     onTapAddEmojiButton: () -> Unit,
 ) {
@@ -63,7 +62,7 @@ fun PostViewReactionBar(
                 )
             )
         )
-        postViewReactionMemberViewModel.invoke(Arguments())
+    //    postViewReactionMemberViewModel.invoke(Arguments())
     }
     val selectedEmoji = remember { mutableStateOf(emojiList.first()) }
     val emojiMap = uiState.value.groupBy { it.emojiType }
@@ -73,7 +72,6 @@ fun PostViewReactionBar(
         isEnabled = reactionDialogState,
         emojiMap = emojiMap,
         selectedEmoji = selectedEmoji.value,
-        postViewReactionMemberViewModel = postViewReactionMemberViewModel,
     )
     Box(modifier = Modifier.padding(vertical = 12.dp, horizontal = 20.dp)) {
         LazyRow(

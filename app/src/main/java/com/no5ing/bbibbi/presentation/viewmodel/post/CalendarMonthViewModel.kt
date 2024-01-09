@@ -15,15 +15,17 @@ import javax.inject.Inject
 class CalendarMonthViewModel @Inject constructor(
     private val restAPI: RestAPI,
 ) : BaseViewModel<Map<LocalDate, CalendarElement>>() {
+    private val queriedYearMonths = mutableSetOf<String>()
     override fun initState(): Map<LocalDate, CalendarElement> {
         return emptyMap()
     }
 
     override fun invoke(arguments: Arguments) {
         val yearMonth = arguments.get("yearMonth") ?: throw RuntimeException()
-        val yearMonthInst = YearMonth.parse(yearMonth)
-        val priorMap = uiState.value.toMutableMap()
-        withMutexScope(Dispatchers.IO) {
+        withMutexScope(Dispatchers.IO, !queriedYearMonths.contains(yearMonth)) {
+            queriedYearMonths.add(yearMonth)
+            val yearMonthInst = YearMonth.parse(yearMonth)
+            val priorMap = uiState.value.toMutableMap()
             priorMap.entries.removeIf {
                 it.key.year == yearMonthInst.year &&
                         it.key.monthValue == yearMonthInst.monthValue

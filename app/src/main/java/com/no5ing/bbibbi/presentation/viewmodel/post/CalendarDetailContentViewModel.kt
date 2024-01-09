@@ -9,6 +9,8 @@ import com.no5ing.bbibbi.presentation.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import com.skydoves.sandwich.suspendMapSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import javax.inject.Inject
@@ -20,6 +22,7 @@ class CalendarDetailContentViewModel @Inject constructor(
     private val restAPI: RestAPI,
     private val memberCacheProvider: MemberCacheProvider,
 ) : BaseViewModel<APIResponse<CalenderDetailContentUiState>>() {
+    private val detailCache = mutableMapOf<String, MainFeedUiState>()
     override fun initState(): APIResponse<CalenderDetailContentUiState> {
         return APIResponse.idle()
     }
@@ -29,57 +32,35 @@ class CalendarDetailContentViewModel @Inject constructor(
         val right = arguments.get("right")
         withMutexScope(Dispatchers.IO) {
             val resId = arguments.resourceId ?: throw RuntimeException()
-            val mainPost = async {
-                val post = restAPI.getPostApi().getPost(resId)
-                post.suspendMapSuccess {
-                    val member = kotlin.runCatching {
-                        memberCacheProvider.getMember(this.authorId)
-                    }
-                    MainFeedUiState(
-                        writer = member.getOrElse { com.no5ing.bbibbi.data.model.member.Member.unknown() },
-                        post = this
-                    )
-                }
-            }
+            val mainPost = getOrFetch(resId)
+            val leftPost = getOrFetch(left)
+            val rightPost = getOrFetch(right)
+            val mainPostResult = CalenderDetailContentUiState(
+                first = leftPost.await(),
+                second = mainPost.await(),
+                third = rightPost.await()
+            )
+            setState(APIResponse.success(mainPostResult))
+        }
+    }
 
-            val leftPost = async {
-                left?.let {
-                    val currentPost = restAPI.getPostApi().getPost(it)
-                    val results = currentPost.suspendMapSuccess {
-                        val member = kotlin.runCatching {
-                            memberCacheProvider.getMember(this.authorId)
-                        }
-                        MainFeedUiState(
-                            writer = member.getOrElse { com.no5ing.bbibbi.data.model.member.Member.unknown() },
-                            post = this
-                        )
-                    }.wrapToAPIResponse()
-                    if (results.isReady()) results.data else null
+    private fun CoroutineScope.getOrFetch(postId: String?): Deferred<MainFeedUiState?> = async {
+        postId?.let {
+            val previous = detailCache[it]
+            if (previous != null) return@let previous
+            val currentPost = restAPI.getPostApi().getPost(it)
+            val results = currentPost.suspendMapSuccess {
+                val member = kotlin.runCatching {
+                    memberCacheProvider.getMember(this.authorId)
                 }
-            }
-            val rightPost = async {
-                right?.let {
-                    val currentPost = restAPI.getPostApi().getPost(it)
-                    val results = currentPost.suspendMapSuccess {
-                        val member = kotlin.runCatching {
-                            memberCacheProvider.getMember(this.authorId)
-                        }
-                        MainFeedUiState(
-                            writer = member.getOrElse { com.no5ing.bbibbi.data.model.member.Member.unknown() },
-                            post = this
-                        )
-                    }.wrapToAPIResponse()
-                    if (results.isReady()) results.data else null
-                }
-            }
-            val mainPostResult = mainPost.await().suspendMapSuccess {
-                CalenderDetailContentUiState(
-                    first = leftPost.await(),
-                    second = this,
-                    third = rightPost.await()
+                val uiState = MainFeedUiState(
+                    writer = member.getOrElse { com.no5ing.bbibbi.data.model.member.Member.unknown() },
+                    post = this
                 )
-            }
-            setState(mainPostResult.wrapToAPIResponse())
+                detailCache[it] = uiState
+                uiState
+            }.wrapToAPIResponse()
+            if (results.isReady()) results.data else null
         }
     }
 

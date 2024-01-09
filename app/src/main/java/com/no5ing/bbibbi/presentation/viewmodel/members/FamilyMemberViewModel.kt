@@ -16,7 +16,7 @@ class FamilyMemberViewModel @Inject constructor(
 ) : BaseViewModel<APIResponse<Member>>() {
 
     override fun initState(): APIResponse<Member> {
-        return APIResponse.loading()
+        return APIResponse.idle()
     }
 
     override fun invoke(arguments: Arguments) {
