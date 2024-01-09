@@ -26,10 +26,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
@@ -167,7 +165,7 @@ fun PostViewReactionElement(
             Text(
                 text = emojiCnt.toString(),
                 color = if (isMeReacted) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.tertiary,
+                else MaterialTheme.colorScheme.tertiary,
                 style = MaterialTheme.typography.bodyLarge,
             )
         }

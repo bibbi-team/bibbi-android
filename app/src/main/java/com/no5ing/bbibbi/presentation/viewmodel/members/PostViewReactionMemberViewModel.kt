@@ -32,7 +32,8 @@ class PostViewReactionMemberViewModel @Inject constructor(
                 size = 100
             ).mapSuccess {
                 results.associateBy { it.memberId }
-            }.wrapToAPIResponse())
+            }.wrapToAPIResponse()
+            )
         }
     }
 
