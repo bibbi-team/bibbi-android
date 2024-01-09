@@ -21,7 +21,6 @@ import javax.inject.Inject
 @HiltViewModel
 class FamilyMembersViewModel @Inject constructor(
     private val getMembersRepository: GetMembersRepository,
-    private val sessionModule: SessionModule,
 ) : BaseViewModel<PagingData<Member>>() {
     override fun initState(): PagingData<Member> {
         return PagingData.empty()
@@ -36,11 +35,7 @@ class FamilyMembersViewModel @Inject constructor(
                     scope = viewModelScope,
                     started = SharingStarted.WhileSubscribed(5_000),
                     initialValue = PagingData.empty()
-                ).combine(MutableStateFlow(sessionModule.sessionState.value.memberId)){ pagingData, memberId ->
-                    pagingData.filter {
-                        it.memberId != memberId
-                    }
-                }.collectLatest {
+                ).collectLatest {
                     setState(it)
                 }
         }

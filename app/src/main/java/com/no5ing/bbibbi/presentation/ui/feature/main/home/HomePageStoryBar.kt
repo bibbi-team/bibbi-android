@@ -30,6 +30,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
+import com.no5ing.bbibbi.util.LocalSessionState
 
 @Composable
 fun HomePageStoryBar(
@@ -45,9 +46,10 @@ fun HomePageStoryBar(
       //  retrieveMeViewModel.invoke(Arguments())
         familyMembersViewModel.invoke(Arguments())
     }
+    val meId = LocalSessionState.current.memberId
     val items = storyBarState.uiState.collectAsLazyPagingItems()
     val meState by retrieveMeViewModel.uiState.collectAsState()
-    if (items.itemCount == 1) {
+    if (items.itemCount == 0) {
         HomePageNoFamilyBar(
             modifier = Modifier
                 .fillMaxWidth()
@@ -81,12 +83,15 @@ fun HomePageStoryBar(
 
             items(items.itemCount) { index ->
                 val item = items[index] ?: throw RuntimeException()
-                StoryBarIcon(
-                    member = item,
-                    onTap = {
-                        onTapProfile(item)
-                    }
-                )
+                if (item.memberId != meId) {
+                    StoryBarIcon(
+                        member = item,
+                        onTap = {
+                            onTapProfile(item)
+                        }
+                    )
+                }
+
             }
 
             item {

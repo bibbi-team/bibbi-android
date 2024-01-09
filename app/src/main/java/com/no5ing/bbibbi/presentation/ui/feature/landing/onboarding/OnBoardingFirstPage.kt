@@ -38,7 +38,7 @@ fun OnBoardingFirstPage() {
                 contentDescription = null, // 필수 param
                 modifier = Modifier
                     .fillMaxWidth(),
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.Crop
             )
         }
     }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -83,9 +84,10 @@ fun OnBoardingPage(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()
+            .navigationBarsPadding()
     ) {
         Column(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             HorizontalPager(state = onBoardingPageState.pagerState) {
@@ -97,39 +99,37 @@ fun OnBoardingPage(
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.weight(1.0f).padding(
+                    start = 12.dp,
+                    top = 12.dp,
+                    end = 12.dp,
+                )
             ) {
                 MeatBall(
                     meatBallSize = onBoardingPageState.pagerState.pageCount,
                     currentPage = onBoardingPageState.pagerState.currentPage
                 )
-                Box(
-                    modifier = Modifier.padding(
-                        start = 12.dp,
-                        top = 12.dp,
-                        end = 12.dp,
-                    )
-                ) {
-                    CTAButton(
-                        text = if (familyRegistrationViewModel.hasRegistrationToken)
-                            stringResource(id = R.string.onboarding_next_join)
-                        else
-                            stringResource(id = R.string.onboarding_next),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 12.dp),
-                        contentPadding = PaddingValues(vertical = 18.dp),
-                        onClick = {
-                            if (!perm.status.isGranted) {
-                                perm.launchPermissionRequest()
-                            } else {
-                                //이미 동의했거나 API버전 낮음
-                                familyRegistrationViewModel.invoke(Arguments())
-                            }
-                        },
-                        isActive = onBoardingPageState.pagerState.currentPage == 2
-                                && registrationState.value.isIdle(),
-                    )
-                }
+                CTAButton(
+                    text = if (familyRegistrationViewModel.hasRegistrationToken)
+                        stringResource(id = R.string.onboarding_next_join)
+                    else
+                        stringResource(id = R.string.onboarding_next),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp)
+                    ,
+                    contentPadding = PaddingValues(vertical = 18.dp),
+                    onClick = {
+                        if (!perm.status.isGranted) {
+                            perm.launchPermissionRequest()
+                        } else {
+                            //이미 동의했거나 API버전 낮음
+                            familyRegistrationViewModel.invoke(Arguments())
+                        }
+                    },
+                    isActive = onBoardingPageState.pagerState.currentPage == 2
+                            && registrationState.value.isIdle(),
+                )
             }
         }
     }

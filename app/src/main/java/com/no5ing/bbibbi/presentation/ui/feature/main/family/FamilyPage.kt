@@ -52,6 +52,7 @@ fun FamilyPage(
     onTapFamily: (Member) -> Unit,
     onTapShare: (String) -> Unit,
 ) {
+    val meId = LocalSessionState.current.memberId
     val members = familyMembersViewModel.uiState.collectAsLazyPagingItems()
     val meState by retrieveMeViewModel.uiState.collectAsState()
     val pullRefreshState = rememberPullRefreshState(
@@ -108,7 +109,7 @@ fun FamilyPage(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = (members.itemCount + 1).toString(),
+                        text = members.itemCount.toString(),
                         style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                         color = MaterialTheme.bbibbiScheme.icon,
                     )
@@ -137,16 +138,18 @@ fun FamilyPage(
                     }
                     items(members.itemCount) {
                         val item = members[it] ?: throw RuntimeException()
-                        MemberItem(
-                            member = item,
-                            isMe = false,
-                            modifier = Modifier.clickable {
-                                onTapFamily(item)
-                            },
-                            onTap = {
-                                onTapFamily(item)
-                            }
-                        )
+                        if (item.memberId != meId) {
+                            MemberItem(
+                                member = item,
+                                isMe = false,
+                                modifier = Modifier.clickable {
+                                    onTapFamily(item)
+                                },
+                                onTap = {
+                                    onTapFamily(item)
+                                }
+                            )
+                        }
                     }
                 }
                 PullRefreshIndicator(

@@ -247,7 +247,8 @@ class MainActivity : ComponentActivity() {
                                     MainPage(
                                         snackBarHostState = snackBarHostState,
                                         navController = navController,
-                                        isAlreadyLoggedIn = sessionState.isLoggedIn(),
+                                        isAlreadyLoggedIn = sessionState.isLoggedIn()
+                                                && sessionState.hasFamily(),
                                     )
                                 }
                             }

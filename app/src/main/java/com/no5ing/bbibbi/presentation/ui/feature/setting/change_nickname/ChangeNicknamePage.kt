@@ -116,7 +116,7 @@ fun ChangeNicknamePage(
                 )
                 BasicTextField(
                     value = state.nicknameTextState.value,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     onValueChange = {
                         state.nicknameTextState.value = it
                         state.ctaButtonEnabledState.value = it.length >= 2

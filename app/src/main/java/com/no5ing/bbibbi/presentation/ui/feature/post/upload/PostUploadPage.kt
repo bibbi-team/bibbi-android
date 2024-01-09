@@ -308,7 +308,7 @@ fun PostUploadPage(
                                         }
                                     }
                                 },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                                 textStyle = TextStyle(
                                     fontSize = 16.sp,
                                     color = MaterialTheme.bbibbiScheme.white
