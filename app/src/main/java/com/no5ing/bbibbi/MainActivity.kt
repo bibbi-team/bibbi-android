@@ -35,6 +35,8 @@ import com.no5ing.bbibbi.di.NetworkModule
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.ui.MainPage
 import com.no5ing.bbibbi.presentation.ui.navigation.NavDestinationListener
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingAlreadyFamilyExistsDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
@@ -90,15 +92,15 @@ class MainActivity : ComponentActivity() {
                 val deepLinkPayload = data
                 when (deepLinkPayload.type) {
                     "FAMILY_REGISTRATION" -> {
-//                        val previousMe = localDataStorage.getMe()
-//                        if (previousMe == null || !previousMe.hasFamily()) {
-//                            localDataStorage.setRegistrationToken(linkId)
-//                        } else {
-//                            //님머함?
-//                            runOnUiThread {
-//                                localNavController?.navigate(LandingAlreadyFamilyExistsDestination)
-//                            }
-//                        }
+                        val sessionState = sessionModule.sessionState.value
+                        if (!sessionState.isLoggedIn() || !sessionState.hasFamily()) {
+                            localDataStorage.setRegistrationToken(linkId)
+                        } else {
+                            //님머함?
+                            runOnUiThread {
+                                localNavController?.navigate(LandingAlreadyFamilyExistsDestination)
+                            }
+                        }
                     }
 
                     else -> {}
@@ -164,7 +166,6 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        onAppStartIntent(intent)
 
         var keepSplash by mutableStateOf(true)
         // var isAlreadyLoggedIn by mutableStateOf(false)
