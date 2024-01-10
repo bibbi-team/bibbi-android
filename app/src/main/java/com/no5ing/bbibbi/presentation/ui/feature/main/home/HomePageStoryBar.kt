@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
@@ -41,13 +42,12 @@ fun HomePageStoryBar(
     storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(
         uiState = familyMembersViewModel.uiState
     ),
+    items: LazyPagingItems<Member> = storyBarState.uiState.collectAsLazyPagingItems()
 ) {
     LaunchedEffect(Unit) {
-      //  retrieveMeViewModel.invoke(Arguments())
         familyMembersViewModel.invoke(Arguments())
     }
     val meId = LocalSessionState.current.memberId
-    val items = storyBarState.uiState.collectAsLazyPagingItems()
     val meState by retrieveMeViewModel.uiState.collectAsState()
     if (items.itemCount == 0) {
         HomePageNoFamilyBar(

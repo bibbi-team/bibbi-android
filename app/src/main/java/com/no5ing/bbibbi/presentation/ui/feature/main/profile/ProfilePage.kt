@@ -12,6 +12,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -19,10 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.data.model.APIResponse
+import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.viewmodel.members.ChangeProfileImageViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMemberViewModel
+import com.no5ing.bbibbi.util.LocalSessionState
 
 @Composable
 fun ProfilePage(
@@ -33,8 +41,11 @@ fun ProfilePage(
     onTapChangeNickname: () -> Unit = {},
     onTapCamera: () -> Unit = {},
     changeableUriState: MutableState<Uri?> = remember { mutableStateOf(null) },
-    isMe: MutableState<Boolean> = remember { mutableStateOf(false) },
+    familyMemberViewModel: FamilyMemberViewModel = hiltViewModel(),
+    profileImageChangeViewModel: ChangeProfileImageViewModel = hiltViewModel(),
+    memberState: State<APIResponse<Member>> = familyMemberViewModel.uiState.collectAsState(),
 ) {
+    val isMe = memberId == LocalSessionState.current.memberId
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -43,7 +54,7 @@ fun ProfilePage(
                 onDispose = onDispose,
                 title = stringResource(id = R.string.profile_title),
                 rightButton = {
-                    if (isMe.value) {
+                    if (isMe) {
                         Box(
                             modifier = Modifier
                                 .size(52.dp)
@@ -71,7 +82,9 @@ fun ProfilePage(
                 onTapChangeNickname = onTapChangeNickname,
                 onTapCamera = onTapCamera,
                 changeableUriState = changeableUriState,
-                isMe = isMe,
+                familyMemberViewModel = familyMemberViewModel,
+                profileImageChangeViewModel = profileImageChangeViewModel,
+                memberState = memberState,
             )
             ProfilePageContent(
                 memberId = memberId,

@@ -59,14 +59,10 @@ fun ProfilePageMemberBar(
     onTapChangeNickname: () -> Unit = {},
     onTapCamera: () -> Unit = {},
     changeableUriState: MutableState<Uri?> = remember { mutableStateOf(null) },
-    isMe: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     val sessionState = LocalSessionState.current
     LaunchedEffect(memberState) {
-        if(memberState.value.isIdle()) {
-            familyMemberViewModel.invoke(Arguments(resourceId = memberId))
-            isMe.value = sessionState.memberId == memberId
-        }
+        familyMemberViewModel.invoke(Arguments(resourceId = memberId))
     }
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -183,7 +179,9 @@ fun ProfilePageMemberBar(
                         tint = MaterialTheme.bbibbiScheme.icon,
                         modifier = Modifier
                             .size(16.dp)
-                            .clickable { onTapChangeNickname() }
+                            .clickable {
+                                onTapChangeNickname()
+                            }
                     )
                 }
             }

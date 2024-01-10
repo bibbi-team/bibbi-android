@@ -92,9 +92,12 @@ fun HomePage(
             )
         }
         if (meUploadedState.value.isReady() && !meUploadedState.value.data) {
-            HomePageUploadButton(
-                onTap = onTapUpload
-            )
+            val gap = gapUntilNext()
+            if (gap > 0) {
+                HomePageUploadButton(
+                    onTap = onTapUpload
+                )
+            }
         }
     }
 }

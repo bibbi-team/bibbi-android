@@ -86,6 +86,7 @@ fun HomePageContent(
     val pullRefreshStyle = rememberPullRefreshState(
         refreshing = postItems.loadState.refresh is LoadState.Loading,
         onRefresh = {
+            retrieveMeViewModel.invoke(Arguments())
             postItems.refresh()
         }
     )
