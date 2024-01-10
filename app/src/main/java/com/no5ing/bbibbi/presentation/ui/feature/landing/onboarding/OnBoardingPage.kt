@@ -99,7 +99,7 @@ fun OnBoardingPage(
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.weight(1.0f).padding(
+                modifier = Modifier.padding(
                     start = 12.dp,
                     top = 12.dp,
                     end = 12.dp,

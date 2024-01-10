@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -34,6 +35,7 @@ import java.time.LocalDate
 
 @Composable
 fun <T : SelectionState> MainCalendarDay(
+    modifier: Modifier = Modifier,
     state: DayState<T>,
     monthState: Map<LocalDate, CalendarElement>,
     onClick: (LocalDate) -> Unit = {},
@@ -63,8 +65,8 @@ fun <T : SelectionState> MainCalendarDay(
             alpha = if (isSelectableState && !isSelected) 0.3f else 1.0f
         )
 
-    val boxModifier = Modifier
-        .size(50.dp)
+    val boxModifier = modifier
+        //.size(50.dp)
         .clip(RoundedCornerShape(13.dp))
         .border(
             width = 1.dp,
@@ -80,7 +82,8 @@ fun <T : SelectionState> MainCalendarDay(
     Column(
         modifier = Modifier.clickable {
             onClick(date)
-        }
+        },
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (state.isFromCurrentMonth) {
             Box {
