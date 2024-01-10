@@ -174,7 +174,9 @@ fun MemberItem(
     onTap: () -> Unit,
 ) {
     Row(
-        modifier = modifier.padding(vertical = 14.dp, horizontal = 20.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 14.dp, horizontal = 20.dp)
     ) {
         CircleProfileImage(
             member = member,
