@@ -72,6 +72,7 @@ fun RegisterDayOfBirthPage(
                     ),
                     color = MaterialTheme.bbibbiScheme.textSecondary,
                     style = MaterialTheme.bbibbiTypo.headTwoBold,
+                    textAlign = TextAlign.Center,
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
