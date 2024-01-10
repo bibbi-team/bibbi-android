@@ -21,7 +21,7 @@ fun CameraCaptureButton(
         modifier = modifier
             .size(80.dp)
             .clickable {
-                onClick()
+                if(!isCapturing) onClick()
             },
         alpha = if (isCapturing) 0.3f else 1.0f,
     )

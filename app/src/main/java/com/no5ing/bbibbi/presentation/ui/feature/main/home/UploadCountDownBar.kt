@@ -75,7 +75,7 @@ fun UploadCountDownBar(
 
 fun gapUntilNext(): Long {
     val current = LocalDateTime.now()
-    if (current.hour < 11)
+    if (current.hour < 12)
         return -1
     val tomorrow = LocalDateTime
         .of(current.year, current.month, current.dayOfMonth, 0, 0, 0)

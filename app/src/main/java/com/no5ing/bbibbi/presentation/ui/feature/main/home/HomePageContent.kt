@@ -56,6 +56,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.MainPostFeedViewModel
 import com.no5ing.bbibbi.util.gapBetweenNow
 import com.no5ing.bbibbi.util.todayAsString
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -73,6 +74,8 @@ fun HomePageContent(
     onTapProfile: (Member) -> Unit = {},
     onTapInvite: () -> Unit = {},
 ) {
+
+    val postItems = homePageContentState.uiState.collectAsLazyPagingItems()
     LaunchedEffect(Unit) {
         familyPostsViewModel.invoke(
             Arguments(
@@ -82,7 +85,6 @@ fun HomePageContent(
             )
         )
     }
-    val postItems = homePageContentState.uiState.collectAsLazyPagingItems()
     val pullRefreshStyle = rememberPullRefreshState(
         refreshing = postItems.loadState.refresh is LoadState.Loading,
         onRefresh = {
