@@ -1,6 +1,8 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.graph
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Stable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -34,11 +36,13 @@ fun NavGraphBuilder.mainGraph(
             exitTransition = {
                 val destination = targetState.destination.route ?: ""
                 if (destination == MainFamilyDestination.route) fullHorizontalSlideOutToRight()
+                else if (destination.startsWith(MainProfileDestination.route)) fadeOut()
                 else fullHorizontalSlideOutToLeft()
             },
             popEnterTransition = {
                 val initial = initialState.destination.route ?: ""
                 if (initial == MainFamilyDestination.route) fullHorizontalSlideInToLeft()
+                else if (initial.startsWith(MainProfileDestination.route)) fadeIn()
                 else fullHorizontalSlideInToRight()
             }
         )
