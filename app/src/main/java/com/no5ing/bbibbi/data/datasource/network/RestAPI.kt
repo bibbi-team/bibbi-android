@@ -118,6 +118,7 @@ interface RestAPI {
             @Query("size") size: Int?,
             @Query("date") date: String?,
             @Query("memberId") memberId: String?,
+            @Query("sort") sort: String? = "DESC",
         ): ApiResponse<Pagination<Post>>
 
         @GET("v1/posts/{postId}")
