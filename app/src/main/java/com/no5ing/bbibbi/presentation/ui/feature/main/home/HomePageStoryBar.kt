@@ -3,6 +3,7 @@ package com.no5ing.bbibbi.presentation.ui.feature.main.home
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -62,10 +63,10 @@ fun HomePageStoryBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            //horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(20.dp))
             }
 
             if (meState.isReady()) {
@@ -84,18 +85,21 @@ fun HomePageStoryBar(
             items(items.itemCount) { index ->
                 val item = items[index] ?: throw RuntimeException()
                 if (item.memberId != meId) {
-                    StoryBarIcon(
-                        member = item,
-                        onTap = {
-                            onTapProfile(item)
-                        }
-                    )
+                    Row {
+                        Spacer(modifier = Modifier.width(12.dp))
+                        StoryBarIcon(
+                            member = item,
+                            onTap = {
+                                onTapProfile(item)
+                            }
+                        )
+                    }
                 }
 
             }
 
             item {
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(20.dp))
             }
         }
     }
