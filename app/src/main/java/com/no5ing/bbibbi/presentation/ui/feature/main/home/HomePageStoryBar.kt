@@ -17,12 +17,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.main.home.HomePageStoryBarState
@@ -76,7 +78,8 @@ fun HomePageStoryBar(
                         member = item,
                         onTap = {
                             onTapProfile(item)
-                        }
+                        },
+                        isMe = true
                     )
                 }
             }
@@ -110,6 +113,7 @@ fun HomePageStoryBar(
 fun StoryBarIcon(
     onTap: () -> Unit,
     member: Member,
+    isMe: Boolean = false,
 ) {
     Column(
         modifier = Modifier
@@ -124,7 +128,7 @@ fun StoryBarIcon(
             onTap = onTap,
         )
         Text(
-            text = member.name,
+            text = if(isMe) stringResource(id = R.string.family_me) else member.name,
             color = MaterialTheme.bbibbiScheme.textSecondary,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
