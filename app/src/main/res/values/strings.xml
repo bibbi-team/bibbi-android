@@ -61,7 +61,9 @@
     <string name="snack_bar_alreday_accepted">이미 권한을 허용했어요</string>
 
     <string name="server_already_uploaded">이미 오늘 게시물을 업로드했어요</string>
+    <string name="server_not_uploadable_time">업로드할 수 없는 시간이에요</string>
     <string name="server_unknown_error">알 수 없는 오류가 발생했어요</string>
+    <string name="server_invalid_input">입력값이 올바르지 않아요</string>
     <string name="calendar">추억 캘린더</string>
     <string name="year">년</string>
     <string name="month">월</string>
