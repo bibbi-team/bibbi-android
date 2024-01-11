@@ -289,7 +289,7 @@ class AppWidget : GlanceAppWidget() {
                 )
                 Timber.d("evaluatedFontSize: $evaluatedFontSize")
                 Text(
-                    text = stringResource(id = R.string.widget_body_description),
+                    text = "가족에게\n생존신고 할 시간!",
                     style = TextStyle(
                         color = ColorProvider(Color.White),
                         fontSize = evaluatedFontSize,

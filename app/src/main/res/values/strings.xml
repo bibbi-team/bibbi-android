@@ -116,11 +116,9 @@
 
     <string name="widget_name">삐삐</string>
     <string name="widget_description">가족들이 생존신고 한 사진을 빠르게 확인할 수 있어요.</string>
-    <string name="widget_body_description">가족에게\n생존신고 할 시간!</string>
 
     <string name="register_day_of_birth_description">안녕하세요 %1$s님, 생일이 언제신가요?</string>
     <string name="register_day_of_birth_year">년</string>
     <string name="register_day_of_birth_month">월</string>
-    .
     <string name="register_day_of_birth_day">일</string>
 </resources>
