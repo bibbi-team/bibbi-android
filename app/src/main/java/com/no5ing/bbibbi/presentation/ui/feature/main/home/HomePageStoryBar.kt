@@ -52,7 +52,7 @@ fun HomePageStoryBar(
     }
     val meId = LocalSessionState.current.memberId
     val meState by retrieveMeViewModel.uiState.collectAsState()
-    if (items.itemCount == 0) {
+    if (items.itemCount == 1) {
         HomePageNoFamilyBar(
             modifier = Modifier
                 .fillMaxWidth()
