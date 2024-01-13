@@ -6,6 +6,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.navigation
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingAlreadyFamilyExistsDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingJoinFamilyDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingJoinFamilyWithLinkDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingLoginDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingOnBoardingDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
@@ -31,6 +33,14 @@ fun NavGraphBuilder.landingGraph(
         composable(
             controller = navController,
             destination = LandingAlreadyFamilyExistsDestination,
+        )
+        composable(
+            controller = navController,
+            destination = LandingJoinFamilyDestination,
+        )
+        composable(
+            controller = navController,
+            destination = LandingJoinFamilyWithLinkDestination,
         )
     }
 }

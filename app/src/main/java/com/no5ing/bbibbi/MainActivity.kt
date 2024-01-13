@@ -39,6 +39,7 @@ import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingAlreadyFa
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.util.LocalDeepLinkState
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
@@ -49,6 +50,7 @@ import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
@@ -67,6 +69,8 @@ class MainActivity : ComponentActivity() {
 
     private var localNavController: NavHostController? = null
 
+    private val deepLinkStateFlow = MutableStateFlow<String?>(null)
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         //HANDLE FOREGROUND INTENT (already app is active)
@@ -79,6 +83,7 @@ class MainActivity : ComponentActivity() {
         Timber.d("onAppStartIntent: $intent")
         val appLinkData: Uri? = intent?.data
         val linkId = appLinkData?.let {
+            deepLinkStateFlow.value = it.toString()
             getLinkIdFromUrl(it.toString())
         }
         if (linkId != null) {
@@ -94,7 +99,7 @@ class MainActivity : ComponentActivity() {
                     "FAMILY_REGISTRATION" -> {
                         val sessionState = sessionModule.sessionState.value
                         if (!sessionState.isLoggedIn() || !sessionState.hasFamily()) {
-                            localDataStorage.setRegistrationToken(linkId)
+                            //localDataStorage.setRegistrationToken(linkId)
                         } else {
                             //님머함?
                             runOnUiThread {
@@ -190,6 +195,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberAnimatedNavController()
             val snackBarHostState = remember { SnackbarHostState() }
             val sessionState by sessionModule.sessionState.collectAsState()
+            val deepLinkState by deepLinkStateFlow.collectAsState()
             DisposableEffect(navController) {
                 localNavController = navController
                 navController
@@ -224,32 +230,34 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalNavigateControllerState provides navController
                 ) {
-                    BbibbiTheme {
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
-                                .statusBarsPadding(),
-                            color = MaterialTheme.bbibbiScheme.backgroundPrimary
-                        ) {
-                            AnimatedVisibility(visible = isReady) {
-                                LaunchedEffect(sessionState) {
-                                    Timber.d("[MainActivity] Session State Changed to $sessionState")
-                                    if (sessionState.isLoggedIn()) {
-                                        localDataStorage.setAuthTokens(sessionState.apiToken)
-                                    } else {
-                                        localDataStorage.logOut()
+                    CompositionLocalProvider(value = LocalDeepLinkState provides deepLinkState) {
+                        BbibbiTheme {
+                            Surface(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
+                                    .statusBarsPadding(),
+                                color = MaterialTheme.bbibbiScheme.backgroundPrimary
+                            ) {
+                                AnimatedVisibility(visible = isReady) {
+                                    LaunchedEffect(sessionState) {
+                                        Timber.d("[MainActivity] Session State Changed to $sessionState")
+                                        if (sessionState.isLoggedIn()) {
+                                            localDataStorage.setAuthTokens(sessionState.apiToken)
+                                        } else {
+                                            localDataStorage.logOut()
+                                        }
                                     }
-                                }
-                                CompositionLocalProvider(
-                                    LocalSessionState provides sessionState
-                                ) {
-                                    MainPage(
-                                        snackBarHostState = snackBarHostState,
-                                        navController = navController,
-                                        isAlreadyLoggedIn = sessionState.isLoggedIn()
-                                                && sessionState.hasFamily(),
-                                    )
+                                    CompositionLocalProvider(
+                                        LocalSessionState provides sessionState
+                                    ) {
+                                        MainPage(
+                                            snackBarHostState = snackBarHostState,
+                                            navController = navController,
+                                            isAlreadyLoggedIn = sessionState.isLoggedIn()
+                                                    && sessionState.hasFamily(),
+                                        )
+                                    }
                                 }
                             }
                         }

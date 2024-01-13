@@ -69,28 +69,6 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         editor.commit()
     }
 
-    fun setRegistrationToken(token: String) {
-        val editor = preferences.edit()
-        editor.putString(REGISTRATION_TOKEN_KEY, token)
-        editor.apply()
-        editor.commit()
-    }
-
-    fun getAndDeleteRegistrationToken(): String? {
-        val token = preferences.getString(REGISTRATION_TOKEN_KEY, null)
-        if (token != null) {
-            val editor = preferences.edit()
-            editor.remove(REGISTRATION_TOKEN_KEY)
-            editor.apply()
-            editor.commit()
-        }
-        return token
-    }
-
-    fun hasRegistrationToken(): Boolean {
-        return preferences.contains(REGISTRATION_TOKEN_KEY)
-    }
-
     fun setLandingSeen() {
         val editor = preferences.edit()
         editor.putBoolean(LANDING_SEEN_KEY, true)

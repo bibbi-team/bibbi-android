@@ -44,9 +44,20 @@
     <string name="onboarding_first_title">매일 낮 12시, 알림을 받으면\n가족에게 사진을 보내세요</string>
     <string name="onboarding_second_title">홈 화면 위젯으로\n가족의 일상을 한 눈에 확인해요</string>
     <string name="onboarding_third_title">하루에 오직 두번 오는 알림,\n놓치지 않으려면 꼭 허용하세요!</string>
-    <string name="onboarding_next">알림 허용하고 그룹 생성하기</string>
+    <string name="onboarding_next">알림 허용하고 시작하기</string>
     <string name="onboarding_next_join">알림 허용하고 입장하기</string>
     <string name="family_me">Me</string>
+
+    <string name="join_family_title">%1$s님, 가족 중 첫번째로\n방을 생성해보세요</string>
+    <string name="join_family_description">하나의 그룹에만 소속될 수 있어요</string>
+    <string name="join_family_create_group">그룹 생성하기</string>
+    <string name="join_family_link_bar_title">이미 초대링크를 받았다면</string>
+    <string name="join_family_link_bar_subtitle">그룹 입장하기</string>
+
+    <string name="join_family_with_link_title">초대받은 링크를 입력해주세요</string>
+    <string name="join_family_with_link_enter_group">그룹 입장하기</string>
+    <string name="join_family_with_link_sample_text">https://no5ing.kr/o/</string>
+    <string name="join_family_with_link_not_valid">유효하지 않은 링크에요</string>
 
     <string name="time_now">방금 전</string>
     <string name="time_minutes">분 전</string>

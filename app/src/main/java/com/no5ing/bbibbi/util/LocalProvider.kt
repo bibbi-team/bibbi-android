@@ -14,3 +14,6 @@ val LocalNavigateControllerState =
 
 val LocalSessionState =
     compositionLocalOf<SessionState> { error("No SessionState provided") }
+
+val LocalDeepLinkState =
+    compositionLocalOf<String?> { error("No DeepLinkState provided") }

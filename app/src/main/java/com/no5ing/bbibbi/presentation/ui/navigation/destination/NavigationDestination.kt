@@ -34,6 +34,8 @@ abstract class NavigationDestination(
         internal const val landingPageRoute = "landing"
         internal const val landingLoginPageRoute = "landing/login"
         internal const val landingOnBoardingRoute = "landing/onboarding"
+        internal const val landingJoinFamilyRoute = "landing/join-family"
+        internal const val landingJoinFamilyWithLinkRoute = "landing/join-family-with-link"
         internal const val landingAlreadyFamilyExistsRoute = "landing/already-family-exists"
 
         internal const val registerPageRoute = "register"

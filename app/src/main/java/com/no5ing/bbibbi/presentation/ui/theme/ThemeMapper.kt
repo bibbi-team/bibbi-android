@@ -28,6 +28,8 @@ object BbiBbiColorScheme {
     val white: Color
         @Composable get() = MaterialTheme.colorScheme.onPrimary
 
+    val gray600: Color
+        @Composable get() = MaterialTheme.colorScheme.onSecondary
 
     /**
      *
