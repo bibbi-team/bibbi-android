@@ -7,7 +7,6 @@ import android.graphics.Rect
 import android.text.TextPaint
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -95,8 +94,10 @@ class AppWidget : GlanceAppWidget() {
                     WidgetImageWorker::class.java,
                     Duration.ofMinutes(15),
                 )
-                    .setConstraints(Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED).build())
+                    .setConstraints(
+                        Constraints.Builder()
+                            .setRequiredNetworkType(NetworkType.CONNECTED).build()
+                    )
                     .build()
             )
             provideContent {

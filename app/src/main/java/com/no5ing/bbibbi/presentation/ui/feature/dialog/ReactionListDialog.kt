@@ -35,7 +35,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
@@ -75,7 +73,7 @@ fun ReactionListDialog(
     selectedEmoji: String,
     isEnabled: MutableState<Boolean> = remember { mutableStateOf(false) },
     emojiMap: Map<String, List<PostReactionUiState>>,
-  //  postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
+    //  postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
 ) {
     if (isEnabled.value) {
         val navController = LocalNavigateControllerState.current
@@ -104,7 +102,7 @@ fun ReactionListDialog(
             val (width, height) = getScreenSize()
 
 
-          //  val memberState = postViewReactionMemberViewModel.uiState.collectAsState()
+            //  val memberState = postViewReactionMemberViewModel.uiState.collectAsState()
             val myGroup = emojiMap[selectedEmoji] ?: emptyList()
             val totalCntMessage = stringResource(id = R.string.emoji_reaction_total, myGroup.size)
             Box(

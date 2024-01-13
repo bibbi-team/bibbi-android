@@ -5,7 +5,6 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.link.DeepLink
-import com.no5ing.bbibbi.presentation.uistate.family.FamilyInviteLinkUiState
 
 @Stable
 data class FamilyPageInvitationState(

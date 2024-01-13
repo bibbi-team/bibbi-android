@@ -195,8 +195,10 @@ fun KakaoLoginButton(
 ) {
     val alphaValue = if (isLoggingIn) 0.5f else 1.0f
     Button(
-        colors = ButtonDefaults.buttonColors(containerColor =
-        MaterialTheme.bbibbiScheme.kakaoYellow.copy(alpha = alphaValue)),
+        colors = ButtonDefaults.buttonColors(
+            containerColor =
+            MaterialTheme.bbibbiScheme.kakaoYellow.copy(alpha = alphaValue)
+        ),
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
@@ -232,9 +234,11 @@ fun GoogleLoginButton(
     val alphaValue = if (isLoggingIn) 0.5f else 1.0f
     Button(
         colors = ButtonDefaults
-            .buttonColors(containerColor = MaterialTheme.bbibbiScheme.white.copy(
-                alpha = alphaValue
-            )),
+            .buttonColors(
+                containerColor = MaterialTheme.bbibbiScheme.white.copy(
+                    alpha = alphaValue
+                )
+            ),
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),

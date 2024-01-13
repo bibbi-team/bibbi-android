@@ -84,7 +84,7 @@ fun JoinFamilyWithLinkPage(
     }
     LaunchedEffect(deepLinkState) {
         if (deepLinkState != null) {
-            if(isValidUrl(deepLinkState)){
+            if (isValidUrl(deepLinkState)) {
                 state.nicknameTextState.value = deepLinkState
                 state.isInvalidInputState.value = false
                 state.ctaButtonEnabledState.value = true
@@ -202,13 +202,13 @@ fun JoinFamilyWithLinkPage(
                     contentPadding = PaddingValues(vertical = 18.dp),
                     isActive = state.ctaButtonEnabledState.value && uiState.isIdle(),
                     onClick = {
-                              joinFamilyWithLinkViewModel.invoke(
-                                  Arguments(
-                                      arguments = mapOf(
-                                          "linkId" to getLinkIdFromUrl(state.nicknameTextState.value),
-                                      )
-                                  )
-                              )
+                        joinFamilyWithLinkViewModel.invoke(
+                            Arguments(
+                                arguments = mapOf(
+                                    "linkId" to getLinkIdFromUrl(state.nicknameTextState.value),
+                                )
+                            )
+                        )
                     },
                 )
             }

@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.presentation.viewmodel.family
 
-import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.JoinFamilyRequest
 import com.no5ing.bbibbi.data.model.APIResponse

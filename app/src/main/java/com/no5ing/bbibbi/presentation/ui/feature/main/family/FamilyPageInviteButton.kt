@@ -35,7 +35,6 @@ import com.no5ing.bbibbi.presentation.state.main.family.rememberFamilyPageInvita
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.viewmodel.family.FamilyInviteLinkViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
-import timber.log.Timber
 
 @Composable
 fun FamilyPageInviteButton(
@@ -92,7 +91,7 @@ fun FamilyPageInviteButton(
                         fontSize = 18.sp,
                     )
                     Text(
-                        text = if(uiState.isReady()) uiState.data.url else "Loading...",
+                        text = if (uiState.isReady()) uiState.data.url else "Loading...",
                         color = MaterialTheme.bbibbiScheme.textSecondary,
                         fontSize = 14.sp,
                     )

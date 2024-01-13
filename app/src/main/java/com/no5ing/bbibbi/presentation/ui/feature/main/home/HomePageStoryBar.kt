@@ -128,7 +128,7 @@ fun StoryBarIcon(
             onTap = onTap,
         )
         Text(
-            text = if(isMe) stringResource(id = R.string.family_me) else member.name,
+            text = if (isMe) stringResource(id = R.string.family_me) else member.name,
             color = MaterialTheme.bbibbiScheme.textSecondary,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,

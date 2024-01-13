@@ -30,7 +30,6 @@ import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.IsMeUploadedTodayViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.MainPostFeedViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
-import timber.log.Timber
 
 @Composable
 fun HomePage(
@@ -62,7 +61,7 @@ fun HomePage(
         isMeUploadedTodayViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
     }
     LaunchedEffect(meState.value.status) {
-        if(meState.value.isIdle()) {
+        if (meState.value.isIdle()) {
             retrieveMeViewModel.invoke(Arguments())
         }
     }

@@ -28,7 +28,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
 @Composable
-fun  JoinFamilyPageLinkBar(
+fun JoinFamilyPageLinkBar(
     onTap: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

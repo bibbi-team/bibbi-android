@@ -37,11 +37,12 @@ fun OnBoardingPage(
     onAlreadyHaveFamily: () -> Unit = {},
     onFamilyNotExists: () -> Unit = {},
     onBoardingPageState: OnBoardingPageState = rememberOnBoardingPageState(),
- //   familyRegistrationViewModel: FamilyRegistrationViewModel = hiltViewModel(),
+    //   familyRegistrationViewModel: FamilyRegistrationViewModel = hiltViewModel(),
 ) {
     val sessionState = LocalSessionState.current
-  //  val registrationState = familyRegistrationViewModel.uiState.collectAsState()
-    val nextViewRoute = if(sessionState.isLoggedIn() && sessionState.hasFamily()) onAlreadyHaveFamily else onFamilyNotExists
+    //  val registrationState = familyRegistrationViewModel.uiState.collectAsState()
+    val nextViewRoute =
+        if (sessionState.isLoggedIn() && sessionState.hasFamily()) onAlreadyHaveFamily else onFamilyNotExists
     val perm = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS) { isAccepted ->
             if (!isAccepted) {

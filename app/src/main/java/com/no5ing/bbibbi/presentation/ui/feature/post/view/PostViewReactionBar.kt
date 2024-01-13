@@ -48,7 +48,7 @@ fun PostViewReactionBar(
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
- //   postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
+    //   postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
     uiState: State<List<PostReactionUiState>> = familyPostReactionBarViewModel.uiState.collectAsState(),
     onTapAddEmojiButton: () -> Unit,
 ) {
@@ -62,7 +62,7 @@ fun PostViewReactionBar(
                 )
             )
         )
-    //    postViewReactionMemberViewModel.invoke(Arguments())
+        //    postViewReactionMemberViewModel.invoke(Arguments())
     }
     val selectedEmoji = remember { mutableStateOf(emojiList.first()) }
     val emojiMap = uiState.value.groupBy { it.emojiType }
