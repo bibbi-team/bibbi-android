@@ -110,7 +110,7 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
     implementation("androidx.paging:paging-compose:3.3.0-alpha02")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0-alpha01")
-    implementation("androidx.security:security-crypto:1.1.0-alpha03")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
     implementation("androidx.compose.material:material:1.5.4")
 
     implementation("com.google.dagger:hilt-android:2.49")
