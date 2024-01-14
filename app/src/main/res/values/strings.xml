@@ -30,7 +30,8 @@
     <string name="setting_account_and_permission">계정 및 권한</string>
     <string name="setting_version_info">버전 정보</string>
     <string name="setting_notification_setting">알림 설정</string>
-    <string name="setting_terms_of_service">약관 및 정책</string>
+    <string name="setting_privacy">개인정보처리방침</string>
+    <string name="setting_terms">이용 약관</string>
     <string name="setting_login">로그인</string>
     <string name="setting_logout">로그아웃</string>
     <string name="setting_leave">회원 탈퇴</string>

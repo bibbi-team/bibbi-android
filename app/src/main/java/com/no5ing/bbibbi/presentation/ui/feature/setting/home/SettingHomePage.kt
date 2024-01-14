@@ -58,6 +58,7 @@ fun SettingHomePage(
     onLogout: () -> Unit,
     onQuitCompleted: () -> Unit,
     onTerm: () -> Unit,
+    onPrivacy: () -> Unit,
     logoutViewModel: LogoutViewModel = hiltViewModel(),
     quitViewModel: QuitViewModel = hiltViewModel(),
 ) {
@@ -162,7 +163,11 @@ fun SettingHomePage(
                     }
                 )
                 SettingItem(
-                    name = stringResource(id = R.string.setting_terms_of_service),
+                    name = stringResource(id = R.string.setting_privacy),
+                    onClick = onPrivacy,
+                )
+                SettingItem(
+                    name = stringResource(id = R.string.setting_terms),
                     onClick = onTerm,
                 )
             }

@@ -20,11 +20,19 @@ object SettingDestination : NavigationDestination(
             onQuitCompleted = {
                 navController.context.forceRestart()
             },
-            onTerm = {
+            onPrivacy = {
                 navController.navigate(
                     WebViewDestination,
                     params = listOf(
                         "webViewUrl" to BuildConfig.privacyUrl
+                    )
+                )
+            },
+            onTerm = {
+                navController.navigate(
+                    WebViewDestination,
+                    params = listOf(
+                        "webViewUrl" to BuildConfig.termUrl
                     )
                 )
             }
