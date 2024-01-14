@@ -28,7 +28,10 @@
     <string name="setting_and_privacy">설정 및 개인정보</string>
 
     <string name="setting_account_and_permission">계정 및 권한</string>
-    <string name="setting_version_info">버전 정보</string>
+    <string name="setting_version_info">%1$s 버전</string>
+    <string name="setting_version_info_querying">버전 정보 조회중...</string>
+    <string name="setting_version_info_latest">최신 버전입니다</string>
+    <string name="setting_version_info_require_update">최신 버전으로 업데이트 해주세요</string>
     <string name="setting_notification_setting">알림 설정</string>
     <string name="setting_privacy">개인정보처리방침</string>
     <string name="setting_terms">이용 약관</string>

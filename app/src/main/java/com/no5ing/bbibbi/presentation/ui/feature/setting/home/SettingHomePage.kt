@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -48,11 +49,13 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.LogoutViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.auth.QuitViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveAppVersionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.family.QuitFamilyViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.emptyPermissionState
 import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.localResources
+import com.no5ing.bbibbi.util.openMarket
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -69,10 +72,12 @@ fun SettingHomePage(
     logoutViewModel: LogoutViewModel = hiltViewModel(),
     quitViewModel: QuitViewModel = hiltViewModel(),
     familyQuitViewModel: QuitFamilyViewModel = hiltViewModel(),
+    retrieveAppVersionViewModel: RetrieveAppVersionViewModel = hiltViewModel(),
 ) {
     val logOutState = logoutViewModel.uiState.collectAsState()
     val quitState = quitViewModel.uiState.collectAsState()
     val familyQuitState by familyQuitViewModel.uiState.collectAsState()
+    val appVersionState by retrieveAppVersionViewModel.uiState.collectAsState()
     val resources = localResources()
     val snackBarHost = LocalSnackbarHostState.current
     val coroutineScope = rememberCoroutineScope()
@@ -86,6 +91,11 @@ fun SettingHomePage(
         when (quitState.value) {
             OperationStatus.SUCCESS -> onQuitCompleted()
             else -> {}
+        }
+    }
+    LaunchedEffect(appVersionState) {
+        if (appVersionState.isIdle()) {
+            retrieveAppVersionViewModel.invoke(Arguments())
         }
     }
 
@@ -140,6 +150,7 @@ fun SettingHomePage(
                     actionLabel = snackBarWarning,
                 )
             }
+
             else -> {
                 Timber.d("Failed")
             }
@@ -167,15 +178,41 @@ fun SettingHomePage(
                     color = MaterialTheme.bbibbiScheme.icon,
                     style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                 )
+                val versionInfoText = if (appVersionState.isReady()) {
+                    if (appVersionState.data.latest) {
+                        stringResource(id = R.string.setting_version_info_latest)
+                    } else {
+                        stringResource(id = R.string.setting_version_info_require_update)
+                    }
+                } else stringResource(id = R.string.setting_version_info_querying)
                 SettingItem(
-                    name = stringResource(id = R.string.setting_version_info),
-                    onClick = {},
+                    name = stringResource(
+                        id = R.string.setting_version_info,
+                        BuildConfig.VERSION_NAME
+                    ),
+                    onClick = {
+                        if (appVersionState.isReady() && !appVersionState.data.latest) {
+                            context.openMarket()
+                        }
+                    },
                     rightButton = {
-                        Text(
-                            text = BuildConfig.VERSION_NAME,
-                            color = MaterialTheme.bbibbiScheme.icon,
-                            style = MaterialTheme.bbibbiTypo.headTwoRegular,
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = versionInfoText,
+                                color = MaterialTheme.bbibbiScheme.icon,
+                                style = MaterialTheme.bbibbiTypo.headTwoRegular,
+                            )
+                            if (appVersionState.isReady() && !appVersionState.data.latest) {
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Icon(
+                                    painter = painterResource(id = R.drawable.arrow_right),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.bbibbiScheme.icon,
+                                )
+                            }
+                        }
                     }
                 )
                 SettingItem(

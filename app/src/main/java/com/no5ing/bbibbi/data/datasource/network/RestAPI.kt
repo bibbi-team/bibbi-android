@@ -11,6 +11,7 @@ import com.no5ing.bbibbi.data.datasource.network.request.post.DeletePostReaction
 import com.no5ing.bbibbi.data.datasource.network.response.ArrayResponse
 import com.no5ing.bbibbi.data.datasource.network.response.DefaultResponse
 import com.no5ing.bbibbi.data.datasource.network.response.Pagination
+import com.no5ing.bbibbi.data.model.auth.AppVersion
 import com.no5ing.bbibbi.data.model.auth.AuthResult
 import com.no5ing.bbibbi.data.model.auth.RefreshAuthRequest
 import com.no5ing.bbibbi.data.model.auth.RegisterRequest
@@ -109,6 +110,9 @@ interface RestAPI {
 
         @POST("v1/me/quit-family")
         suspend fun quitFamily(): ApiResponse<DefaultResponse>
+
+        @GET("v1/me/app-version")
+        suspend fun getAppVersion(): ApiResponse<AppVersion>
     }
 
     /**

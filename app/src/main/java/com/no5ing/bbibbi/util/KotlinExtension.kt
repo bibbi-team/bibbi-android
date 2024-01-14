@@ -3,6 +3,7 @@ package com.no5ing.bbibbi.util
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.util.DisplayMetrics
@@ -65,6 +66,11 @@ val emptyPermissionState = object : PermissionState {
     }
 }
 
+fun Context.openMarket() {
+    val intent = Intent(Intent.ACTION_VIEW)
+    intent.data = Uri.parse("market://details?id=com.no5ing.bbibbi")
+    this.startActivity(intent)
+}
 fun Context.forceRestart() {
     if (this is Activity) {
         Timber.d("[Activity] Restarting application...")
