@@ -35,6 +35,12 @@ object SettingDestination : NavigationDestination(
                         "webViewUrl" to BuildConfig.termUrl
                     )
                 )
+            },
+            onFamilyQuitCompleted = {
+                navController.popAll()
+                navController.navigate(
+                    LandingJoinFamilyDestination
+                )
             }
         )
     }

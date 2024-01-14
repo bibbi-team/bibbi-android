@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,20 +36,25 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.no5ing.bbibbi.BuildConfig
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.OperationStatus
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarInfo
+import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.LogoutViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.auth.QuitViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.family.QuitFamilyViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.emptyPermissionState
+import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.localResources
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -57,13 +63,16 @@ fun SettingHomePage(
     onDispose: () -> Unit,
     onLogout: () -> Unit,
     onQuitCompleted: () -> Unit,
+    onFamilyQuitCompleted: () -> Unit,
     onTerm: () -> Unit,
     onPrivacy: () -> Unit,
     logoutViewModel: LogoutViewModel = hiltViewModel(),
     quitViewModel: QuitViewModel = hiltViewModel(),
+    familyQuitViewModel: QuitFamilyViewModel = hiltViewModel(),
 ) {
     val logOutState = logoutViewModel.uiState.collectAsState()
     val quitState = quitViewModel.uiState.collectAsState()
+    val familyQuitState by familyQuitViewModel.uiState.collectAsState()
     val resources = localResources()
     val snackBarHost = LocalSnackbarHostState.current
     val coroutineScope = rememberCoroutineScope()
@@ -79,6 +88,7 @@ fun SettingHomePage(
             else -> {}
         }
     }
+
 
     val notificationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
@@ -106,6 +116,35 @@ fun SettingHomePage(
             quitViewModel.invoke(Arguments(arguments = mapOf()))
         }
     )
+
+    val familyQuitModalEnabled = remember { mutableStateOf(false) }
+    CustomAlertDialog(
+        title = stringResource(id = R.string.dialog_quit_group_title),
+        description = stringResource(id = R.string.dialog_quit_group_message),
+        enabledState = familyQuitModalEnabled,
+        confirmMessage = stringResource(id = R.string.dialog_quit_group_confirm),
+        confirmRequest = {
+            familyQuitViewModel.invoke(Arguments())
+        }
+    )
+
+    LaunchedEffect(familyQuitState) {
+        when (familyQuitState.status) {
+            APIResponse.Status.SUCCESS -> onFamilyQuitCompleted()
+            APIResponse.Status.ERROR -> {
+                familyQuitViewModel.resetState()
+                familyQuitModalEnabled.value = false
+                val errMessage = resources.getErrorMessage(familyQuitState.errorCode)
+                snackBarHost.showSnackBarWithDismiss(
+                    message = errMessage,
+                    actionLabel = snackBarWarning,
+                )
+            }
+            else -> {
+                Timber.d("Failed")
+            }
+        }
+    }
 
     val context = LocalContext.current
     Box(modifier = Modifier.fillMaxSize()) {
@@ -187,6 +226,13 @@ fun SettingHomePage(
                     name = stringResource(id = R.string.setting_logout),
                     onClick = {
                         logoutModalEnabled.value = true
+                    },
+                    isCritical = true,
+                )
+                SettingItem(
+                    name = stringResource(id = R.string.setting_group_quit),
+                    onClick = {
+                        familyQuitModalEnabled.value = true
                     },
                     isCritical = true,
                 )

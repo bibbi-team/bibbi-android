@@ -31,6 +31,7 @@ import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -107,7 +108,8 @@ fun CustomAlertDialog(
                     Text(
                         description,
                         color = MaterialTheme.bbibbiScheme.textPrimary,
-                        fontSize = 13.sp
+                        fontSize = 13.sp,
+                        textAlign = TextAlign.Center,
                     )
                 },
                 shape = RoundedCornerShape(14.dp),

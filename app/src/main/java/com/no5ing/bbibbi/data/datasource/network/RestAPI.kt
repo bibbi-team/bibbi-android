@@ -106,6 +106,9 @@ interface RestAPI {
         suspend fun joinFamilyWithToken(
             @Body body: JoinFamilyRequest,
         ): ApiResponse<Family>
+
+        @POST("v1/me/quit-family")
+        suspend fun quitFamily(): ApiResponse<DefaultResponse>
     }
 
     /**

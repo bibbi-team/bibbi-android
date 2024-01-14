@@ -34,6 +34,7 @@
     <string name="setting_terms">이용 약관</string>
     <string name="setting_login">로그인</string>
     <string name="setting_logout">로그아웃</string>
+    <string name="setting_group_quit">그룹 탈퇴</string>
     <string name="setting_leave">회원 탈퇴</string>
 
     <string name="profile_title">활동</string>
@@ -99,6 +100,10 @@
     <string name="dialog_quit_title">회원탈퇴</string>
     <string name="dialog_quit_message">회원탈퇴 하시겠어요?</string>
     <string name="dialog_quit_confirm">회원탈퇴</string>
+
+    <string name="dialog_quit_group_title">그룹 탈퇴</string>
+    <string name="dialog_quit_group_message">그룹을 탈퇴해도 나의 활동 내역은\n유지되니 참고해주세요.</string>
+    <string name="dialog_quit_group_confirm">확인</string>
 
     <string name="dialog_image_upload_title">이미지 업로드</string>
     <string name="dialog_image_upload_message">업로드할 이미지를 어디에서 가져올까요?</string>
