@@ -141,4 +141,10 @@
     <string name="register_day_of_birth_year">년</string>
     <string name="register_day_of_birth_month">월</string>
     <string name="register_day_of_birth_day">일</string>
+
+    <string name="quit_title">회원 탈퇴</string>
+    <string name="quit_button">탈퇴하기</string>
+    <string name="quit_heading_one">삐삐 서비스와 헤어지게 되어 아쉬워요..</string>
+    <string name="quit_heading_two">탈퇴 사유를 알려주세요.\n삐삐 서비스를 개선하는데 많은 도움이 됩니다.\n더 나은 서비스가 될 수 있도록 노력할게요!</string>
+    <string name="quit_minimum_one">최소 1개 이상 선택해주세요.</string>
 </resources>

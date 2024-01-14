@@ -10,6 +10,7 @@ import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlid
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.ChangeNicknameDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.settingPageRoute
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.QuitDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.SettingDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.WebViewDestination
 
@@ -45,6 +46,10 @@ fun NavGraphBuilder.settingGraph(
             popExitTransition = {
                 fullHorizontalSlideOutToRight()
             }
+        )
+        composable(
+            controller = navController,
+            destination = QuitDestination,
         )
     }
 }

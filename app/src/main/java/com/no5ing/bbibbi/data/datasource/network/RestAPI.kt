@@ -5,6 +5,7 @@ import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeNameReques
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeProfileImageRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.JoinFamilyRequest
+import com.no5ing.bbibbi.data.datasource.network.request.member.QuitMemberRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostReactionRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.DeletePostReactionRequest
@@ -64,9 +65,10 @@ interface RestAPI {
             @Path("memberId") memberId: String
         ): ApiResponse<Member>
 
-        @DELETE("v1/members/{memberId}")
+        @HTTP(method = "DELETE", path = "v1/members/{memberId}", hasBody = true)
         suspend fun quitMember(
-            @Path("memberId") memberId: String
+            @Path("memberId") memberId: String,
+            @Body body: QuitMemberRequest,
         ): ApiResponse<Member>
 
         @POST("v1/members/image-upload-request")

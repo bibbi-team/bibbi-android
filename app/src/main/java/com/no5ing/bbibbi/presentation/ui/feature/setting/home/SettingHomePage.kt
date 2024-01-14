@@ -65,17 +65,16 @@ import timber.log.Timber
 fun SettingHomePage(
     onDispose: () -> Unit,
     onLogout: () -> Unit,
-    onQuitCompleted: () -> Unit,
+    onQuit: () -> Unit,
     onFamilyQuitCompleted: () -> Unit,
     onTerm: () -> Unit,
     onPrivacy: () -> Unit,
     logoutViewModel: LogoutViewModel = hiltViewModel(),
-    quitViewModel: QuitViewModel = hiltViewModel(),
     familyQuitViewModel: QuitFamilyViewModel = hiltViewModel(),
     retrieveAppVersionViewModel: RetrieveAppVersionViewModel = hiltViewModel(),
 ) {
     val logOutState = logoutViewModel.uiState.collectAsState()
-    val quitState = quitViewModel.uiState.collectAsState()
+
     val familyQuitState by familyQuitViewModel.uiState.collectAsState()
     val appVersionState by retrieveAppVersionViewModel.uiState.collectAsState()
     val resources = localResources()
@@ -87,12 +86,7 @@ fun SettingHomePage(
             else -> {}
         }
     }
-    LaunchedEffect(quitState.value) {
-        when (quitState.value) {
-            OperationStatus.SUCCESS -> onQuitCompleted()
-            else -> {}
-        }
-    }
+
     LaunchedEffect(appVersionState) {
         if (appVersionState.isIdle()) {
             retrieveAppVersionViewModel.invoke(Arguments())
@@ -116,16 +110,7 @@ fun SettingHomePage(
         }
     )
 
-    val quitModalEnabled = remember { mutableStateOf(false) }
-    CustomAlertDialog(
-        title = stringResource(id = R.string.dialog_quit_title),
-        description = stringResource(id = R.string.dialog_quit_message),
-        enabledState = quitModalEnabled,
-        confirmMessage = stringResource(id = R.string.dialog_quit_confirm),
-        confirmRequest = {
-            quitViewModel.invoke(Arguments(arguments = mapOf()))
-        }
-    )
+
 
     val familyQuitModalEnabled = remember { mutableStateOf(false) }
     CustomAlertDialog(
@@ -275,9 +260,7 @@ fun SettingHomePage(
                 )
                 SettingItem(
                     name = stringResource(id = R.string.setting_leave),
-                    onClick = {
-                        quitModalEnabled.value = true
-                    },
+                    onClick = onQuit,
                     isCritical = true,
                 )
             }

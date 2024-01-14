@@ -4,6 +4,7 @@ import androidx.navigation.navArgument
 import com.no5ing.bbibbi.BuildConfig
 import com.no5ing.bbibbi.presentation.ui.feature.setting.change_nickname.ChangeNicknamePage
 import com.no5ing.bbibbi.presentation.ui.feature.setting.home.SettingHomePage
+import com.no5ing.bbibbi.presentation.ui.feature.setting.quit.QuitPage
 import com.no5ing.bbibbi.presentation.ui.feature.setting.webview.WebViewPage
 import com.no5ing.bbibbi.util.forceRestart
 
@@ -17,8 +18,10 @@ object SettingDestination : NavigationDestination(
             onLogout = {
                 navController.context.forceRestart()
             },
-            onQuitCompleted = {
-                navController.context.forceRestart()
+            onQuit = {
+                navController.navigate(
+                    QuitDestination
+                )
             },
             onPrivacy = {
                 navController.navigate(
@@ -69,5 +72,19 @@ object WebViewDestination : NavigationDestination(
                 ?: throw IllegalArgumentException("webViewUrl is null")
         )
 
+    }
+)
+
+object QuitDestination : NavigationDestination(
+    route = settingQuitPageRoute,
+    content = { navController, _ ->
+        QuitPage(
+            onDispose = {
+                navController.popBackStack()
+            },
+            onQuitSuccess = {
+                navController.context.forceRestart()
+            }
+        )
     }
 )
