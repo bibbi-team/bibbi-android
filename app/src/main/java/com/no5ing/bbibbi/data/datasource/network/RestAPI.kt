@@ -6,9 +6,11 @@ import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeProfileIma
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.JoinFamilyRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.QuitMemberRequest
+import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostCommentRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostReactionRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.DeletePostReactionRequest
+import com.no5ing.bbibbi.data.datasource.network.request.post.UpdatePostCommentRequest
 import com.no5ing.bbibbi.data.datasource.network.response.ArrayResponse
 import com.no5ing.bbibbi.data.datasource.network.response.DefaultResponse
 import com.no5ing.bbibbi.data.datasource.network.response.Pagination
@@ -24,6 +26,7 @@ import com.no5ing.bbibbi.data.model.member.ImageUploadLink
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.CalendarElement
 import com.no5ing.bbibbi.data.model.post.Post
+import com.no5ing.bbibbi.data.model.post.PostComment
 import com.no5ing.bbibbi.data.model.post.PostReaction
 import com.no5ing.bbibbi.data.model.post.PostReactionSummary
 import com.skydoves.sandwich.ApiResponse
@@ -177,6 +180,33 @@ interface RestAPI {
             @Query("yearMonth") yearMonth: String,
             @Query("week") week: Int,
         ): ApiResponse<ArrayResponse<CalendarElement>>
+
+        @GET("v1/posts/{postId}}/comments")
+        suspend fun getPostComments(
+            @Path("postId") postId: String,
+            @Query("page") page: Int?,
+            @Query("size") size: Int?,
+            @Query("sort") sort: String? = "DESC",
+        ): ApiResponse<Pagination<PostComment>>
+
+        @DELETE("v1/posts/{postId}/comments/{commentId}")
+        suspend fun deletePostComment(
+            @Path("postId") postId: String,
+            @Path("commentId") commentId: String,
+        ): ApiResponse<DefaultResponse>
+
+        @POST("v1/posts/{postId}/comments")
+        suspend fun createPostComment(
+            @Path("postId") postId: String,
+            @Body body: CreatePostCommentRequest,
+        ): ApiResponse<PostComment>
+
+        @PUT("v1/posts/{postId}/comments/{commentId}")
+        suspend fun updatePostComment(
+            @Path("postId") postId: String,
+            @Path("commentId") commentId: String,
+            @Body body: UpdatePostCommentRequest,
+        ): ApiResponse<PostComment>
     }
 
     /**
