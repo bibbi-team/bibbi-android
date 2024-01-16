@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -64,6 +65,7 @@ import androidx.compose.ui.unit.sp
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
+import com.no5ing.bbibbi.presentation.ui.common.component.DraggableCardComplex
 import com.no5ing.bbibbi.presentation.ui.common.component.ModalBottomSheet
 import com.no5ing.bbibbi.presentation.ui.common.component.SheetValue
 import com.no5ing.bbibbi.presentation.ui.common.component.rememberModalBottomSheetState
@@ -127,7 +129,9 @@ fun PostCommentDialog(
             )
             ModalBottomSheet(
                 onDismissRequest = { isEnabled.value = false },
-                windowInsets = WindowInsets.ime.union(WindowInsets.navigationBars),
+                windowInsets = WindowInsets.ime
+                    .union(WindowInsets.navigationBars)
+                    .union(WindowInsets.statusBars),
                 modifier = Modifier
                     .navigationBarsPadding()
                     .onSizeChanged {
@@ -255,32 +259,81 @@ fun Texx(
 
 @Composable
 fun CommentBox() {
-    Row(
-        modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    val areaWidthPx = 200.0f
+    var revealed by remember { mutableStateOf(false) }
+    var relevantHeight by remember { mutableStateOf(0.0f) }
+    Box(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        CircleProfileImage(size = 44.dp, member = Member.unknown())
-        Column(
-            verticalArrangement = Arrangement.Center
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row{
-                Text(
-                    text = "닉네임",
-                    color = MaterialTheme.bbibbiScheme.iconSelected,
-                    style = MaterialTheme.bbibbiTypo.headTwoRegular
+            Box(modifier = Modifier
+                .width(
+                    relevantHeight
+                        .toInt()
+                        .pxToDp()
                 )
-                Spacer(modifier = Modifier.width(5.dp))
+                .background(Color.Red)
+                .height(
+                    relevantHeight
+                        .toInt()
+                        .pxToDp()
+                ),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(
-                    text = "5:47 오후",
-                    color = MaterialTheme.bbibbiScheme.gray600,
-                    style = MaterialTheme.bbibbiTypo.headTwoRegular
+                    text = "삭제",
+                    color = Color.White
                 )
             }
-            Text(
-                text = "등록된 댓글 내용",
-                color = MaterialTheme.bbibbiScheme.iconSelected,
-                style = MaterialTheme.bbibbiTypo.bodyTwoRegular
-            )
+
         }
+        DraggableCardComplex(
+            isRevealed = revealed,
+            cardOffset = areaWidthPx,
+            backgroundColor = Color(0xff1c1c1e),
+            onGloballyPositioned = {
+                relevantHeight = it.boundsInWindow().height
+            },
+            onExpand = { revealed = true },
+            onCollapse = { revealed = false }) {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp, vertical = 14.dp)
+                ,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                CircleProfileImage(size = 44.dp, member = Member.unknown())
+                Column(
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Row{
+                        Text(
+                            text = "닉네임",
+                            color = MaterialTheme.bbibbiScheme.iconSelected,
+                            style = MaterialTheme.bbibbiTypo.headTwoRegular
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(
+                            text = "5:47 오후",
+                            color = MaterialTheme.bbibbiScheme.gray600,
+                            style = MaterialTheme.bbibbiTypo.headTwoRegular
+                        )
+                    }
+                    Text(
+                        text = "등록된 댓글 내용",
+                        color = MaterialTheme.bbibbiScheme.iconSelected,
+                        style = MaterialTheme.bbibbiTypo.bodyTwoRegular
+                    )
+                }
+            }
+        }
+
     }
+
+
 }
