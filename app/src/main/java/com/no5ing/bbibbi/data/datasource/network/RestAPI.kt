@@ -181,7 +181,7 @@ interface RestAPI {
             @Query("week") week: Int,
         ): ApiResponse<ArrayResponse<CalendarElement>>
 
-        @GET("v1/posts/{postId}}/comments")
+        @GET("v1/posts/{postId}/comments")
         suspend fun getPostComments(
             @Path("postId") postId: String,
             @Query("page") page: Int?,

@@ -8,14 +8,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -35,7 +32,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -51,31 +51,40 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
+import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.common.component.DraggableCardComplex
 import com.no5ing.bbibbi.presentation.ui.common.component.ModalBottomSheet
-import com.no5ing.bbibbi.presentation.ui.common.component.SheetValue
 import com.no5ing.bbibbi.presentation.ui.common.component.rememberModalBottomSheetState
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.MainProfileDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.navigate
+import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
+import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.presentation.uistate.post.PostCommentUiState
+import com.no5ing.bbibbi.presentation.viewmodel.post.CreatePostCommentViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.post.DeletePostCommentViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.post.PostCommentViewModel
+import com.no5ing.bbibbi.util.LocalNavigateControllerState
+import com.no5ing.bbibbi.util.LocalSnackbarHostState
+import com.no5ing.bbibbi.util.gapBetweenNow
+import com.no5ing.bbibbi.util.getErrorMessage
+import com.no5ing.bbibbi.util.localResources
 import com.no5ing.bbibbi.util.pxToDp
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
@@ -84,20 +93,24 @@ fun PostCommentDialog(
     postId: String,
     isEnabled: MutableState<Boolean> = remember { mutableStateOf(false) },
     textBoxFocus: FocusRequester = remember { FocusRequester() },
-    coroutineScope: CoroutineScope = rememberCoroutineScope()
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    commentViewModel: PostCommentViewModel = hiltViewModel(),
+    createPostCommentViewModel: CreatePostCommentViewModel = hiltViewModel(),
+    deletePostCommentViewModel: DeletePostCommentViewModel = hiltViewModel(),
 ) {
   //  val coroutineScope = rememberCoroutineScope()
     if(isEnabled.value) {
-
+        val snackBarHost = LocalSnackbarHostState.current
         val focusManager = LocalFocusManager.current
+        val navController = LocalNavigateControllerState.current
         val keyboardController = LocalSoftwareKeyboardController.current
         var keyboardExpanded by remember { mutableStateOf(false) }
-      //  var isAnimating by remember { mutableStateOf(false) }
-
-        LaunchedEffect(Unit) {
-            //sheetState.expand()
-            Timber.d("Recomp")
+        val keyboardText = remember {
+            mutableStateOf("")
         }
+
+        val cardRevealState = remember{ mutableStateMapOf<String, Unit>() }
+
 
 //        LaunchedEffect(keyboardExpanded) {
 //            CoroutineScope(AndroidUiDispatcher.Main).launch {
@@ -110,36 +123,65 @@ fun PostCommentDialog(
 //            }
 //
 //        }
+        val uiState = commentViewModel.uiState.collectAsLazyPagingItems()
+        LaunchedEffect(Unit) {
+            commentViewModel.invoke(
+                Arguments(arguments = mapOf(
+                    "postId" to postId
+                ))
+            )
+        }
+
+        val resources = localResources()
+        val createCommentUiState by createPostCommentViewModel.uiState.collectAsState()
+        LaunchedEffect(createCommentUiState.status) {
+            when(createCommentUiState.status) {
+                is APIResponse.Status.SUCCESS -> {
+                    cardRevealState.clear()
+                    createPostCommentViewModel.resetState()
+                    uiState.refresh()
+                }
+                is APIResponse.Status.ERROR -> {
+                    cardRevealState.clear()
+                    createPostCommentViewModel.resetState()
+                    snackBarHost.showSnackBarWithDismiss(
+                        message = resources.getErrorMessage(createCommentUiState.errorCode),
+                        actionLabel = snackBarWarning
+                    )
+                }
+                else -> {}
+            }
+        }
+
+        val deleteCommentUiState by deletePostCommentViewModel.uiState.collectAsState()
+        LaunchedEffect(deleteCommentUiState.status) {
+            when(deleteCommentUiState.status) {
+                is APIResponse.Status.SUCCESS -> {
+                    cardRevealState.clear()
+                    deletePostCommentViewModel.resetState()
+                    uiState.refresh()
+                }
+                is APIResponse.Status.ERROR -> {
+                    cardRevealState.clear()
+                    deletePostCommentViewModel.resetState()
+                    snackBarHost.showSnackBarWithDismiss(
+                        message = resources.getErrorMessage(createCommentUiState.errorCode),
+                        actionLabel = snackBarWarning
+                    )
+                }
+                else -> {}
+            }
+        }
 
         Box(
             modifier = Modifier
-            ///    .nestedScroll(rememberNestedScrollInteropConnection())
         ) {
-            val sheetState = rememberModalBottomSheetState(
-                //  skipPartiallyExpanded = keyboardExpanded
-                //  confirmValueChange = {!isAnimating}
-                confirmValueChange = {
-//                    if(it == SheetValue.PartiallyExpanded) {
-//                        textBoxFocus.freeFocus()
-//                        keyboardController?.hide()
-//                        focusManager.clearFocus(force = true)
-//                    }
-                    true
-                }
-            )
+            val sheetState = rememberModalBottomSheetState()
             ModalBottomSheet(
                 onDismissRequest = { isEnabled.value = false },
                 windowInsets = WindowInsets.ime
                     .union(WindowInsets.navigationBars)
                     .union(WindowInsets.statusBars),
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .onSizeChanged {
-                        Timber.d("H  : ${it.height}")
-                    }
-                    .onGloballyPositioned {
-                        Timber.d("Size  : ${it.boundsInWindow().height}")
-                    },
                 sheetState = sheetState,
                 shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
                 containerColor = Color(0xff1c1c1e),
@@ -167,24 +209,61 @@ fun PostCommentDialog(
                     modifier = Modifier
                         .weight(1.0f)
                 ){
-
                     LazyColumn(
-                        //  state = lazyColumn,
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1.0f)
-                           // .height( sheetState.offset?.toInt()?.pxToDp() ?: 0.dp)
-                        //  .fillMaxSize()
-
-                        //.nestedScroll(scroll)
                     ) {
-                        items(50) {
-                            CommentBox()
+                        items(uiState.itemCount) {
+                            val item = uiState[it] ?: throw RuntimeException()
+                            CommentBox(
+                                item,
+                                onTapProfile = { member ->
+                                    navController.navigate(
+                                        destination = MainProfileDestination,
+                                        path = member.memberId
+                                    )
+                                },
+                                onTapDelete = {
+                                    deletePostCommentViewModel.invoke(
+                                        Arguments(
+                                            arguments = mapOf(
+                                                "postId" to postId,
+                                                "commentId" to item.commentId
+                                            )
+                                        )
+                                    )
+                                },
+                                isRevealed = cardRevealState.containsKey(item.commentId),
+                                setRevealState = {
+                                    if(it) {
+                                        cardRevealState[item.commentId] = Unit
+                                    } else {
+                                        cardRevealState.remove(item.commentId)
+                                    }
+                                }
+                            )
                         }
                     }
-                    Texx(focusRequester = textBoxFocus, onFocusChanged = {
+                    KeyboardBar(focusRequester = textBoxFocus,
+                        onFocusChanged = {
 
-                    })
+                    },
+                        keyboardText = keyboardText,
+                        onSend = {
+                            if(keyboardText.value.isNotEmpty()) {
+                                createPostCommentViewModel.invoke(
+                                    Arguments(arguments = mapOf(
+                                        "postId" to postId,
+                                        "content" to keyboardText.value
+                                    ))
+                                )
+                                keyboardText.value = ""
+                                focusManager.clearFocus()
+                                keyboardController?.hide()
+                            }
+                        }
+                    )
 
 
                 }
@@ -197,10 +276,12 @@ fun PostCommentDialog(
     }
 }
 @Composable
-fun Texx(
+fun KeyboardBar(
+    keyboardText: MutableState<String>,
     modifier: Modifier = Modifier,
     focusRequester: FocusRequester,
     onFocusChanged: (FocusState) -> Unit,
+    onSend: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -214,7 +295,7 @@ fun Texx(
             modifier = Modifier.fillMaxWidth()
         ) {
             BasicTextField(
-                value = "hello world",
+                value = keyboardText.value,
                 modifier = Modifier
                     .onFocusEvent {
                         Timber.d("FE : ${it}")
@@ -224,8 +305,17 @@ fun Texx(
                         onFocusChanged(it)
                     },
                 onValueChange = { nextValue ->
-
+                    keyboardText.value = nextValue
                 },
+//                decorationBox = {
+//                        if(keyboardText.value.isEmpty()) {
+//                        Text(
+//                            text = "댓글을 입력해주세요",
+//                            color = MaterialTheme.bbibbiScheme.gray600,
+//                            style = MaterialTheme.bbibbiTypo.bodyTwoRegular
+//                        )
+//                    }
+//                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 textStyle = TextStyle(
                     fontSize = 16.sp,
@@ -248,7 +338,7 @@ fun Texx(
                 modifier = Modifier
                     .size(20.dp)
                     .clickable {
-
+                        onSend()
                     },
                 tint = MaterialTheme.bbibbiScheme.icon
             )
@@ -258,10 +348,17 @@ fun Texx(
 }
 
 @Composable
-fun CommentBox() {
-    val areaWidthPx = 200.0f
-    var revealed by remember { mutableStateOf(false) }
-    var relevantHeight by remember { mutableStateOf(0.0f) }
+fun CommentBox(
+    comment: PostCommentUiState,
+    onTapProfile: (Member) -> Unit,
+    onTapDelete: () -> Unit,
+  //  revealState: MutableState<Boolean>,
+    isRevealed: Boolean,
+    setRevealState: (Boolean) -> Unit
+) {
+    val areaWidthPx = remember { 200.0f }
+        // var revealed by revealState
+    var relevantHeight by remember { mutableFloatStateOf(0.0f) }
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -272,17 +369,10 @@ fun CommentBox() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(modifier = Modifier
-                .width(
-                    relevantHeight
-                        .toInt()
-                        .pxToDp()
-                )
+                .width(areaWidthPx.pxToDp())
                 .background(Color.Red)
-                .height(
-                    relevantHeight
-                        .toInt()
-                        .pxToDp()
-                ),
+                .height(relevantHeight.pxToDp())
+                .clickable { onTapDelete() },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -293,39 +383,45 @@ fun CommentBox() {
 
         }
         DraggableCardComplex(
-            isRevealed = revealed,
+            isRevealed = isRevealed,
             cardOffset = areaWidthPx,
             backgroundColor = Color(0xff1c1c1e),
             onGloballyPositioned = {
                 relevantHeight = it.boundsInWindow().height
             },
-            onExpand = { revealed = true },
-            onCollapse = { revealed = false }) {
+            onExpand = { setRevealState(true) },
+            onCollapse = { setRevealState(false) }) {
             Row(
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 14.dp)
                 ,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CircleProfileImage(size = 44.dp, member = Member.unknown())
+                CircleProfileImage(
+                    size = 44.dp,
+                    member = comment.member ?: Member.unknown(),
+                    onTap = {
+                        if(comment.member != null) onTapProfile(comment.member)
+                    }
+                )
                 Column(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Row{
                         Text(
-                            text = "닉네임",
+                            text = comment.member?.name ?: "unknown",
                             color = MaterialTheme.bbibbiScheme.iconSelected,
                             style = MaterialTheme.bbibbiTypo.headTwoRegular
                         )
                         Spacer(modifier = Modifier.width(5.dp))
                         Text(
-                            text = "5:47 오후",
+                            text = gapBetweenNow(time = comment.createdAt),
                             color = MaterialTheme.bbibbiScheme.gray600,
                             style = MaterialTheme.bbibbiTypo.headTwoRegular
                         )
                     }
                     Text(
-                        text = "등록된 댓글 내용",
+                        text = comment.content,
                         color = MaterialTheme.bbibbiScheme.iconSelected,
                         style = MaterialTheme.bbibbiTypo.bodyTwoRegular
                     )

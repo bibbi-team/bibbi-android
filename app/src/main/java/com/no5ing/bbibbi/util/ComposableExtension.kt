@@ -44,6 +44,11 @@ fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
 fun Int.pxToDp() = with(LocalDensity.current) { this@pxToDp.toDp() }
 
 @Composable
+fun Float.pxToDp() = with(LocalDensity.current) {
+    this@pxToDp.toDp()
+}
+
+@Composable
 fun Modifier.verticalScrollDisabled() =
     pointerInput(Unit) {
         awaitPointerEventScope {
