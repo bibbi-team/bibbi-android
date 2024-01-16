@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.util
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
@@ -7,7 +8,12 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import java.lang.Math.abs
 
 fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) =
     drawBehind {
@@ -28,5 +34,41 @@ fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) =
                 radius.toPx(),
                 paint
             )
+        }
+    }
+@Composable
+fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
+
+
+@Composable
+fun Int.pxToDp() = with(LocalDensity.current) { this@pxToDp.toDp() }
+
+@Composable
+fun Modifier.verticalScrollDisabled() =
+    pointerInput(Unit) {
+        awaitPointerEventScope {
+            while (true) {
+                awaitPointerEvent(pass = PointerEventPass.Initial).changes.forEach {
+                    val offset = it.positionChange()
+                    if (abs(offset.y) > 0f) {
+                        it.consume()
+                    }
+                }
+            }
+        }
+    }
+
+@Composable
+fun Modifier.vix() =
+    pointerInput(Unit) {
+        awaitPointerEventScope {
+            while (true) {
+                awaitPointerEvent(pass = PointerEventPass.Initial).changes.forEach {
+                    val offset = it.positionChange()
+                    if (abs(offset.y) > 0f) {
+                        it.consume()
+                    }
+                }
+            }
         }
     }

@@ -19,8 +19,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -36,6 +39,7 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.post.view.PostViewPageState
 import com.no5ing.bbibbi.presentation.state.post.view.rememberPostViewPageState
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
+import com.no5ing.bbibbi.presentation.ui.feature.dialog.PostCommentDialog
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
@@ -56,6 +60,7 @@ fun PostViewPage(
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
+    postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     LaunchedEffect(Unit) {
         familyPostViewModel.invoke(Arguments(resourceId = postId))
@@ -107,6 +112,7 @@ fun PostViewPage(
                         familyPostReactionBarViewModel = familyPostReactionBarViewModel,
                         removePostReactionViewModel = removePostReactionViewModel,
                         addPostReactionViewModel = addPostReactionViewModel,
+                        postCommentDialogState = postCommentDialogState,
                     )
                 }
             }

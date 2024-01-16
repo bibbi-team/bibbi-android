@@ -44,6 +44,7 @@ import com.no5ing.bbibbi.util.getEmojiResource
 
 @Composable
 fun PostViewReactionBar(
+    modifier: Modifier,
     postId: String,
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
@@ -73,10 +74,10 @@ fun PostViewReactionBar(
         emojiMap = emojiMap,
         selectedEmoji = selectedEmoji.value,
     )
-    Box(modifier = Modifier.padding(vertical = 12.dp, horizontal = 20.dp)) {
+    Box(modifier = Modifier) {
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier//.fillMaxWidth()
         ) {
             items(groupEmoji.size) {
                 val item = groupEmoji[it]
