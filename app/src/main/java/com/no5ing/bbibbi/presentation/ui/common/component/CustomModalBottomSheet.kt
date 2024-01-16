@@ -89,7 +89,7 @@ fun ModalBottomSheet(
     contentColor: Color = contentColorFor(containerColor),
     tonalElevation: Dp = 0.dp,
     scrimColor: Color = BottomSheetDefaults.ScrimColor,
-    dragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
+    dragHandle: @Composable (() -> Unit) = { BottomSheetDefaults.DragHandle() },
     windowInsets: WindowInsets = BottomSheetDefaults.windowInsets,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -114,7 +114,6 @@ fun ModalBottomSheet(
         ModalBottomSheetAnchorChangeHandler(
             state = sheetState,
             animateTo = { target, velocity ->
-                Timber.d("Anchor Change vel ${velocity}")
                 scope.launch { sheetState.animateTo(target, velocity = velocity) }
             },
             snapTo = { target ->
@@ -158,7 +157,6 @@ fun ModalBottomSheet(
                                 .toInt()
                         )
                     }
-
                     .modalBottomSheetSwipeable(
                         sheetState = sheetState,
                         anchorChangeHandler = anchorChangeHandler,
@@ -176,45 +174,14 @@ fun ModalBottomSheet(
                     Modifier
                         .fillMaxWidth()
                 ) {
-                    if (dragHandle != null) {
-                        val collapseActionLabel = "collapse"
-                        val dismissActionLabel = "dismiss"
-                        val expandActionLabel = "expand"
+
+                    Box(
+                        Modifier
+                            .align(Alignment.CenterHorizontally)
+                    ) {
                         Box(
-                            Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .semantics(mergeDescendants = true) {
-                                    // Provides semantics to interact with the bottomsheet based on its
-                                    // current value.
-                                    with(sheetState) {
-                                        dismiss(dismissActionLabel) {
-                                            animateToDismiss()
-                                            true
-                                        }
-                                        if (currentValue == SheetValue.PartiallyExpanded) {
-                                            expand(expandActionLabel) {
-                                                if (swipeableState.confirmValueChange(SheetValue.Expanded)) {
-                                                    scope.launch { sheetState.expand() }
-                                                }
-                                                true
-                                            }
-                                        } else if (hasPartiallyExpandedState) {
-                                            collapse(collapseActionLabel) {
-                                                if (
-                                                    swipeableState.confirmValueChange(
-                                                        SheetValue.PartiallyExpanded
-                                                    )
-                                                ) {
-                                                    scope.launch { partialExpand() }
-                                                }
-                                                true
-                                            }
-                                        }
-                                    }
-                                }
-                        ) {
-                            Box(
-                                modifier = Modifier     .nestedScroll(
+                            modifier = Modifier
+                                .nestedScroll(
                                     remember(sheetState) {
                                         ConsumeSwipeWithinBottomSheetBoundsNestedScrollConnection(
                                             sheetState = sheetState,
@@ -223,12 +190,12 @@ fun ModalBottomSheet(
                                         )
                                     }
                                 )
-                            ) {
-                                dragHandle()
-                            }
-
+                        ) {
+                            dragHandle()
                         }
+
                     }
+
                     content()
                     Box(
                         modifier
@@ -250,44 +217,6 @@ fun ModalBottomSheet(
     }
 }
 
-@Deprecated(
-    message = "Use ModalBottomSheet overload with windowInset parameter.",
-    level = DeprecationLevel.HIDDEN
-)
-@Composable
-@ExperimentalMaterial3Api
-fun ModalBottomSheet(
-    onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier,
-    sheetState: SheetState = rememberModalBottomSheetState(),
-    shape: Shape = BottomSheetDefaults.ExpandedShape,
-    containerColor: Color = BottomSheetDefaults.ContainerColor,
-    contentColor: Color = contentColorFor(containerColor),
-    tonalElevation: Dp = BottomSheetDefaults.Elevation,
-    scrimColor: Color = BottomSheetDefaults.ScrimColor,
-    dragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
-    content: @Composable ColumnScope.() -> Unit,
-) = ModalBottomSheet(
-    onDismissRequest = onDismissRequest,
-    modifier = modifier,
-    sheetState = sheetState,
-    shape = shape,
-    containerColor = containerColor,
-    contentColor = contentColor,
-    tonalElevation = tonalElevation,
-    scrimColor = scrimColor,
-    dragHandle = dragHandle,
-    content = content,
-)
-
-/**
- * Create and [remember] a [SheetState] for [ModalBottomSheet].
- *
- * @param skipPartiallyExpanded Whether the partially expanded state, if the sheet is tall enough,
- * should be skipped. If true, the sheet will always expand to the [Expanded] state and move to the
- * [Hidden] state when hiding the sheet, either programmatically or by user interaction.
- * @param confirmValueChange Optional callback invoked to confirm or veto a pending state change.
- */
 @Composable
 @ExperimentalMaterial3Api
 fun rememberModalBottomSheetState(
@@ -343,7 +272,11 @@ private fun Modifier.modalBottomSheetSwipeable(
     .swipeAnchors(
         state = sheetState.swipeableState,
         anchorChangeHandler = anchorChangeHandler,
-        possibleValues = setOf(SheetValue.Hidden, SheetValue.PartiallyExpanded, SheetValue.Expanded),
+        possibleValues = setOf(
+            SheetValue.Hidden,
+            SheetValue.PartiallyExpanded,
+            SheetValue.Expanded
+        ),
     ) { value, sheetSize ->
         when (value) {
             SheetValue.Hidden -> screenHeight
@@ -352,10 +285,10 @@ private fun Modifier.modalBottomSheetSwipeable(
                 sheetState.skipPartiallyExpanded -> null
                 else -> screenHeight / 2f
             }
+
             SheetValue.Expanded -> if (sheetSize.height != 0) {
-                val eval = max(0f, screenHeight - sheetSize.height)
-                Timber.d("Eval $eval")
-                eval
+                Timber.d("Calculat")
+                max(0f, screenHeight - sheetSize.height)
             } else null
         }
     }
