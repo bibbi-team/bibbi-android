@@ -11,10 +11,15 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -44,6 +49,9 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -54,10 +62,14 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.data.model.member.Member
+import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.common.component.ModalBottomSheet
 import com.no5ing.bbibbi.presentation.ui.common.component.SheetValue
 import com.no5ing.bbibbi.presentation.ui.common.component.rememberModalBottomSheetState
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.util.pxToDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -105,85 +117,74 @@ fun PostCommentDialog(
                 //  skipPartiallyExpanded = keyboardExpanded
                 //  confirmValueChange = {!isAnimating}
                 confirmValueChange = {
-                    if(it == SheetValue.PartiallyExpanded) {
-                        textBoxFocus.freeFocus()
-                        keyboardController?.hide()
-                        focusManager.clearFocus(force = true)
-                    }
+//                    if(it == SheetValue.PartiallyExpanded) {
+//                        textBoxFocus.freeFocus()
+//                        keyboardController?.hide()
+//                        focusManager.clearFocus(force = true)
+//                    }
                     true
                 }
             )
             ModalBottomSheet(
                 onDismissRequest = { isEnabled.value = false },
-                windowInsets = WindowInsets(0, 0, 0, 0),
+                windowInsets = WindowInsets.ime.union(WindowInsets.navigationBars),
                 modifier = Modifier
-                    .navigationBarsPadding(),
+                    .navigationBarsPadding()
+                    .onSizeChanged {
+                        Timber.d("H  : ${it.height}")
+                    }
+                    .onGloballyPositioned {
+                        Timber.d("Size  : ${it.boundsInWindow().height}")
+                    },
                 sheetState = sheetState,
                 shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
-                containerColor = MaterialTheme.bbibbiScheme.backgroundPrimary,
+                containerColor = Color(0xff1c1c1e),
                 dragHandle = {
-                    Box(
-                        modifier = Modifier.padding(vertical = 8.dp)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
+                        Spacer(modifier = Modifier.height(8.dp))
                         Box(
                             Modifier
                                 .size(width = 32.dp, height = 4.dp)
                                 .clip(RoundedCornerShape(2.dp))
                                 .background(MaterialTheme.bbibbiScheme.button)
-                        )}
-
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Text(text = "댓글", color = MaterialTheme.bbibbiScheme.textPrimary)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.gray600)
+                    }
                 }
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(text = "댓글", color = MaterialTheme.bbibbiScheme.textPrimary)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.gray600)
-                }
+                        .weight(1.0f)
+                ){
 
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.BottomEnd
-                ) {
                     LazyColumn(
-                      //  state = lazyColumn,
+                        //  state = lazyColumn,
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxWidth()
+                            .weight(1.0f)
+                           // .height( sheetState.offset?.toInt()?.pxToDp() ?: 0.dp)
+                        //  .fillMaxSize()
 
                         //.nestedScroll(scroll)
                     ) {
                         items(50) {
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = "Hello $it"
-                            )
+                            CommentBox()
                         }
                     }
-                    Texx(modifier = Modifier
-                        .fillMaxWidth()
-                        .offset {
-                            IntOffset(
-                                x = 0,
-                                y = -sheetState
-                                    .requireOffset()
-                                    .toInt()
-                            )
-                        },
-                        onFocusChanged = {
-                            if(it.isFocused) {
-                                Timber.d("State : ${it}")
-                                keyboardExpanded = true
-                            }
-                        },
-                        focusRequester = textBoxFocus,
-                    )
+                    Texx(focusRequester = textBoxFocus, onFocusChanged = {
+
+                    })
+
+
                 }
+
             }
         }
 
@@ -199,7 +200,7 @@ fun Texx(
 ) {
     Column(
         modifier = modifier
-            .background(Color.Red)
+            .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
             .padding(vertical = 12.dp, horizontal = 16.dp),
         verticalArrangement = Arrangement.Bottom
     ) {
@@ -249,5 +250,37 @@ fun Texx(
             )
         }
 
+    }
+}
+
+@Composable
+fun CommentBox() {
+    Row(
+        modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        CircleProfileImage(size = 44.dp, member = Member.unknown())
+        Column(
+            verticalArrangement = Arrangement.Center
+        ) {
+            Row{
+                Text(
+                    text = "닉네임",
+                    color = MaterialTheme.bbibbiScheme.iconSelected,
+                    style = MaterialTheme.bbibbiTypo.headTwoRegular
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = "5:47 오후",
+                    color = MaterialTheme.bbibbiScheme.gray600,
+                    style = MaterialTheme.bbibbiTypo.headTwoRegular
+                )
+            }
+            Text(
+                text = "등록된 댓글 내용",
+                color = MaterialTheme.bbibbiScheme.iconSelected,
+                style = MaterialTheme.bbibbiTypo.bodyTwoRegular
+            )
+        }
     }
 }

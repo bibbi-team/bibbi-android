@@ -20,7 +20,10 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -60,12 +63,14 @@ import androidx.compose.ui.semantics.popup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.no5ing.bbibbi.util.pxToDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -82,7 +87,7 @@ fun ModalBottomSheet(
     shape: Shape = BottomSheetDefaults.ExpandedShape,
     containerColor: Color = BottomSheetDefaults.ContainerColor,
     contentColor: Color = contentColorFor(containerColor),
-    tonalElevation: Dp = BottomSheetDefaults.Elevation,
+    tonalElevation: Dp = 0.dp,
     scrimColor: Color = BottomSheetDefaults.ScrimColor,
     dragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     windowInsets: WindowInsets = BottomSheetDefaults.windowInsets,
@@ -167,7 +172,10 @@ fun ModalBottomSheet(
                 contentColor = contentColor,
                 tonalElevation = tonalElevation,
             ) {
-                Column(Modifier.fillMaxWidth()) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                ) {
                     if (dragHandle != null) {
                         val collapseActionLabel = "collapse"
                         val dismissActionLabel = "dismiss"
@@ -222,6 +230,15 @@ fun ModalBottomSheet(
                         }
                     }
                     content()
+                    Box(
+                        modifier
+                            .height(
+                                sheetState
+                                    .offset
+                                    ?.toInt()
+                                    ?.pxToDp() ?: 0.dp
+                            )
+                    )
                 }
             }
         }
