@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -85,9 +86,12 @@ fun JoinFamilyWithLinkPage(
     LaunchedEffect(deepLinkState) {
         if (deepLinkState != null) {
             if (isValidUrl(deepLinkState)) {
-                state.nicknameTextState.value = deepLinkState
-                state.isInvalidInputState.value = false
-                state.ctaButtonEnabledState.value = true
+                val linkSuffix = getLinkIdFromUrl(deepLinkState)
+                if (linkSuffix.length == 8) {
+                    state.nicknameTextState.value = linkSuffix
+                    state.isInvalidInputState.value = false
+                    state.ctaButtonEnabledState.value = true
+                }
             }
         }
     }
@@ -114,7 +118,9 @@ fun JoinFamilyWithLinkPage(
                     text = stringResource(id = R.string.join_family_with_link_title),
                     color = MaterialTheme.bbibbiScheme.textSecondary,
                     style = MaterialTheme.bbibbiTypo.headTwoBold,
+                    textAlign = TextAlign.Center,
                 )
+                Spacer(modifier = Modifier.height(8.dp))
                 BasicTextField(
                     value = state.nicknameTextState.value,
                     interactionSource = interactionSource,
@@ -123,7 +129,16 @@ fun JoinFamilyWithLinkPage(
                     ),
                     onValueChange = {
                         state.nicknameTextState.value = it
-                        if (!isValidUrl(it)) {
+                        if (it.length != 8) {
+                            if(isValidUrl(it)) {
+                                val linkSuffix = getLinkIdFromUrl(it)
+                                if (linkSuffix.length == 8) {
+                                    state.nicknameTextState.value = linkSuffix
+                                    state.isInvalidInputState.value = false
+                                    state.ctaButtonEnabledState.value = true
+                                    return@BasicTextField
+                                }
+                            }
                             state.isInvalidInputState.value = true
                             state.ctaButtonEnabledState.value = false
                         } else {
@@ -205,7 +220,7 @@ fun JoinFamilyWithLinkPage(
                         joinFamilyWithLinkViewModel.invoke(
                             Arguments(
                                 arguments = mapOf(
-                                    "linkId" to getLinkIdFromUrl(state.nicknameTextState.value),
+                                    "linkId" to state.nicknameTextState.value,
                                 )
                             )
                         )
