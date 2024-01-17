@@ -37,6 +37,7 @@ class RegisterMemberViewModel @Inject constructor(
         val imageUri = arguments.get("imageUri")
         val memberName = arguments.get("memberName") ?: throw RuntimeException()
         val memberBirth = arguments.get("dayOfBirth") ?: throw RuntimeException()
+        val profileColor = arguments.get("profileColor") ?: throw RuntimeException()
         withMutexScope(Dispatchers.IO, uiState.value.isIdle()) {
             setState(APIResponse.loading())
             val uploadedImageUrl = if (imageUri != null) {
@@ -59,6 +60,7 @@ class RegisterMemberViewModel @Inject constructor(
                     memberName = memberName,
                     dayOfBirth = memberBirth,
                     profileImgUrl = uploadedImageUrl,
+                    profileColor = profileColor,
                 )
             ).suspendOnSuccess {
                 val authToken = data

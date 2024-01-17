@@ -32,13 +32,7 @@ fun rememberHomePageState(
     },
     uiMemberState: StateFlow<Member> = remember {
         MutableStateFlow(
-            Member(
-                memberId = "",
-                name = "하나밖에 없는 혈육",
-                imageUrl = "https://picsum.photos/300/300?random=01",
-                familyId = null,
-                dayOfBirth = "2021-01-01",
-            )
+            Member.unknown()
         )
     },
 ): HomePageState = HomePageState(

@@ -10,6 +10,7 @@ data class Member(
     val name: String,
     val imageUrl: String?,
     val familyId: String?,
+    val profileColor: String?,
     val dayOfBirth: String,
 ) : Parcelable, BaseModel() {
     fun hasFamily(): Boolean = familyId != null
@@ -20,6 +21,7 @@ data class Member(
             name = "unknown",
             imageUrl = null,
             familyId = null,
+            profileColor = null,
             dayOfBirth = "unknown"
         )
     }

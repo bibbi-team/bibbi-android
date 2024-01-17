@@ -77,3 +77,5 @@ fun Modifier.vix() =
             }
         }
     }
+
+fun Color.Companion.fromHex(colorString: String) = Color(android.graphics.Color.parseColor(colorString))

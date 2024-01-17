@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -52,6 +53,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RegisterMemberViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
+import com.no5ing.bbibbi.util.fromHex
 import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.localResources
 
@@ -64,6 +66,9 @@ fun RegisterProfileImagePage(
     onTapCamera: () -> Unit,
     registerMemberViewModel: RegisterMemberViewModel = hiltViewModel(),
 ) {
+    val profileColor = remember {
+        "#353538"
+    }
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
@@ -147,7 +152,7 @@ fun RegisterProfileImagePage(
                                 modifier = Modifier
                                     .clip(CircleShape)
                                     .size(90.dp)
-                                    .background(MaterialTheme.bbibbiScheme.mainGreen)
+                                    .background(Color.fromHex(profileColor))
                             )
                             Box(modifier = Modifier.align(Alignment.Center)) {
                                 Text(
@@ -201,7 +206,8 @@ fun RegisterProfileImagePage(
                                 arguments = mapOf(
                                     "imageUri" to state.profileImageUri.value?.toString(),
                                     "memberName" to nickName,
-                                    "dayOfBirth" to dayOfBirth
+                                    "dayOfBirth" to dayOfBirth,
+                                    "profileColor" to profileColor
                                 )
                             )
                         )
