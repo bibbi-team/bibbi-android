@@ -72,7 +72,7 @@ interface RestAPI {
         suspend fun quitMember(
             @Path("memberId") memberId: String,
             @Body body: QuitMemberRequest,
-        ): ApiResponse<Member>
+        ): ApiResponse<DefaultResponse>
 
         @POST("v1/members/image-upload-request")
         suspend fun getUploadImageRequest(

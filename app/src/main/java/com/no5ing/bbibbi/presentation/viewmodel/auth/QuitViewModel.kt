@@ -3,6 +3,7 @@ package com.no5ing.bbibbi.presentation.viewmodel.auth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.QuitMemberRequest
+import com.no5ing.bbibbi.data.datasource.network.response.DefaultResponse
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.APIResponse.Companion.idle
 import com.no5ing.bbibbi.data.model.APIResponse.Companion.wrapToAPIResponse
@@ -20,8 +21,8 @@ import javax.inject.Inject
 class QuitViewModel @Inject constructor(
     private val restAPI: RestAPI,
     private val sessionModule: SessionModule,
-) : BaseViewModel<APIResponse<Member>>() {
-    override fun initState(): APIResponse<Member> {
+) : BaseViewModel<APIResponse<DefaultResponse>>() {
+    override fun initState(): APIResponse<DefaultResponse> {
         return idle()
     }
 

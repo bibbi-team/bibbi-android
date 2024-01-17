@@ -20,7 +20,7 @@
     <string name="register_dob_description">가족들이 생일을 챙겨줄 수 있어요</string>
     <string name="register_dob_correct_date">올바른 날짜를 입력해주세요</string>
 
-    <string name="register_profile_image_description">마지막이에요.\n%1$s님의 프로필을 선택해보세요</string>
+    <string name="register_profile_image_description">마지막이에요. %1$s님의\n프로필을 선택해보세요</string>
 
     <string name="camera_title">카메라</string>
     <string name="upload_post">사진 올리기</string>
@@ -36,9 +36,13 @@
     <string name="setting_privacy">개인정보처리방침</string>
     <string name="setting_terms">이용 약관</string>
     <string name="setting_login">로그인</string>
-    <string name="setting_logout">로그아웃</string>
+    <string name="setting_logout">로그 아웃</string>
     <string name="setting_group_quit">그룹 탈퇴</string>
     <string name="setting_leave">회원 탈퇴</string>
+
+    <string name="comment_dialog_delete">삭제</string>
+    <string name="comment_dialog_text_field_hint">댓글 달기...</string>
+    <string name="comment_dialog_text_field_enter">등록</string>
 
     <string name="profile_title">활동</string>
 
@@ -64,7 +68,7 @@
     <string name="join_family_with_link_sample_text">여기에 코드 입력</string>
     <string name="join_family_with_link_not_valid">유효하지 않은 코드에요</string>
 
-    <string name="time_now">방금 전</string>
+    <string name="time_now">지금</string>
     <string name="time_minutes">분 전</string>
     <string name="time_hours">시간 전</string>
     <string name="time_days">일 전</string>
@@ -96,13 +100,13 @@
     <string name="dialog_confirm">확인</string>
     <string name="dialog_cancel">취소</string>
 
-    <string name="dialog_logout_title">로그아웃</string>
+    <string name="dialog_logout_title">로그 아웃</string>
     <string name="dialog_logout_message">로그아웃 하시겠어요?</string>
     <string name="dialog_logout_confirm">로그아웃</string>
 
-    <string name="dialog_quit_title">회원탈퇴</string>
-    <string name="dialog_quit_message">회원탈퇴 하시겠어요?</string>
-    <string name="dialog_quit_confirm">회원탈퇴</string>
+    <string name="dialog_quit_title">회원 탈퇴</string>
+    <string name="dialog_quit_message">회원을 탈퇴해도 나의 활동 내역은\n유지됩니다. 정말 탈퇴하시겠습니까?</string>
+    <string name="dialog_quit_confirm">탈퇴</string>
 
     <string name="dialog_quit_group_title">그룹 탈퇴</string>
     <string name="dialog_quit_group_message">그룹을 탈퇴해도 나의 활동 내역은\n유지되니 참고해주세요.</string>
@@ -137,7 +141,7 @@
     <string name="widget_name">삐삐</string>
     <string name="widget_description">가족들이 생존신고 한 사진을 빠르게 확인할 수 있어요.</string>
 
-    <string name="register_day_of_birth_description">안녕하세요 %1$s님, 생일이 언제신가요?</string>
+    <string name="register_day_of_birth_description">안녕하세요 %1$s님,\n생일이 언제신가요?</string>
     <string name="register_day_of_birth_year">년</string>
     <string name="register_day_of_birth_month">월</string>
     <string name="register_day_of_birth_day">일</string>
@@ -149,4 +153,7 @@
     <string name="quit_minimum_one">최소 1개 이상 선택해주세요.</string>
     <string name="comment_count">%1$d개</string>
     <string name="comment_dialog_title">댓글</string>
+    <string name="comment_dialog_comment_deleted">댓글이 삭제되었습니다</string>
+    <string name="comment_dialog_no_comments_title">아직 댓글이 없습니다</string>
+    <string name="comment_dialog_no_comments_description">댓글을 남겨보세요.</string>
 </resources>

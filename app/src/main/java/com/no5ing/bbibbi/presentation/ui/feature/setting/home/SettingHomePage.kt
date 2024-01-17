@@ -159,7 +159,7 @@ fun SettingHomePage(
                     text = stringResource(id = R.string.setting_account_and_permission),
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
-                        .padding(bottom = 8.dp),
+                        .padding(bottom = 16.dp),
                     color = MaterialTheme.bbibbiScheme.icon,
                     style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                 )
@@ -187,7 +187,7 @@ fun SettingHomePage(
                             Text(
                                 text = versionInfoText,
                                 color = MaterialTheme.bbibbiScheme.icon,
-                                style = MaterialTheme.bbibbiTypo.headTwoRegular,
+                                style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                             )
                             if (appVersionState.isReady() && !appVersionState.data.latest) {
                                 Spacer(modifier = Modifier.width(12.dp))
@@ -240,7 +240,7 @@ fun SettingHomePage(
                     text = stringResource(id = R.string.setting_login),
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
-                        .padding(bottom = 8.dp),
+                        .padding(bottom = 16.dp),
                     style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                     color = MaterialTheme.bbibbiScheme.icon
                 )
@@ -291,8 +291,8 @@ fun SettingItem(
     ) {
         Text(
             text = name,
-            color = if (isCritical) MaterialTheme.bbibbiScheme.criticalRed else MaterialTheme.bbibbiScheme.textPrimary,
-            style = MaterialTheme.bbibbiTypo.headTwoRegular,
+            color = if (isCritical) MaterialTheme.bbibbiScheme.warningRed else MaterialTheme.bbibbiScheme.textPrimary,
+            style = MaterialTheme.bbibbiTypo.bodyOneRegular,
         )
         rightButton()
     }

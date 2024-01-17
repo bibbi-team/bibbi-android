@@ -1,6 +1,7 @@
 package com.no5ing.bbibbi.presentation.ui.feature.dialog
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,6 +55,7 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -160,6 +162,10 @@ fun PostCommentDialog(
                     cardRevealState.clear()
                     deletePostCommentViewModel.resetState()
                     uiState.refresh()
+                    snackBarHost.showSnackBarWithDismiss(
+                        message = resources.getString(R.string.comment_dialog_comment_deleted),
+                        actionLabel = snackBarWarning
+                    )
                 }
                 is APIResponse.Status.ERROR -> {
                     cardRevealState.clear()
@@ -184,7 +190,7 @@ fun PostCommentDialog(
                     .union(WindowInsets.statusBars),
                 sheetState = sheetState,
                 shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
-                containerColor = Color(0xff1c1c1e),
+                containerColor = MaterialTheme.bbibbiScheme.backgroundPrimary,
                 dragHandle = {
                     Column(
                         modifier = Modifier
@@ -194,12 +200,16 @@ fun PostCommentDialog(
                         Spacer(modifier = Modifier.height(8.dp))
                         Box(
                             Modifier
-                                .size(width = 32.dp, height = 4.dp)
-                                .clip(RoundedCornerShape(2.dp))
+                                .size(width = 36.dp, height = 5.dp)
+                                .clip(RoundedCornerShape(100.dp))
                                 .background(MaterialTheme.bbibbiScheme.button)
                         )
                         Spacer(modifier = Modifier.height(20.dp))
-                        Text(text = "댓글", color = MaterialTheme.bbibbiScheme.textPrimary)
+                        Text(
+                            text = stringResource(id = R.string.comment_dialog_title),
+                            color = MaterialTheme.bbibbiScheme.textPrimary,
+                            style = MaterialTheme.bbibbiTypo.bodyOneBold,
+                        )
                         Spacer(modifier = Modifier.height(16.dp))
                         Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.gray600)
                     }
@@ -214,36 +224,59 @@ fun PostCommentDialog(
                             .fillMaxWidth()
                             .weight(1.0f)
                     ) {
-                        items(uiState.itemCount) {
-                            val item = uiState[it] ?: throw RuntimeException()
-                            CommentBox(
-                                item,
-                                onTapProfile = { member ->
-                                    navController.navigate(
-                                        destination = MainProfileDestination,
-                                        path = member.memberId
+                        if (uiState.itemCount == 0) {
+                            item {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Spacer(modifier = Modifier.height(60.dp))
+                                    Text(
+                                        text = stringResource(id = R.string.comment_dialog_no_comments_title),
+                                        color = Color.White,
+                                        style = MaterialTheme.bbibbiTypo.bodyOneBold,
                                     )
-                                },
-                                onTapDelete = {
-                                    deletePostCommentViewModel.invoke(
-                                        Arguments(
-                                            arguments = mapOf(
-                                                "postId" to postId,
-                                                "commentId" to item.commentId
+                                    Spacer(modifier = Modifier.height(5.dp))
+                                    Text(
+                                        text = stringResource(id = R.string.comment_dialog_no_comments_description),
+                                        color = MaterialTheme.bbibbiScheme.gray500,
+                                        style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
+                                    )
+                                }
+                            }
+                        } else {
+                            items(uiState.itemCount) {
+                                val item = uiState[it] ?: throw RuntimeException()
+                                CommentBox(
+                                    item,
+                                    onTapProfile = { member ->
+                                        navController.navigate(
+                                            destination = MainProfileDestination,
+                                            path = member.memberId
+                                        )
+                                    },
+                                    onTapDelete = {
+                                        deletePostCommentViewModel.invoke(
+                                            Arguments(
+                                                arguments = mapOf(
+                                                    "postId" to postId,
+                                                    "commentId" to item.commentId
+                                                )
                                             )
                                         )
-                                    )
-                                },
-                                isRevealed = cardRevealState.containsKey(item.commentId),
-                                setRevealState = {
-                                    if(it) {
-                                        cardRevealState[item.commentId] = Unit
-                                    } else {
-                                        cardRevealState.remove(item.commentId)
+                                    },
+                                    isRevealed = cardRevealState.containsKey(item.commentId),
+                                    setRevealState = {
+                                        if(it) {
+                                            cardRevealState[item.commentId] = Unit
+                                        } else {
+                                            cardRevealState.remove(item.commentId)
+                                        }
                                     }
-                                }
-                            )
+                                )
+                            }
                         }
+
                     }
                     KeyboardBar(focusRequester = textBoxFocus,
                         onFocusChanged = {
@@ -283,19 +316,25 @@ fun KeyboardBar(
     onFocusChanged: (FocusState) -> Unit,
     onSend: () -> Unit,
 ) {
-    Column(
+    var keyboardTextStr by keyboardText
+    Box(
         modifier = modifier
+            .fillMaxWidth()
             .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
-            .padding(vertical = 12.dp, horizontal = 16.dp),
-        verticalArrangement = Arrangement.Bottom
+            .padding(bottom = 5.dp)
+            ,
+       // verticalArrangement = Arrangement.Bottom
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, MaterialTheme.bbibbiScheme.gray600, RoundedCornerShape(20.dp))
+                .padding(vertical = 12.dp, horizontal = 16.dp)
         ) {
             BasicTextField(
-                value = keyboardText.value,
+                value = keyboardTextStr,
                 modifier = Modifier
                     .onFocusEvent {
                         Timber.d("FE : ${it}")
@@ -307,20 +346,22 @@ fun KeyboardBar(
                 onValueChange = { nextValue ->
                     keyboardText.value = nextValue
                 },
-//                decorationBox = {
-//                        if(keyboardText.value.isEmpty()) {
-//                        Text(
-//                            text = "댓글을 입력해주세요",
-//                            color = MaterialTheme.bbibbiScheme.gray600,
-//                            style = MaterialTheme.bbibbiTypo.bodyTwoRegular
-//                        )
-//                    }
-//                },
+                decorationBox = {
+                        if(keyboardText.value.isEmpty()) {
+                        Text(
+                            text = stringResource(id = R.string.comment_dialog_text_field_hint),
+                            color = MaterialTheme.bbibbiScheme.gray500,
+                            style = MaterialTheme.bbibbiTypo.bodyOneRegular
+                        )
+                    }
+                    else {
+                        it()
+                        }
+                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                textStyle = TextStyle(
-                    fontSize = 16.sp,
-                    color = MaterialTheme.bbibbiScheme.white
-                ),
+                textStyle = MaterialTheme.bbibbiTypo.bodyOneRegular.copy(
+                    color = MaterialTheme.bbibbiScheme.textPrimary
+                   ),
                 keyboardActions = KeyboardActions(
                     onDone = {
                         Timber.d("Done")
@@ -332,16 +373,33 @@ fun KeyboardBar(
                 ),
                 maxLines = 1,
             )
-            Icon(
-                painter = painterResource(id = R.drawable.clear_icon),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(20.dp)
-                    .clickable {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                if(keyboardTextStr.isNotBlank()) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.clear_icon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable {
+                                keyboardTextStr = ""
+                            },
+                        tint = MaterialTheme.bbibbiScheme.icon
+                    )
+                }
+
+                Text(
+                    text = stringResource(id = R.string.comment_dialog_text_field_enter),
+                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+                    color = if(keyboardTextStr.isEmpty()) MaterialTheme.bbibbiScheme.gray500
+                    else MaterialTheme.bbibbiScheme.mainGreen,
+                    modifier = Modifier.clickable {
                         onSend()
-                    },
-                tint = MaterialTheme.bbibbiScheme.icon
-            )
+                    }
+                )
+            }
+
         }
 
     }
@@ -370,14 +428,15 @@ fun CommentBox(
         ) {
             Box(modifier = Modifier
                 .width(areaWidthPx.pxToDp())
-                .background(Color.Red)
+                .background(MaterialTheme.bbibbiScheme.warningRed)
                 .height(relevantHeight.pxToDp())
                 .clickable { onTapDelete() },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "삭제",
-                    color = Color.White
+                    text = stringResource(id = R.string.comment_dialog_delete),
+                    color = Color.White,
+                    style = MaterialTheme.bbibbiTypo.bodyOneRegular
                 )
             }
 
@@ -385,7 +444,7 @@ fun CommentBox(
         DraggableCardComplex(
             isRevealed = isRevealed,
             cardOffset = areaWidthPx,
-            backgroundColor = Color(0xff1c1c1e),
+            backgroundColor = MaterialTheme.bbibbiScheme.backgroundPrimary,
             onGloballyPositioned = {
                 relevantHeight = it.boundsInWindow().height
             },
@@ -405,25 +464,25 @@ fun CommentBox(
                     }
                 )
                 Column(
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Row{
                         Text(
                             text = comment.member?.name ?: "unknown",
                             color = MaterialTheme.bbibbiScheme.iconSelected,
-                            style = MaterialTheme.bbibbiTypo.headTwoRegular
+                            style = MaterialTheme.bbibbiTypo.bodyTwoBold
                         )
-                        Spacer(modifier = Modifier.width(5.dp))
+                        Spacer(modifier = Modifier.width(10.dp))
                         Text(
                             text = gapBetweenNow(time = comment.createdAt),
-                            color = MaterialTheme.bbibbiScheme.gray600,
-                            style = MaterialTheme.bbibbiTypo.headTwoRegular
+                            color = MaterialTheme.bbibbiScheme.gray500,
+                            style = MaterialTheme.bbibbiTypo.bodyTwoRegular
                         )
                     }
                     Text(
                         text = comment.content,
                         color = MaterialTheme.bbibbiScheme.iconSelected,
-                        style = MaterialTheme.bbibbiTypo.bodyTwoRegular
+                        style = MaterialTheme.bbibbiTypo.bodyOneRegular
                     )
                 }
             }

@@ -192,43 +192,44 @@ fun ReactionListDialog(
                                     .weight(1f)
                                     .fillMaxWidth()
                             ) {
-                                items(myGroup.size) {
-                                    val item = myGroup[it]
-                                    val currentMember = item.member ?: Member.unknown()
-                                    Box(Modifier.padding(vertical = 14.dp, horizontal = 20.dp)) {
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically,
-                                        ) {
-                                            CircleProfileImage(
-                                                member = currentMember,
-                                                size = 52.dp,
-                                                onTap = {
-                                                    navController.navigate(
-                                                        destination = MainProfileDestination,
-                                                        path = currentMember.memberId
-                                                    )
-                                                }
-                                            )
-                                            Spacer(modifier = Modifier.width(12.dp))
-                                            Column {
-                                                Text(
-                                                    text = currentMember.name,
-                                                    style = MaterialTheme.bbibbiTypo.bodyOneBold,
-                                                    color = MaterialTheme.bbibbiScheme.white,
+
+                                    items(myGroup.size) {
+                                        val item = myGroup[it]
+                                        val currentMember = item.member ?: Member.unknown()
+                                        Box(Modifier.padding(vertical = 14.dp, horizontal = 20.dp)) {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                            ) {
+                                                CircleProfileImage(
+                                                    member = currentMember,
+                                                    size = 52.dp,
+                                                    onTap = {
+                                                        navController.navigate(
+                                                            destination = MainProfileDestination,
+                                                            path = currentMember.memberId
+                                                        )
+                                                    }
                                                 )
-                                                if (item.isMe) {
+                                                Spacer(modifier = Modifier.width(12.dp))
+                                                Column {
                                                     Text(
-                                                        text = stringResource(id = R.string.family_me),
-                                                        style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
-                                                        color = MaterialTheme.bbibbiScheme.icon,
+                                                        text = currentMember.name,
+                                                        style = MaterialTheme.bbibbiTypo.bodyOneBold,
+                                                        color = MaterialTheme.bbibbiScheme.white,
                                                     )
+                                                    if (item.isMe) {
+                                                        Text(
+                                                            text = stringResource(id = R.string.family_me),
+                                                            style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
+                                                            color = MaterialTheme.bbibbiScheme.icon,
+                                                        )
+                                                    }
                                                 }
+
                                             }
-
                                         }
-                                    }
 
-                                }
+                                    }
 
                             }
                             CTAButton(

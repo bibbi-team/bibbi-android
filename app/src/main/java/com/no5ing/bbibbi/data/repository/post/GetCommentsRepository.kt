@@ -55,7 +55,8 @@ class GetCommentsPageSource @Inject constructor(
         val postComments = restAPI.getPostApi().getPostComments(
             postId = arguments.get("postId") ?: throw RuntimeException(),
             page = loadParams.key ?: 1,
-            size = loadParams.loadSize
+            size = loadParams.loadSize,
+            sort = "ASC"
         )
         return postComments.mapSuccess {
             Pagination<PostCommentUiState>(
