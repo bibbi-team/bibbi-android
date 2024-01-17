@@ -12,14 +12,17 @@ import kotlinx.coroutines.flow.StateFlow
 @Stable
 data class HomePageStoryBarState(
     val uiState: StateFlow<PagingData<Member>>,
-    val meState: StateFlow<APIResponse<Member>>
+    val meState: StateFlow<APIResponse<Member>>,
+    val topState: StateFlow<Map<String, Boolean>>
 )
 
 @Composable
 fun rememberHomePageStoryBarState(
     uiState: StateFlow<PagingData<Member>> = remember { MutableStateFlow(PagingData.empty()) },
     meState: StateFlow<APIResponse<Member>> = remember { MutableStateFlow(APIResponse.idle()) },
+    topState: StateFlow<Map<String, Boolean>> = remember { MutableStateFlow(emptyMap()) },
 ): HomePageStoryBarState = HomePageStoryBarState(
     uiState = uiState,
     meState = meState,
+    topState = topState,
 )

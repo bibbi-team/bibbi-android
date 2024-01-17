@@ -28,6 +28,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.util.BackToExitHandler
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.post.DailyFamilyTopViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.IsMeUploadedTodayViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.MainPostFeedViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
@@ -43,9 +44,11 @@ fun HomePage(
     homePageContentState: HomePageContentState = rememberHomePageContentState(
         uiState = familyPostsViewModel.uiState
     ),
+    familyPostTopViewModel: DailyFamilyTopViewModel = hiltViewModel(),
     storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(
         uiState = familyMembersViewModel.uiState,
         meState = retrieveMeViewModel.uiState,
+        topState = familyPostTopViewModel.uiState,
     ),
     onTapLeft: () -> Unit = {},
     onTapRight: () -> Unit = {},

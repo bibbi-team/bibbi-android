@@ -38,7 +38,9 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.post.DailyFamilyTopViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
+import timber.log.Timber
 
 @Composable
 fun HomePageStoryBar(
@@ -46,16 +48,21 @@ fun HomePageStoryBar(
     onTapInvite: () -> Unit = {},
     familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),
     retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
+    familyPostTopViewModel: DailyFamilyTopViewModel = hiltViewModel(),
     storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(
-        uiState = familyMembersViewModel.uiState
+        uiState = familyMembersViewModel.uiState,
+        topState = familyPostTopViewModel.uiState,
     ),
     items: LazyPagingItems<Member> = storyBarState.uiState.collectAsLazyPagingItems()
 ) {
+    val postTopState by storyBarState.topState.collectAsState()
     LaunchedEffect(Unit) {
         familyMembersViewModel.invoke(Arguments())
+        familyPostTopViewModel.invoke(Arguments())
     }
     val meId = LocalSessionState.current.memberId
     val meState by retrieveMeViewModel.uiState.collectAsState()
+
     if (items.itemCount == 1) {
         HomePageNoFamilyBar(
             modifier = Modifier
@@ -83,7 +90,9 @@ fun HomePageStoryBar(
                         onTap = {
                             onTapProfile(item)
                         },
-                        isMe = true
+                        isMe = true,
+                        isUploaded = postTopState.containsKey(item.memberId),
+                        isFirst = postTopState[item.memberId] ?: false,
                     )
                 }
             }
@@ -98,7 +107,9 @@ fun HomePageStoryBar(
                             member = item,
                             onTap = {
                                 onTapProfile(item)
-                            }
+                            },
+                            isUploaded = postTopState.containsKey(item.memberId),
+                            isFirst = postTopState[item.memberId] ?: false,
                         )
                     }
                 }
@@ -118,6 +129,8 @@ fun StoryBarIcon(
     onTap: () -> Unit,
     member: Member,
     isMe: Boolean = false,
+    isUploaded: Boolean,
+    isFirst: Boolean,
 ) {
     Column(
         modifier = Modifier
@@ -131,6 +144,7 @@ fun StoryBarIcon(
                 member = member,
                 size = 64.dp,
                 onTap = onTap,
+                opacity = if(isUploaded) 1.0f else 0.4f
             )
             Box {
                 if (member.isBirthdayToday) {
@@ -141,6 +155,15 @@ fun StoryBarIcon(
                             .size(20.dp)
                             .align(Alignment.TopStart),
                         tint = MaterialTheme.bbibbiScheme.graphicPink,
+                    )
+                } else if(isFirst) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.first_badge),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .align(Alignment.TopStart),
+                        tint = MaterialTheme.bbibbiScheme.emojiYellow,
                     )
                 }
             }
