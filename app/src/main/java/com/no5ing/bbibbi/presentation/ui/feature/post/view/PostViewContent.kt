@@ -92,7 +92,7 @@ fun PostViewContent(
             Row(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically,
-             //   modifier = Modifier
+                //   modifier = Modifier
             ) {
 
                 Box(
@@ -104,7 +104,10 @@ fun PostViewContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                        horizontalArrangement = Arrangement.spacedBy(
+                            8.dp,
+                            Alignment.CenterHorizontally
+                        ),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(

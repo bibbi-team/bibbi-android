@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -71,9 +70,13 @@ fun QuitPage(
         enabledState = quitModalEnabled,
         confirmMessage = stringResource(id = R.string.dialog_quit_confirm),
         confirmRequest = {
-            quitViewModel.invoke(Arguments(arguments = mapOf("reasons" to currentSelection.joinToString(
-                ","
-            ) { quitReasons[it].first })))
+            quitViewModel.invoke(
+                Arguments(
+                    arguments = mapOf("reasons" to currentSelection.joinToString(
+                        ","
+                    ) { quitReasons[it].first })
+                )
+            )
         }
     )
     val quitState by quitViewModel.uiState.collectAsState()
@@ -89,6 +92,7 @@ fun QuitPage(
                     actionLabel = snackBarWarning,
                 )
             }
+
             else -> {}
         }
     }
@@ -103,7 +107,10 @@ fun QuitPage(
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
-                DisposableTopBar(onDispose = onDispose, title = stringResource(id = R.string.quit_title))
+                DisposableTopBar(
+                    onDispose = onDispose,
+                    title = stringResource(id = R.string.quit_title)
+                )
                 Column(
                     modifier = Modifier.padding(horizontal = 20.dp)
                 ) {

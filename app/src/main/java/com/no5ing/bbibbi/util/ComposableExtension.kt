@@ -36,6 +36,7 @@ fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) =
             )
         }
     }
+
 @Composable
 fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
 
@@ -78,4 +79,5 @@ fun Modifier.vix() =
         }
     }
 
-fun Color.Companion.fromHex(colorString: String) = Color(android.graphics.Color.parseColor(colorString))
+fun Color.Companion.fromHex(colorString: String) =
+    Color(android.graphics.Color.parseColor(colorString))

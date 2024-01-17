@@ -71,6 +71,7 @@ fun Context.openMarket() {
     intent.data = Uri.parse("market://details?id=com.no5ing.bbibbi")
     this.startActivity(intent)
 }
+
 fun Context.forceRestart() {
     if (this is Activity) {
         Timber.d("[Activity] Restarting application...")

@@ -48,7 +48,6 @@ import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.LogoutViewModel
-import com.no5ing.bbibbi.presentation.viewmodel.auth.QuitViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveAppVersionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.family.QuitFamilyViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
@@ -109,7 +108,6 @@ fun SettingHomePage(
             logoutViewModel.invoke(Arguments())
         }
     )
-
 
 
     val familyQuitModalEnabled = remember { mutableStateOf(false) }

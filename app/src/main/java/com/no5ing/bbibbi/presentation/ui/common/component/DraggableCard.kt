@@ -1,21 +1,14 @@
 package com.no5ing.bbibbi.presentation.ui.common.component
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -61,14 +54,14 @@ fun DraggableCardComplex(
         label = "cardOffsetTransition",
         transitionSpec = { tween(durationMillis = ANIMATION_DURATION) },
         targetValueByState = { if (isRevealed) cardOffset - offsetX else -offsetX },
-        )
+    )
 
     Card(
         shape = RoundedCornerShape(0.dp),
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor,
             contentColor = Color.Transparent,
-            ),
+        ),
         modifier = Modifier
             .fillMaxWidth()
             .onGloballyPositioned {

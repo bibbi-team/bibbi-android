@@ -49,7 +49,7 @@ fun ToggleButton(
                 visible = isToggled,
                 enter = fadeIn(),
                 exit = fadeOut(),
-                ) {
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.check_icon),
                     contentDescription = null,

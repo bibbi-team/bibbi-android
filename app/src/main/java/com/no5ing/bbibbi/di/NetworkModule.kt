@@ -2,15 +2,12 @@ package com.no5ing.bbibbi.di
 
 import android.content.Context
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.no5ing.bbibbi.BuildConfig
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.auth.AuthResult
-import com.no5ing.bbibbi.util.ZonedDateTimeAdapter
 import com.skydoves.sandwich.SandwichInitializer
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
@@ -28,10 +25,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import okio.Timeout
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
 import timber.log.Timber
-import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -151,7 +146,7 @@ object NetworkModule {
             HttpLoggingInterceptor { message -> Timber.d("%s", message) }
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return client
-             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
             .connectTimeout(timeout_connect, TimeUnit.SECONDS)
             .readTimeout(timeout_read, TimeUnit.SECONDS)
             .writeTimeout(timeout_write, TimeUnit.SECONDS)

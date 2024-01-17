@@ -12,7 +12,6 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CancellationException
-import timber.log.Timber
 
 @Stable
 @ExperimentalMaterial3Api

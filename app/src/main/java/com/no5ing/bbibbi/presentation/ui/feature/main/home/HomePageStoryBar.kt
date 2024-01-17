@@ -39,7 +39,6 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
-import com.no5ing.bbibbi.util.isBirthdayNow
 
 @Composable
 fun HomePageStoryBar(

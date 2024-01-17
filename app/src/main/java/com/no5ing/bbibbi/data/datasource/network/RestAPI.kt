@@ -3,9 +3,11 @@ package com.no5ing.bbibbi.data.datasource.network
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeNameRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeProfileImageRequest
+import com.no5ing.bbibbi.data.datasource.network.request.member.CreateMemberRealEmojiRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.JoinFamilyRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.QuitMemberRequest
+import com.no5ing.bbibbi.data.datasource.network.request.member.UpdateMemberRealEmojiRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostCommentRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostReactionRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostRequest
@@ -29,6 +31,8 @@ import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.model.post.PostComment
 import com.no5ing.bbibbi.data.model.post.PostReaction
 import com.no5ing.bbibbi.data.model.post.PostReactionSummary
+import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
+import com.no5ing.bbibbi.data.model.member.MemberRealEmojiList
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -118,6 +122,31 @@ interface RestAPI {
 
         @GET("v1/me/app-version")
         suspend fun getAppVersion(): ApiResponse<AppVersion>
+
+        @POST("v1/members/{memberId}/real-emoji/image-upload-request")
+        suspend fun getRealEmojiImageRequest(
+            @Path("memberId") memberId: String,
+            @Body body: ImageUploadRequest,
+        ): ApiResponse<ImageUploadLink>
+
+        @GET("v1/members/{memberId}/real-emoji")
+        suspend fun getRealEmojiList(
+            @Path("memberId") memberId: String,
+            @Body body: ImageUploadRequest,
+        ): ApiResponse<MemberRealEmojiList<MemberRealEmoji>>
+
+        @POST("v1/members/{memberId}/real-emoji")
+        suspend fun createMemberRealEmoji(
+            @Path("memberId") memberId: String,
+            @Body body: CreateMemberRealEmojiRequest,
+        ): ApiResponse<MemberRealEmoji>
+
+        @PUT("v1/members/{memberId}/real-emoji/{realEmojiId}")
+        suspend fun updateMemberRealEmoji(
+            @Path("memberId") memberId: String,
+            @Path("realEmojiId") realEmojiId: String,
+            @Body body: UpdateMemberRealEmojiRequest,
+        ): ApiResponse<MemberRealEmoji>
     }
 
     /**

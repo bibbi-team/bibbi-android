@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
-import com.no5ing.bbibbi.util.fromHex
 
 @Composable
 fun CircleProfileImage(
@@ -52,9 +51,10 @@ fun CircleProfileImage(
                     modifier = modifier
                         .size(size)
                         .clip(CircleShape)
-                        .background(MaterialTheme.bbibbiScheme
-                            .backgroundHover
-                            .copy(alpha = opacity)
+                        .background(
+                            MaterialTheme.bbibbiScheme
+                                .backgroundHover
+                                .copy(alpha = opacity)
                         )
                 )
                 Box(modifier = Modifier.align(Alignment.Center)) {

@@ -130,7 +130,7 @@ fun JoinFamilyWithLinkPage(
                     onValueChange = {
                         state.nicknameTextState.value = it
                         if (it.length != 8) {
-                            if(isValidUrl(it)) {
+                            if (isValidUrl(it)) {
                                 val linkSuffix = getLinkIdFromUrl(it)
                                 if (linkSuffix.length == 8) {
                                     state.nicknameTextState.value = linkSuffix

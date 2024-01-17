@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -56,10 +55,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.no5ing.bbibbi.R
@@ -100,8 +97,8 @@ fun PostCommentDialog(
     createPostCommentViewModel: CreatePostCommentViewModel = hiltViewModel(),
     deletePostCommentViewModel: DeletePostCommentViewModel = hiltViewModel(),
 ) {
-  //  val coroutineScope = rememberCoroutineScope()
-    if(isEnabled.value) {
+    //  val coroutineScope = rememberCoroutineScope()
+    if (isEnabled.value) {
         val snackBarHost = LocalSnackbarHostState.current
         val focusManager = LocalFocusManager.current
         val navController = LocalNavigateControllerState.current
@@ -111,7 +108,7 @@ fun PostCommentDialog(
             mutableStateOf("")
         }
 
-        val cardRevealState = remember{ mutableStateMapOf<String, Unit>() }
+        val cardRevealState = remember { mutableStateMapOf<String, Unit>() }
 
 
 //        LaunchedEffect(keyboardExpanded) {
@@ -128,21 +125,24 @@ fun PostCommentDialog(
         val uiState = commentViewModel.uiState.collectAsLazyPagingItems()
         LaunchedEffect(Unit) {
             commentViewModel.invoke(
-                Arguments(arguments = mapOf(
-                    "postId" to postId
-                ))
+                Arguments(
+                    arguments = mapOf(
+                        "postId" to postId
+                    )
+                )
             )
         }
 
         val resources = localResources()
         val createCommentUiState by createPostCommentViewModel.uiState.collectAsState()
         LaunchedEffect(createCommentUiState.status) {
-            when(createCommentUiState.status) {
+            when (createCommentUiState.status) {
                 is APIResponse.Status.SUCCESS -> {
                     cardRevealState.clear()
                     createPostCommentViewModel.resetState()
                     uiState.refresh()
                 }
+
                 is APIResponse.Status.ERROR -> {
                     cardRevealState.clear()
                     createPostCommentViewModel.resetState()
@@ -151,13 +151,14 @@ fun PostCommentDialog(
                         actionLabel = snackBarWarning
                     )
                 }
+
                 else -> {}
             }
         }
 
         val deleteCommentUiState by deletePostCommentViewModel.uiState.collectAsState()
         LaunchedEffect(deleteCommentUiState.status) {
-            when(deleteCommentUiState.status) {
+            when (deleteCommentUiState.status) {
                 is APIResponse.Status.SUCCESS -> {
                     cardRevealState.clear()
                     deletePostCommentViewModel.resetState()
@@ -167,6 +168,7 @@ fun PostCommentDialog(
                         actionLabel = snackBarWarning
                     )
                 }
+
                 is APIResponse.Status.ERROR -> {
                     cardRevealState.clear()
                     deletePostCommentViewModel.resetState()
@@ -175,6 +177,7 @@ fun PostCommentDialog(
                         actionLabel = snackBarWarning
                     )
                 }
+
                 else -> {}
             }
         }
@@ -218,7 +221,7 @@ fun PostCommentDialog(
                 Column(
                     modifier = Modifier
                         .weight(1.0f)
-                ){
+                ) {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -267,7 +270,7 @@ fun PostCommentDialog(
                                     },
                                     isRevealed = cardRevealState.containsKey(item.commentId),
                                     setRevealState = {
-                                        if(it) {
+                                        if (it) {
                                             cardRevealState[item.commentId] = Unit
                                         } else {
                                             cardRevealState.remove(item.commentId)
@@ -281,15 +284,17 @@ fun PostCommentDialog(
                     KeyboardBar(focusRequester = textBoxFocus,
                         onFocusChanged = {
 
-                    },
+                        },
                         keyboardText = keyboardText,
                         onSend = {
-                            if(keyboardText.value.isNotEmpty()) {
+                            if (keyboardText.value.isNotEmpty()) {
                                 createPostCommentViewModel.invoke(
-                                    Arguments(arguments = mapOf(
-                                        "postId" to postId,
-                                        "content" to keyboardText.value
-                                    ))
+                                    Arguments(
+                                        arguments = mapOf(
+                                            "postId" to postId,
+                                            "content" to keyboardText.value
+                                        )
+                                    )
                                 )
                                 keyboardText.value = ""
                                 focusManager.clearFocus()
@@ -305,9 +310,9 @@ fun PostCommentDialog(
         }
 
 
-
     }
 }
+
 @Composable
 fun KeyboardBar(
     keyboardText: MutableState<String>,
@@ -321,9 +326,8 @@ fun KeyboardBar(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
-            .padding(bottom = 5.dp)
-            ,
-       // verticalArrangement = Arrangement.Bottom
+            .padding(bottom = 5.dp),
+        // verticalArrangement = Arrangement.Bottom
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -347,21 +351,20 @@ fun KeyboardBar(
                     keyboardText.value = nextValue
                 },
                 decorationBox = {
-                        if(keyboardText.value.isEmpty()) {
+                    if (keyboardText.value.isEmpty()) {
                         Text(
                             text = stringResource(id = R.string.comment_dialog_text_field_hint),
                             color = MaterialTheme.bbibbiScheme.gray500,
                             style = MaterialTheme.bbibbiTypo.bodyOneRegular
                         )
-                    }
-                    else {
+                    } else {
                         it()
-                        }
+                    }
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 textStyle = MaterialTheme.bbibbiTypo.bodyOneRegular.copy(
                     color = MaterialTheme.bbibbiScheme.textPrimary
-                   ),
+                ),
                 keyboardActions = KeyboardActions(
                     onDone = {
                         Timber.d("Done")
@@ -376,7 +379,7 @@ fun KeyboardBar(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                if(keyboardTextStr.isNotBlank()) {
+                if (keyboardTextStr.isNotBlank()) {
                     Icon(
                         painter = painterResource(id = R.drawable.clear_icon),
                         contentDescription = null,
@@ -392,7 +395,7 @@ fun KeyboardBar(
                 Text(
                     text = stringResource(id = R.string.comment_dialog_text_field_enter),
                     style = MaterialTheme.bbibbiTypo.bodyOneRegular,
-                    color = if(keyboardTextStr.isEmpty()) MaterialTheme.bbibbiScheme.gray500
+                    color = if (keyboardTextStr.isEmpty()) MaterialTheme.bbibbiScheme.gray500
                     else MaterialTheme.bbibbiScheme.mainGreen,
                     modifier = Modifier.clickable {
                         onSend()
@@ -410,12 +413,12 @@ fun CommentBox(
     comment: PostCommentUiState,
     onTapProfile: (Member) -> Unit,
     onTapDelete: () -> Unit,
-  //  revealState: MutableState<Boolean>,
+    //  revealState: MutableState<Boolean>,
     isRevealed: Boolean,
     setRevealState: (Boolean) -> Unit
 ) {
     val areaWidthPx = remember { 200.0f }
-        // var revealed by revealState
+    // var revealed by revealState
     var relevantHeight by remember { mutableFloatStateOf(0.0f) }
     Box(
         modifier = Modifier.fillMaxWidth()
@@ -426,11 +429,12 @@ fun CommentBox(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier
-                .width(areaWidthPx.pxToDp())
-                .background(MaterialTheme.bbibbiScheme.warningRed)
-                .height(relevantHeight.pxToDp())
-                .clickable { onTapDelete() },
+            Box(
+                modifier = Modifier
+                    .width(areaWidthPx.pxToDp())
+                    .background(MaterialTheme.bbibbiScheme.warningRed)
+                    .height(relevantHeight.pxToDp())
+                    .clickable { onTapDelete() },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -452,21 +456,20 @@ fun CommentBox(
             onCollapse = { setRevealState(false) }) {
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp, vertical = 14.dp)
-                ,
+                    .padding(horizontal = 20.dp, vertical = 14.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 CircleProfileImage(
                     size = 44.dp,
                     member = comment.member ?: Member.unknown(),
                     onTap = {
-                        if(comment.member != null) onTapProfile(comment.member)
+                        if (comment.member != null) onTapProfile(comment.member)
                     }
                 )
                 Column(
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Row{
+                    Row {
                         Text(
                             text = comment.member?.name ?: "unknown",
                             color = MaterialTheme.bbibbiScheme.iconSelected,

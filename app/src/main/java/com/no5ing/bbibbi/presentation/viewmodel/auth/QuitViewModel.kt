@@ -7,7 +7,6 @@ import com.no5ing.bbibbi.data.datasource.network.response.DefaultResponse
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.APIResponse.Companion.idle
 import com.no5ing.bbibbi.data.model.APIResponse.Companion.wrapToAPIResponse
-import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel

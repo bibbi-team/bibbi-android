@@ -5,7 +5,6 @@ import com.no5ing.bbibbi.data.model.BaseModel
 import com.no5ing.bbibbi.util.isBirthdayNow
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
-import timber.log.Timber
 import java.time.LocalDate
 
 @Parcelize

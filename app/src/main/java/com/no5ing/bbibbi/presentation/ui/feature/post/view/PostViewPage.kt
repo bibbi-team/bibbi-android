@@ -39,7 +39,6 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.post.view.PostViewPageState
 import com.no5ing.bbibbi.presentation.state.post.view.rememberPostViewPageState
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
-import com.no5ing.bbibbi.presentation.ui.feature.dialog.PostCommentDialog
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
