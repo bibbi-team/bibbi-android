@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -82,29 +84,22 @@ fun PostViewContent(
 
         Column(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(vertical = 12.dp, horizontal = 20.dp),
             horizontalAlignment = Alignment.End
         ) {
+
             Row(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(vertical = 12.dp, horizontal = 20.dp)
+             //   modifier = Modifier
             ) {
-                PostViewReactionBar(
-                    modifier = Modifier.weight(1.0f),
-                    postId = post.postId,
-                    onTapAddEmojiButton = {
-                        addEmojiBarState.value = !addEmojiBarState.value
-                    },
-                    familyPostReactionBarViewModel = familyPostReactionBarViewModel,
-                    removePostReactionViewModel = removePostReactionViewModel,
-                    addPostReactionViewModel = addPostReactionViewModel,
-                )
+
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(100.dp))
                         .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-                        .padding(vertical = 5.dp, horizontal = 6.dp)
+                        .padding(vertical = 5.dp, horizontal = 7.dp)
                         .clickable { postCommentDialogState.value = true },
                     contentAlignment = Alignment.Center
                 ) {
@@ -127,8 +122,20 @@ fun PostViewContent(
 
                 }
             }
+            Spacer(modifier = Modifier.height(4.dp))
+            PostViewReactionBar(
+                modifier = Modifier.weight(1.0f),
+                postId = post.postId,
+                onTapAddEmojiButton = {
+                    addEmojiBarState.value = !addEmojiBarState.value
+                },
+                familyPostReactionBarViewModel = familyPostReactionBarViewModel,
+                removePostReactionViewModel = removePostReactionViewModel,
+                addPostReactionViewModel = addPostReactionViewModel,
+            )
 
             if (addEmojiBarState.value) {
+                Spacer(modifier = Modifier.height(8.dp))
                 AddReactionBar(
                     onTapEmoji = {
                         val toggled =

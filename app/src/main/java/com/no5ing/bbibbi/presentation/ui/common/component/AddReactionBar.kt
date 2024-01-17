@@ -25,7 +25,7 @@ fun AddReactionBar(
     onDispose: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier.padding(horizontal = 20.dp)) {
+    Box(modifier = modifier) {
         OuterClickListener(onClick = onDispose)
         Box(
             modifier = Modifier
