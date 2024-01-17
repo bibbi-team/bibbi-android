@@ -51,8 +51,8 @@ fun CircleProfileImage(
                 modifier = modifier
                     .size(size)
                     .clip(CircleShape)
-                    .background(Color
-                        .fromHex(member.profileColor ?: "#353538")
+                    .background(MaterialTheme.bbibbiScheme
+                        .backgroundHover
                         .copy(alpha = opacity)
                     )
             )

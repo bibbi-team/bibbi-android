@@ -66,9 +66,6 @@ fun RegisterProfileImagePage(
     onTapCamera: () -> Unit,
     registerMemberViewModel: RegisterMemberViewModel = hiltViewModel(),
 ) {
-    val profileColor = remember {
-        "#353538"
-    }
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
@@ -152,7 +149,7 @@ fun RegisterProfileImagePage(
                                 modifier = Modifier
                                     .clip(CircleShape)
                                     .size(90.dp)
-                                    .background(Color.fromHex(profileColor))
+                                    .background(MaterialTheme.bbibbiScheme.backgroundHover)
                             )
                             Box(modifier = Modifier.align(Alignment.Center)) {
                                 Text(
@@ -207,7 +204,6 @@ fun RegisterProfileImagePage(
                                     "imageUri" to state.profileImageUri.value?.toString(),
                                     "memberName" to nickName,
                                     "dayOfBirth" to dayOfBirth,
-                                    "profileColor" to profileColor
                                 )
                             )
                         )

@@ -9,5 +9,4 @@ data class RegisterRequest(
     val memberName: String,
     val dayOfBirth: String,
     val profileImgUrl: String?,
-    val profileColor: String,
 ) : Parcelable, BaseModel()
