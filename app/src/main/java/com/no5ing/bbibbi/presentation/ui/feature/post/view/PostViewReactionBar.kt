@@ -8,9 +8,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -41,6 +44,7 @@ import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.getEmojiResource
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PostViewReactionBar(
     modifier: Modifier,
@@ -74,11 +78,12 @@ fun PostViewReactionBar(
         selectedEmoji = selectedEmoji.value,
     )
     Box(modifier = Modifier) {
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = modifier//.fillMaxWidth()
         ) {
-            items(groupEmoji.size) {
+            repeat(groupEmoji.size) {
                 val item = groupEmoji[it]
                 val isMeReacted = item.second.any { elem -> elem.isMe }
                 PostViewReactionElement(
@@ -116,22 +121,21 @@ fun PostViewReactionBar(
                     }
                 )
             }
-            item {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(100.dp))
-                        .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-                        .padding(vertical = 6.dp, horizontal = 8.dp)
-                        .clickable { onTapAddEmojiButton() },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.add_emoji_icon),
-                        contentDescription = null,
-                        tint = MaterialTheme.bbibbiScheme.textPrimary,
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(100.dp))
+                    .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+                    .padding(vertical = 6.dp, horizontal = 8.dp)
+                    .width(35.5.dp)
+                    .clickable { onTapAddEmojiButton() },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.add_emoji_icon),
+                    contentDescription = null,
+                    tint = MaterialTheme.bbibbiScheme.textPrimary,
+                    modifier = Modifier.size(24.dp)
+                )
             }
         }
     }
