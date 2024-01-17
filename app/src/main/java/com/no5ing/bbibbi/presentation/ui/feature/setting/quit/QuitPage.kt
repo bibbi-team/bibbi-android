@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -20,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,11 +31,13 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
+import com.no5ing.bbibbi.presentation.ui.common.button.ToggleButton
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.QuitViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
@@ -100,35 +105,58 @@ fun QuitPage(
             Column {
                 DisposableTopBar(onDispose = onDispose, title = stringResource(id = R.string.quit_title))
                 Column(
-                    modifier = Modifier.padding(horizontal = 5.dp)
+                    modifier = Modifier.padding(horizontal = 20.dp)
                 ) {
+                    Spacer(modifier = Modifier.height(24.dp))
                     Text(
                         text = stringResource(id = R.string.quit_heading_one),
-                        color = MaterialTheme.bbibbiScheme.textSecondary
+                        color = MaterialTheme.bbibbiScheme.icon,
+                        style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                     )
+                    Spacer(modifier = Modifier.height(24.dp))
                     Text(
                         text = stringResource(id = R.string.quit_heading_two),
                         color = MaterialTheme.bbibbiScheme.textPrimary,
+                        style = MaterialTheme.bbibbiTypo.headOne,
                     )
+                    Spacer(modifier = Modifier.height(40.dp))
                     Text(
                         text = stringResource(id = R.string.quit_minimum_one),
-                        color = MaterialTheme.bbibbiScheme.textSecondary
+                        color = MaterialTheme.bbibbiScheme.icon,
+                        style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                     )
+                    Spacer(modifier = Modifier.height(16.dp))
                     Column {
                         quitReasons.forEachIndexed { index, pair ->
-                            Row {
-                                Checkbox(
-                                    checked = currentSelection.contains(index),
-                                    onCheckedChange = {
-                                        if (!it) {
+                            Row(
+                                modifier = Modifier
+                                    .padding(vertical = 14.dp),
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                ToggleButton(
+                                    isToggled = currentSelection.contains(index),
+                                    onTap = {
+                                        if (currentSelection.contains(index)) {
                                             currentSelection.remove(index)
                                         } else {
                                             currentSelection.add(index)
                                         }
-                                    })
+                                    }
+                                )
+//                                Checkbox(
+//                                    checked = currentSelection.contains(index),
+//                                    onCheckedChange = {
+//                                        if (!it) {
+//                                            currentSelection.remove(index)
+//                                        } else {
+//                                            currentSelection.add(index)
+//                                        }
+//                                    })
                                 Text(
                                     text = pair.second,
                                     color = MaterialTheme.bbibbiScheme.textPrimary,
+                                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                                 )
                             }
                         }

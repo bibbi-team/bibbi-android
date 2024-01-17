@@ -99,6 +99,7 @@ fun ProfilePageContent(
                     ProfilePageContentItem(
                         imageUrl = item.imageUrl,
                         emojiCnt = item.emojiCount,
+                        commentCnt = item.commentCount,
                         time = toLocalizedDate(time = item.createdAt),
                         onTap = { onTapContent(item) }
                     )
@@ -120,6 +121,7 @@ fun ProfilePageContent(
 fun ProfilePageContentItem(
     imageUrl: String,
     emojiCnt: Int,
+    commentCnt: Int,
     time: String,
     onTap: () -> Unit = {},
 ) {
@@ -159,6 +161,20 @@ fun ProfilePageContentItem(
                 Spacer(modifier = Modifier.width(3.dp))
                 Text(
                     text = emojiCnt.toString(),
+                    color = MaterialTheme.bbibbiScheme.textPrimary,
+                    style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    painter = painterResource(id = R.drawable.chat_icon),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(16.dp),
+                    tint = MaterialTheme.bbibbiScheme.icon
+                )
+                Spacer(modifier = Modifier.width(3.dp))
+                Text(
+                    text = commentCnt.toString(),
                     color = MaterialTheme.bbibbiScheme.textPrimary,
                     style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                 )
