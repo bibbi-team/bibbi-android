@@ -179,7 +179,7 @@ fun ProfilePageContentItem(
                     style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                 )
             }
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = time,
                 color = MaterialTheme.bbibbiScheme.icon,

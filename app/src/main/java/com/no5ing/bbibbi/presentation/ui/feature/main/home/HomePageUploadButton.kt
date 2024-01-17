@@ -1,5 +1,8 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -34,6 +37,9 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
 @Composable
 fun BoxScope.HomePageUploadButton(
+    isLoading: Boolean,
+    isUploadAbleTime: Boolean,
+    isAlreadyUploaded: Boolean,
     onTap: () -> Unit,
 ) {
     Box(
@@ -42,18 +48,35 @@ fun BoxScope.HomePageUploadButton(
             .padding(vertical = 15.dp)
             .systemBarsPadding()
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            UploadHelperPop()
-            CameraCaptureButton(
-                onClick = onTap,
-                isCapturing = false,
-            )
+        AnimatedVisibility(
+            visible = !isLoading,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                UploadHelperPop(
+                    text =
+                    if (isUploadAbleTime && !isAlreadyUploaded)
+                        stringResource(id = R.string.home_one_image_per_day)
+                    else if (isAlreadyUploaded)
+                        stringResource(id = R.string.home_already_uploaded_today)
+                    else
+                        stringResource(id = R.string.home_not_camera_time)
+                )
+                CameraCaptureButton(
+                    onClick = onTap,
+                    isCapturing = !isUploadAbleTime || isAlreadyUploaded,
+                )
+            }
         }
     }
+
 }
 
 @Composable
-fun UploadHelperPop() {
+fun UploadHelperPop(
+    text: String,
+) {
     Box(modifier = Modifier.padding(bottom = 30.dp)) {
         Box(
             modifier = Modifier
@@ -64,8 +87,8 @@ fun UploadHelperPop() {
                 )
         ) {
             Text(
-                text = stringResource(id = R.string.home_one_image_per_day),
-                style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+                text = text,
+                style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                 color = MaterialTheme.bbibbiScheme.white,
             )
         }

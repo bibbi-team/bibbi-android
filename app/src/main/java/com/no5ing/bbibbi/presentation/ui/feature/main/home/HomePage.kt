@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -90,14 +91,13 @@ fun HomePage(
                 onTapInvite = onTapInvite,
             )
         }
-        if (meUploadedState.value.isReady() && !meUploadedState.value.data) {
-            val gap = gapUntilNext()
-            if (gap > 0) {
-                HomePageUploadButton(
-                    onTap = onTapUpload
-                )
-            }
-        }
+        HomePageUploadButton(
+            onTap = onTapUpload,
+            isLoading = !meUploadedState.value.isReady(),
+            isUploadAbleTime = remember { gapUntilNext() > 0 },
+            isAlreadyUploaded = !meUploadedState.value.isReady() ||
+                    meUploadedState.value.data
+        )
     }
 }
 

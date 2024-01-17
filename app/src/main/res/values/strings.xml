@@ -5,6 +5,8 @@
     <string name="home_upload">업로드</string>
     <string name="home_graphic">그래픽</string>
     <string name="home_one_image_per_day">하루에 한 번 사진을 올릴 수 있어요</string>
+    <string name="home_not_camera_time">카메라 사용 시간이 아니에요</string>
+    <string name="home_already_uploaded_today">오늘의 생존신고는 완료되었어요</string>
     <string name="home_image_on_duration">매일 12시부터 24시까지 사진을 업로드할 수 있어요</string>
     <string name="home_time_not_much">시간이 얼마 남지 않았어요!</string>
     <string name="home_time_over">내일 낮 12시부터 사진을 올릴 수 있어요!</string>
