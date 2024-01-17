@@ -59,3 +59,8 @@ internal fun Collection<LocalDate>.fillUpTo(date: LocalDate) =
     (0..date.toEpochDay() - first().toEpochDay()).map {
         first().plusDays(it)
     }
+
+fun LocalDate.isBirthdayNow(): Boolean {
+    val now = LocalDate.now()
+    return this.monthValue == now.monthValue && this.dayOfMonth == now.dayOfMonth
+}

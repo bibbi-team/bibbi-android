@@ -31,38 +31,40 @@ fun CircleProfileImage(
     backgroundColor: Color = MaterialTheme.bbibbiScheme.backgroundSecondary,
     onTap: () -> Unit = {},
 ) {
-    if (member.imageUrl != null) {
-        AsyncImage(
-            model = member.imageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = modifier
-                .size(size)
-                .clip(CircleShape)
-                .background(backgroundColor)
-                .clickable { onTap() },
-            alpha = opacity,
-        )
-    } else {
-        Box(
-            modifier = Modifier.clickable { onTap() }
-        ) {
-            Box(
+    Box {
+        if (member.imageUrl != null) {
+            AsyncImage(
+                model = member.imageUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = modifier
                     .size(size)
                     .clip(CircleShape)
-                    .background(MaterialTheme.bbibbiScheme
-                        .backgroundHover
-                        .copy(alpha = opacity)
-                    )
+                    .background(backgroundColor)
+                    .clickable { onTap() },
+                alpha = opacity,
             )
-            Box(modifier = Modifier.align(Alignment.Center)) {
-                Text(
-                    text = "${member.name.first()}",
-                    fontSize = 28.sp * (size / 90.dp),
-                    color = MaterialTheme.bbibbiScheme.white.copy(alpha = opacity),
-                    fontWeight = FontWeight.SemiBold,
+        } else {
+            Box(
+                modifier = Modifier.clickable { onTap() }
+            ) {
+                Box(
+                    modifier = modifier
+                        .size(size)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.bbibbiScheme
+                            .backgroundHover
+                            .copy(alpha = opacity)
+                        )
                 )
+                Box(modifier = Modifier.align(Alignment.Center)) {
+                    Text(
+                        text = "${member.name.first()}",
+                        fontSize = 28.sp * (size / 90.dp),
+                        color = MaterialTheme.bbibbiScheme.white.copy(alpha = opacity),
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
             }
         }
     }

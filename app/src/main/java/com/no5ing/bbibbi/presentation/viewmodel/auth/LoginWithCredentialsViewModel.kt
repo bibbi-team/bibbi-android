@@ -11,6 +11,7 @@ import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,10 +58,12 @@ class LoginWithCredentialsViewModel @Inject constructor(
                             setState(LoginStatus.SUCCEED_PERMANENT_NO_FAMILY)
                         }
                     }.suspendOnFailure {
+                        Timber.d("[LoginViewModel] Member API Failure")
                         setState(LoginStatus.REJECTED)
                     }
                 }
             }.suspendOnFailure {
+                Timber.d("[LoginViewModel] Auth API Failure")
                 setState(LoginStatus.REJECTED)
             }
         }
