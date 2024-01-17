@@ -6,7 +6,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Stable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.navigation
+import androidx.navigation.navigation
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.registerPageRoute
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.RegisterDayOfBirthDestination

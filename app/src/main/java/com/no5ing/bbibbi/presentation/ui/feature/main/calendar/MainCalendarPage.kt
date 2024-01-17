@@ -52,7 +52,7 @@ import java.util.Locale
 
 @Composable
 fun MainCalendarPage(
-    initialYearMonth: YearMonth = YearMonth.now(),
+    initialYearMonth: YearMonth = remember { YearMonth.now() },
     onDispose: () -> Unit = {},
     onTapDay: (LocalDate) -> Unit = {},
     calendarMonthViewModel: CalendarMonthViewModel = hiltViewModel(),

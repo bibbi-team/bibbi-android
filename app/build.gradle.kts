@@ -102,7 +102,6 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.31.1-alpha")
     implementation("androidx.camera:camera-camera2:1.4.0-alpha03")
     implementation("androidx.camera:camera-lifecycle:1.4.0-alpha03")
     implementation ("androidx.camera:camera-view:1.4.0-alpha03")

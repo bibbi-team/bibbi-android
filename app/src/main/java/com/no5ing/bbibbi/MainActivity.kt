@@ -26,7 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.rememberNavController
 import com.google.firebase.messaging.FirebaseMessaging
 import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
@@ -192,7 +192,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val updateState = NetworkModule.requireUpdateState.collectAsState()
             val tokenInvalidState = NetworkModule.requireTokenInvalidRestart.collectAsState()
-            val navController = rememberAnimatedNavController()
+            val navController = rememberNavController()
             val snackBarHostState = remember { SnackbarHostState() }
             val sessionState by sessionModule.sessionState.collectAsState()
             val deepLinkState by deepLinkStateFlow.collectAsState()

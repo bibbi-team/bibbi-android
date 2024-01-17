@@ -13,14 +13,14 @@ import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.composable
+import androidx.navigation.compose.composable
 import timber.log.Timber
 
 abstract class NavigationDestination(
     val route: String,
     val arguments: List<NamedNavArgument> = emptyList(),
     val pathVariable: NamedNavArgument? = null,
-    val content: @Composable (NavHostController, NavBackStackEntry) -> Unit,
+    @Stable val content: @Composable (NavHostController, NavBackStackEntry) -> Unit,
 ) {
     val combinedArguments =
         arguments + if (pathVariable != null) listOf(pathVariable) else emptyList()
@@ -63,7 +63,6 @@ abstract class NavigationDestination(
 
 
         @OptIn(ExperimentalAnimationApi::class)
-        @Stable
         fun NavGraphBuilder.composable(
             controller: NavHostController,
             destination: NavigationDestination,
@@ -83,7 +82,6 @@ abstract class NavigationDestination(
         }
 
         @OptIn(ExperimentalAnimationApi::class)
-        @Stable
         fun NavGraphBuilder.dialog(
             controller: NavHostController,
             destination: NavigationDestination,
@@ -94,13 +92,11 @@ abstract class NavigationDestination(
             destination.content(controller, it)
         }
 
-        @Stable
         fun NavHostController.popAll() {
             while (popBackStack()) {
             }
         }
 
-        @Stable
         fun NavHostController.navigate(
             destination: NavigationDestination,
             path: String? = null,
@@ -132,10 +128,7 @@ abstract class NavigationDestination(
 
             navigate(
                 targetRoute,
-            ) {
-                launchSingleTop = true
-                restoreState = true
-            }
+            )
         }
 
         @Stable

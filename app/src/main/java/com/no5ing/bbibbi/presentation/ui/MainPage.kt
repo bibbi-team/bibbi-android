@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.AnimatedNavHost
+import androidx.navigation.compose.NavHost
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.CameraViewDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
@@ -50,7 +50,7 @@ fun MainPage(
                 end = innerPadding.calculateEndPadding(LayoutDirection.Ltr)
             )
         ) {
-            AnimatedNavHost(
+            NavHost(
                 navController = navController,
                 startDestination = if (isAlreadyLoggedIn)
                     NavigationDestination.mainPageRoute

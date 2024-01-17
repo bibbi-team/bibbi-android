@@ -7,6 +7,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.YearMonth
 import javax.inject.Inject
@@ -25,7 +26,7 @@ class CalendarMonthViewModel @Inject constructor(
         withMutexScope(Dispatchers.IO, !queriedYearMonths.contains(yearMonth)) {
             queriedYearMonths.add(yearMonth)
             val yearMonthInst = YearMonth.parse(yearMonth)
-            val priorMap = uiState.value.toMutableMap()
+            val priorMap = HashMap(uiState.value)
             priorMap.entries.removeIf {
                 it.key.year == yearMonthInst.year &&
                         it.key.monthValue == yearMonthInst.monthValue

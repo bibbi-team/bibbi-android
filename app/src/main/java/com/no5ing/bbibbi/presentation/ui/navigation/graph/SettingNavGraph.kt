@@ -4,7 +4,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Stable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.navigation
+import androidx.navigation.navigation
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideInToLeft
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideOutToRight
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.ChangeNicknameDestination
