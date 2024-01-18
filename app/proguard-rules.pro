@@ -33,8 +33,8 @@
 
 -keep class kotlin.reflect.** { *; }
 -keep class kotlin.Metadata { *; }
--keep class com.no5ing.bbibbi.data.datasource.network.response.** { *; }
-
+-keep class com.no5ing.bbibbi.data.datasource.network.** { *; }
+-keep class com.no5ing.bbibbi.data.model.** { *; }
 # Jackson
 -keep @com.fasterxml.jackson.annotation.JsonIgnoreProperties class * { *; }
 -keep class com.fasterxml.** { *; }
@@ -46,3 +46,7 @@
 
 # General
 -keepattributes SourceFile,LineNumberTable,*Annotation*,EnclosingMethod,Signature,Exceptions,InnerClasses
+
+-keep class com.kakao.sdk.**.model.* { <fields>; }
+-keep class * extends com.google.gson.TypeAdapter
+-keep class com.google.googlesignin.** { *; }
