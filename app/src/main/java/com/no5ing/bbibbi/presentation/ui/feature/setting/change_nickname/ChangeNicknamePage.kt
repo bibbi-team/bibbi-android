@@ -40,6 +40,7 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.setting.change_nickname.ChangeNicknamePageState
 import com.no5ing.bbibbi.presentation.state.setting.change_nickname.rememberChangeNicknamePageState
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarSuccess
@@ -91,7 +92,7 @@ fun ChangeNicknamePage(
             else -> {}
         }
     }
-    Box(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
             .imePadding()

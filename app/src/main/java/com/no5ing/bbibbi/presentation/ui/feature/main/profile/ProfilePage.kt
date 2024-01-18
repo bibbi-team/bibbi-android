@@ -26,6 +26,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.viewmodel.members.ChangeProfileImageViewModel
@@ -46,7 +47,7 @@ fun ProfilePage(
     memberState: State<APIResponse<Member>> = familyMemberViewModel.uiState.collectAsState(),
 ) {
     val isMe = memberId == LocalSessionState.current.memberId
-    Box(modifier = Modifier.fillMaxSize()) {
+    BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {

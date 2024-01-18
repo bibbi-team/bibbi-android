@@ -54,12 +54,10 @@ fun PostViewContent(
     addEmojiBarState: MutableState<Boolean> = remember { mutableStateOf(false) },
     postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val memberId = LocalSessionState.current.memberId
     PostCommentDialog(
         postId = post.postId,
         isEnabled = postCommentDialogState,
-        coroutineScope = coroutineScope
     )
     Column(
         modifier = modifier,

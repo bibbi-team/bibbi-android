@@ -38,6 +38,7 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.post.view.PostViewPageState
 import com.no5ing.bbibbi.presentation.state.post.view.rememberPostViewPageState
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
@@ -66,54 +67,56 @@ fun PostViewPage(
         familyPostViewModel.invoke(Arguments(resourceId = postId))
     }
     val postState by postViewPageState.uiState.collectAsState()
-    Box(modifier = Modifier.fillMaxSize()) {
-        AnimatedVisibility(
-            postState.isReady(),
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
+    BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
+        Box {
+            AnimatedVisibility(
+                postState.isReady(),
+                enter = fadeIn(),
+                exit = fadeOut(),
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    AsyncImage(
+                        model = asyncImagePainter(source = postState.data.post.imageUrl),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .blur(50.dp),
+                        contentScale = ContentScale.Crop,
+                        alpha = 0.1f
+                    )
+                }
+            }
+
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
-                AsyncImage(
-                    model = asyncImagePainter(source = postState.data.post.imageUrl),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .blur(50.dp),
-                    contentScale = ContentScale.Crop,
-                    alpha = 0.1f
-                )
-            }
-        }
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    if (postState.isReady()) {
+                        PostViewTopBar(
+                            onTap = {
+                                onTapProfile(postState.data.writer)
+                            },
+                            onDispose = onDispose,
+                            member = postState.data.writer,
+                            date =
+                            if (postState.isReady()) toLocalizedDate(postState.data.post.createdAt)
+                            else ""
+                        )
+                        Spacer(modifier = Modifier.height(48.dp))
 
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.End
-            ) {
-                if (postState.isReady()) {
-                    PostViewTopBar(
-                        onTap = {
-                            onTapProfile(postState.data.writer)
-                        },
-                        onDispose = onDispose,
-                        member = postState.data.writer,
-                        date =
-                        if (postState.isReady()) toLocalizedDate(postState.data.post.createdAt)
-                        else ""
-                    )
-                    Spacer(modifier = Modifier.height(48.dp))
-
-                    PostViewContent(
-                        post = postState.data.post,
-                        familyPostReactionBarViewModel = familyPostReactionBarViewModel,
-                        removePostReactionViewModel = removePostReactionViewModel,
-                        addPostReactionViewModel = addPostReactionViewModel,
-                        postCommentDialogState = postCommentDialogState,
-                    )
+                        PostViewContent(
+                            post = postState.data.post,
+                            familyPostReactionBarViewModel = familyPostReactionBarViewModel,
+                            removePostReactionViewModel = removePostReactionViewModel,
+                            addPostReactionViewModel = addPostReactionViewModel,
+                            postCommentDialogState = postCommentDialogState,
+                        )
+                    }
                 }
             }
         }

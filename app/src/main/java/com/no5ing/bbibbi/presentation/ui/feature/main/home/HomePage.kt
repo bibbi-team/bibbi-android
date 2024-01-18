@@ -23,6 +23,7 @@ import com.no5ing.bbibbi.presentation.state.main.home.HomePageStoryBarState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageContentState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageStoryBarState
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.util.BackToExitHandler
@@ -70,38 +71,40 @@ fun HomePage(
             retrieveMeViewModel.invoke(Arguments())
         }
     }
-    Box(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
-        ) {
-            HomePageTopBar(
-                onTapLeft = onTapLeft,
-                onTapRight = onTapRight
-            )
-            HomePageContent(
-                familyMembersViewModel = familyMembersViewModel,
-                familyPostsViewModel = familyPostsViewModel,
-                homePageContentState = homePageContentState,
-                retrieveMeViewModel = retrieveMeViewModel,
-                storyBarState = storyBarState,
-                onTapContent = onTapContent,
-                onTapProfile = onTapProfile,
-                onTapInvite = onTapInvite,
+        Box {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
+            ) {
+                HomePageTopBar(
+                    onTapLeft = onTapLeft,
+                    onTapRight = onTapRight
+                )
+                HomePageContent(
+                    familyMembersViewModel = familyMembersViewModel,
+                    familyPostsViewModel = familyPostsViewModel,
+                    homePageContentState = homePageContentState,
+                    retrieveMeViewModel = retrieveMeViewModel,
+                    storyBarState = storyBarState,
+                    onTapContent = onTapContent,
+                    onTapProfile = onTapProfile,
+                    onTapInvite = onTapInvite,
+                )
+            }
+            HomePageUploadButton(
+                onTap = onTapUpload,
+                isLoading = !meUploadedState.value.isReady(),
+                isUploadAbleTime = remember { gapUntilNext() > 0 },
+                isAlreadyUploaded = !meUploadedState.value.isReady() ||
+                        meUploadedState.value.data
             )
         }
-        HomePageUploadButton(
-            onTap = onTapUpload,
-            isLoading = !meUploadedState.value.isReady(),
-            isUploadAbleTime = remember { gapUntilNext() > 0 },
-            isAlreadyUploaded = !meUploadedState.value.isReady() ||
-                    meUploadedState.value.data
-        )
     }
 }
 

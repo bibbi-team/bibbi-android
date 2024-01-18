@@ -45,6 +45,7 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.register.profile_image.RegisterProfileImagePageState
 import com.no5ing.bbibbi.presentation.state.register.profile_image.rememberRegisterProfileImagePageState
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.AlbumCameraSelectDialog
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
@@ -110,7 +111,7 @@ fun RegisterProfileImagePage(
             albumCameraSelectState.value = false
         }
     )
-    Box(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()

@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui.feature.setting.webview
 
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import kotlinx.coroutines.launch
 
@@ -20,7 +22,7 @@ fun WebViewPage(
 ) {
     val backgroundColor = MaterialTheme.bbibbiScheme.backgroundPrimary.toArgb()
     val scope = rememberCoroutineScope()
-    Surface(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
     ) {
@@ -31,7 +33,7 @@ fun WebViewPage(
                     webViewClient = WebViewClient()
                     addJavascriptInterface(
                         object {
-                            @android.webkit.JavascriptInterface
+                            @JavascriptInterface
                             fun goBack() {
                                 scope.launch {
                                     onDispose()

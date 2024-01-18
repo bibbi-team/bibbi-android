@@ -37,6 +37,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.state.register.day_of_birth.RegisterDayOfBirthPageState
 import com.no5ing.bbibbi.presentation.state.register.day_of_birth.rememberRegisterDayOfBirthPageState
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
@@ -49,7 +50,7 @@ fun RegisterDayOfBirthPage(
     val yearFocus = remember { FocusRequester() }
     val monthFocus = remember { FocusRequester() }
     val dayFocus = remember { FocusRequester() }
-    Box(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()

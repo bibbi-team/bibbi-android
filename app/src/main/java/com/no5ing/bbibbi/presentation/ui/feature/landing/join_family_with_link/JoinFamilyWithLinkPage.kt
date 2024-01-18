@@ -42,6 +42,7 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.landing.join_family_with_link.JoinFamilyWithLinkPageState
 import com.no5ing.bbibbi.presentation.state.landing.join_family_with_link.rememberJoinFamilyWithLinkPageState
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
@@ -95,7 +96,7 @@ fun JoinFamilyWithLinkPage(
             }
         }
     }
-    Box(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()

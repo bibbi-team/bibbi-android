@@ -53,6 +53,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.ui.common.button.CameraCaptureButton
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.ClosableTopBar
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import kotlinx.coroutines.launch
@@ -136,9 +137,8 @@ fun CameraView(
             perm.launchPermissionRequest()
         }
     }
-    Surface(
+    BBiBBiSurface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.bbibbiScheme.backgroundPrimary
     ) {
         Column(
             modifier = Modifier

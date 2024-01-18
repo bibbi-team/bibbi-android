@@ -26,6 +26,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.state.landing.onboarding.OnBoardingPageState
 import com.no5ing.bbibbi.presentation.state.landing.onboarding.rememberOnBoardingPageState
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.MeatBall
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.emptyPermissionState
@@ -37,16 +38,13 @@ fun OnBoardingPage(
     onAlreadyHaveFamily: () -> Unit = {},
     onFamilyNotExists: () -> Unit = {},
     onBoardingPageState: OnBoardingPageState = rememberOnBoardingPageState(),
-    //   familyRegistrationViewModel: FamilyRegistrationViewModel = hiltViewModel(),
 ) {
     val sessionState = LocalSessionState.current
-    //  val registrationState = familyRegistrationViewModel.uiState.collectAsState()
     val nextViewRoute =
         if (sessionState.isLoggedIn() && sessionState.hasFamily()) onAlreadyHaveFamily else onFamilyNotExists
     val perm = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS) { isAccepted ->
             if (!isAccepted) {
-                //먼가 메세지 띄우나?
                 Timber.d("[OnBoarding] Noti Perm Not Accepted!!")
             }
             nextViewRoute()
@@ -54,27 +52,7 @@ fun OnBoardingPage(
     else
         remember { emptyPermissionState }
 
-//    val snackBarHost = LocalSnackbarHostState.current
-//    val resources = localResources()
-//    LaunchedEffect(registrationState.value) {
-//        when (registrationState.value.status) {
-//            is APIResponse.Status.SUCCESS -> {
-//                onAlreadyHaveFamily()
-//            }
-//
-//            is APIResponse.Status.ERROR -> {
-//                val errMessage = resources.getErrorMessage(registrationState.value.errorCode)
-//                snackBarHost.showSnackBarWithDismiss(
-//                    message = errMessage,
-//                    actionLabel = snackBarWarning,
-//                )
-//                familyRegistrationViewModel.resetState()
-//            }
-//
-//            else -> {}
-//        }
-//    }
-    Box(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()

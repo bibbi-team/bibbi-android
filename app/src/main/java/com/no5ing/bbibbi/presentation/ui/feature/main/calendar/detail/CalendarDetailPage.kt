@@ -37,6 +37,7 @@ import coil.compose.AsyncImage
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.feature.main.calendar.MainCalendarDay
@@ -189,78 +190,80 @@ fun CalendarDetailPage(
     val monthStr = stringResource(id = R.string.month)
     val currentYearMonth = currentCalendarState.weekState.currentWeek.yearMonth
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        AnimatedVisibility(
-            visible = currentPostState.value.second != null,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            Box {
-                AsyncImage(
-                    model = asyncImagePainter(source = currentPostState.value.second?.post?.imageUrl),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .blur(50.dp)
-                        .fillMaxSize(),
-                    contentScale = ContentScale.Crop,
-                    alpha = 0.1f,
-                )
-            }
-        }
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier.fillMaxSize()
+    BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
+        Box {
+            AnimatedVisibility(
+                visible = currentPostState.value.second != null,
+                enter = fadeIn(),
+                exit = fadeOut()
             ) {
-                DisposableTopBar(
-                    onDispose = onDispose,
-                    title = "${currentYearMonth.year}${yearStr} ${currentYearMonth.month.value}${monthStr}",
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                SelectableWeekCalendar(
-                    calendarState = currentCalendarState,
-                    dayContent = { dayState ->
-                        MainCalendarDay(
-                            state = dayState,
-                            monthState = uiState.value,
-                            onClick = {
-                                dayState.selectionState.onDateSelected(it)
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(1.0f)
-                                .padding(horizontal = 2.dp),
-                        )
-                    },
-                    weekHeader = {},
-                    daysOfWeekHeader = {}
-                )
-                HorizontalPager(
-                    state = pagerState,
-                    userScrollEnabled = scrollEnabled.value,
-                ) { index ->
-                    val item = when (index) {
-                        0 -> currentPostState.value.first
-                        1 -> currentPostState.value.second
-                        2 -> currentPostState.value.third
-                        else -> null
-                    }
-                    Column(
+                Box {
+                    AsyncImage(
+                        model = asyncImagePainter(source = currentPostState.value.second?.post?.imageUrl),
+                        contentDescription = null,
                         modifier = Modifier
-                    ) {
-                        Spacer(modifier = Modifier.height(12.dp))
-                        if (item != null) {
-                            PostViewDetailTopBar(
-                                member = item.writer,
-                                onTap = {
-                                    onTapProfile(item.writer)
-                                }
+                            .blur(50.dp)
+                            .fillMaxSize(),
+                        contentScale = ContentScale.Crop,
+                        alpha = 0.1f,
+                    )
+                }
+            }
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    DisposableTopBar(
+                        onDispose = onDispose,
+                        title = "${currentYearMonth.year}${yearStr} ${currentYearMonth.month.value}${monthStr}",
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    SelectableWeekCalendar(
+                        calendarState = currentCalendarState,
+                        dayContent = { dayState ->
+                            MainCalendarDay(
+                                state = dayState,
+                                monthState = uiState.value,
+                                onClick = {
+                                    dayState.selectionState.onDateSelected(it)
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(1.0f)
+                                    .padding(horizontal = 2.dp),
                             )
-                            PostViewContent(
-                                post = item.post,
-                                familyPostReactionBarViewModel = familyPostReactionBarViewModel,
-                                removePostReactionViewModel = removePostReactionViewModel,
-                                addPostReactionViewModel = addPostReactionViewModel,
-                            )
+                        },
+                        weekHeader = {},
+                        daysOfWeekHeader = {}
+                    )
+                    HorizontalPager(
+                        state = pagerState,
+                        userScrollEnabled = scrollEnabled.value,
+                    ) { index ->
+                        val item = when (index) {
+                            0 -> currentPostState.value.first
+                            1 -> currentPostState.value.second
+                            2 -> currentPostState.value.third
+                            else -> null
+                        }
+                        Column(
+                            modifier = Modifier
+                        ) {
+                            Spacer(modifier = Modifier.height(12.dp))
+                            if (item != null) {
+                                PostViewDetailTopBar(
+                                    member = item.writer,
+                                    onTap = {
+                                        onTapProfile(item.writer)
+                                    }
+                                )
+                                PostViewContent(
+                                    post = item.post,
+                                    familyPostReactionBarViewModel = familyPostReactionBarViewModel,
+                                    removePostReactionViewModel = removePostReactionViewModel,
+                                    addPostReactionViewModel = addPostReactionViewModel,
+                                )
+                            }
                         }
                     }
                 }

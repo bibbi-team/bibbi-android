@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
@@ -26,45 +27,47 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 fun AlreadyFamilyExistsView(
     onTapDispose: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .systemBarsPadding(),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(top = 48.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+                .fillMaxSize()
+                .systemBarsPadding(),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                stringResource(id = R.string.already_family_exists_title),
-                color = MaterialTheme.bbibbiScheme.iconSelected,
-                style = MaterialTheme.bbibbiTypo.headOne,
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 48.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(
+                    stringResource(id = R.string.already_family_exists_title),
+                    color = MaterialTheme.bbibbiScheme.iconSelected,
+                    style = MaterialTheme.bbibbiTypo.headOne,
+                )
+                Text(
+                    stringResource(id = R.string.already_family_exists_subtitle),
+                    color = MaterialTheme.bbibbiScheme.textSecondary,
+                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+                )
+            }
+            Image(
+                painter = painterResource(R.drawable.ppippi),
+                contentDescription = null, // 필수 param
+                modifier = Modifier
+                    .size(171.dp),
             )
-            Text(
-                stringResource(id = R.string.already_family_exists_subtitle),
-                color = MaterialTheme.bbibbiScheme.textSecondary,
-                style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+            CTAButton(
+                text = stringResource(id = R.string.already_family_exists_confirm),
+                onClick = onTapDispose,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp),
+                contentPadding = PaddingValues(vertical = 18.dp),
             )
-        }
-        Image(
-            painter = painterResource(R.drawable.ppippi),
-            contentDescription = null, // 필수 param
-            modifier = Modifier
-                .size(171.dp),
-        )
-        CTAButton(
-            text = stringResource(id = R.string.already_family_exists_confirm),
-            onClick = onTapDispose,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp),
-            contentPadding = PaddingValues(vertical = 18.dp),
-        )
 
+        }
     }
 }

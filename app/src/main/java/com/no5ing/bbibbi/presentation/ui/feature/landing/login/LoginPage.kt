@@ -42,6 +42,7 @@ import com.no5ing.bbibbi.presentation.state.landing.login.LoginPageState
 import com.no5ing.bbibbi.presentation.state.landing.login.LoginStatus
 import com.no5ing.bbibbi.presentation.state.landing.login.LoginSucceedResult
 import com.no5ing.bbibbi.presentation.state.landing.login.rememberLoginPageState
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.util.BackToExitHandler
 import com.no5ing.bbibbi.presentation.viewmodel.auth.LoginWithCredentialsViewModel
@@ -122,7 +123,7 @@ fun LoginPage(
             else -> {}
         }
     }
-    Box(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 10.dp)

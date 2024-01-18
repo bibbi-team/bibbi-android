@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +42,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.OperationStatus
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
@@ -141,7 +144,10 @@ fun SettingHomePage(
     }
 
     val context = LocalContext.current
-    Box(modifier = Modifier.fillMaxSize()) {
+    BBiBBiSurface(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {

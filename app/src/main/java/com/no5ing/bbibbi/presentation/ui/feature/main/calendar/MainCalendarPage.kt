@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
@@ -76,7 +77,7 @@ fun MainCalendarPage(
         )
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {

@@ -38,6 +38,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.state.register.nickname.RegisterNickNamePageState
 import com.no5ing.bbibbi.presentation.state.register.nickname.rememberRegisterNickNamePageState
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 
@@ -51,7 +52,7 @@ fun RegisterNickNamePage(
     val interactionSource = remember { MutableInteractionSource() }
     val maxWord = 10
     val wordExceedMessage = stringResource(id = R.string.register_nickname_word_below_n, maxWord)
-    Box(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()

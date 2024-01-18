@@ -57,6 +57,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.button.IconedCTAButton
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.common.component.TextBubbleBox
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
@@ -107,236 +108,238 @@ fun PostUploadPage(
             )
         }
     }
-    Surface(
+    BBiBBiSurface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.bbibbiScheme.backgroundPrimary
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .padding(vertical = 10.dp)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                DisposableTopBar(
-                    onDispose = onDispose,
-                    title = stringResource(id = R.string.upload_post),
-                )
-                Spacer(modifier = Modifier.height(48.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth()
+        Box {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
+                    DisposableTopBar(
+                        onDispose = onDispose,
+                        title = stringResource(id = R.string.upload_post),
+                    )
+                    Spacer(modifier = Modifier.height(48.dp))
                     Box(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Column(
+                        Box(
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Image(
-                                modifier = Modifier
-                                    .aspectRatio(1.0f)
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(48.dp))
-                                    .background(MaterialTheme.bbibbiScheme.white),
-                                painter = rememberAsyncImagePainter(model = imageUrl.value),
-                                contentDescription = null,
-                            )
-                        }
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 16.dp)
-                            .clickable {
-                                textOverlayShown.value = true
-                            }
-                    ) {
-                        if (imageText.value.isEmpty()) {
-                            Image(
-                                modifier = Modifier
-                                    .size(height = 41.dp, width = 36.dp),
-                                painter = painterResource(id = R.drawable.textbox_icon),
-                                contentDescription = null,
-                            )
-                        } else {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(2.dp)
+                            Column(
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                imageText.value.forEach { character ->
-                                    Box(
-                                        modifier = Modifier
-                                            .clip(RoundedCornerShape(10.dp))
-                                            .background(Color.Black.copy(alpha = 0.3f))
-                                            .size(width = 28.dp, height = 41.dp),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Text(
-                                            text = character.toString(),
-                                            color = MaterialTheme.bbibbiScheme.white,
-                                            style = MaterialTheme.bbibbiTypo.headTwoBold,
+                                Image(
+                                    modifier = Modifier
+                                        .aspectRatio(1.0f)
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(48.dp))
+                                        .background(MaterialTheme.bbibbiScheme.white),
+                                    painter = rememberAsyncImagePainter(model = imageUrl.value),
+                                    contentDescription = null,
+                                )
+                            }
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 16.dp)
+                                .clickable {
+                                    textOverlayShown.value = true
+                                }
+                        ) {
+                            if (imageText.value.isEmpty()) {
+                                Image(
+                                    modifier = Modifier
+                                        .size(height = 41.dp, width = 36.dp),
+                                    painter = painterResource(id = R.drawable.textbox_icon),
+                                    contentDescription = null,
+                                )
+                            } else {
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(2.dp)
+                                ) {
+                                    imageText.value.forEach { character ->
+                                        Box(
+                                            modifier = Modifier
+                                                .clip(RoundedCornerShape(10.dp))
+                                                .background(Color.Black.copy(alpha = 0.3f))
+                                                .size(width = 28.dp, height = 41.dp),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = character.toString(),
+                                                color = MaterialTheme.bbibbiScheme.white,
+                                                style = MaterialTheme.bbibbiTypo.headTwoBold,
+                                            )
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+                    Spacer(modifier = Modifier.height(48.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(
+                            16.dp,
+                            Alignment.CenterHorizontally
+                        ),
+                    ) {
+                        Box(modifier = Modifier.size(48.dp))
+                        IconedCTAButton(
+                            text = stringResource(id = R.string.upload_image),
+                            painter = painterResource(id = R.drawable.camera_icon),
+                            contentPadding = PaddingValues(horizontal = 45.dp, vertical = 15.dp),
+                            onClick = {
+                                createPostViewModel.invoke(
+                                    Arguments(
+                                        arguments = mapOf(
+                                            "imageUri" to imageUrl.value.toString(),
+                                            "content" to imageText.value
+                                        )
+                                    )
+                                )
+                            }
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.save_button),
+                            contentDescription = null, // 필수 param
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clickable {
+                                    val bitmap =
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                                            ImageDecoder.decodeBitmap(
+                                                ImageDecoder.createSource(
+                                                    context.contentResolver,
+                                                    imageUrl.value!!
+                                                )
+                                            )
+                                        else
+                                            MediaStore.Images.Media.getBitmap(
+                                                context.contentResolver,
+                                                imageUrl.value
+                                            )
+                                    MediaStore.Images.Media.insertImage(
+                                        context.contentResolver,
+                                        bitmap,
+                                        imageText.value,
+                                        "bbibbi"
+                                    )
+                                    coroutineScope.launch {
+                                        snackBarHost.showSnackBarWithDismiss(
+                                            message = snackSavedMessage,
+                                            actionLabel = snackBarInfo
                                         )
                                     }
                                 }
-
-                            }
-                        }
+                        )
                     }
 
-                }
-                Spacer(modifier = Modifier.height(48.dp))
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(
-                        16.dp,
-                        Alignment.CenterHorizontally
-                    ),
-                ) {
-                    Box(modifier = Modifier.size(48.dp))
-                    IconedCTAButton(
-                        text = stringResource(id = R.string.upload_image),
-                        painter = painterResource(id = R.drawable.camera_icon),
-                        contentPadding = PaddingValues(horizontal = 45.dp, vertical = 15.dp),
-                        onClick = {
-                            createPostViewModel.invoke(
-                                Arguments(
-                                    arguments = mapOf(
-                                        "imageUri" to imageUrl.value.toString(),
-                                        "content" to imageText.value
-                                    )
-                                )
-                            )
-                        }
-                    )
-                    Image(
-                        painter = painterResource(R.drawable.save_button),
-                        contentDescription = null, // 필수 param
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clickable {
-                                val bitmap =
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-                                        ImageDecoder.decodeBitmap(
-                                            ImageDecoder.createSource(
-                                                context.contentResolver,
-                                                imageUrl.value!!
-                                            )
-                                        )
-                                    else
-                                        MediaStore.Images.Media.getBitmap(
-                                            context.contentResolver,
-                                            imageUrl.value
-                                        )
-                                MediaStore.Images.Media.insertImage(
-                                    context.contentResolver,
-                                    bitmap,
-                                    imageText.value,
-                                    "bbibbi"
-                                )
-                                coroutineScope.launch {
-                                    snackBarHost.showSnackBarWithDismiss(
-                                        message = snackSavedMessage,
-                                        actionLabel = snackBarInfo
-                                    )
-                                }
-                            }
-                    )
-                }
 
-
-            }
-        }
-        AnimatedVisibility(textOverlayShown.value) {
-            val focusState = remember {
-                mutableStateOf(false)
-            }
-            LaunchedEffect(Unit) {
-                textBoxFocus.requestFocus()
-                focusState.value = true
-            }
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.3f))
-                .imePadding()
-                .clickable {
-                    focusManager.clearFocus()
                 }
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.SpaceBetween
+            }
+            AnimatedVisibility(textOverlayShown.value) {
+                val focusState = remember {
+                    mutableStateOf(false)
+                }
+                LaunchedEffect(Unit) {
+                    textBoxFocus.requestFocus()
+                    focusState.value = true
+                }
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.3f))
+                    .imePadding()
+                    .clickable {
+                        focusManager.clearFocus()
+                    }
                 ) {
-                    Box {}
-                    Box(
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .background(color = MaterialTheme.bbibbiScheme.backgroundPrimary)
-                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth()
+                        Box {}
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(color = MaterialTheme.bbibbiScheme.backgroundPrimary)
+                                .padding(horizontal = 16.dp, vertical = 12.dp)
                         ) {
-                            BasicTextField(
-                                value = imageText.value,
-                                modifier = Modifier
-                                    .focusRequester(textBoxFocus)
-                                    .onFocusChanged {
-                                        if (!it.hasFocus && focusState.value) {
-                                            textOverlayShown.value = false
-                                        }
-                                    },
-                                onValueChange = { nextValue ->
-                                    if (nextValue.length <= 8) {
-                                        if (nextValue.contains(" ")) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                BasicTextField(
+                                    value = imageText.value,
+                                    modifier = Modifier
+                                        .focusRequester(textBoxFocus)
+                                        .onFocusChanged {
+                                            if (!it.hasFocus && focusState.value) {
+                                                textOverlayShown.value = false
+                                            }
+                                        },
+                                    onValueChange = { nextValue ->
+                                        if (nextValue.length <= 8) {
+                                            if (nextValue.contains(" ")) {
+                                                coroutineScope.launch {
+                                                    snackBarHost.showSnackBarWithDismiss(
+                                                        message = snackNoSpaceMessage,
+                                                        actionLabel = snackBarWarning
+                                                    )
+                                                }
+                                                return@BasicTextField
+                                            }
+                                            imageText.value = nextValue
+                                        } else {
                                             coroutineScope.launch {
                                                 snackBarHost.showSnackBarWithDismiss(
-                                                    message = snackNoSpaceMessage,
+                                                    message = snackWarningMessage,
                                                     actionLabel = snackBarWarning
                                                 )
                                             }
-                                            return@BasicTextField
                                         }
-                                        imageText.value = nextValue
-                                    } else {
-                                        coroutineScope.launch {
-                                            snackBarHost.showSnackBarWithDismiss(
-                                                message = snackWarningMessage,
-                                                actionLabel = snackBarWarning
-                                            )
-                                        }
-                                    }
-                                },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                                textStyle = TextStyle(
-                                    fontSize = 16.sp,
-                                    color = MaterialTheme.bbibbiScheme.white
-                                ),
-                                cursorBrush = Brush.verticalGradient(
-                                    0.00f to MaterialTheme.bbibbiScheme.button,
-                                    1.00f to MaterialTheme.bbibbiScheme.button,
-                                ),
-                                maxLines = 1,
-                            )
-                            Icon(
-                                painter = painterResource(id = R.drawable.clear_icon),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .clickable {
-                                        imageText.value = ""
                                     },
-                                tint = MaterialTheme.bbibbiScheme.icon
-                            )
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                    textStyle = TextStyle(
+                                        fontSize = 16.sp,
+                                        color = MaterialTheme.bbibbiScheme.white
+                                    ),
+                                    cursorBrush = Brush.verticalGradient(
+                                        0.00f to MaterialTheme.bbibbiScheme.button,
+                                        1.00f to MaterialTheme.bbibbiScheme.button,
+                                    ),
+                                    maxLines = 1,
+                                )
+                                Icon(
+                                    painter = painterResource(id = R.drawable.clear_icon),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .clickable {
+                                            imageText.value = ""
+                                        },
+                                    tint = MaterialTheme.bbibbiScheme.icon
+                                )
+                            }
+
                         }
 
                     }
-
+                    TextBubbleBox(text = imageText.value)
                 }
-                TextBubbleBox(text = imageText.value)
             }
-        }
 
+        }
     }
+
 }

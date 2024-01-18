@@ -35,6 +35,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
@@ -71,10 +72,9 @@ fun FamilyPage(
             familyMembersViewModel.invoke(Arguments())
         }
     }
-    Box(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
     ) {
         Column {
             DisposableTopBar(

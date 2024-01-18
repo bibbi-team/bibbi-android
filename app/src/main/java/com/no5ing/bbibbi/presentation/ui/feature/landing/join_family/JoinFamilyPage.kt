@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
@@ -71,7 +72,7 @@ fun JoinFamilyPage(
         }
     }
     val nickName = if (meState.value.isReady()) meState.value.data.name else ""
-    Box(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()

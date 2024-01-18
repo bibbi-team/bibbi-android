@@ -31,6 +31,7 @@ import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
 import com.no5ing.bbibbi.presentation.ui.common.button.ToggleButton
+import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
@@ -96,7 +97,7 @@ fun QuitPage(
             else -> {}
         }
     }
-    Box(
+    BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()

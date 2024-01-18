@@ -92,7 +92,7 @@ import kotlinx.coroutines.CoroutineScope
 import timber.log.Timber
 
 @OptIn(
-    ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class,
     ExperimentalFoundationApi::class
 )
 @Composable
@@ -100,51 +100,43 @@ fun PostCommentDialog(
     postId: String,
     isEnabled: MutableState<Boolean> = remember { mutableStateOf(false) },
     textBoxFocus: FocusRequester = remember { FocusRequester() },
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
     commentViewModel: PostCommentViewModel = hiltViewModel(),
     createPostCommentViewModel: CreatePostCommentViewModel = hiltViewModel(),
     deletePostCommentViewModel: DeletePostCommentViewModel = hiltViewModel(),
 ) {
-    //  val coroutineScope = rememberCoroutineScope()
     if (isEnabled.value) {
         val snackBarHost = LocalSnackbarHostState.current
         val focusManager = LocalFocusManager.current
         val navController = LocalNavigateControllerState.current
-        val keyboardController = LocalSoftwareKeyboardController.current
         val memberId = LocalSessionState.current.memberId
-        var keyboardExpanded by remember { mutableStateOf(false) }
         val keyboardText = remember {
             mutableStateOf("")
         }
         val listState = rememberLazyListState()
-
         val cardRevealState = remember { mutableStateMapOf<String, Unit>() }
+        var pauseNextScroll by remember {
+            mutableStateOf(false)
+        }
 
-
-//        LaunchedEffect(keyboardExpanded) {
-//            CoroutineScope(AndroidUiDispatcher.Main).launch {
-//                Timber.d("Keyboard Expanded")
-//                if(keyboardExpanded) {
-//                    Timber.d("expandeing")
-//                    sheetState.expand()
-//                    Timber.d("expanded!")
-//                }
-//            }
-//
-//        }
         val uiState = commentViewModel.uiState.collectAsLazyPagingItems()
         LaunchedEffect(Unit) {
-            commentViewModel.invoke(
-                Arguments(
-                    arguments = mapOf(
-                        "postId" to postId
+            if (commentViewModel.isInitialize()) {
+                commentViewModel.invoke(
+                    Arguments(
+                        arguments = mapOf(
+                            "postId" to postId
+                        )
                     )
                 )
-            )
+            }
         }
 
         LaunchedEffect(uiState.loadState.refresh) {
-            if (uiState.loadState.refresh is LoadState.NotLoading) {
+            if (pauseNextScroll) {
+                pauseNextScroll = false
+                return@LaunchedEffect
+            }
+            if (uiState.loadState.refresh is LoadState.NotLoading && uiState.itemCount > 0) {
                 listState.animateScrollToItem(uiState.itemCount - 1)
             }
         }
@@ -178,6 +170,7 @@ fun PostCommentDialog(
                 is APIResponse.Status.SUCCESS -> {
                     cardRevealState.clear()
                     deletePostCommentViewModel.resetState()
+                    pauseNextScroll = true
                     uiState.refresh()
                     snackBarHost.showSnackBarWithDismiss(
                         message = resources.getString(R.string.comment_dialog_comment_deleted),
@@ -308,10 +301,8 @@ fun PostCommentDialog(
                         }
 
                     }
-                    KeyboardBar(focusRequester = textBoxFocus,
-                        onFocusChanged = {
-
-                        },
+                    KeyboardBar(
+                        focusRequester = textBoxFocus,
                         keyboardText = keyboardText,
                         onSend = {
                             if (keyboardText.value.isNotEmpty()) {
@@ -325,11 +316,9 @@ fun PostCommentDialog(
                                 )
                                 keyboardText.value = ""
                                 focusManager.clearFocus()
-                                keyboardController?.hide()
                             }
                         }
                     )
-
 
                 }
 
@@ -345,7 +334,6 @@ fun KeyboardBar(
     keyboardText: MutableState<String>,
     modifier: Modifier = Modifier,
     focusRequester: FocusRequester,
-    onFocusChanged: (FocusState) -> Unit,
     onSend: () -> Unit,
 ) {
     var keyboardTextStr by keyboardText
@@ -369,13 +357,7 @@ fun KeyboardBar(
                 value = keyboardTextStr,
                 modifier = Modifier
                     .weight(1.0f)
-                    .onFocusEvent {
-                        Timber.d("FE : ${it}")
-                    }
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        onFocusChanged(it)
-                    },
+                    .focusRequester(focusRequester),
                 onValueChange = { nextValue ->
                     keyboardText.value = nextValue
                 },
