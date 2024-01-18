@@ -1,10 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui.feature.dialog
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,6 +21,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -64,6 +61,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
@@ -84,6 +82,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.CreatePostCommentViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.DeletePostCommentViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostCommentViewModel
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
+import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.gapBetweenNow
 import com.no5ing.bbibbi.util.getErrorMessage
@@ -91,13 +90,9 @@ import com.no5ing.bbibbi.util.localResources
 import com.no5ing.bbibbi.util.pxToDp
 import kotlinx.coroutines.CoroutineScope
 import timber.log.Timber
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.ui.text.input.ImeAction
-import androidx.paging.LoadState
-import com.no5ing.bbibbi.util.LocalSessionState
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class,
+@OptIn(
+    ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class,
     ExperimentalFoundationApi::class
 )
 @Composable

@@ -30,13 +30,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -44,7 +41,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
@@ -61,8 +57,6 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.MainPostFeedViewModel
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.gapBetweenNow
 import com.no5ing.bbibbi.util.todayAsString
-import kotlinx.coroutines.delay
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -82,7 +76,7 @@ fun HomePageContent(
 ) {
     val postItems = homePageContentState.uiState.collectAsLazyPagingItems()
     LaunchedEffect(Unit) {
-        if(familyPostsViewModel.isInitialize()) {
+        if (familyPostsViewModel.isInitialize()) {
             familyPostsViewModel.invoke(
                 Arguments(
                     arguments = mapOf(
@@ -91,7 +85,7 @@ fun HomePageContent(
                 )
             )
         } else {
-           postItems.refresh()
+            postItems.refresh()
         }
     }
     val pullRefreshStyle = rememberPullRefreshState(
@@ -124,7 +118,7 @@ fun HomePageContent(
             item(span = { GridItemSpan(2) }) {
                 UploadCountDownBar()
             }
-           // Timber.d("Current item cnt : ${postItems.itemCount}")
+            // Timber.d("Current item cnt : ${postItems.itemCount}")
             if (postItems.itemCount > 0)
                 items(
                     count = postItems.itemCount,

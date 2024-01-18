@@ -114,7 +114,7 @@ fun ReactionListDialog(
                     .clickable(indication = null, interactionSource = remember {
                         MutableInteractionSource()
                     }) {
-                         showAnimate = false
+                        showAnimate = false
                     }
             ) {
                 LaunchedEffect(Unit) {

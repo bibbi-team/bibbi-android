@@ -66,9 +66,11 @@ fun DraggableCardComplex(
             .fillMaxWidth()
             .onGloballyPositioned {
                 onGloballyPositioned(it)
-            }.let {
-                if(isRevealable)
-                    it.offset { IntOffset((offsetX + offsetTransition).roundToInt() * -1, 0) }
+            }
+            .let {
+                if (isRevealable)
+                    it
+                        .offset { IntOffset((offsetX + offsetTransition).roundToInt() * -1, 0) }
                         .pointerInput(Unit) {
                             detectHorizontalDragGestures { change, dragAmount ->
                                 val original = Offset(offsetX, 0f)
@@ -87,8 +89,7 @@ fun DraggableCardComplex(
                             }
                         }
                 else it
-            }
-            ,
+            },
     ) {
         content()
     }

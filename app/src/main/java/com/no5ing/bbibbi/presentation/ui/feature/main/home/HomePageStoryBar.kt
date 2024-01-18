@@ -40,7 +40,6 @@ import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.DailyFamilyTopViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
-import timber.log.Timber
 
 @Composable
 fun HomePageStoryBar(
@@ -147,7 +146,7 @@ fun StoryBarIcon(
                 member = member,
                 size = 64.dp,
                 onTap = onTap,
-                opacity = if(isUploaded) 1.0f else 0.4f
+                opacity = if (isUploaded) 1.0f else 0.4f
             )
             Box {
                 if (member.isBirthdayToday) {
@@ -159,7 +158,7 @@ fun StoryBarIcon(
                             .align(Alignment.TopStart),
                         tint = MaterialTheme.bbibbiScheme.graphicPink,
                     )
-                } else if(isFirst) {
+                } else if (isFirst) {
                     Icon(
                         painter = painterResource(id = R.drawable.first_badge),
                         contentDescription = null,

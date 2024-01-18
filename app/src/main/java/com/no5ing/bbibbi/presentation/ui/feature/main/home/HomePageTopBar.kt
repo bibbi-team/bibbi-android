@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -53,7 +52,7 @@ fun HomePageTopBar(
             contentDescription = null,
             modifier = Modifier
                 .height(18.dp)
-                .clickable {  },
+                .clickable { },
             tint = Color(0xffE8E8E8)
         )
         Box(

@@ -7,7 +7,6 @@ import com.no5ing.bbibbi.util.todayAsString
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
