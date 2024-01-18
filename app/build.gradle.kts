@@ -22,7 +22,7 @@ val secretProperties = Properties().apply {
 val majorVersion = 1
 val minorVersion = 1
 val patchVersion = 0
-val buildVersion = 0
+val buildVersion = 1
 
 android {
     namespace = "com.no5ing.bbibbi"
