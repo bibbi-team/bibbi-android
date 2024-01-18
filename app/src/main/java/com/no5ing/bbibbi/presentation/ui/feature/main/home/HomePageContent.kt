@@ -1,5 +1,7 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.home
 
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +30,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,10 +58,13 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.MainPostFeedViewModel
+import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.gapBetweenNow
 import com.no5ing.bbibbi.util.todayAsString
+import kotlinx.coroutines.delay
+import timber.log.Timber
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomePageContent(
     familyPostsViewModel: MainPostFeedViewModel = hiltViewModel(),
@@ -73,20 +80,24 @@ fun HomePageContent(
     onTapProfile: (Member) -> Unit = {},
     onTapInvite: () -> Unit = {},
 ) {
-
     val postItems = homePageContentState.uiState.collectAsLazyPagingItems()
     LaunchedEffect(Unit) {
-        familyPostsViewModel.invoke(
-            Arguments(
-                arguments = mapOf(
-                    "date" to todayAsString(),
+        if(familyPostsViewModel.isInitialize()) {
+            familyPostsViewModel.invoke(
+                Arguments(
+                    arguments = mapOf(
+                        "date" to todayAsString(),
+                    )
                 )
             )
-        )
+        } else {
+           postItems.refresh()
+        }
     }
     val pullRefreshStyle = rememberPullRefreshState(
         refreshing = postItems.loadState.refresh is LoadState.Loading,
         onRefresh = {
+            familyMembersViewModel.invoke(Arguments())
             retrieveMeViewModel.invoke(Arguments())
             postItems.refresh()
         }
@@ -113,10 +124,19 @@ fun HomePageContent(
             item(span = { GridItemSpan(2) }) {
                 UploadCountDownBar()
             }
+           // Timber.d("Current item cnt : ${postItems.itemCount}")
             if (postItems.itemCount > 0)
-                items(postItems.itemCount) {
+                items(
+                    count = postItems.itemCount,
+                    key = {
+                        postItems[it]!!.post.postId
+                    }
+                ) {
                     val item = postItems[it] ?: throw RuntimeException()
                     HomePageContentItem(
+                        modifier = Modifier.animateItemPlacement(
+                            animationSpec = tween(300),
+                        ),
                         imageUrl = item.post.imageUrl,
                         writerName = item.writer.name,
                         time = gapBetweenNow(time = item.post.createdAt),
@@ -157,23 +177,20 @@ fun HomePageContent(
 
 @Composable
 fun HomePageContentItem(
+    modifier: Modifier,
     imageUrl: String,
     writerName: String,
     time: String,
     onTap: () -> Unit = {},
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onTap() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl)
-                .crossfade(true)
-                .error(R.drawable.ppippi)
-                .build(),
+            model = asyncImagePainter(source = imageUrl),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier

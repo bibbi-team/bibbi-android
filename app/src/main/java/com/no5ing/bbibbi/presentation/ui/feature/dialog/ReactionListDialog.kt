@@ -5,7 +5,9 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -108,7 +110,12 @@ fun ReactionListDialog(
             Box(
                 modifier = Modifier
                     .requiredSize(width, height)
-                    .background(Color.Black.copy(alpha = 0.5f))
+                    .background(Color.Black.copy(alpha = 0.3f))
+                    .clickable(indication = null, interactionSource = remember {
+                        MutableInteractionSource()
+                    }) {
+                         showAnimate = false
+                    }
             ) {
                 LaunchedEffect(Unit) {
                     showAnimate = true
@@ -140,6 +147,9 @@ fun ReactionListDialog(
                             .customDialogModifier(CustomDialogPosition.BOTTOM)
                             .fillMaxWidth()
                             .fillMaxHeight(0.6f)
+                            .clickable(enabled = false) {
+                                //COMSUME
+                            }
                             .swipeable(
                                 state = swipeableState,
                                 anchors = anchors,

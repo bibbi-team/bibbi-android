@@ -27,7 +27,6 @@ import com.no5ing.bbibbi.presentation.ui.navigation.graph.postGraph
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.registerGraph
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.settingGraph
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainPage(
     snackBarHostState: SnackbarHostState,

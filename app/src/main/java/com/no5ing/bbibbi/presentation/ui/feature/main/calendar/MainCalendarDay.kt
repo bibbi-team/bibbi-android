@@ -26,6 +26,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.post.CalendarElement
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.util.asyncImagePainter
 import io.github.boguszpawlowski.composecalendar.day.DayState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionState
@@ -89,13 +90,20 @@ fun <T : SelectionState> MainCalendarDay(
                 Box(
                     modifier = boxModifier,
                 ) {
-                    AsyncImage(
-                        model = data?.representativeThumbnailUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize(),
-                        alpha = if (isSelectableState && !isSelected) 0.3f else 0.5f
-                    )
+                    if (data?.representativeThumbnailUrl != null) {
+                        AsyncImage(
+                            model = asyncImagePainter(source = data.representativeThumbnailUrl),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize(),
+                            alpha = if (isSelectableState && !isSelected) 0.3f else 0.5f
+                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        )
+                    }
                 }
                 Box(
                     modifier = Modifier

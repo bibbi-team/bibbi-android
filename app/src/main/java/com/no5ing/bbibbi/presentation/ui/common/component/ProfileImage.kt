@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.util.asyncImagePainter
 
 @Composable
 fun CircleProfileImage(
@@ -33,7 +34,7 @@ fun CircleProfileImage(
     Box {
         if (member.imageUrl != null) {
             AsyncImage(
-                model = member.imageUrl,
+                model = asyncImagePainter(source = member.imageUrl),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = modifier

@@ -52,6 +52,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.CalenderDetailContentUiStat
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
+import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.weekDates
 import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
 import io.github.boguszpawlowski.composecalendar.WeekCalendarState
@@ -196,7 +197,7 @@ fun CalendarDetailPage(
         ) {
             Box {
                 AsyncImage(
-                    model = currentPostState.value.second?.post?.imageUrl,
+                    model = asyncImagePainter(source = currentPostState.value.second?.post?.imageUrl),
                     contentDescription = null,
                     modifier = Modifier
                         .blur(50.dp)

@@ -1,7 +1,9 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,31 +30,44 @@ fun HomePageTopBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 18.dp, vertical = 3.dp)
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.add_people_icon),
-            contentDescription = null,
+        Box(
             modifier = Modifier
-                .size(26.dp)
-                .clickable { onTapLeft() },
-            tint = MaterialTheme.bbibbiScheme.icon
-        )
+                .clickable {
+                    onTapLeft()
+                }
+                .padding(horizontal = 18.dp, vertical = 3.dp)
+
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.add_people_icon),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(26.dp),
+                tint = MaterialTheme.bbibbiScheme.icon
+            )
+        }
+
         Icon(
             painter = painterResource(id = R.drawable.bibbi_ci),
             contentDescription = null,
             modifier = Modifier
                 .height(18.dp)
-                .clickable { onTapLeft() },
+                .clickable {  },
             tint = Color(0xffE8E8E8)
         )
-        Icon(
-            painter = painterResource(id = R.drawable.calendar_icon),
-            contentDescription = null,
+        Box(
             modifier = Modifier
-                .size(24.dp)
-                .clickable { onTapRight() },
-            tint = MaterialTheme.bbibbiScheme.icon
-        )
+                .clickable { onTapRight() }
+                .padding(horizontal = 18.dp, vertical = 3.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.calendar_icon),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(24.dp),
+                tint = MaterialTheme.bbibbiScheme.icon
+            )
+        }
     }
 }

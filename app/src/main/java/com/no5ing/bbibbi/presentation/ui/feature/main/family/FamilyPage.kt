@@ -136,7 +136,10 @@ fun FamilyPage(
                             )
                         }
                     }
-                    items(members.itemCount) {
+                    items(
+                        count = members.itemCount,
+                        key = { members[it]!!.memberId }
+                    ) {
                         val item = members[it] ?: throw RuntimeException()
                         if (item.memberId != meId) {
                             MemberItem(

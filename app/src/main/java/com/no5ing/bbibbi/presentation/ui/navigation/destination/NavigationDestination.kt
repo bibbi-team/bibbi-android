@@ -128,7 +128,9 @@ abstract class NavigationDestination(
 
             navigate(
                 targetRoute,
-            )
+            ) {
+                restoreState = true
+            }
         }
 
         @Stable

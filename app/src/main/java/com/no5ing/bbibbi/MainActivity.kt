@@ -8,6 +8,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -168,7 +170,6 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -239,7 +240,11 @@ class MainActivity : ComponentActivity() {
                                     .statusBarsPadding(),
                                 color = MaterialTheme.bbibbiScheme.backgroundPrimary
                             ) {
-                                AnimatedVisibility(visible = isReady) {
+                                AnimatedVisibility(
+                                    visible = isReady,
+                                    enter = fadeIn(),
+                                    exit = fadeOut(),
+                                ) {
                                     LaunchedEffect(sessionState) {
                                         Timber.d("[MainActivity] Session State Changed to $sessionState")
                                         if (sessionState.isLoggedIn()) {

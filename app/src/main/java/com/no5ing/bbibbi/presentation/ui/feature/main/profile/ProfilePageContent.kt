@@ -46,6 +46,7 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.FamilyPostsViewModel
+import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.toLocalizedDate
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -132,11 +133,7 @@ fun ProfilePageContentItem(
         horizontalAlignment = Alignment.Start,
     ) {
         AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl)
-                .crossfade(true)
-                .error(R.drawable.ppippi)
-                .build(),
+            model = asyncImagePainter(source = imageUrl),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier

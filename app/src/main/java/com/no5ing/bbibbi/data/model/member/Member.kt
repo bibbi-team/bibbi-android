@@ -25,7 +25,7 @@ data class Member(
     companion object {
         fun unknown(): Member = Member(
             memberId = "unknown",
-            name = "unknown",
+            name = "알 수 없음",
             imageUrl = null,
             familyId = null,
             dayOfBirth = "2001-12-30"

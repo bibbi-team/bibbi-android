@@ -35,14 +35,14 @@ const val MIN_DRAG_AMOUNT = 6
 @Composable
 fun DraggableCardComplex(
     isRevealed: Boolean,
+    isRevealable: Boolean,
     cardOffset: Float,
     backgroundColor: Color,
     onExpand: () -> Unit,
     onCollapse: () -> Unit,
     onGloballyPositioned: (LayoutCoordinates) -> Unit,
     content: @Composable ColumnScope.() -> Unit,
-
-    ) {
+) {
     var offsetX by remember { mutableStateOf(0f) }
     val transitionState = remember {
         MutableTransitionState(isRevealed).apply {
@@ -66,25 +66,29 @@ fun DraggableCardComplex(
             .fillMaxWidth()
             .onGloballyPositioned {
                 onGloballyPositioned(it)
-            }
-            .offset { IntOffset((offsetX + offsetTransition).roundToInt() * -1, 0) }
-            .pointerInput(Unit) {
-                detectHorizontalDragGestures { change, dragAmount ->
-                    val original = Offset(offsetX, 0f)
-                    val summed = original + Offset(x = dragAmount, y = 0f)
-                    val newValue = Offset(x = summed.x.coerceIn(0f, cardOffset), y = 0f)
-                    if (newValue.x >= 10) {
-                        onCollapse()
-                        return@detectHorizontalDragGestures
+            }.let {
+                if(isRevealable)
+                    it.offset { IntOffset((offsetX + offsetTransition).roundToInt() * -1, 0) }
+                        .pointerInput(Unit) {
+                            detectHorizontalDragGestures { change, dragAmount ->
+                                val original = Offset(offsetX, 0f)
+                                val summed = original + Offset(x = dragAmount, y = 0f)
+                                val newValue = Offset(x = summed.x.coerceIn(0f, cardOffset), y = 0f)
+                                if (newValue.x >= 10) {
+                                    onCollapse()
+                                    return@detectHorizontalDragGestures
 
-                    } else if (newValue.x <= 0) {
-                        onExpand()
-                        return@detectHorizontalDragGestures
-                    }
-                    if (change.positionChange() != Offset.Zero) change.consume()
-                    offsetX = newValue.x
-                }
-            },
+                                } else if (newValue.x <= 0) {
+                                    onExpand()
+                                    return@detectHorizontalDragGestures
+                                }
+                                if (change.positionChange() != Offset.Zero) change.consume()
+                                offsetX = newValue.x
+                            }
+                        }
+                else it
+            }
+            ,
     ) {
         content()
     }

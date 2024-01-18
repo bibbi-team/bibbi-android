@@ -42,6 +42,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
+import com.no5ing.bbibbi.util.asyncImagePainter
 
 @Composable
 fun PostViewContent(
@@ -66,7 +67,7 @@ fun PostViewContent(
         Box {
             Box {
                 AsyncImage(
-                    model = post.imageUrl,
+                    model = asyncImagePainter(source = post.imageUrl),
                     contentDescription = null,
                     modifier = Modifier
                         .aspectRatio(1.0f)

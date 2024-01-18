@@ -98,7 +98,10 @@ fun HomePageStoryBar(
             }
 
 
-            items(items.itemCount) { index ->
+            items(
+                count = items.itemCount,
+                key = { items[it]!!.memberId }
+            ) { index ->
                 val item = items[index] ?: throw RuntimeException()
                 if (item.memberId != meId) {
                     Row {

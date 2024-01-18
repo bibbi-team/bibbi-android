@@ -12,8 +12,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
@@ -26,12 +28,14 @@ import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageStoryBarSt
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.util.BackToExitHandler
+import com.no5ing.bbibbi.presentation.ui.util.OnLifecycleEvent
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.DailyFamilyTopViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.IsMeUploadedTodayViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.MainPostFeedViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
+import com.no5ing.bbibbi.util.todayAsString
 import timber.log.Timber
 
 @Composable
@@ -63,9 +67,9 @@ fun HomePage(
     val meState = retrieveMeViewModel.uiState.collectAsState()
     BackToExitHandler()
     LaunchedEffect(Unit) {
-        Timber.d("onTapLeft=${onTapLeft.hashCode()}, onTapRight=${onTapRight.hashCode()}, onTapProfile=${onTapProfile.hashCode()}, onTapContent=${onTapContent.hashCode()}, onTapUpload=${onTapUpload.hashCode()}, onTapInvite=${onTapInvite.hashCode()}")
         isMeUploadedTodayViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
     }
+
     LaunchedEffect(meState.value.status) {
         if (meState.value.isIdle()) {
             retrieveMeViewModel.invoke(Arguments())

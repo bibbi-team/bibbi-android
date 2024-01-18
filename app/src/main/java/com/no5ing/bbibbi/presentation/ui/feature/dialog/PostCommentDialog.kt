@@ -1,5 +1,11 @@
 package com.no5ing.bbibbi.presentation.ui.feature.dialog
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -85,8 +91,15 @@ import com.no5ing.bbibbi.util.localResources
 import com.no5ing.bbibbi.util.pxToDp
 import kotlinx.coroutines.CoroutineScope
 import timber.log.Timber
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.ui.text.input.ImeAction
+import androidx.paging.LoadState
+import com.no5ing.bbibbi.util.LocalSessionState
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
 fun PostCommentDialog(
     postId: String,
@@ -103,10 +116,12 @@ fun PostCommentDialog(
         val focusManager = LocalFocusManager.current
         val navController = LocalNavigateControllerState.current
         val keyboardController = LocalSoftwareKeyboardController.current
+        val memberId = LocalSessionState.current.memberId
         var keyboardExpanded by remember { mutableStateOf(false) }
         val keyboardText = remember {
             mutableStateOf("")
         }
+        val listState = rememberLazyListState()
 
         val cardRevealState = remember { mutableStateMapOf<String, Unit>() }
 
@@ -131,6 +146,12 @@ fun PostCommentDialog(
                     )
                 )
             )
+        }
+
+        LaunchedEffect(uiState.loadState.refresh) {
+            if (uiState.loadState.refresh is LoadState.NotLoading) {
+                listState.animateScrollToItem(uiState.itemCount - 1)
+            }
         }
 
         val resources = localResources()
@@ -225,7 +246,8 @@ fun PostCommentDialog(
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1.0f)
+                            .weight(1.0f),
+                        state = listState,
                     ) {
                         if (uiState.itemCount == 0) {
                             item {
@@ -248,10 +270,19 @@ fun PostCommentDialog(
                                 }
                             }
                         } else {
-                            items(uiState.itemCount) {
+                            items(
+                                count = uiState.itemCount,
+                                key = { index ->
+                                    uiState[index]!!.commentId
+                                }
+                            ) {
                                 val item = uiState[it] ?: throw RuntimeException()
                                 CommentBox(
-                                    item,
+                                    modifier = Modifier
+                                        .animateItemPlacement(
+                                            animationSpec = tween(durationMillis = 350)
+                                        ),
+                                    comment = item,
                                     onTapProfile = { member ->
                                         navController.navigate(
                                             destination = MainProfileDestination,
@@ -268,6 +299,7 @@ fun PostCommentDialog(
                                             )
                                         )
                                     },
+                                    isMyComment = item.memberId == memberId,
                                     isRevealed = cardRevealState.containsKey(item.commentId),
                                     setRevealState = {
                                         if (it) {
@@ -341,6 +373,7 @@ fun KeyboardBar(
             BasicTextField(
                 value = keyboardTextStr,
                 modifier = Modifier
+                    .weight(1.0f)
                     .onFocusEvent {
                         Timber.d("FE : ${it}")
                     }
@@ -362,7 +395,9 @@ fun KeyboardBar(
                         it()
                     }
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                ),
                 textStyle = MaterialTheme.bbibbiTypo.bodyOneRegular.copy(
                     color = MaterialTheme.bbibbiScheme.textPrimary
                 ),
@@ -375,7 +410,6 @@ fun KeyboardBar(
                     0.00f to MaterialTheme.bbibbiScheme.button,
                     1.00f to MaterialTheme.bbibbiScheme.button,
                 ),
-                maxLines = 1,
             )
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -411,18 +445,18 @@ fun KeyboardBar(
 
 @Composable
 fun CommentBox(
+    modifier: Modifier,
     comment: PostCommentUiState,
     onTapProfile: (Member) -> Unit,
     onTapDelete: () -> Unit,
-    //  revealState: MutableState<Boolean>,
+    isMyComment: Boolean,
     isRevealed: Boolean,
     setRevealState: (Boolean) -> Unit
 ) {
     val areaWidthPx = remember { 200.0f }
-    // var revealed by revealState
     var relevantHeight by remember { mutableFloatStateOf(0.0f) }
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
             modifier = Modifier
@@ -453,6 +487,7 @@ fun CommentBox(
             onGloballyPositioned = {
                 relevantHeight = it.boundsInWindow().height
             },
+            isRevealable = isMyComment,
             onExpand = { setRevealState(true) },
             onCollapse = { setRevealState(false) }) {
             Row(

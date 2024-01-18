@@ -45,6 +45,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.FamilyPostViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
+import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.toLocalizedDate
 
 @Composable
@@ -75,7 +76,7 @@ fun PostViewPage(
                 modifier = Modifier.fillMaxSize()
             ) {
                 AsyncImage(
-                    model = postState.data.post.imageUrl,
+                    model = asyncImagePainter(source = postState.data.post.imageUrl),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxSize()

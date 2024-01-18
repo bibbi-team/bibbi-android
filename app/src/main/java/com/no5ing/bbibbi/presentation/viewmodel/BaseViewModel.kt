@@ -25,6 +25,16 @@ abstract class BaseViewModel<T> : ViewModel() {
     private val _uiState = MutableStateFlow<T>(initState())
     val uiState: StateFlow<T> = _uiState
 
+    private val isInitialized = MutableStateFlow(false)
+
+    fun isInitialize(): Boolean {
+        if (!isInitialized.value) {
+            isInitialized.value = true
+            return true
+        }
+        return false
+    }
+
     val resource by lazy {
         Resource<T>()
     }

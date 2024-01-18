@@ -11,8 +11,12 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import coil.request.CachePolicy
+import coil.request.ImageRequest
+import com.no5ing.bbibbi.R
 import java.lang.Math.abs
 
 fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) =
@@ -81,3 +85,17 @@ fun Modifier.vix() =
 
 fun Color.Companion.fromHex(colorString: String) =
     Color(android.graphics.Color.parseColor(colorString))
+
+@Composable
+fun asyncImagePainter(source: String?) = ImageRequest
+    .Builder(LocalContext.current)
+    .data(source)
+    .placeholder(R.drawable.image_loading_placeholder)
+    .error(R.drawable.image_error)
+    .crossfade(true)
+    .crossfade(250)
+    .memoryCacheKey(source)
+    .diskCacheKey(source)
+    .diskCachePolicy(CachePolicy.ENABLED)
+    .memoryCachePolicy(CachePolicy.ENABLED)
+    .build()
