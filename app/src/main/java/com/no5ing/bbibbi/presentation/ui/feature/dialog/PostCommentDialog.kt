@@ -326,7 +326,8 @@ fun KeyboardBar(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
-            .padding(bottom = 5.dp),
+            .padding(bottom = 5.dp)
+            .padding(horizontal = 12.dp),
         // verticalArrangement = Arrangement.Bottom
     ) {
         Row(
