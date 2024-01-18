@@ -10,6 +10,7 @@
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
+
             <category android:name="android.intent.category.HOME" />
         </intent>
     </queries>
@@ -19,17 +20,21 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.First"
-        android:hardwareAccelerated="true"
         tools:targetApi="31">
+        <profileable
+            android:shell="true"
+            tools:targetApi="29" />
+
         <activity
-            android:hardwareAccelerated="true"
             android:name=".MainActivity"
             android:exported="true"
+            android:hardwareAccelerated="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/Theme.App.First"
@@ -86,6 +91,7 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
@@ -94,6 +100,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="bbibbi_channel" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.no5ing.bbibbi.fileprovider"
