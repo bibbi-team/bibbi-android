@@ -1,6 +1,7 @@
 package com.no5ing.bbibbi.data.datasource.network
 
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenRequest
+import com.no5ing.bbibbi.data.datasource.network.request.member.AddPostRealEmojiRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeNameRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeProfileImageRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.CreateMemberRealEmojiRequest
@@ -33,6 +34,7 @@ import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.model.post.PostComment
 import com.no5ing.bbibbi.data.model.post.PostReaction
 import com.no5ing.bbibbi.data.model.post.PostReactionSummary
+import com.no5ing.bbibbi.data.model.post.PostRealEmoji
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -236,6 +238,24 @@ interface RestAPI {
             @Path("commentId") commentId: String,
             @Body body: UpdatePostCommentRequest,
         ): ApiResponse<PostComment>
+
+        @GET("v1/posts/{postId}/real-emoji")
+        suspend fun getPostRealEmojiList(
+            @Path("postId") postId: String,
+        ): ApiResponse<ArrayResponse<PostRealEmoji>>
+
+        @POST("v1/posts/{postId}/real-emoji")
+        suspend fun addPostRealEmojiToPost(
+            @Path("postId") postId: String,
+            @Body body: AddPostRealEmojiRequest,
+        ): ApiResponse<PostRealEmoji>
+
+        @DELETE("v1/posts/{postId}/real-emoji/{postRealEmojiId}")
+        suspend fun deletePostRealEmojiFromPost(
+            @Path("postId") postId: String,
+            @Path("postRealEmojiId") postRealEmojiId: String,
+        ): ApiResponse<DefaultResponse>
+
     }
 
     /**
