@@ -45,22 +45,12 @@ import com.no5ing.bbibbi.util.LocalSessionState
 fun HomePageStoryBar(
     onTapProfile: (Member) -> Unit = {},
     onTapInvite: () -> Unit = {},
-    familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),
-    retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
-    familyPostTopViewModel: DailyFamilyTopViewModel = hiltViewModel(),
-    storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(
-        uiState = familyMembersViewModel.uiState,
-        topState = familyPostTopViewModel.uiState,
-    ),
+    storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(),
     items: LazyPagingItems<Member> = storyBarState.uiState.collectAsLazyPagingItems()
 ) {
     val postTopState by storyBarState.topState.collectAsState()
-    LaunchedEffect(Unit) {
-        familyMembersViewModel.invoke(Arguments())
-        familyPostTopViewModel.invoke(Arguments())
-    }
     val meId = LocalSessionState.current.memberId
-    val meState by retrieveMeViewModel.uiState.collectAsState()
+    val meState by storyBarState.meState.collectAsState()
 
     if (items.itemCount == 1) {
         HomePageNoFamilyBar(
@@ -75,7 +65,6 @@ fun HomePageStoryBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 24.dp),
-            //horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
                 Spacer(modifier = Modifier.width(20.dp))

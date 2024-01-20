@@ -60,17 +60,13 @@ fun HomePage(
     val memberId = LocalSessionState.current.memberId
     val meUploadedState = isMeUploadedTodayViewModel.uiState.collectAsState()
     //val familyMembersState = familyMembersViewModel.uiState.collectAsState()
-    val meState = retrieveMeViewModel.uiState.collectAsState()
+
     BackToExitHandler()
     LaunchedEffect(Unit) {
         isMeUploadedTodayViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
     }
 
-    LaunchedEffect(meState.value.status) {
-        if (meState.value.isIdle()) {
-            retrieveMeViewModel.invoke(Arguments())
-        }
-    }
+
     BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
@@ -89,6 +85,7 @@ fun HomePage(
                 HomePageContent(
                     familyMembersViewModel = familyMembersViewModel,
                     familyPostsViewModel = familyPostsViewModel,
+                    familyPostTopViewModel = familyPostTopViewModel,
                     homePageContentState = homePageContentState,
                     retrieveMeViewModel = retrieveMeViewModel,
                     storyBarState = storyBarState,

@@ -30,6 +30,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,10 +58,12 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.post.DailyFamilyTopViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.MainPostFeedViewModel
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.gapBetweenNow
 import com.no5ing.bbibbi.util.todayAsString
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -67,6 +74,7 @@ fun HomePageContent(
         uiState = familyPostsViewModel.uiState
     ),
     retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
+    familyPostTopViewModel: DailyFamilyTopViewModel = hiltViewModel(),
     storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(
         uiState = familyMembersViewModel.uiState
     ),
@@ -75,8 +83,12 @@ fun HomePageContent(
     onTapInvite: () -> Unit = {},
 ) {
     val postItems = homePageContentState.uiState.collectAsLazyPagingItems()
+    var isRefreshing by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
         if (familyPostsViewModel.isInitialize()) {
+            familyMembersViewModel.invoke(Arguments())
+            retrieveMeViewModel.invoke(Arguments())
+            familyPostTopViewModel.invoke(Arguments())// TODO
             familyPostsViewModel.invoke(
                 Arguments(
                     arguments = mapOf(
@@ -88,9 +100,17 @@ fun HomePageContent(
             postItems.refresh()
         }
     }
+    LaunchedEffect(postItems.loadState.refresh) {
+        if(isRefreshing && postItems.loadState.refresh is LoadState.NotLoading) {
+            isRefreshing = false
+        } else if(!isRefreshing && postItems.loadState.refresh is LoadState.Loading) {
+            isRefreshing = true
+        }
+    }
     val pullRefreshStyle = rememberPullRefreshState(
-        refreshing = postItems.loadState.refresh is LoadState.Loading,
+        refreshing = isRefreshing,
         onRefresh = {
+            familyPostTopViewModel.invoke(Arguments())
             familyMembersViewModel.invoke(Arguments())
             retrieveMeViewModel.invoke(Arguments())
             postItems.refresh()
@@ -103,23 +123,23 @@ fun HomePageContent(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(3.dp),
         ) {
-            item(span = { GridItemSpan(2) }) {
-                HomePageStoryBar(
-                    familyMembersViewModel = familyMembersViewModel,
-                    retrieveMeViewModel = retrieveMeViewModel,
-                    storyBarState = storyBarState,
-                    onTapProfile = onTapProfile,
-                    onTapInvite = onTapInvite,
-                )
+            item(
+                key = "TopBar",
+                span = { GridItemSpan(2) }) {
+                Column {
+                    HomePageStoryBar(
+                        storyBarState = storyBarState,
+                        onTapProfile = onTapProfile,
+                        onTapInvite = onTapInvite,
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    UploadCountDownBar()
+                }
+
             }
-            item(span = { GridItemSpan(2) }) {
-                Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-            }
-            item(span = { GridItemSpan(2) }) {
-                UploadCountDownBar()
-            }
-            // Timber.d("Current item cnt : ${postItems.itemCount}")
-            if (postItems.itemCount > 0)
+            if (postItems.itemCount > 0) {
                 items(
                     count = postItems.itemCount,
                     key = {
@@ -137,8 +157,9 @@ fun HomePageContent(
                         onTap = { onTapContent(item.post) }
                     )
                 }
-            else
+            } else {
                 item(
+                    key = "Empty",
                     span = { GridItemSpan(2) }
                 ) {
                     Column(
@@ -156,11 +177,11 @@ fun HomePageContent(
                         )
 
                     }
-
                 }
+            }
         }
         PullRefreshIndicator(
-            refreshing = postItems.loadState.refresh is LoadState.Loading,
+            refreshing = isRefreshing,
             state = pullRefreshStyle,
             modifier = Modifier.align(Alignment.TopCenter),
             backgroundColor = MaterialTheme.bbibbiScheme.backgroundSecondary,
