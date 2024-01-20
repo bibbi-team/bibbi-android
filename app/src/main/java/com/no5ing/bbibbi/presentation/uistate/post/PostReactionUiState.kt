@@ -9,7 +9,9 @@ import kotlinx.parcelize.Parcelize
 data class PostReactionUiState(
     val reactionId: String,
     val memberId: String,
+    val isRealEmoji: Boolean,
     val emojiType: String,
+    val realEmojiUrl: String?,
     val isMe: Boolean,
     val member: Member?,
 ) : Parcelable, BaseModel()

@@ -1,15 +1,21 @@
 package com.no5ing.bbibbi.util
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.Window
 import android.view.WindowManager
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
@@ -21,6 +27,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.DialogWindowProvider
+import androidx.core.content.ContextCompat
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -66,6 +73,51 @@ val emptyPermissionState = object : PermissionState {
     }
 }
 
+suspend fun Context.getCameraProvider(): ProcessCameraProvider =
+    suspendCoroutine { continuation ->
+        ProcessCameraProvider.getInstance(this).also { cameraProvider ->
+            cameraProvider.addListener({
+                continuation.resume(cameraProvider.get())
+            }, ContextCompat.getMainExecutor(this))
+        }
+    }
+
+suspend fun ImageCapture.takePhoto(context: Context): Uri? =
+    suspendCoroutine { continuation ->
+        val name = "${System.currentTimeMillis()}.jpg"
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/BBiBBi-Image")
+            }
+        }
+
+        val outputOptions = ImageCapture.OutputFileOptions
+            .Builder(
+                context.contentResolver,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues
+            )
+            .build()
+
+        this.takePicture(
+            outputOptions,
+            ContextCompat.getMainExecutor(context),
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onError(e: ImageCaptureException) {
+                    Timber.e("[CameraView] photo capture failed", e)
+                    continuation.resume(null)
+                }
+
+                override fun onImageSaved(
+                    output: ImageCapture.OutputFileResults
+                ) {
+                    Timber.d("onImageSaved: ${output.savedUri}")
+                    continuation.resume(output.savedUri)
+                }
+            }
+        )
+    }
 fun Context.openMarket() {
     val intent = Intent(Intent.ACTION_VIEW)
     intent.data = Uri.parse("market://details?id=com.no5ing.bbibbi")

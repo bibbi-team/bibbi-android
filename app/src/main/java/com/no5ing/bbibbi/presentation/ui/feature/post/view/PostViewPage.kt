@@ -53,6 +53,7 @@ import com.no5ing.bbibbi.util.toLocalizedDate
 fun PostViewPage(
     onDispose: () -> Unit,
     onTapProfile: (Member) -> Unit,
+    onTapRealEmojiCreate: (String) -> Unit,
     postId: String,
     familyPostViewModel: FamilyPostViewModel = hiltViewModel(),
     postViewPageState: PostViewPageState = rememberPostViewPageState(
@@ -115,6 +116,7 @@ fun PostViewPage(
                             removePostReactionViewModel = removePostReactionViewModel,
                             addPostReactionViewModel = addPostReactionViewModel,
                             postCommentDialogState = postCommentDialogState,
+                            onTapRealEmojiCreate = onTapRealEmojiCreate,
                         )
                     }
                 }

@@ -72,7 +72,7 @@ fun CalendarDetailPage(
     initialDay: LocalDate,
     onDispose: () -> Unit,
     onTapProfile: (Member) -> Unit,
-
+    onTapRealEmojiCreate: (String) -> Unit,
     calendarDetailContentViewModel: CalendarDetailContentViewModel = hiltViewModel(),
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
@@ -262,6 +262,7 @@ fun CalendarDetailPage(
                                     familyPostReactionBarViewModel = familyPostReactionBarViewModel,
                                     removePostReactionViewModel = removePostReactionViewModel,
                                     addPostReactionViewModel = addPostReactionViewModel,
+                                    onTapRealEmojiCreate = onTapRealEmojiCreate,
                                 )
                             }
                         }

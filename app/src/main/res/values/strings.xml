@@ -29,6 +29,9 @@
     <string name="upload_image">사진 업로드</string>
     <string name="setting_and_privacy">설정 및 개인정보</string>
 
+    <string name="real_emoji_upload_title">리얼 이모지</string>
+    <string name="real_emoji_follow_emoji">표정을 따라해보세요</string>
+
     <string name="setting_account_and_permission">계정 및 권한</string>
     <string name="setting_version_info">%1$s 버전</string>
     <string name="setting_version_info_querying">버전 정보 조회중...</string>
@@ -153,7 +156,7 @@
     <string name="quit_heading_one">삐삐 서비스와 헤어지게 되어 아쉬워요..</string>
     <string name="quit_heading_two">탈퇴 사유를 알려주세요\n삐삐 서비스를 개선하는데\n많은 도움이 됩니다!</string>
     <string name="quit_minimum_one">최소 1개 이상 선택해주세요.</string>
-    <string name="comment_count">%1$d개의 댓글</string>
+    <string name="comment_count">%1$d개</string>
     <string name="comment_dialog_title">댓글</string>
     <string name="comment_dialog_comment_deleted">댓글이 삭제되었습니다</string>
     <string name="comment_dialog_no_comments_title">아직 댓글이 없습니다</string>

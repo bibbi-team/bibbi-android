@@ -151,6 +151,14 @@ object MainCalendarDetailDestination : NavigationDestination(
                     destination = MainProfileDestination,
                     path = it.memberId
                 )
+            },
+            onTapRealEmojiCreate = {
+                navController.navigate(
+                    destination = CreateRealEmojiDestination,
+                    params = listOf(
+                        "initialEmoji" to it
+                    )
+                )
             }
         )
     },

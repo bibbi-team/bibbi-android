@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideInToLeft
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideOutToRight
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.CreateRealEmojiDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.postPageRoute
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.postViewPageRoute
@@ -35,6 +36,10 @@ fun NavGraphBuilder.postGraph(
         composable(
             controller = navController,
             destination = PostUploadDestination
+        )
+        composable(
+            controller = navController,
+            destination = CreateRealEmojiDestination
         )
     }
 }

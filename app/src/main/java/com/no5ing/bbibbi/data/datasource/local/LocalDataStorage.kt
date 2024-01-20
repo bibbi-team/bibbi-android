@@ -7,6 +7,7 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
 import com.no5ing.bbibbi.data.model.auth.AuthResult
+import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -38,6 +39,7 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         const val AUTH_RESULT_KEY = "auth_result_key"
         const val REGISTRATION_TOKEN_KEY = "registration_token"
         const val LANDING_SEEN_KEY = "landing_seen"
+        const val REAL_EMOJI_KEY = "real_emoji"
     }
 
     fun logOut() {
@@ -78,5 +80,17 @@ class LocalDataStorage @Inject constructor(val context: Context) {
 
     fun getLandingSeen(): Boolean {
         return preferences.getBoolean(LANDING_SEEN_KEY, false)
+    }
+
+    fun setRealEmojiList(realEmojiList: List<MemberRealEmoji>) {
+        val editor = preferences.edit()
+        editor.putString(REAL_EMOJI_KEY, Gson().toJson(realEmojiList))
+        editor.apply()
+        editor.commit()
+    }
+
+    fun getRealEmojiList(): List<MemberRealEmoji> {
+        val json = preferences.getString(REAL_EMOJI_KEY, null)
+        return json?.let { runCatching { Gson().fromJson(it, Array<MemberRealEmoji>::class.java).toList() }.getOrNull() } ?: emptyList()
     }
 }

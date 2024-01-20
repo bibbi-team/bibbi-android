@@ -56,6 +56,8 @@ import com.no5ing.bbibbi.presentation.ui.common.button.CameraCaptureButton
 import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.ClosableTopBar
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.util.getCameraProvider
+import com.no5ing.bbibbi.util.takePhoto
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.resume
@@ -73,7 +75,7 @@ fun CameraView(
     val coroutineScope = rememberCoroutineScope()
     val torchState = remember { mutableStateOf(false) }
     val isPermissionGranted = remember { mutableStateOf(false) }
-    val cameraDirection = remember { mutableStateOf(CameraSelector.DEFAULT_FRONT_CAMERA) }
+    val cameraDirection = remember { mutableStateOf(CameraSelector.DEFAULT_BACK_CAMERA) }
     val cameraState = remember { mutableStateOf<Camera?>(null) }
     val captureState = remember { mutableStateOf(ImageCapture.Builder().build()) }
     var isCapturing by remember { mutableStateOf(false) }
@@ -207,48 +209,3 @@ fun CameraView(
 
 }
 
-private suspend fun Context.getCameraProvider(): ProcessCameraProvider =
-    suspendCoroutine { continuation ->
-        ProcessCameraProvider.getInstance(this).also { cameraProvider ->
-            cameraProvider.addListener({
-                continuation.resume(cameraProvider.get())
-            }, ContextCompat.getMainExecutor(this))
-        }
-    }
-
-private suspend fun ImageCapture.takePhoto(context: Context): Uri? =
-    suspendCoroutine { continuation ->
-        val name = "${System.currentTimeMillis()}.jpg"
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/BBiBBi-Image")
-            }
-        }
-
-        val outputOptions = ImageCapture.OutputFileOptions
-            .Builder(
-                context.contentResolver,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues
-            )
-            .build()
-
-        this.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(context),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onError(e: ImageCaptureException) {
-                    Timber.e("[CameraView] photo capture failed", e)
-                    continuation.resume(null)
-                }
-
-                override fun onImageSaved(
-                    output: ImageCapture.OutputFileResults
-                ) {
-                    Timber.d("onImageSaved: ${output.savedUri}")
-                    continuation.resume(output.savedUri)
-                }
-            }
-        )
-    }

@@ -134,7 +134,6 @@ interface RestAPI {
         @GET("v1/members/{memberId}/real-emoji")
         suspend fun getRealEmojiList(
             @Path("memberId") memberId: String,
-            @Body body: ImageUploadRequest,
         ): ApiResponse<MemberRealEmojiList<MemberRealEmoji>>
 
         @POST("v1/members/{memberId}/real-emoji")
