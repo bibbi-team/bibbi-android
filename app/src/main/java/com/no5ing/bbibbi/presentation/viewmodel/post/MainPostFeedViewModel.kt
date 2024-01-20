@@ -37,6 +37,10 @@ class MainPostFeedViewModel @Inject constructor(
         }
     }
 
+    fun refresh() {
+        getPostsRepository.pagingSource.invalidate()
+    }
+
     override fun release() {
         super.release()
         getPostsRepository.closeResources()

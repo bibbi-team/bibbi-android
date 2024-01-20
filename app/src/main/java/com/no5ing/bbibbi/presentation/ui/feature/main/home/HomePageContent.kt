@@ -97,7 +97,7 @@ fun HomePageContent(
                 )
             )
         } else {
-            postItems.refresh()
+            familyPostsViewModel.refresh()
         }
     }
     LaunchedEffect(postItems.loadState.refresh) {
