@@ -97,6 +97,7 @@ fun HomePageContent(
                 )
             )
         } else {
+            familyPostTopViewModel.invoke(Arguments())
             familyPostsViewModel.refresh()
         }
     }
