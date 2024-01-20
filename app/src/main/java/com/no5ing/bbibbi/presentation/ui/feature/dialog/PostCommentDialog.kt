@@ -340,9 +340,8 @@ fun KeyboardBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
-            .padding(bottom = 5.dp)
-            .padding(horizontal = 12.dp),
+            .background(MaterialTheme.bbibbiScheme.backgroundSecondary)
+            .padding(vertical = 12.dp, horizontal = 16.dp)
         // verticalArrangement = Arrangement.Bottom
     ) {
         Row(
@@ -350,8 +349,8 @@ fun KeyboardBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, MaterialTheme.bbibbiScheme.gray600, RoundedCornerShape(20.dp))
-                .padding(vertical = 12.dp, horizontal = 16.dp)
+               // .border(1.dp, MaterialTheme.bbibbiScheme.gray600, RoundedCornerShape(20.dp))
+
         ) {
             BasicTextField(
                 value = keyboardTextStr,
