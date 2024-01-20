@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
@@ -49,11 +50,14 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
+import coil.compose.AsyncImage
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
@@ -65,6 +69,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
 import com.no5ing.bbibbi.util.CustomDialogPosition
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
+import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.customDialogModifier
 import com.no5ing.bbibbi.util.getEmojiResource
 import com.no5ing.bbibbi.util.getScreenSize
@@ -74,10 +79,12 @@ import com.no5ing.bbibbi.util.getScreenSize
 fun ReactionListDialog(
     selectedEmoji: String,
     isEnabled: MutableState<Boolean> = remember { mutableStateOf(false) },
-    emojiMap: Map<String, List<PostReactionUiState>>,
+   // emojiMap: Map<String, List<PostReactionUiState>>,
+    myGroup:  List<PostReactionUiState>,
     //  postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
 ) {
     if (isEnabled.value) {
+        val isRealEmoji = !selectedEmoji.toLowerCase(Locale.current).startsWith("emoji")
         val navController = LocalNavigateControllerState.current
         var showAnimate by remember {
             mutableStateOf(false)
@@ -105,7 +112,7 @@ fun ReactionListDialog(
 
 
             //  val memberState = postViewReactionMemberViewModel.uiState.collectAsState()
-            val myGroup = emojiMap[selectedEmoji] ?: emptyList()
+           // val myGroup = emojiMap[selectedEmoji] ?: emptyList()
             val totalCntMessage = stringResource(id = R.string.emoji_reaction_total, myGroup.size)
             Box(
                 modifier = Modifier
@@ -183,12 +190,23 @@ fun ReactionListDialog(
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Image(
-                                        painter = getEmojiResource(emojiName = selectedEmoji),
-                                        contentDescription = null, // 필수 param
-                                        modifier = Modifier
-                                            .size(width = 42.dp, height = 42.dp)
-                                    )
+                                    if(isRealEmoji) {
+                                        AsyncImage(
+                                            model = asyncImagePainter(selectedEmoji),
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .size(width = 42.dp, height = 42.dp)
+                                                .clip(CircleShape)
+                                        )
+                                    } else {
+                                        Image(
+                                            painter = getEmojiResource(emojiName = selectedEmoji),
+                                            contentDescription = null, // 필수 param
+                                            modifier = Modifier
+                                                .size(width = 42.dp, height = 42.dp)
+                                        )
+                                    }
+
                                     Spacer(modifier = Modifier.width(20.dp))
                                     Text(
                                         text = totalCntMessage,

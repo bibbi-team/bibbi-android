@@ -62,7 +62,6 @@ fun PostViewPage(
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
-    postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     LaunchedEffect(Unit) {
         familyPostViewModel.invoke(Arguments(resourceId = postId))
@@ -115,7 +114,6 @@ fun PostViewPage(
                             familyPostReactionBarViewModel = familyPostReactionBarViewModel,
                             removePostReactionViewModel = removePostReactionViewModel,
                             addPostReactionViewModel = addPostReactionViewModel,
-                            postCommentDialogState = postCommentDialogState,
                             onTapRealEmojiCreate = onTapRealEmojiCreate,
                         )
                     }

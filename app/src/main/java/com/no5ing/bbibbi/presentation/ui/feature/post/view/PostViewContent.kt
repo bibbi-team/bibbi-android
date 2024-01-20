@@ -62,17 +62,12 @@ fun PostViewContent(
     removeRealEmojiViewModel: RemoveRealEmojiViewModel = hiltViewModel(),
     postRealEmojiListViewModel: MemberRealEmojiListViewModel = hiltViewModel(),
     addEmojiBarState: MutableState<Boolean> = remember { mutableStateOf(false) },
-    postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     val memberId = LocalSessionState.current.memberId
     val memberRealEmojiState by postRealEmojiListViewModel.uiState.collectAsState()
     LaunchedEffect(Unit) {
         postRealEmojiListViewModel.invoke(Arguments())
     }
-    PostCommentDialog(
-        postId = post.postId,
-        isEnabled = postCommentDialogState,
-    )
     Column(
         modifier = modifier,
     ) {
@@ -108,7 +103,7 @@ fun PostViewContent(
             ) {
                 PostViewReactionBar(
                     modifier = Modifier.weight(1.0f),
-                    postId = post.postId,
+                    post = post,
                     isEmojiBarActive = addEmojiBarState.value,
                     onTapAddEmojiButton = {
                         addEmojiBarState.value = !addEmojiBarState.value
@@ -117,36 +112,6 @@ fun PostViewContent(
                     removePostReactionViewModel = removePostReactionViewModel,
                     addPostReactionViewModel = addPostReactionViewModel,
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(100.dp))
-                        .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-                        .padding(vertical = 5.dp, horizontal = 7.dp)
-                        .clickable { postCommentDialogState.value = true },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(
-                            8.dp,
-                            Alignment.CenterHorizontally
-                        ),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.message_icon),
-                            contentDescription = null,
-                            tint = MaterialTheme.bbibbiScheme.textPrimary,
-                            modifier = Modifier.size(25.dp)
-                        )
-                        Text(
-                            text = stringResource(id = R.string.comment_count, post.commentCount),
-                            color = MaterialTheme.bbibbiScheme.textPrimary,
-                            style = MaterialTheme.bbibbiTypo.bodyOneBold,
-                        )
-                    }
-
-                }
             }
             Spacer(modifier = Modifier.height(4.dp))
 

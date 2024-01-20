@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +32,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.ui.feature.dialog.PostCommentDialog
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.ReactionListDialog
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
@@ -49,7 +52,7 @@ import com.no5ing.bbibbi.util.getEmojiResource
 @Composable
 fun PostViewReactionBar(
     modifier: Modifier,
-    postId: String,
+    post: Post,
     isEmojiBarActive: Boolean,
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
@@ -58,27 +61,33 @@ fun PostViewReactionBar(
     removeRealEmojiViewModel: RemoveRealEmojiViewModel = hiltViewModel(),
     //   postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
     onTapAddEmojiButton: () -> Unit,
+    postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     val memberId = LocalSessionState.current.memberId
     val uiState = familyPostReactionBarViewModel.uiState.collectAsState()
-    LaunchedEffect(postId) {
+    LaunchedEffect(post) {
         familyPostReactionBarViewModel.invoke(
             Arguments(
                 arguments = mapOf(
-                    "postId" to postId,
+                    "postId" to post.postId,
                     "memberId" to memberId
                 )
             )
         )
     }
     val selectedEmoji = remember { mutableStateOf(emojiList.first()) }
+    val selectedEmojiKey = remember { mutableStateOf(emojiList.first()) }
     val emojiMap =  uiState.value.groupBy { it.emojiType }
     val groupEmoji =  emojiMap.toList()
     val reactionDialogState = remember { mutableStateOf(false) }
     ReactionListDialog(
         isEnabled = reactionDialogState,
-        emojiMap = emojiMap,
+        myGroup = emojiMap[selectedEmojiKey.value] ?: emptyList(),
         selectedEmoji = selectedEmoji.value,
+    )
+    PostCommentDialog(
+        postId = post.postId,
+        isEnabled = postCommentDialogState,
     )
     Box(modifier = Modifier) {
         FlowRow(
@@ -99,7 +108,7 @@ fun PostViewReactionBar(
                             if (isMeReacted) {
                                 removeRealEmojiViewModel.invoke(
                                     Arguments(
-                                        resourceId = postId,
+                                        resourceId = post.postId,
                                         mapOf(
                                             "realEmojiId" to item.first
                                         )
@@ -108,7 +117,7 @@ fun PostViewReactionBar(
                             } else {
                                 addRealEmojiViewModel.invoke(
                                     Arguments(
-                                        resourceId = postId,
+                                        resourceId = post.postId,
                                         mapOf(
                                             "realEmojiId" to item.first
                                         )
@@ -121,7 +130,8 @@ fun PostViewReactionBar(
                             )
                         },
                         onLongTap = {
-                            selectedEmoji.value = item.first
+                            selectedEmojiKey.value = item.first
+                            selectedEmoji.value = item.second.first().realEmojiUrl!!
                             reactionDialogState.value = true
                         }
                     )
@@ -134,7 +144,7 @@ fun PostViewReactionBar(
                             if (isMeReacted) {
                                 removePostReactionViewModel.invoke(
                                     Arguments(
-                                        resourceId = postId,
+                                        resourceId = post.postId,
                                         mapOf(
                                             "emoji" to item.first
                                         )
@@ -143,7 +153,7 @@ fun PostViewReactionBar(
                             } else {
                                 addPostReactionViewModel.invoke(
                                     Arguments(
-                                        resourceId = postId,
+                                        resourceId = post.postId,
                                         mapOf(
                                             "emoji" to item.first
                                         )
@@ -156,6 +166,7 @@ fun PostViewReactionBar(
                             )
                         },
                         onLongTap = {
+                            selectedEmojiKey.value = item.first
                             selectedEmoji.value = item.first
                             reactionDialogState.value = true
                         }
@@ -186,6 +197,12 @@ fun PostViewReactionBar(
                     modifier = Modifier.size(24.dp)
                 )
             }
+            PostCommentBoxIcon(
+                commentCount = post.commentCount,
+                onClick = {
+                    postCommentDialogState.value = true
+                }
+            )
         }
     }
 }

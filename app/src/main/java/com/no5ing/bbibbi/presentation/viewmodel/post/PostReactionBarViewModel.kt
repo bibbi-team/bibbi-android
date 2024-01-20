@@ -24,12 +24,6 @@ class PostReactionBarViewModel @Inject constructor(
         return emptyList()
     }
 
-    fun getRealEmojiIdByRealEmoji(memberId: String, realEmojiId: String): String? {
-        return uiState.value.firstOrNull {
-            it.emojiType == realEmojiId && memberId == it.memberId
-        }?.reactionId
-    }
-
     private fun reactMe(memberId: String, emoji: String) {
         val previousList = uiState.value.toMutableList()
         viewModelScope.launch {
