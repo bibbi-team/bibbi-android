@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,12 +30,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.data.model.APIResponse
+import com.no5ing.bbibbi.data.model.post.CalendarBanner
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarMonthViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.post.MonthlyStatisticsViewModel
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
@@ -45,6 +49,7 @@ import io.github.boguszpawlowski.composecalendar.CalendarState
 import io.github.boguszpawlowski.composecalendar.StaticCalendar
 import io.github.boguszpawlowski.composecalendar.header.MonthState
 import io.github.boguszpawlowski.composecalendar.selection.EmptySelectionState
+import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
 import java.time.LocalDate
 import java.time.YearMonth
@@ -57,6 +62,7 @@ fun MainCalendarPage(
     onDispose: () -> Unit = {},
     onTapDay: (LocalDate) -> Unit = {},
     calendarMonthViewModel: CalendarMonthViewModel = hiltViewModel(),
+    monthlyStatisticsViewModel: MonthlyStatisticsViewModel = hiltViewModel(),
 ) {
     val currentCalendarState: CalendarState<EmptySelectionState> = remember {
         CalendarState(
@@ -75,6 +81,11 @@ fun MainCalendarPage(
                 arguments = mapOf("yearMonth" to currentCalendarState.monthState.currentMonth.toString()),
             )
         )
+        monthlyStatisticsViewModel.invoke(
+            Arguments(
+                arguments = mapOf("yearMonth" to currentCalendarState.monthState.currentMonth.toString()),
+            )
+        )
     }
 
     BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
@@ -87,7 +98,8 @@ fun MainCalendarPage(
             )
             Spacer(modifier = Modifier.height(12.dp))
             MainCalendarYearMonthBar(
-                yearMonthState = currentCalendarState.monthState.currentMonth
+                yearMonthState = currentCalendarState.monthState.currentMonth,
+                statisticsState = monthlyStatisticsViewModel.uiState,
             )
             StaticCalendar(
                 calendarState = currentCalendarState,
@@ -135,7 +147,9 @@ fun MainCalendarPage(
 @Composable
 fun MainCalendarYearMonthBar(
     yearMonthState: YearMonth,
+    statisticsState: StateFlow<APIResponse<CalendarBanner>>,
 ) {
+    val statistics by statisticsState.collectAsState()
     val balloonColor = MaterialTheme.bbibbiScheme.button
     val balloonText = stringResource(id = R.string.calendar_everyday_info)
     val builder = rememberBalloonBuilder {
@@ -157,40 +171,56 @@ fun MainCalendarYearMonthBar(
     val yearStr = stringResource(id = R.string.year)
     val monthStr = stringResource(id = R.string.month)
     Row(
-        modifier = Modifier.padding(start = 20.dp, top = 24.dp, end = 20.dp, bottom = 16.dp),
+        modifier = Modifier
+            .padding(start = 20.dp, top = 24.dp, end = 20.dp, bottom = 16.dp)
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = "${yearMonthState.year}${yearStr} ${yearMonthState.month.value}${monthStr}",
-            fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.bbibbiTypo.headOne.copy(
-                fontWeight = FontWeight.SemiBold
-            ),
-            color = MaterialTheme.bbibbiScheme.textPrimary
-        )
-        Balloon(
-            builder = builder,
-            balloonContent = {
-                Text(
-                    text = balloonText,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.bbibbiScheme.white,
-                    style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
-                )
-            }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.warning_circle_icon),
-                tint = MaterialTheme.bbibbiScheme.textSecondary,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(20.dp)
-                    .clickable { it.showAlignBottom() }
+            Text(
+                text = "${yearMonthState.year}${yearStr} ${yearMonthState.month.value}${monthStr}",
+                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.bbibbiTypo.headOne.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
+                color = MaterialTheme.bbibbiScheme.textPrimary
+            )
+            Balloon(
+                builder = builder,
+                balloonContent = {
+                    Text(
+                        text = balloonText,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.bbibbiScheme.white,
+                        style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
+                    )
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.warning_circle_icon),
+                    tint = MaterialTheme.bbibbiScheme.textSecondary,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable { it.showAlignBottom() }
+                )
+
+            }
+        }
+        if(statistics.isReady()) {
+            Text(
+                text = stringResource(id = R.string.calendar_history_cnt, statistics.data.allFamilyMembersUploadedDays),
+                color = MaterialTheme.bbibbiScheme.textPrimary,
+                style = MaterialTheme.bbibbiTypo.bodyOneRegular,
             )
 
+        }else {
+            Box{}
         }
-
     }
 
 }

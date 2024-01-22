@@ -29,6 +29,7 @@ import com.no5ing.bbibbi.data.model.member.ImageUploadLink
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import com.no5ing.bbibbi.data.model.member.MemberRealEmojiList
+import com.no5ing.bbibbi.data.model.post.CalendarBanner
 import com.no5ing.bbibbi.data.model.post.CalendarElement
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.model.post.PostComment
@@ -210,6 +211,11 @@ interface RestAPI {
             @Query("yearMonth") yearMonth: String,
             @Query("week") week: Int,
         ): ApiResponse<ArrayResponse<CalendarElement>>
+
+        @GET("v1/calendar/banner")
+        suspend fun getCalendarBanner(
+            @Query("yearMonth") yearMonth: String,
+        ): ApiResponse<CalendarBanner>
 
         @GET("v1/posts/{postId}/comments")
         suspend fun getPostComments(
