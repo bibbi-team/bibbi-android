@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.calendar
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -23,11 +25,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
@@ -39,6 +43,8 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarMonthViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.MonthlyStatisticsViewModel
+import com.no5ing.bbibbi.util.dpToPx
+import com.no5ing.bbibbi.util.getScreenSize
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
@@ -64,6 +70,7 @@ fun MainCalendarPage(
     calendarMonthViewModel: CalendarMonthViewModel = hiltViewModel(),
     monthlyStatisticsViewModel: MonthlyStatisticsViewModel = hiltViewModel(),
 ) {
+    val (width, height) = getScreenSize()
     val currentCalendarState: CalendarState<EmptySelectionState> = remember {
         CalendarState(
             selectionState = EmptySelectionState,
@@ -73,6 +80,7 @@ fun MainCalendarPage(
         )
     }
     val uiState = calendarMonthViewModel.uiState.collectAsState()
+    val statState by monthlyStatisticsViewModel.uiState.collectAsState()
 
     LaunchedEffect(currentCalendarState.monthState.currentMonth) {
         Timber.d("[MainCalendarPage] Changed month!")
@@ -101,6 +109,67 @@ fun MainCalendarPage(
                 yearMonthState = currentCalendarState.monthState.currentMonth,
                 statisticsState = monthlyStatisticsViewModel.uiState,
             )
+            if (statState.isReady()) {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .fillMaxWidth()
+                ) {
+                    Image(
+                        painter = painterResource(id = resolveBannerImageByPercent(statState.data.familyTopPercentage)),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxWidth(),
+                        contentScale = ContentScale.FillWidth
+                    )
+                    Box(
+                        modifier = Modifier
+                            .offset(
+                                x = (width - 40.dp).times(0.07462686f),
+                                y = (width - 40.dp).times(0.06865671f),
+                            )
+                    ) {
+                        Column {
+                            Row(
+                                verticalAlignment = Alignment.Bottom,
+                                horizontalArrangement = Arrangement.spacedBy(3.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.calendar_banner_title_top),
+                                    color = MaterialTheme.bbibbiScheme.backgroundPrimary,
+                                    style = MaterialTheme.bbibbiTypo.caption
+                                        .copy(lineHeight = 24.sp),
+                                    modifier = Modifier.alignByBaseline(),
+                                )
+                                Text(
+                                    text = statState.data.familyTopPercentage.toString(),
+                                    color = MaterialTheme.bbibbiScheme.backgroundPrimary,
+                                    style = MaterialTheme.bbibbiTypo.headOne
+                                        .copy(fontWeight = FontWeight.SemiBold, lineHeight = 24.sp),
+                                    modifier = Modifier.alignByBaseline(),
+                                )
+                                Text(
+                                    text = stringResource(id = R.string.calendar_banner_title_percent),
+                                    color = MaterialTheme.bbibbiScheme.backgroundPrimary,
+                                    style = MaterialTheme.bbibbiTypo.headTwoBold
+                                        .copy(lineHeight = 24.sp),
+                                    modifier = Modifier.alignByBaseline(),
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Text(
+                                text = stringResource(id = R.string.calendar_banner_subtitle,
+                                    statState.data.allFamilyMembersUploadedDays),
+                                color = MaterialTheme.bbibbiScheme.backgroundPrimary,
+                                style = MaterialTheme.bbibbiTypo.caption,
+                            )
+                        }
+
+
+                    }
+                }
+
+            }
+            Spacer(modifier = Modifier.height(24.dp))
             StaticCalendar(
                 calendarState = currentCalendarState,
                 monthHeader = {},
@@ -140,6 +209,23 @@ fun MainCalendarPage(
                     )
                 },
             )
+        }
+    }
+}
+
+private fun resolveBannerImageByPercent(percent: Int): Int {
+    return when (percent) {
+        in 0..1 -> {
+            R.drawable.calendar_1
+        }
+        in 2..33 -> {
+            R.drawable.calendar_33
+        }
+        in 34..66 -> {
+            R.drawable.calendar_66
+        }
+        else -> {
+            R.drawable.calendar_99
         }
     }
 }

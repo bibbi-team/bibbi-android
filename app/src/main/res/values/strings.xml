@@ -94,6 +94,9 @@
     <string name="month">월</string>
     <string name="calendar_history_cnt">%1$d개의 추억</string>
     <string name="calendar_everyday_info">모두 참여한 날에는\n스마일 이모지가 추가돼요</string>
+    <string name="calendar_banner_subtitle">모두 참여한 날 %1$d일</string>
+    <string name="calendar_banner_title_top">상위</string>
+    <string name="calendar_banner_title_percent">%</string>
     <string name="back_to_exit_message">종료하려면 한번 더 눌러주세요</string>
     <string name="change_nickname">닉네임 변경</string>
     <string name="change_nickname_description">닉네임을 변경해주세요</string>
