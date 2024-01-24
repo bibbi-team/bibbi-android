@@ -283,7 +283,7 @@ fun CreateRealEmojiPage(
                     isCapturing = isCapturing || !uploadState.isIdle(),
                 )
                 Image(
-                    painter = painterResource(R.drawable.rotate_button),
+                    painter = painterResource(R.drawable.rorate_button),
                     contentDescription = null, // 필수 param
                     modifier = Modifier
                         .size(48.dp)
