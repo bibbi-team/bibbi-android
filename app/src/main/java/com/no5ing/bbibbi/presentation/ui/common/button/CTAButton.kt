@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
@@ -16,6 +17,8 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 fun CTAButton(
     text: String,
     modifier: Modifier = Modifier,
+    buttonColor: Color = MaterialTheme.bbibbiScheme.mainYellow,
+    textColor: Color = MaterialTheme.bbibbiScheme.backgroundPrimary,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     onClick: () -> Unit = {},
     isActive: Boolean = true,
@@ -24,7 +27,7 @@ fun CTAButton(
         shape = RoundedCornerShape(100.dp),
         onClick = { if (isActive) onClick() },
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isActive) MaterialTheme.bbibbiScheme.mainGreen else MaterialTheme.bbibbiScheme.mainGreen.copy(
+            containerColor = if (isActive) buttonColor else buttonColor.copy(
                 alpha = 0.2f
             )
         ),
@@ -33,7 +36,7 @@ fun CTAButton(
     ) {
         Text(
             text = text,
-            color = MaterialTheme.bbibbiScheme.backgroundPrimary,
+            color = textColor,
             style = MaterialTheme.bbibbiTypo.bodyOneBold,
         )
     }

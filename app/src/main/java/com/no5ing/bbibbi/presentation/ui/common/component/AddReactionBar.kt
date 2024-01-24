@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -29,6 +30,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.getEmojiResource
+import com.no5ing.bbibbi.util.getRealEmojiResource
 
 @Composable
 fun AddReactionBar(
@@ -75,16 +77,33 @@ fun AddReactionBar(
                     emojiList.forEach { emojiType ->
                         if(realEmojiMap.containsKey(emojiType)) {
                             val realEmoji = realEmojiMap[emojiType]!!
-                            AsyncImage(
-                                model = asyncImagePainter(source = realEmoji.imageUrl),
-                                contentDescription = null, // 필수 param
-                                modifier = Modifier
-                                    .size(42.dp)
-                                    .clip(CircleShape)
-                                    .clickable {
-                                        onTapRealEmoji(realEmoji)
-                                    },
-                            )
+                            Box(
+                                modifier = Modifier.clickable {
+                                    onTapRealEmoji(realEmoji)
+                                },
+                                contentAlignment = Alignment.BottomEnd,
+                            ) {
+                                Box {
+                                    AsyncImage(
+                                        model = asyncImagePainter(source = realEmoji.imageUrl),
+                                        contentDescription = null, // 필수 param
+                                        modifier = Modifier
+                                            .size(42.dp)
+                                            .clip(CircleShape),
+                                    )
+                                }
+                                Box(
+                                    modifier = Modifier.offset(x = 4.dp, y = 4.dp)
+                                ) {
+                                    Image(
+                                        painter = getRealEmojiResource(emojiName = emojiType),
+                                        contentDescription = null, // 필수 param
+                                        modifier = Modifier
+                                            .size(20.dp),
+                                    )
+                                }
+                            }
+
                         } else {
                             Image(
                                 painter = getEmojiResource(emojiName = emojiType),
@@ -98,13 +117,12 @@ fun AddReactionBar(
                             )
                         }
                     }
-                    Icon(
-                        painter = painterResource(id = R.drawable.camera_icon),
+                    Image(
+                        painter = painterResource(id = R.drawable.camera_button),
                         contentDescription = null,
-                        modifier = Modifier.size(42.dp).clickable {
+                        modifier = Modifier.size(40.dp).clickable {
                             onTapRealEmojiCreate(emojiList.first())
                         },
-                        tint = MaterialTheme.bbibbiScheme.textSecondary,
                     )
                 }
             }

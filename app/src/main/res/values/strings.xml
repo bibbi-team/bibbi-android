@@ -7,7 +7,9 @@
     <string name="home_one_image_per_day">하루에 한 번 사진을 올릴 수 있어요</string>
     <string name="home_not_camera_time">카메라 사용 시간이 아니에요</string>
     <string name="home_already_uploaded_today">오늘의 생존신고는 완료되었어요</string>
-    <string name="home_image_on_duration">매일 12시부터 24시까지 사진을 업로드할 수 있어요</string>
+
+    <string name="home_everyone_uploaded">우리 가족 모두가 사진을 올린 날</string>
+     <string name="home_image_on_duration">매일 12-24시에 사진 한 장을 올려요</string>
     <string name="home_time_not_much">시간이 얼마 남지 않았어요!</string>
     <string name="home_time_over">내일 낮 12시부터 사진을 올릴 수 있어요!</string>
 
@@ -58,9 +60,12 @@
     <string name="onboarding_first_title">매일 낮 12시, 알림을 받으면\n가족에게 사진을 보내세요</string>
     <string name="onboarding_second_title">홈 화면 위젯으로\n가족의 일상을 한 눈에 확인해요</string>
     <string name="onboarding_third_title">하루에 오직 두번 오는 알림,\n놓치지 않으려면 꼭 허용하세요!</string>
-    <string name="onboarding_next">알림 허용하고 시작하기</string>
+    <string name="onboarding_next">알림 허용하고 그룹 생성하기</string>
     <string name="onboarding_next_join">알림 허용하고 입장하기</string>
     <string name="family_me">Me</string>
+
+    <string name="create_new_room_dialog_title">새 그룹방으로 입장</string>
+    <string name="create_new_room_dialog_description">초대 받은 그룹이 없어\n새 그룹방으로 입장할래요</string>
 
     <string name="join_family_title">%1$s님, 가족 중 첫번째로\n방을 생성해보세요</string>
     <string name="join_family_description">하나의 그룹에만 소속될 수 있어요</string>
@@ -82,7 +87,7 @@
 
     <string name="snack_bar_word_limit">%1$d자까지 입력 가능해요</string>
     <string name="snack_bar_no_space">띄어쓰기는 할 수 없어요</string>
-    <string name="snack_bar_saved">앨범에 저장되었어요</string>
+    <string name="snack_bar_saved">사진이 저장되었어요</string>
     <string name="snack_bar_alreday_accepted">이미 권한을 허용했어요</string>
 
     <string name="server_already_uploaded">이미 오늘 게시물을 업로드했어요</string>
@@ -147,7 +152,8 @@
 
     <string name="no_more_calendar_items">더 이상 게시물이 없어요</string>
 
-    <string name="widget_name">삐삐</string>
+    <string name="yellow_widget_name">노란색 삐삐</string>
+    <string name="green_widget_name">초록색 삐삐</string>
     <string name="widget_description">가족들이 생존신고 한 사진을 빠르게 확인할 수 있어요.</string>
 
     <string name="register_day_of_birth_description">안녕하세요 %1$s님,\n생일이 언제신가요?</string>

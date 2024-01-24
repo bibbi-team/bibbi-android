@@ -30,7 +30,7 @@ fun IconedCTAButton(
         shape = RoundedCornerShape(100.dp),
         onClick = { if (isActive) onClick() },
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isActive) MaterialTheme.bbibbiScheme.mainGreen else MaterialTheme.bbibbiScheme.mainGreen.copy(
+            containerColor = if (isActive) MaterialTheme.bbibbiScheme.mainYellow else MaterialTheme.bbibbiScheme.mainYellow.copy(
                 alpha = 0.2f
             )
         ),

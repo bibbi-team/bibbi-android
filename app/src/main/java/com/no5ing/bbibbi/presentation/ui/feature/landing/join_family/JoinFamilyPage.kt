@@ -21,6 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -30,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
+import com.no5ing.bbibbi.presentation.ui.feature.dialog.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
@@ -48,6 +52,9 @@ fun JoinFamilyPage(
     onFamilyCreationComplete: () -> Unit,
     createFamilyAndJoinViewModel: CreateFamilyAndJoinViewModel = hiltViewModel(),
 ) {
+    val createNewDialogVisible = remember {
+        mutableStateOf(false)
+    }
     val meState = retrieveMeViewModel.uiState.collectAsState()
     LaunchedEffect(meState) {
         if (meState.value.isIdle()) {
@@ -71,6 +78,15 @@ fun JoinFamilyPage(
             }
         }
     }
+
+    CustomAlertDialog(
+        enabledState = createNewDialogVisible,
+        title = stringResource(id = R.string.create_new_room_dialog_title),
+        description = stringResource(id = R.string.create_new_room_dialog_description),
+        confirmRequest = {
+            createFamilyAndJoinViewModel.invoke(Arguments())
+        }
+    )
     val nickName = if (meState.value.isReady()) meState.value.data.name else ""
     BBiBBiSurface(
         modifier = Modifier
@@ -111,7 +127,7 @@ fun JoinFamilyPage(
                         radius = 16.dp
                     )
                     .clickable {
-                        createFamilyAndJoinViewModel.invoke(Arguments())
+                        createNewDialogVisible.value = true
                     },
                 contentAlignment = Alignment.Center
             ) {

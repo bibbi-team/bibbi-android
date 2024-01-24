@@ -7,6 +7,7 @@ import android.graphics.Rect
 import android.text.TextPaint
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -54,8 +55,13 @@ import com.no5ing.bbibbi.R
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 import java.time.Duration
+import kotlin.streams.toList
 
-class AppWidget : GlanceAppWidget() {
+class AppWidget(
+    val uid: String = "yellow",
+    val smallImageId: Int = R.drawable.widget_small,
+    val largeImageId: Int = R.drawable.widget_large,
+) : GlanceAppWidget() {
     companion object {
         const val WIDGET_UNAUTHENTICATED = "unauthenticated"
         const val WIDGET_SUCCESS = "success"
@@ -80,7 +86,7 @@ class AppWidget : GlanceAppWidget() {
         val glanceIds = manager.getGlanceIds(AppWidget::class.java)
         if (glanceIds.isEmpty()) {
             Timber.d("Cancel Widget Schedule")
-            WorkManager.getInstance(context).cancelUniqueWork(WIDGET_WORKER_NAME)
+            WorkManager.getInstance(context).cancelUniqueWork(WIDGET_WORKER_NAME + uid)
         }
     }
 
@@ -88,7 +94,7 @@ class AppWidget : GlanceAppWidget() {
         coroutineScope {
             Timber.d("Start Widget Schedule")
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-                WIDGET_WORKER_NAME,
+                WIDGET_WORKER_NAME + uid,
                 ExistingPeriodicWorkPolicy.KEEP,
                 PeriodicWorkRequest.Builder(
                     WidgetImageWorker::class.java,
@@ -109,12 +115,15 @@ class AppWidget : GlanceAppWidget() {
     @Composable
     fun WidgetBody() {
         val size = LocalSize.current
+        val aspectSize = if(size.width > size.height) size.height else size.width
         val result = currentState(resultKey)
         Box(
-            modifier = GlanceModifier.fillMaxSize()
+            modifier = GlanceModifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
         ) {
             Box(
-                modifier = GlanceModifier.fillMaxSize()
+                modifier = GlanceModifier
+                    .size(width = aspectSize, height = aspectSize)
                     .background(Color(0xFF262626))
                     .clickable(actionStartActivity<MainActivity>())
             ) {
@@ -135,7 +144,7 @@ class AppWidget : GlanceAppWidget() {
                     }
 
                     else -> {
-                        EmptyBox(size)
+                        EmptyBox(aspectSize)
                     }
                 }
             }
@@ -178,7 +187,7 @@ class AppWidget : GlanceAppWidget() {
                 contentAlignment = Alignment.TopStart
             ) {
                 val iconBgSound = size.width * 0.3f
-                val iconSize = size.width * 0.29f
+                val iconSize = size.width * 0.28f
                 Box(
                     contentAlignment = Alignment.Center
                 ) {
@@ -191,8 +200,9 @@ class AppWidget : GlanceAppWidget() {
                     Box(
                         modifier = GlanceModifier
                             .size(iconSize)
-                            .background(Color.Transparent)
-                            .cornerRadius(iconSize)
+                            .background(if(profileImagePath != null) Color.Transparent else Color(0xFF3F3F43))
+                            .cornerRadius(iconSize),
+                        contentAlignment = Alignment.Center,
                     ) {
                         if (profileImagePath != null) {
                             Image(
@@ -209,7 +219,7 @@ class AppWidget : GlanceAppWidget() {
                                 style = TextStyle(
                                     color = ColorProvider(Color.White),
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = (iconSize.value.toPx * 0.5).sp,
+                                    fontSize = (iconSize.value * 0.65).sp,
                                 )
                             )
                         }
@@ -238,8 +248,9 @@ class AppWidget : GlanceAppWidget() {
                             itemPadding = 6.dp.value.toPx.toInt(),
                             textPadding = 3.dp.value.toPx.toInt(),
                         )
-                        val lastIndex = postContent.length - 1
-                        postContent.forEachIndexed { index, character ->
+                        val actualContent = postContent.codePoints().toList().map { String(Character.toChars(it)) }
+                        val lastIndex = actualContent.size - 1
+                        actualContent.forEachIndexed { index, character ->
                             Row {
                                 Box(
                                     modifier = GlanceModifier
@@ -274,35 +285,20 @@ class AppWidget : GlanceAppWidget() {
     }
 
     @Composable
-    fun EmptyBox(size: DpSize) {
+    fun EmptyBox(size: Dp) {
         Box(
             modifier = GlanceModifier
-                .padding(16.dp)
                 .fillMaxSize()
         ) {
             Column(
                 modifier = GlanceModifier.fillMaxSize()
             ) {
-                val evaluatedFontSize = autoSizeFont(
-                    "생존신고 할 시간!",
-                    size.width.value.toPx.toInt() - 32.dp.value.toPx.toInt(),
-                    fontSize = 24.0f
-                )
-                Timber.d("evaluatedFontSize: $evaluatedFontSize")
-                Text(
-                    text = "가족에게\n생존신고 할 시간!",
-                    style = TextStyle(
-                        color = ColorProvider(Color.White),
-                        fontSize = evaluatedFontSize,
-                        fontWeight = FontWeight.Bold
-                    ),
-                )
-                Box(modifier = GlanceModifier.defaultWeight()) {}
+                val imageResource = if(size > 200.dp) largeImageId else smallImageId
                 Image(
-                    provider = AndroidResourceImageProvider(R.drawable.widget_background),
+                    provider = AndroidResourceImageProvider(imageResource),
                     contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    modifier = GlanceModifier.fillMaxWidth()
+                    contentScale = ContentScale.FillBounds,
+                    modifier = GlanceModifier.fillMaxSize()
                 )
             }
         }

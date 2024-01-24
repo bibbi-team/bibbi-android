@@ -3,6 +3,8 @@ package com.no5ing.bbibbi.presentation.ui.feature.landing.onboarding
 import android.Manifest
 import android.os.Build
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,10 +15,13 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -28,6 +33,7 @@ import com.no5ing.bbibbi.presentation.state.landing.onboarding.rememberOnBoardin
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
 import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.MeatBall
+import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.emptyPermissionState
 import timber.log.Timber
@@ -54,21 +60,32 @@ fun OnBoardingPage(
 
     BBiBBiSurface(
         modifier = Modifier
-            .fillMaxSize()
-            .systemBarsPadding()
-            .navigationBarsPadding()
+            .fillMaxSize(),
+        color = MaterialTheme.bbibbiScheme.mainYellow,
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding()
+                .navigationBarsPadding(),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            HorizontalPager(state = onBoardingPageState.pagerState) {
-                when (it) {
-                    0 -> OnBoardingFirstPage()
-                    1 -> OnBoardingSecondPage()
-                    2 -> OnBoardingThirdPage()
+            CompositionLocalProvider(
+                LocalOverscrollConfiguration provides null
+            ) {
+                HorizontalPager(
+                    state = onBoardingPageState.pagerState,
+                    modifier = Modifier.weight(1.0f),
+                    verticalAlignment = Alignment.Top,
+                ) {
+                    when (it) {
+                        0 -> OnBoardingFirstPage()
+                        1 -> OnBoardingSecondPage()
+                        2 -> OnBoardingThirdPage()
+                    }
                 }
             }
+
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(
@@ -94,6 +111,8 @@ fun OnBoardingPage(
                             nextViewRoute()
                         }
                     },
+                    buttonColor = MaterialTheme.bbibbiScheme.backgroundPrimary,
+                    textColor = MaterialTheme.bbibbiScheme.white,
                     isActive = onBoardingPageState.pagerState.currentPage == 2,
                 )
             }

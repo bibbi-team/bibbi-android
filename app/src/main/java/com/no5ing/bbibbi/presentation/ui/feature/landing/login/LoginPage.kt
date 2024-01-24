@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -144,24 +146,27 @@ fun LoginPage(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1.0f),
-                verticalArrangement = Arrangement.SpaceEvenly,
+                    .weight(1.0f)
+                    .padding(vertical = 36.dp),
+                verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.login_logo),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(225.dp)
-                        .height(115.dp),
-                    tint = MaterialTheme.bbibbiScheme.white
-                )
+                Column {
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Icon(
+                        painter = painterResource(id = R.drawable.login_logo),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        tint = MaterialTheme.bbibbiScheme.white
+                    )
+                }
                 Image(
                     painter = painterResource(id = R.drawable.login_backgroup),
                     contentDescription = null,
                     modifier = Modifier
-                        .width(275.dp)
-                        .height(207.dp)
+                        .fillMaxWidth(),
+                    contentScale = ContentScale.FillWidth,
                 )
             }
             Column(

@@ -27,7 +27,7 @@ fun MeatBall(
                     .size(8.dp)
                     .clip(CircleShape)
                     .background(
-                        if (currentPage == index) MaterialTheme.bbibbiScheme.white else MaterialTheme.bbibbiScheme.white.copy(
+                        if (currentPage == index) MaterialTheme.bbibbiScheme.backgroundSecondary else MaterialTheme.bbibbiScheme.backgroundSecondary.copy(
                             alpha = 0.2f
                         )
                     )

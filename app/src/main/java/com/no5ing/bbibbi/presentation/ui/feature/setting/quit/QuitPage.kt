@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui.feature.setting.quit
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -138,7 +142,15 @@ fun QuitPage(
                         quitReasons.forEachIndexed { index, pair ->
                             Row(
                                 modifier = Modifier
-                                    .padding(vertical = 14.dp),
+                                    .fillMaxWidth()
+                                    .padding(vertical = 14.dp)
+                                    .clickable {
+                                        if (currentSelection.contains(index)) {
+                                                currentSelection.remove(index)
+                                            } else {
+                                                currentSelection.add(index)
+                                            }
+                                    },
                                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
@@ -152,15 +164,6 @@ fun QuitPage(
                                         }
                                     }
                                 )
-//                                Checkbox(
-//                                    checked = currentSelection.contains(index),
-//                                    onCheckedChange = {
-//                                        if (!it) {
-//                                            currentSelection.remove(index)
-//                                        } else {
-//                                            currentSelection.add(index)
-//                                        }
-//                                    })
                                 Text(
                                     text = pair.second,
                                     color = MaterialTheme.bbibbiScheme.textPrimary,

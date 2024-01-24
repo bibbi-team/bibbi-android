@@ -87,7 +87,7 @@
         <receiver
             android:name=".WidgetReceiver"
             android:exported="false"
-            android:label="@string/widget_name">
+            android:label="@string/yellow_widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -95,6 +95,19 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".GreenWidgetReceiver"
+            android:exported="false"
+            android:label="@string/green_widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_green" />
         </receiver>
 
         <meta-data

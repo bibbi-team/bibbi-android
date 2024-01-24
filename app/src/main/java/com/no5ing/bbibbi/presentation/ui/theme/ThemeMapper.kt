@@ -38,7 +38,7 @@ object BbiBbiColorScheme {
      *
      * Main Color
      */
-    val mainGreen = Color(0xFF3FD960)
+    val mainYellow = Color(0xFFF5F378)
     val mainGreenHover = Color(0xFF3FD960)
 
     /**

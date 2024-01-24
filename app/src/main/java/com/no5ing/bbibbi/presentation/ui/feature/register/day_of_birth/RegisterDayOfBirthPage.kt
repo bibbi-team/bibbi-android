@@ -40,6 +40,7 @@ import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
 import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import java.time.YearMonth
 
 @Composable
 fun RegisterDayOfBirthPage(
@@ -88,7 +89,7 @@ fun RegisterDayOfBirthPage(
                         onValueChange = {
                             val number = it.toIntOrNull() ?: return@DigitizedNumberInput
                             if (number < 0 || number > 9999) return@DigitizedNumberInput
-                            state.isInvalidYearState.value = number > 2023 || number < 1900 //TODO
+                            state.isInvalidYearState.value = number > YearMonth.now().year || number < 1900 //TODO
                             if (it.length == 4 && state.yearTextState.value / 100 > 0) monthFocus.requestFocus()
                             state.yearTextState.value = number
                         },
@@ -122,7 +123,7 @@ fun RegisterDayOfBirthPage(
                         onValueChange = {
                             val number = it.toIntOrNull()
                             if(number == null) {
-                                state.monthTextState.value = 0
+                                state.dayTextState.value = 0
                                 return@DigitizedNumberInput
                             }
                             if (number < 0 || number > 99) return@DigitizedNumberInput

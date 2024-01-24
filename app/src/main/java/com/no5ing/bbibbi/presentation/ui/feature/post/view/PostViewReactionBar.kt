@@ -1,28 +1,21 @@
  package com.no5ing.bbibbi.presentation.ui.feature.post.view
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,8 +33,6 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.PostCommentDialog
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.ReactionListDialog
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
-import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddRealEmojiViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
@@ -49,9 +40,8 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemoveRealEmojiViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.emojiList
-import com.no5ing.bbibbi.util.getEmojiResource
 
-@OptIn(ExperimentalLayoutApi::class)
+ @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PostViewReactionBar(
     modifier: Modifier,
@@ -114,7 +104,7 @@ fun PostViewReactionBar(
                                         .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
                                         .border(
                                             1.dp,
-                                            MaterialTheme.bbibbiScheme.mainGreen,
+                                            MaterialTheme.bbibbiScheme.mainYellow,
                                             RoundedCornerShape(100.dp)
                                         )
                                         .padding(vertical = 6.dp, horizontal = 8.dp)

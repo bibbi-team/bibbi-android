@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -77,6 +78,7 @@ import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.getCameraProvider
 import com.no5ing.bbibbi.util.getEmojiResource
 import com.no5ing.bbibbi.util.getErrorMessage
+import com.no5ing.bbibbi.util.getRealEmojiResource
 import com.no5ing.bbibbi.util.localResources
 import com.no5ing.bbibbi.util.takePhoto
 import kotlinx.coroutines.launch
@@ -312,16 +314,32 @@ fun CreateRealEmojiPage(
                 emojiList.forEach { emojiType ->
                     if(emojiMap.containsKey(emojiType)) {
                         val realEmoji = emojiMap[emojiType]!!
-                        AsyncImage(
-                            model = asyncImagePainter(source = realEmoji.imageUrl),
-                            contentDescription = null, // 필수 param
-                            modifier = Modifier
-                                .size(42.dp)
-                                .clip(CircleShape)
-                                .clickable {
-                                    selectedEmoji = emojiType
-                                },
-                        )
+                        Box(
+                            modifier = Modifier.clickable {
+                                selectedEmoji = emojiType
+                            },
+                            contentAlignment = Alignment.BottomEnd,
+                        ) {
+                            Box {
+                                AsyncImage(
+                                    model = asyncImagePainter(source = realEmoji.imageUrl),
+                                    contentDescription = null, // 필수 param
+                                    modifier = Modifier
+                                        .size(42.dp)
+                                        .clip(CircleShape),
+                                )
+                            }
+                            Box(
+                                modifier = Modifier.offset(x = 4.dp, y = 4.dp)
+                            ) {
+                                Image(
+                                    painter = getRealEmojiResource(emojiName = emojiType),
+                                    contentDescription = null, // 필수 param
+                                    modifier = Modifier
+                                        .size(20.dp),
+                                )
+                            }
+                        }
                     } else {
                         Image(
                             painter = getEmojiResource(emojiName = emojiType),

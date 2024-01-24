@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -54,10 +55,11 @@ fun AlreadyFamilyExistsView(
                 )
             }
             Image(
-                painter = painterResource(R.drawable.ppippi),
+                painter = painterResource(R.drawable.bbibbi),
                 contentDescription = null, // 필수 param
                 modifier = Modifier
-                    .size(171.dp),
+                    .fillMaxWidth(),
+                contentScale = ContentScale.FillWidth,
             )
             CTAButton(
                 text = stringResource(id = R.string.already_family_exists_confirm),

@@ -16,6 +16,16 @@ fun getEmojiResource(emojiName: String): Painter = when (emojiName.lowercase(Loc
     else -> painterResource(id = R.drawable.emoji_1) //TBD
 }
 
+@Composable
+fun getRealEmojiResource(emojiName: String): Painter = when (emojiName.lowercase(Locale.ROOT)) {
+    "emoji_1" -> painterResource(id = R.drawable.real_emoji_1)
+    "emoji_2" -> painterResource(id = R.drawable.real_emoji_2)
+    "emoji_3" -> painterResource(id = R.drawable.real_emoji_3)
+    "emoji_4" -> painterResource(id = R.drawable.real_emoji_4)
+    "emoji_5" -> painterResource(id = R.drawable.real_emoji_5)
+    else -> painterResource(id = R.drawable.real_emoji_2) //TBD
+}
+
 val emojiList = listOf(
     "emoji_1",
     "emoji_2",

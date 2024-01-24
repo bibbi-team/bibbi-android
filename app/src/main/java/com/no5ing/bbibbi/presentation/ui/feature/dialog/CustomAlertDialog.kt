@@ -75,22 +75,22 @@ fun CustomAlertDialog(
                         ) {
                             Text(
                                 cancelMessage,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 17.sp
+                                style = MaterialTheme.bbibbiTypo.bodyOneBold,
+                                color = Color(0xffFFFFFF)
                             )
                         }
                         Button(
                             onClick = confirmRequest,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.bbibbiScheme.mainGreen
+                                containerColor = MaterialTheme.bbibbiScheme.mainYellow
                             ),
                             shape = RoundedCornerShape(10.dp),
                             modifier = Modifier.size(width = 126.dp, height = 44.dp)
                         ) {
                             Text(
                                 confirmMessage,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 17.sp
+                                style = MaterialTheme.bbibbiTypo.bodyOneBold,
+                                color = Color(0xff242427)
                             )
                         }
                     }
@@ -100,15 +100,14 @@ fun CustomAlertDialog(
                     Text(
                         title,
                         color = MaterialTheme.bbibbiScheme.iconSelected,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 17.sp
+                        style = MaterialTheme.bbibbiTypo.headTwoBold,
                     )
                 },
                 text = {
                     Text(
                         description,
-                        color = MaterialTheme.bbibbiScheme.textPrimary,
-                        fontSize = 13.sp,
+                        color = MaterialTheme.bbibbiScheme.textSecondary ,
+                        style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                         textAlign = TextAlign.Center,
                     )
                 },

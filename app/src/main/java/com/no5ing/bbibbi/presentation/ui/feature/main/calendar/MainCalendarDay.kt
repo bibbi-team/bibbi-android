@@ -46,7 +46,7 @@ fun <T : SelectionState> MainCalendarDay(
     val data = monthState[date]
     val isSelected = selectionState.isDateSelected(date)
     val textColor =
-        (if (state.isCurrentDay && state.isFromCurrentMonth) MaterialTheme.bbibbiScheme.mainGreen
+        (if (state.isCurrentDay && state.isFromCurrentMonth) MaterialTheme.bbibbiScheme.mainYellow
         else if (state.isFromCurrentMonth) MaterialTheme.bbibbiScheme.white
         else MaterialTheme.bbibbiScheme.button)
             .copy(
@@ -54,7 +54,7 @@ fun <T : SelectionState> MainCalendarDay(
             )
 
     val boxBorderColor = if (isSelected) MaterialTheme.bbibbiScheme.white
-    else if (state.isCurrentDay && state.isFromCurrentMonth) MaterialTheme.bbibbiScheme.mainGreen.copy(
+    else if (state.isCurrentDay && state.isFromCurrentMonth) MaterialTheme.bbibbiScheme.mainYellow.copy(
         alpha = if (isSelectableState && !isSelected) 0.3f else 1.0f
     )
     else Color.Transparent
@@ -125,7 +125,7 @@ fun <T : SelectionState> MainCalendarDay(
                         Icon(
                             painter = painterResource(id = R.drawable.bbibbi_smile),
                             contentDescription = null,
-                            tint = MaterialTheme.bbibbiScheme.mainGreen,
+                            tint = MaterialTheme.bbibbiScheme.mainYellow,
                             modifier = Modifier
                                 .fillMaxSize(),
                         )

@@ -28,11 +28,15 @@ fun OnBoardingThirdPage() {
         Text(
             text = stringResource(id = R.string.onboarding_third_title),
             style = MaterialTheme.bbibbiTypo.headOne,
-            color = MaterialTheme.bbibbiScheme.iconSelected,
+            color = MaterialTheme.bbibbiScheme.backgroundPrimary,
             modifier = Modifier.padding(horizontal = 20.dp)
         )
-        Spacer(modifier = Modifier.height(24.dp))
-        Box {
+        Spacer(modifier = Modifier.height(129.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 42.dp)
+        ) {
             Image(
                 painter = painterResource(R.drawable.landing_three),
                 contentDescription = null, // 필수 param

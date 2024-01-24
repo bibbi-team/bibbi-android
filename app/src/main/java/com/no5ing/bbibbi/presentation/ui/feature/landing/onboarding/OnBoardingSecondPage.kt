@@ -28,11 +28,15 @@ fun OnBoardingSecondPage() {
         Text(
             text = stringResource(id = R.string.onboarding_second_title),
             style = MaterialTheme.bbibbiTypo.headOne,
-            color = MaterialTheme.bbibbiScheme.iconSelected,
+            color = MaterialTheme.bbibbiScheme.backgroundPrimary,
             modifier = Modifier.padding(horizontal = 20.dp)
         )
-        Spacer(modifier = Modifier.height(24.dp))
-        Box {
+        Spacer(modifier = Modifier.height(94.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 55.dp)
+        ) {
             Image(
                 painter = painterResource(R.drawable.landing_two),
                 contentDescription = null, // 필수 param

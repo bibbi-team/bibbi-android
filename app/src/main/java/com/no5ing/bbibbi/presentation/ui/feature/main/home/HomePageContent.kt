@@ -133,9 +133,9 @@ fun HomePageContent(
                         onTapProfile = onTapProfile,
                         onTapInvite = onTapInvite,
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
                     Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
                     UploadCountDownBar()
                 }
 
@@ -166,15 +166,16 @@ fun HomePageContent(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .height(400.dp),
+                            .height(300.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
                         Image(
-                            painter = painterResource(R.drawable.ppippi),
+                            painter = painterResource(R.drawable.bbibbi),
                             contentDescription = null, // 필수 param
                             modifier = Modifier
-                                .size(171.dp),
+                                .fillMaxWidth(),
+                            contentScale = ContentScale.FillWidth,
                         )
 
                     }

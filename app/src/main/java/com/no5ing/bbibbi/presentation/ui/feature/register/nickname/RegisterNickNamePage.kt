@@ -51,7 +51,7 @@ fun RegisterNickNamePage(
 ) {
     val textBoxFocus = remember { FocusRequester() }
     val interactionSource = remember { MutableInteractionSource() }
-    val maxWord = 10
+    val maxWord = 9
     val wordExceedMessage = stringResource(id = R.string.register_nickname_word_below_n, maxWord)
     BBiBBiSurface(
         modifier = Modifier

@@ -164,7 +164,7 @@ fun RegisterProfileImagePage(
                                 modifier = Modifier
                                     .clip(CircleShape)
                                     .size(90.dp)
-                                    .background(MaterialTheme.bbibbiScheme.mainGreen),
+                                    .background(MaterialTheme.bbibbiScheme.mainYellow),
                                 painter = rememberAsyncImagePainter(model = state.profileImageUri.value),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop

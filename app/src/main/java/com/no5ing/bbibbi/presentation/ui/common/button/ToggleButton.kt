@@ -32,19 +32,15 @@ fun ToggleButton(
             .clickable {
                 onTap()
             }
-            .width(45.dp)
+            .width(24.dp)
     ) {
         Box(
             modifier = Modifier
-                .size(35.dp)
-                .background(MaterialTheme.bbibbiScheme.gray600, RoundedCornerShape(8.dp))
-                .align(Alignment.CenterStart)
+                .size(24.dp)
+                .background(MaterialTheme.bbibbiScheme.backgroundHover, RoundedCornerShape(4.dp))
+                .align(Alignment.Center)
         )
-        Box(
-            modifier = Modifier.offset {
-                IntOffset(x = -15, y = 0)
-            }
-        ) {
+        Box {
             AnimatedVisibility(
                 visible = isToggled,
                 enter = fadeIn(),
@@ -54,7 +50,7 @@ fun ToggleButton(
                     painter = painterResource(id = R.drawable.check_icon),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(width = 45.dp, height = 31.dp),
+                        .size(width = 14.5.dp, height = 10.dp),
                 )
             }
         }

@@ -112,6 +112,9 @@ object MainFamilyDestination : NavigationDestination(
                 val shareIntent = Intent.createChooser(sendIntent, "Share URL")
                 navController.context.startActivity(shareIntent)
             },
+            onTapSetting = {
+                navController.navigate(SettingDestination)
+            }
         )
     },
 )

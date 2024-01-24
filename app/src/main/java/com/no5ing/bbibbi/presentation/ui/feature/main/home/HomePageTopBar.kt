@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,12 +39,11 @@ fun HomePageTopBar(
                 .padding(horizontal = 18.dp, vertical = 3.dp)
 
         ) {
-            Icon(
+            Image(
                 painter = painterResource(id = R.drawable.add_people_icon),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(26.dp),
-                tint = MaterialTheme.bbibbiScheme.icon
+                    .size(28.dp),
             )
         }
 
@@ -64,7 +64,7 @@ fun HomePageTopBar(
                 painter = painterResource(id = R.drawable.calendar_icon),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(24.dp),
+                    .size(28.dp),
                 tint = MaterialTheme.bbibbiScheme.icon
             )
         }

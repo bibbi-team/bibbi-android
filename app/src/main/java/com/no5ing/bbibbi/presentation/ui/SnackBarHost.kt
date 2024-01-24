@@ -53,6 +53,7 @@ fun CustomSnackBarHost(
                 when (snackbarData.visuals.actionLabel ?: "") {
                     snackBarWarning -> WarningIcon()
                     snackBarInfo -> InfoIcon()
+                    snackBarCamera -> CameraIcon()
                     else -> Icon(
                         imageVector = Icons.Default.Email,
                         tint = MaterialTheme.bbibbiScheme.white,
@@ -71,6 +72,7 @@ fun CustomSnackBarHost(
 
 const val snackBarWarning = "warning"
 const val snackBarInfo = "info"
+const val snackBarCamera = "camera"
 const val snackBarSuccess = "info"
 
 @Composable
@@ -78,6 +80,15 @@ private fun WarningIcon() {
     Icon(
         painter = painterResource(id = R.drawable.warning_circle_icon),
         tint = MaterialTheme.bbibbiScheme.warningRed,
+        contentDescription = null
+    )
+}
+
+@Composable
+private fun CameraIcon() {
+    Icon(
+        painter = painterResource(id = R.drawable.camera_icon),
+        tint = MaterialTheme.bbibbiScheme.textSecondary,
         contentDescription = null
     )
 }

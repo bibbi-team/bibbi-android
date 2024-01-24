@@ -3,7 +3,6 @@ package com.no5ing.bbibbi.presentation.ui.feature.dialog
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,7 +25,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,21 +39,16 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -88,7 +81,6 @@ import com.no5ing.bbibbi.util.gapBetweenNow
 import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.localResources
 import com.no5ing.bbibbi.util.pxToDp
-import kotlinx.coroutines.CoroutineScope
 import timber.log.Timber
 
 @OptIn(
@@ -407,7 +399,7 @@ fun KeyboardBar(
                     text = stringResource(id = R.string.comment_dialog_text_field_enter),
                     style = MaterialTheme.bbibbiTypo.bodyOneRegular,
                     color = if (keyboardTextStr.isEmpty()) MaterialTheme.bbibbiScheme.gray500
-                    else MaterialTheme.bbibbiScheme.mainGreen,
+                    else MaterialTheme.bbibbiScheme.mainYellow,
                     modifier = Modifier.clickable {
                         onSend()
                     }

@@ -101,7 +101,6 @@ fun JoinFamilyWithLinkPage(
             .fillMaxSize()
             .systemBarsPadding()
             .imePadding()
-            .padding(horizontal = 10.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -114,6 +113,7 @@ fun JoinFamilyWithLinkPage(
             )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(horizontal = 10.dp)
             ) {
                 Text(
                     text = stringResource(id = R.string.join_family_with_link_title),
@@ -209,6 +209,7 @@ fun JoinFamilyWithLinkPage(
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(horizontal = 10.dp)
             ) {
                 CTAButton(
                     text = stringResource(id = R.string.join_family_with_link_enter_group),

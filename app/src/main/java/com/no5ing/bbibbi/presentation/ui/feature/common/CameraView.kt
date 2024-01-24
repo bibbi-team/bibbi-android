@@ -19,6 +19,7 @@ import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -79,6 +80,7 @@ fun CameraView(
     val cameraState = remember { mutableStateOf<Camera?>(null) }
     val captureState = remember { mutableStateOf(ImageCapture.Builder().build()) }
     var isCapturing by remember { mutableStateOf(false) }
+    var isZoomed by remember { mutableStateOf(false) }
     val previewView = remember {
         PreviewView(
             context,
@@ -152,13 +154,35 @@ fun CameraView(
                 title = stringResource(id = R.string.camera_title),
             )
             Spacer(modifier = Modifier.height(48.dp))
-            AndroidView(
-                { previewView },
-                modifier = Modifier
-                    .aspectRatio(1.0f)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(48.dp)),
-            )
+            Box {
+                AndroidView(
+                    { previewView },
+                    modifier = Modifier
+                        .aspectRatio(1.0f)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(48.dp)),
+                )
+                Box(
+                    modifier = Modifier
+                        .aspectRatio(1.0f)
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.zoom_button),
+                        contentDescription = null,
+                        modifier = Modifier.size(43.dp).clickable {
+                            isZoomed = !isZoomed
+                            cameraState.value?.cameraControl?.setLinearZoom(
+                                if (isZoomed) 0.5f else 0.0f
+                            )
+                        }
+                    )
+
+                }
+            }
+
             Spacer(modifier = Modifier.height(36.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),

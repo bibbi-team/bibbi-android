@@ -1,8 +1,14 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.home
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
@@ -61,15 +68,35 @@ fun UploadCountDownBar(
         Text(
             text = timeStr.value,
             style = MaterialTheme.bbibbiTypo.headOne,
-            color = if (warningState.value > 0) MaterialTheme.bbibbiScheme.warningRed else MaterialTheme.bbibbiScheme.white,
+            color = if (warningState.value == 1) MaterialTheme.bbibbiScheme.warningRed else MaterialTheme.bbibbiScheme.white,
         )
-        Text(
-            text = if (warningState.value == 1) stringResource(id = R.string.home_time_not_much)
-            else if (warningState.value == 2) stringResource(id = R.string.home_time_over)
-            else stringResource(id = R.string.home_image_on_duration),
-            color = MaterialTheme.bbibbiScheme.textSecondary,
-            style = MaterialTheme.bbibbiTypo.bodyTwoRegular ,
-        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Text(
+                text = if (warningState.value == 1) stringResource(id = R.string.home_time_not_much)
+                else if (warningState.value == 2) stringResource(id = R.string.home_time_over)
+                else stringResource(id = R.string.home_image_on_duration),
+                color = MaterialTheme.bbibbiScheme.textSecondary,
+                style = MaterialTheme.bbibbiTypo.bodyTwoRegular ,
+            )
+
+            if(warningState.value == 1) {
+                Image(
+                    painter = painterResource(id = R.drawable.fire_icon),
+                    contentDescription =null,
+                    modifier = Modifier.size(20.dp)
+                )
+            } else if(warningState.value == 0) {
+                Image(
+                    painter = painterResource(id = R.drawable.smile_icon),
+                    contentDescription =null,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
     }
 }
 

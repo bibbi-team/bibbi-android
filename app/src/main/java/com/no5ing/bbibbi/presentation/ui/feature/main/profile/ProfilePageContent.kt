@@ -74,10 +74,11 @@ fun ProfilePageContent(
                 verticalArrangement = Arrangement.Center,
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ppippi),
+                    painter = painterResource(R.drawable.no_uploaded_image),
                     contentDescription = null, // 필수 param
                     modifier = Modifier
-                        .size(171.dp),
+                        .size(width = 126.dp, height = 118.dp),
+                    contentScale = ContentScale.FillWidth,
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
