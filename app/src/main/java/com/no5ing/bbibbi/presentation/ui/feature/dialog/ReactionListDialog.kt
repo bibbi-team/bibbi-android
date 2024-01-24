@@ -67,6 +67,7 @@ import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestin
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
+import com.no5ing.bbibbi.presentation.uistate.post.RealEmojiPostReactionUiState
 import com.no5ing.bbibbi.util.CustomDialogPosition
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.asyncImagePainter
@@ -78,15 +79,11 @@ import com.no5ing.bbibbi.util.getScreenSize
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ReactionListDialog(
-    selectedEmoji: String,
-    selectedEmojiType: String,
+    selectedEmoji: PostReactionUiState,
     isEnabled: MutableState<Boolean> = remember { mutableStateOf(false) },
-    // emojiMap: Map<String, List<PostReactionUiState>>,
     myGroup: List<PostReactionUiState>,
-    //  postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
 ) {
     if (isEnabled.value) {
-        val isRealEmoji = !selectedEmoji.toLowerCase(Locale.current).startsWith("emoji")
         val navController = LocalNavigateControllerState.current
         var showAnimate by remember {
             mutableStateOf(false)
@@ -111,10 +108,6 @@ fun ReactionListDialog(
                 window.setWindowAnimations(-1)
             }
             val (width, height) = getScreenSize()
-
-
-            //  val memberState = postViewReactionMemberViewModel.uiState.collectAsState()
-            // val myGroup = emojiMap[selectedEmoji] ?: emptyList()
             val totalCntMessage = stringResource(id = R.string.emoji_reaction_total, myGroup.size)
             Box(
                 modifier = Modifier
@@ -192,13 +185,13 @@ fun ReactionListDialog(
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    if (isRealEmoji) {
+                                    if (selectedEmoji is RealEmojiPostReactionUiState) {
                                         Box(
                                             contentAlignment = Alignment.BottomEnd,
                                         ) {
                                             Box {
                                                 AsyncImage(
-                                                    model = asyncImagePainter(selectedEmoji),
+                                                    model = asyncImagePainter(selectedEmoji.imageUrl),
                                                     contentDescription = null, // 필수 param
                                                     modifier = Modifier
                                                         .size(42.dp)
@@ -209,7 +202,7 @@ fun ReactionListDialog(
                                                 modifier = Modifier.offset(x = 4.dp, y = 4.dp)
                                             ) {
                                                 Image(
-                                                    painter = getRealEmojiResource(emojiName = selectedEmojiType),
+                                                    painter = getRealEmojiResource(emojiName = selectedEmoji.emojiType),
                                                     contentDescription = null, // 필수 param
                                                     modifier = Modifier
                                                         .size(20.dp),
@@ -218,7 +211,7 @@ fun ReactionListDialog(
                                         }
                                     } else {
                                         Image(
-                                            painter = getEmojiResource(emojiName = selectedEmoji),
+                                            painter = getEmojiResource(emojiName = selectedEmoji.emojiType),
                                             contentDescription = null, // 필수 param
                                             modifier = Modifier
                                                 .size(width = 42.dp, height = 42.dp)

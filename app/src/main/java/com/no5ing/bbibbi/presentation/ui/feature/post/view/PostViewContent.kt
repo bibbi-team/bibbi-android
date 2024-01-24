@@ -36,6 +36,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemoveRealEmojiViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.asyncImagePainter
+import timber.log.Timber
 
 @Composable
 fun PostViewContent(
@@ -46,7 +47,6 @@ fun PostViewContent(
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
     addRealEmojiViewModel: AddRealEmojiViewModel = hiltViewModel(),
-    removeRealEmojiViewModel: RemoveRealEmojiViewModel = hiltViewModel(),
     postRealEmojiListViewModel: MemberRealEmojiListViewModel = hiltViewModel(),
     addEmojiBarState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
@@ -109,9 +109,9 @@ fun PostViewContent(
                     realEmojiMap = memberRealEmojiState,
                     onTapEmoji = {
                         val toggled =
-                            familyPostReactionBarViewModel.toggleReact(
+                            familyPostReactionBarViewModel.toggleEmoji(
                                 memberId = memberId,
-                                emoji = it
+                                emojiType = it
                             )
 
                         if (toggled) {
@@ -127,13 +127,16 @@ fun PostViewContent(
                         }
                     },
                     onTapRealEmoji = {
-                        val toggled =
-                            familyPostReactionBarViewModel.toggleReact(
+                        if (!familyPostReactionBarViewModel.hasRealEmoji(
                                 memberId = memberId,
-                                realEmoji = it
+                                realEmojiId = it.realEmojiId
+                            )) {
+                            familyPostReactionBarViewModel.reactRealEmoji(
+                                memberId = memberId,
+                                realEmojiType = it.type,
+                                realEmojiId = it.realEmojiId,
+                                realEmojiUrl = it.imageUrl
                             )
-
-                        if (toggled) {
                             addRealEmojiViewModel.invoke(
                                 Arguments(
                                     resourceId = post.postId,

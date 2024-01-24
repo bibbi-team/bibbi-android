@@ -5,8 +5,11 @@ import com.no5ing.bbibbi.data.datasource.local.MemberCacheProvider
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.uistate.post.NormalPostReactionUiState
 import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
+import com.no5ing.bbibbi.presentation.uistate.post.RealEmojiPostReactionUiState
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
+import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.parallelMap
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,40 +31,37 @@ class PostReactionBarViewModel @Inject constructor(
         val previousList = uiState.value.toMutableList()
         viewModelScope.launch {
             previousList.add(
-                PostReactionUiState(
+                NormalPostReactionUiState(
                     reactionId = "temp",
                     memberId = memberId,
                     emojiType = emoji,
                     isMe = true,
                     member = memberCacheProvider.getMember(memberId),
-                    isRealEmoji = false,
-                    realEmojiUrl = null,
                 )
             )
             setState(previousList)
         }
     }
 
-    private fun reactRealEmoji(memberId: String, emoji: MemberRealEmoji) {
+    fun reactRealEmoji(memberId: String, realEmojiType: String, realEmojiUrl: String, realEmojiId: String) {
         val previousList = uiState.value.toMutableList()
         viewModelScope.launch {
             previousList.add(
-                PostReactionUiState(
+                RealEmojiPostReactionUiState(
                     reactionId = "temp",
                     memberId = memberId,
-                    emojiType = emoji.realEmojiId,
+                    emojiType = realEmojiType,
                     isMe = true,
                     member = memberCacheProvider.getMember(memberId),
-                    isRealEmoji = true,
-                    realEmojiUrl = emoji.imageUrl,
-                    realEmojiType = emoji.type,
+                    imageUrl = realEmojiUrl,
+                    realEmojiId = realEmojiId
                 )
             )
             setState(previousList)
         }
     }
 
-    private fun unReactMe(emoji: String) {
+    private fun unReactEmoji(emoji: String) {
         val previousList = uiState.value.toMutableList()
         previousList.removeIf {
             it.emojiType == emoji && it.isMe
@@ -69,29 +69,52 @@ class PostReactionBarViewModel @Inject constructor(
         setState(previousList)
     }
 
-    fun toggleReact(memberId: String, emoji: String): Boolean {
-        val isMeReacted = uiState.value.any {
-            it.emojiType == emoji && it.isMe
+    private fun unReactRealEmoji(realEmojiId: String) {
+        val previousList = uiState.value.toMutableList()
+        previousList.removeIf {
+            it is RealEmojiPostReactionUiState && it.realEmojiId == realEmojiId && it.isMe
         }
-        if (isMeReacted) {
-            unReactMe(emoji)
-            return false
+        setState(previousList)
+    }
+
+    fun toggleEmoji(memberId: String, emojiType: String): Boolean {
+        val isMeReacted = uiState.value.any {
+            it.emojiType == emojiType && it.isMe
+        }
+        return if (isMeReacted) {
+            unReactEmoji(emojiType)
+            false
         } else {
-            reactMe(memberId, emoji)
-            return true
+            reactMe(memberId, emojiType)
+            true
         }
     }
 
-    fun toggleReact(memberId: String, realEmoji: MemberRealEmoji): Boolean {
-        val isMeReacted = uiState.value.any {
-            it.emojiType == realEmoji.realEmojiId && it.isMe
+    fun hasRealEmoji(memberId: String, realEmojiId: String): Boolean {
+        return uiState.value.any {
+            it is RealEmojiPostReactionUiState && it.realEmojiId == realEmojiId && it.memberId == memberId
         }
-        if (isMeReacted) {
-            unReactMe(realEmoji.realEmojiId)
-            return false
+    }
+
+    fun toggleRealEmoji(memberId: String, realEmoji: MemberRealEmoji): Boolean {
+        return toggleRealEmoji(memberId, realEmoji.realEmojiId, realEmoji.imageUrl, realEmoji.type)
+    }
+
+    fun toggleRealEmoji(memberId: String, realEmojiId: String, realEmojiUrl: String, realEmojiType: String): Boolean {
+        val isMeReacted = uiState.value.any {
+            it is RealEmojiPostReactionUiState && it.realEmojiId == realEmojiId && it.isMe
+        }
+        return if (isMeReacted) {
+            unReactRealEmoji(realEmojiId)
+            false
         } else {
-            reactRealEmoji(memberId, realEmoji)
-            return true
+           reactRealEmoji(
+                memberId = memberId,
+                realEmojiType = realEmojiType,
+                realEmojiId = realEmojiId,
+                realEmojiUrl = realEmojiUrl
+            )
+            true
         }
     }
 
@@ -117,26 +140,23 @@ class PostReactionBarViewModel @Inject constructor(
                 realEmojiReactions.await().suspendOnSuccess {
                     val realEmojisData = data
                     val first = postReactionsData.results.parallelMap {
-                        PostReactionUiState(
+                        NormalPostReactionUiState(
                             reactionId = it.reactionId,
                             memberId = it.memberId,
                             emojiType = it.emojiType,
                             isMe = it.memberId == memberId,
                             member = memberCacheProvider.getMember(it.memberId),
-                            isRealEmoji = false,
-                            realEmojiUrl = null,
                         )
                     }
                     val second = realEmojisData.results.parallelMap {
-                        PostReactionUiState(
+                        RealEmojiPostReactionUiState(
                             reactionId = it.postRealEmojiId,
                             memberId = it.memberId,
-                            realEmojiUrl = it.emojiImageUrl,
+                            imageUrl = it.emojiImageUrl,
                             isMe = it.memberId == memberId,
                             member = memberCacheProvider.getMember(it.memberId),
-                            isRealEmoji = true,
-                            emojiType = it.realEmojiId,
-                            realEmojiType = it.emojiType,
+                            emojiType = it.emojiType,
+                            realEmojiId = it.realEmojiId
                         )
                     }
                     val resultList = (first + second).sortedBy { it.reactionId }

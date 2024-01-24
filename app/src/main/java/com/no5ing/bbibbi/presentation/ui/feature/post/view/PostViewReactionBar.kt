@@ -32,6 +32,8 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.PostCommentDialog
 import com.no5ing.bbibbi.presentation.ui.feature.dialog.ReactionListDialog
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
+import com.no5ing.bbibbi.presentation.uistate.post.RealEmojiPostReactionUiState
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddRealEmojiViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
@@ -67,17 +69,16 @@ fun PostViewReactionBar(
             )
         )
     }
-    val selectedEmoji = remember { mutableStateOf(emojiList.first()) }
-    val selectedEmojiKey = remember { mutableStateOf(emojiList.first()) }
-    val selectedEmojiType = remember { mutableStateOf(emojiList.first()) }
-    val emojiMap = uiState.value.groupBy { it.emojiType }
+    val selectedEmoji = remember { mutableStateOf<PostReactionUiState>(PostReactionUiState.mock()) }
+   // val selectedEmojiKey = remember { mutableStateOf(emojiList.first()) }
+ //   val selectedEmojiType = remember { mutableStateOf(emojiList.first()) }
+    val emojiMap = uiState.value.groupBy { it.getGroupKey() }
     val groupEmoji = emojiMap.toList()
     val reactionDialogState = remember { mutableStateOf(false) }
     ReactionListDialog(
         isEnabled = reactionDialogState,
-        myGroup = emojiMap[selectedEmojiKey.value] ?: emptyList(),
+        myGroup = emojiMap[selectedEmoji.value.getGroupKey()] ?: emptyList(),
         selectedEmoji = selectedEmoji.value,
-        selectedEmojiType = selectedEmojiType.value,
     )
     PostCommentDialog(
         postId = post.postId,
@@ -128,20 +129,26 @@ fun PostViewReactionBar(
                     repeat(groupEmoji.size) {
                         val item = groupEmoji[it]
                         val isMeReacted = item.second.any { elem -> elem.isMe }
-                        val isRealEmoji = item.second.first().isRealEmoji
-                        if (isRealEmoji) {
+                        val emojiMetadata = item.second.first()
+                        if (emojiMetadata is RealEmojiPostReactionUiState) {
                             PostViewRealEmojiElement(
-                                emojiType = item.second.first().realEmojiType ?: emojiList.first(),
-                                iconUrl = item.second.first().realEmojiUrl!!,
+                                emojiType = emojiMetadata.emojiType,
+                                iconUrl = emojiMetadata.imageUrl,
                                 emojiCnt = item.second.size,
                                 isMeReacted = isMeReacted,
                                 onTap = {
-                                    if (isMeReacted) {
+                                    val hasMatch = familyPostReactionBarViewModel.toggleRealEmoji(
+                                        memberId = memberId,
+                                        realEmojiId = emojiMetadata.realEmojiId,
+                                        realEmojiUrl = emojiMetadata.imageUrl,
+                                        realEmojiType = emojiMetadata.emojiType,
+                                    )
+                                    if (!hasMatch) {
                                         removeRealEmojiViewModel.invoke(
                                             Arguments(
                                                 resourceId = post.postId,
                                                 mapOf(
-                                                    "realEmojiId" to item.first
+                                                    "realEmojiId" to emojiMetadata.realEmojiId
                                                 )
                                             )
                                         )
@@ -150,21 +157,15 @@ fun PostViewReactionBar(
                                             Arguments(
                                                 resourceId = post.postId,
                                                 mapOf(
-                                                    "realEmojiId" to item.first
+                                                    "realEmojiId" to emojiMetadata.realEmojiId
                                                 )
                                             )
                                         )
                                     }
-                                    familyPostReactionBarViewModel.toggleReact(
-                                        memberId = memberId,
-                                        emoji = item.first
-                                    )
+
                                 },
                                 onLongTap = {
-                                    selectedEmojiKey.value = item.first
-                                    selectedEmoji.value = item.second.first().realEmojiUrl!!
-                                    selectedEmojiType.value =
-                                        item.second.first().realEmojiType ?: emojiList.first()
+                                    selectedEmoji.value = emojiMetadata
                                     reactionDialogState.value = true
                                 }
                             )
@@ -193,14 +194,13 @@ fun PostViewReactionBar(
                                             )
                                         )
                                     }
-                                    familyPostReactionBarViewModel.toggleReact(
+                                    familyPostReactionBarViewModel.toggleEmoji(
                                         memberId = memberId,
-                                        emoji = item.first
+                                        emojiType = item.first
                                     )
                                 },
                                 onLongTap = {
-                                    selectedEmojiKey.value = item.first
-                                    selectedEmoji.value = item.first
+                                    selectedEmoji.value = item.second.first()
                                     reactionDialogState.value = true
                                 }
                             )
