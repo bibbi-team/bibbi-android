@@ -109,14 +109,20 @@ fun LoginPage(
             }
 
             LoginStatus.SUCCEED_PERMANENT_HAS_FAMILY -> {
+                loginPageState.isLoggingIn.value = false
+                loginViewModel.resetState()
                 onCompleted(LoginSucceedResult.PERMANENT_HAS_FAMILY)
             }
 
             LoginStatus.SUCCEED_PERMANENT_NO_FAMILY -> {
+                loginPageState.isLoggingIn.value = false
+                loginViewModel.resetState()
                 onCompleted(LoginSucceedResult.PERMANENT_NO_FAMILY)
             }
 
             LoginStatus.SUCCEED_TEMPORARY -> {
+                loginPageState.isLoggingIn.value = false
+                loginViewModel.resetState()
                 onCompleted(LoginSucceedResult.TEMPORARY)
             }
 

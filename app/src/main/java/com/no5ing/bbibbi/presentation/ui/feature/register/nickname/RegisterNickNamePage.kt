@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -73,6 +74,7 @@ fun RegisterNickNamePage(
                     color = MaterialTheme.bbibbiScheme.textSecondary,
                     style = MaterialTheme.bbibbiTypo.headTwoBold,
                 )
+                Spacer(modifier = Modifier.height(8.dp))
                 BasicTextField(
                     value = state.nicknameTextState.value,
                     interactionSource = interactionSource,
@@ -80,13 +82,13 @@ fun RegisterNickNamePage(
                         keyboardType = KeyboardType.Text,
                     ),
                     onValueChange = {
-                        state.nicknameTextState.value = it
+                        val prevWord = state.nicknameTextState.value
                         state.ctaButtonEnabledState.value = it.length >= 2
                         if (it.length > maxWord) {
                             state.isInvalidInputState.value = true
                             state.invalidInputDescState.value = wordExceedMessage
-                            state.ctaButtonEnabledState.value = false
-                        } else {
+                        } else if(prevWord != it) {
+                            state.nicknameTextState.value = it
                             state.isInvalidInputState.value = false
                         }
                     },
@@ -165,7 +167,7 @@ fun RegisterNickNamePage(
                         .fillMaxWidth()
                         .padding(vertical = 12.dp),
                     contentPadding = PaddingValues(vertical = 18.dp),
-                    isActive = state.ctaButtonEnabledState.value,
+                    isActive = state.nicknameTextState.value.length in 2..maxWord,
                     onClick = onNextPage,
                 )
             }

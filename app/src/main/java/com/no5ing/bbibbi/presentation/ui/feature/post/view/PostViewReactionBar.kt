@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -28,7 +29,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
@@ -90,119 +93,125 @@ fun PostViewReactionBar(
         isEnabled = postCommentDialogState,
     )
     Box(modifier = Modifier) {
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = modifier//.fillMaxWidth()
-        ) {
-            repeat(groupEmoji.size) {
-                val item = groupEmoji[it]
-                val isMeReacted = item.second.any { elem -> elem.isMe }
-                val isRealEmoji = item.second.first().isRealEmoji
-                if(isRealEmoji) {
-                    PostViewRealEmojiElement(
-                        iconUrl = item.second.first().realEmojiUrl!!,
-                        emojiCnt = item.second.size,
-                        isMeReacted = isMeReacted,
-                        onTap = {
-                            if (isMeReacted) {
-                                removeRealEmojiViewModel.invoke(
-                                    Arguments(
-                                        resourceId = post.postId,
-                                        mapOf(
-                                            "realEmojiId" to item.first
-                                        )
-                                    )
-                                )
-                            } else {
-                                addRealEmojiViewModel.invoke(
-                                    Arguments(
-                                        resourceId = post.postId,
-                                        mapOf(
-                                            "realEmojiId" to item.first
-                                        )
-                                    )
-                                )
-                            }
-                            familyPostReactionBarViewModel.toggleReact(
-                                memberId = memberId,
-                                emoji = item.first
-                            )
-                        },
-                        onLongTap = {
-                            selectedEmojiKey.value = item.first
-                            selectedEmoji.value = item.second.first().realEmojiUrl!!
-                            reactionDialogState.value = true
-                        }
-                    )
-                } else {
-                    PostViewReactionElement(
-                        emojiType = item.first,
-                        emojiCnt = item.second.size,
-                        isMeReacted = isMeReacted,
-                        onTap = {
-                            if (isMeReacted) {
-                                removePostReactionViewModel.invoke(
-                                    Arguments(
-                                        resourceId = post.postId,
-                                        mapOf(
-                                            "emoji" to item.first
-                                        )
-                                    )
-                                )
-                            } else {
-                                addPostReactionViewModel.invoke(
-                                    Arguments(
-                                        resourceId = post.postId,
-                                        mapOf(
-                                            "emoji" to item.first
-                                        )
-                                    )
-                                )
-                            }
-                            familyPostReactionBarViewModel.toggleReact(
-                                memberId = memberId,
-                                emoji = item.first
-                            )
-                        },
-                        onLongTap = {
-                            selectedEmojiKey.value = item.first
-                            selectedEmoji.value = item.first
-                            reactionDialogState.value = true
-                        }
-                    )
-                }
-            }
-            Box(
-                modifier = Modifier
-                    .let {
-                        if(isEmojiBarActive)
-                            it
-                                .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-                                .border(
-                                1.dp, MaterialTheme.bbibbiScheme.mainGreen, RoundedCornerShape(100.dp)
-                            )
-                                .padding(vertical = 6.dp, horizontal = 8.dp)
-                        else it.clip(RoundedCornerShape(100.dp))
-                            .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-                            .padding(vertical = 6.dp, horizontal = 8.dp)
-                    }
-                    .clickable { onTapAddEmojiButton() },
-                contentAlignment = Alignment.Center
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl ) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = modifier//.fillMaxWidth()
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.add_emoji_icon),
-                    contentDescription = null,
-                    tint = MaterialTheme.bbibbiScheme.textPrimary,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-            PostCommentBoxIcon(
-                commentCount = post.commentCount,
-                onClick = {
-                    postCommentDialogState.value = true
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr ) {
+                    PostCommentBoxIcon(
+                        commentCount = post.commentCount,
+                        onClick = {
+                            postCommentDialogState.value = true
+                        }
+                    )
+                    Box(
+                        modifier = Modifier
+                            .let {
+                                if (isEmojiBarActive)
+                                    it
+                                        .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+                                        .border(
+                                            1.dp,
+                                            MaterialTheme.bbibbiScheme.mainGreen,
+                                            RoundedCornerShape(100.dp)
+                                        )
+                                        .padding(vertical = 6.dp, horizontal = 8.dp)
+                                else it.clip(RoundedCornerShape(100.dp))
+                                    .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+                                    .padding(vertical = 6.dp, horizontal = 8.dp)
+                            }
+                            .clickable { onTapAddEmojiButton() },
+                        contentAlignment  = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.add_emoji_icon),
+                            contentDescription = null,
+                            tint = MaterialTheme.bbibbiScheme.textPrimary,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                    repeat(groupEmoji.size) {
+                        val item = groupEmoji[it]
+                        val isMeReacted = item.second.any { elem -> elem.isMe }
+                        val isRealEmoji = item.second.first().isRealEmoji
+                        if (isRealEmoji) {
+                            PostViewRealEmojiElement(
+                                iconUrl = item.second.first().realEmojiUrl!!,
+                                emojiCnt = item.second.size,
+                                isMeReacted = isMeReacted,
+                                onTap = {
+                                    if (isMeReacted) {
+                                        removeRealEmojiViewModel.invoke(
+                                            Arguments(
+                                                resourceId = post.postId,
+                                                mapOf(
+                                                    "realEmojiId" to item.first
+                                                )
+                                            )
+                                        )
+                                    } else {
+                                        addRealEmojiViewModel.invoke(
+                                            Arguments(
+                                                resourceId = post.postId,
+                                                mapOf(
+                                                    "realEmojiId" to item.first
+                                                )
+                                            )
+                                        )
+                                    }
+                                    familyPostReactionBarViewModel.toggleReact(
+                                        memberId = memberId,
+                                        emoji = item.first
+                                    )
+                                },
+                                onLongTap = {
+                                    selectedEmojiKey.value = item.first
+                                    selectedEmoji.value = item.second.first().realEmojiUrl!!
+                                    reactionDialogState.value = true
+                                }
+                            )
+                        } else {
+                            PostViewReactionElement(
+                                emojiType = item.first,
+                                emojiCnt = item.second.size,
+                                isMeReacted = isMeReacted,
+                                onTap = {
+                                    if (isMeReacted) {
+                                        removePostReactionViewModel.invoke(
+                                            Arguments(
+                                                resourceId = post.postId,
+                                                mapOf(
+                                                    "emoji" to item.first
+                                                )
+                                            )
+                                        )
+                                    } else {
+                                        addPostReactionViewModel.invoke(
+                                            Arguments(
+                                                resourceId = post.postId,
+                                                mapOf(
+                                                    "emoji" to item.first
+                                                )
+                                            )
+                                        )
+                                    }
+                                    familyPostReactionBarViewModel.toggleReact(
+                                        memberId = memberId,
+                                        emoji = item.first
+                                    )
+                                },
+                                onLongTap = {
+                                    selectedEmojiKey.value = item.first
+                                    selectedEmoji.value = item.first
+                                    reactionDialogState.value = true
+                                }
+                            )
+                        }
+                    }
                 }
-            )
+            }
         }
     }
 }

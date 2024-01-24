@@ -94,6 +94,7 @@ fun FamilyPageInviteButton(
                         text = if (uiState.isReady()) uiState.data.url else "Loading...",
                         color = MaterialTheme.bbibbiScheme.textSecondary,
                         fontSize = 14.sp,
+                        fontWeight = FontWeight.Normal
                     )
                 }
             }

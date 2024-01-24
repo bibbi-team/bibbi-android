@@ -101,7 +101,11 @@ fun RegisterDayOfBirthPage(
                         value = state.monthTextState.value,
                         focusRequester = monthFocus,
                         onValueChange = {
-                            val number = it.toIntOrNull() ?: return@DigitizedNumberInput
+                            val number = it.toIntOrNull()
+                            if(number == null) {
+                                state.monthTextState.value = 0
+                                return@DigitizedNumberInput
+                            }
                             if (number < 0 || number > 99) return@DigitizedNumberInput
                             state.isInvalidMonthState.value = number > 12
                             if (it.length == 2 && state.monthTextState.value < 10) dayFocus.requestFocus()
@@ -116,7 +120,11 @@ fun RegisterDayOfBirthPage(
                         value = state.dayTextState.value,
                         focusRequester = dayFocus,
                         onValueChange = {
-                            val number = it.toIntOrNull() ?: return@DigitizedNumberInput
+                            val number = it.toIntOrNull()
+                            if(number == null) {
+                                state.monthTextState.value = 0
+                                return@DigitizedNumberInput
+                            }
                             if (number < 0 || number > 99) return@DigitizedNumberInput
                             state.isInvalidDayState.value = number > 31
                             state.dayTextState.value = number

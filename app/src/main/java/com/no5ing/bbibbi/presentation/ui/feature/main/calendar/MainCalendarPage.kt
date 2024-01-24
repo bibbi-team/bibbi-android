@@ -197,8 +197,8 @@ fun MainCalendarPage(
                     MainCalendarDay(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .aspectRatio(1.0f)
-                            .padding(horizontal = 2.dp),
+                            .padding(horizontal = 2.dp)
+                            .aspectRatio(1.0f),
                         state = it,
                         monthState = uiState.value,
                         onClick = { date ->

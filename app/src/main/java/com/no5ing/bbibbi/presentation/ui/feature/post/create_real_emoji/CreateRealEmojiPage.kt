@@ -109,6 +109,7 @@ fun CreateRealEmojiPage(
         ).apply {
             implementationMode = PreviewView.ImplementationMode.COMPATIBLE
             scaleType = PreviewView.ScaleType.FIT_CENTER
+            scaleX = -1f
         }
     }
 

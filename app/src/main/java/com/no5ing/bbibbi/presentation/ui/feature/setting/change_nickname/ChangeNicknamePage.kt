@@ -21,7 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -51,6 +54,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.members.ChangeNicknameViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
+import timber.log.Timber
 
 @Composable
 fun ChangeNicknamePage(
@@ -119,13 +123,13 @@ fun ChangeNicknamePage(
                     value = state.nicknameTextState.value,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     onValueChange = {
-                        state.nicknameTextState.value = it
+                        val prevWord = state.nicknameTextState.value
                         state.ctaButtonEnabledState.value = it.length >= 2
                         if (it.length > maxWord) {
                             state.isInvalidInputState.value = true
                             state.invalidInputDescState.value = wordExceedMessage
-                            state.ctaButtonEnabledState.value = false
-                        } else {
+                        } else if(prevWord != it) {
+                            state.nicknameTextState.value = it
                             state.isInvalidInputState.value = false
                         }
                     },
@@ -197,7 +201,7 @@ fun ChangeNicknamePage(
                         .fillMaxWidth()
                         .padding(vertical = 12.dp),
                     contentPadding = PaddingValues(vertical = 18.dp),
-                    isActive = state.ctaButtonEnabledState.value && uiState.value.isIdle(),
+                    isActive = state.nicknameTextState.value.length in 2..maxWord && uiState.value.isIdle(),
                     onClick = {
                         focusHost.clearFocus()
                         changeNicknameViewModel.invoke(

@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import kotlin.streams.toList
 
 @Composable
 fun BoxScope.TextBubbleBox(
@@ -29,7 +30,8 @@ fun BoxScope.TextBubbleBox(
         Row(
             horizontalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            text.forEach { character ->
+            val wordList = text.codePoints().toList().map { String(Character.toChars(it)) }
+            wordList.forEach { character ->
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
@@ -61,7 +63,8 @@ fun BoxScope.MiniTextBubbleBox(
         Row(
             horizontalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            text.forEach { character ->
+            val wordList = text.codePoints().toList().map { String(Character.toChars(it)) }
+            wordList.forEach { character ->
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))

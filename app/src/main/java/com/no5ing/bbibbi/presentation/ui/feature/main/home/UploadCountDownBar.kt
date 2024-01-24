@@ -68,7 +68,7 @@ fun UploadCountDownBar(
             else if (warningState.value == 2) stringResource(id = R.string.home_time_over)
             else stringResource(id = R.string.home_image_on_duration),
             color = MaterialTheme.bbibbiScheme.textSecondary,
-            style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+            style = MaterialTheme.bbibbiTypo.bodyTwoRegular ,
         )
     }
 }
