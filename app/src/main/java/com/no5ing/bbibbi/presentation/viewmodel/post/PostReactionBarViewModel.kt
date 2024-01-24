@@ -54,6 +54,7 @@ class PostReactionBarViewModel @Inject constructor(
                     member = memberCacheProvider.getMember(memberId),
                     isRealEmoji = true,
                     realEmojiUrl = emoji.imageUrl,
+                    realEmojiType = emoji.type,
                 )
             )
             setState(previousList)
@@ -133,7 +134,8 @@ class PostReactionBarViewModel @Inject constructor(
                             isMe = it.memberId == memberId,
                             member = memberCacheProvider.getMember(it.memberId),
                             isRealEmoji = true,
-                            emojiType = it.realEmojiId
+                            emojiType = it.realEmojiId,
+                            realEmojiType = it.emojiType,
                         )
                     }
                     val resultList = (first + second).sortedBy { it.reactionId }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -70,6 +71,7 @@ fun PostViewReactionBar(
     }
     val selectedEmoji = remember { mutableStateOf(emojiList.first()) }
     val selectedEmojiKey = remember { mutableStateOf(emojiList.first()) }
+     val selectedEmojiType = remember { mutableStateOf(emojiList.first()) }
     val emojiMap =  uiState.value.groupBy { it.emojiType }
     val groupEmoji =  emojiMap.toList()
     val reactionDialogState = remember { mutableStateOf(false) }
@@ -77,6 +79,7 @@ fun PostViewReactionBar(
         isEnabled = reactionDialogState,
         myGroup = emojiMap[selectedEmojiKey.value] ?: emptyList(),
         selectedEmoji = selectedEmoji.value,
+        selectedEmojiType = selectedEmojiType.value,
     )
     PostCommentDialog(
         postId = post.postId,
@@ -107,11 +110,12 @@ fun PostViewReactionBar(
                                             MaterialTheme.bbibbiScheme.mainYellow,
                                             RoundedCornerShape(100.dp)
                                         )
-                                        .padding(vertical = 6.dp, horizontal = 8.dp)
+                                       // .padding(vertical = 6.dp, horizontal = 8.dp)
                                 else it.clip(RoundedCornerShape(100.dp))
                                     .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-                                    .padding(vertical = 6.dp, horizontal = 8.dp)
+                                   // .padding(vertical = 6.dp, horizontal = 8.dp)
                             }
+                            .size(width = 53.dp, height = 36.dp)
                             .clickable { onTapAddEmojiButton() },
                         contentAlignment  = Alignment.Center
                     ) {
@@ -128,6 +132,7 @@ fun PostViewReactionBar(
                         val isRealEmoji = item.second.first().isRealEmoji
                         if (isRealEmoji) {
                             PostViewRealEmojiElement(
+                                emojiType = item.second.first().realEmojiType ?: emojiList.first(),
                                 iconUrl = item.second.first().realEmojiUrl!!,
                                 emojiCnt = item.second.size,
                                 isMeReacted = isMeReacted,
@@ -159,6 +164,7 @@ fun PostViewReactionBar(
                                 onLongTap = {
                                     selectedEmojiKey.value = item.first
                                     selectedEmoji.value = item.second.first().realEmojiUrl!!
+                                    selectedEmojiType.value = item.second.first().realEmojiType ?: emojiList.first()
                                     reactionDialogState.value = true
                                 }
                             )

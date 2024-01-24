@@ -10,6 +10,7 @@ data class PostRealEmoji(
     val postRealEmojiId: String,
     val postId: String,
     val memberId: String,
+    val emojiType: String,
     val realEmojiId: String,
     val emojiImageUrl: String,
 ) : Parcelable, BaseModel()

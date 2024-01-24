@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
@@ -31,7 +32,7 @@ fun PostCommentBoxIcon(
         modifier = Modifier
             .clip(RoundedCornerShape(100.dp))
             .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-            .padding(vertical = 5.dp, horizontal = 7.dp)
+            .size(width = 53.dp, height = 36.dp)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
@@ -46,10 +47,10 @@ fun PostCommentBoxIcon(
                 painter = painterResource(id = R.drawable.message_icon),
                 contentDescription = null,
                 tint = MaterialTheme.bbibbiScheme.textPrimary,
-                modifier = Modifier.size(25.dp)
+                modifier = Modifier.size(22.dp)
             )
             Text(
-                text = stringResource(id = R.string.comment_count, commentCount),
+                text = commentCount.toString(),
                 color = MaterialTheme.bbibbiScheme.textPrimary,
                 style = MaterialTheme.bbibbiTypo.bodyOneBold,
             )

@@ -1,5 +1,7 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.home
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,38 +9,36 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
-import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.state.main.home.HomePageStoryBarState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageStoryBarState
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
-import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
-import com.no5ing.bbibbi.presentation.viewmodel.members.FamilyMembersViewModel
-import com.no5ing.bbibbi.presentation.viewmodel.post.DailyFamilyTopViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 
 @Composable
@@ -80,7 +80,7 @@ fun HomePageStoryBar(
                         },
                         isMe = true,
                         isUploaded = postTopState.containsKey(item.memberId),
-                        isFirst = postTopState[item.memberId] ?: false,
+                        rank = postTopState[item.memberId] ?: -1,
                     )
                 }
             }
@@ -100,7 +100,7 @@ fun HomePageStoryBar(
                                 onTapProfile(item)
                             },
                             isUploaded = postTopState.containsKey(item.memberId),
-                            isFirst = postTopState[item.memberId] ?: false,
+                            rank = postTopState[item.memberId] ?: -1,
                         )
                     }
                 }
@@ -121,7 +121,7 @@ fun StoryBarIcon(
     member: Member,
     isMe: Boolean = false,
     isUploaded: Boolean,
-    isFirst: Boolean,
+    rank: Int,
 ) {
     Column(
         modifier = Modifier
@@ -131,30 +131,56 @@ fun StoryBarIcon(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box {
-            CircleProfileImage(
-                member = member,
-                size = 64.dp,
-                onTap = onTap,
-                opacity = if (isUploaded) 1.0f else 0.4f
-            )
-            Box {
+            val rankColor = getRankColor(rank = rank)
+            val rankBadge = getRankBadge(rank = rank)
+            if (rankColor != null) {
+                Box(
+                    modifier = Modifier
+                        .size(64.dp)
+                        .background(rankColor, CircleShape)
+                )
+            }
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(64.dp)
+            ) {
+                CircleProfileImage(
+                    member = member,
+                    size = if (rankColor == null) 64.dp else 62.dp,
+                    onTap = onTap,
+                    opacity = if (isUploaded) 1.0f else 0.4f
+                )
+            }
+            Box(
+                contentAlignment = Alignment.TopEnd,
+                modifier = Modifier
+                    .size(64.dp)
+            ) {
                 if (member.isBirthdayToday) {
                     Icon(
                         painter = painterResource(id = R.drawable.birthday_badge),
                         contentDescription = null,
                         modifier = Modifier
                             .size(20.dp)
-                            .align(Alignment.TopStart),
+                            .align(Alignment.TopEnd)
+                            .offset(x = (4).dp, y = -(4).dp),
                         tint = MaterialTheme.bbibbiScheme.graphicPink,
                     )
-                } else if (isFirst) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.first_badge),
+                }
+            }
+            if (rankBadge != null) {
+                Box(
+                    contentAlignment = Alignment.BottomStart,
+                    modifier = Modifier
+                        .size(64.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = rankBadge),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(20.dp)
-                            .align(Alignment.TopStart),
-                        tint = MaterialTheme.bbibbiScheme.emojiYellow,
+                            .height(24.dp)
+                            .offset(x = 0.dp, y = 2.dp),
                     )
                 }
             }
@@ -168,4 +194,19 @@ fun StoryBarIcon(
             style = MaterialTheme.bbibbiTypo.caption,
         )
     }
+}
+
+@Composable
+private fun getRankColor(rank: Int) = when (rank) {
+    0 -> MaterialTheme.bbibbiScheme.mainYellow
+    1 -> Color(0xff7FEC93)
+    2 -> Color(0xffFFC98D)
+    else -> null
+}
+
+private fun getRankBadge(rank: Int) = when (rank) {
+    0 -> R.drawable.first_badge
+    1 -> R.drawable.second_badge
+    2 -> R.drawable.third_badge
+    else -> null
 }

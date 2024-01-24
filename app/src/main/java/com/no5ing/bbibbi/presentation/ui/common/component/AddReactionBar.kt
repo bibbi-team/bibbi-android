@@ -61,7 +61,7 @@ fun AddReactionBar(
                             painter = getEmojiResource(emojiName = emojiType),
                             contentDescription = null, // 필수 param
                             modifier = Modifier
-                                .size(42.dp)
+                                .size(40 .dp)
                                 .clickable {
                                     onTapEmoji(emojiType)
                                 }
@@ -88,7 +88,7 @@ fun AddReactionBar(
                                         model = asyncImagePainter(source = realEmoji.imageUrl),
                                         contentDescription = null, // 필수 param
                                         modifier = Modifier
-                                            .size(42.dp)
+                                            .size(40.dp)
                                             .clip(CircleShape),
                                     )
                                 }
@@ -109,7 +109,7 @@ fun AddReactionBar(
                                 painter = getEmojiResource(emojiName = emojiType),
                                 contentDescription = null, // 필수 param
                                 modifier = Modifier
-                                    .size(42.dp)
+                                    .size(40.dp)
                                     .clickable {
                                         onTapRealEmojiCreate(emojiType)
                                     },

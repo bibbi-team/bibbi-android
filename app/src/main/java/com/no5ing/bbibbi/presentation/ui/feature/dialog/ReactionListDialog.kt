@@ -72,12 +72,14 @@ import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.customDialogModifier
 import com.no5ing.bbibbi.util.getEmojiResource
+import com.no5ing.bbibbi.util.getRealEmojiResource
 import com.no5ing.bbibbi.util.getScreenSize
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ReactionListDialog(
     selectedEmoji: String,
+    selectedEmojiType: String,
     isEnabled: MutableState<Boolean> = remember { mutableStateOf(false) },
    // emojiMap: Map<String, List<PostReactionUiState>>,
     myGroup:  List<PostReactionUiState>,
@@ -191,13 +193,29 @@ fun ReactionListDialog(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     if(isRealEmoji) {
-                                        AsyncImage(
-                                            model = asyncImagePainter(selectedEmoji),
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .size(width = 42.dp, height = 42.dp)
-                                                .clip(CircleShape)
-                                        )
+                                        Box(
+                                            contentAlignment = Alignment.BottomEnd,
+                                        ) {
+                                            Box {
+                                                AsyncImage(
+                                                    model = asyncImagePainter(selectedEmoji),
+                                                    contentDescription = null, // 필수 param
+                                                    modifier = Modifier
+                                                        .size(42.dp)
+                                                        .clip(CircleShape),
+                                                )
+                                            }
+                                            Box(
+                                                modifier = Modifier.offset(x = 4.dp, y = 4.dp)
+                                            ) {
+                                                Image(
+                                                    painter = getRealEmojiResource(emojiName = selectedEmojiType),
+                                                    contentDescription = null, // 필수 param
+                                                    modifier = Modifier
+                                                        .size(20.dp),
+                                                )
+                                            }
+                                        }
                                     } else {
                                         Image(
                                             painter = getEmojiResource(emojiName = selectedEmoji),

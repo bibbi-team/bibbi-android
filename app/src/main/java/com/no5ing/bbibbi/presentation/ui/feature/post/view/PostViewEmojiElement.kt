@@ -34,7 +34,7 @@ fun PostViewReactionElement(
         modifier = Modifier
             .border(
                 width = if (isMeReacted) 1.dp else 0.dp,
-                color = MaterialTheme.bbibbiScheme.iconSelected,
+                color =  MaterialTheme.bbibbiScheme.mainYellow,
                 RoundedCornerShape(100.dp)
             )
             .background(

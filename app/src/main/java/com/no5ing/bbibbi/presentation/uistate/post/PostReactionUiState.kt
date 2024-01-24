@@ -12,6 +12,7 @@ data class PostReactionUiState(
     val isRealEmoji: Boolean,
     val emojiType: String,
     val realEmojiUrl: String?,
+    val realEmojiType: String? = null,
     val isMe: Boolean,
     val member: Member?,
 ) : Parcelable, BaseModel()

@@ -4,10 +4,12 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -24,12 +26,14 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.getEmojiResource
+import com.no5ing.bbibbi.util.getRealEmojiResource
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PostViewRealEmojiElement(
     iconUrl: String,
     emojiCnt: Int,
+    emojiType: String,
     isMeReacted: Boolean,
     onTap: () -> Unit,
     onLongTap: () -> Unit,
@@ -38,7 +42,7 @@ fun PostViewRealEmojiElement(
         modifier = Modifier
             .border(
                 width = if (isMeReacted) 1.dp else 0.dp,
-                color = MaterialTheme.bbibbiScheme.iconSelected,
+                color = MaterialTheme.bbibbiScheme.mainYellow,
                 RoundedCornerShape(100.dp)
             )
             .background(
@@ -55,16 +59,32 @@ fun PostViewRealEmojiElement(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
-                model = asyncImagePainter(iconUrl),
-                contentDescription = null, // 필수 param
-                modifier = Modifier
-                    .size(24.dp)
-                    .clip(CircleShape)
-            )
+            Box(
+                contentAlignment = Alignment.BottomEnd,
+            ) {
+                Box {
+                    AsyncImage(
+                        model = asyncImagePainter(iconUrl),
+                        contentDescription = null, // 필수 param
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clip(CircleShape),
+                    )
+                }
+                Box(
+                    modifier = Modifier.offset(x = 2.5.dp, y = 2.5.dp)
+                ) {
+                    Image(
+                        painter = getRealEmojiResource(emojiName = emojiType),
+                        contentDescription = null, // 필수 param
+                        modifier = Modifier
+                            .size(13.dp),
+                    )
+                }
+            }
             Text(
                 text = emojiCnt.toString(),
-                color = if (isMeReacted) MaterialTheme.bbibbiScheme.iconSelected
+                color = if (isMeReacted) MaterialTheme.bbibbiScheme.mainYellow
                 else MaterialTheme.bbibbiScheme.textSecondary,
                 style = MaterialTheme.bbibbiTypo.bodyOneBold,
             )

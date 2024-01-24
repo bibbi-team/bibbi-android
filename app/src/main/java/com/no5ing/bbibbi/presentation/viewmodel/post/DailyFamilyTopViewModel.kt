@@ -12,14 +12,14 @@ import javax.inject.Inject
 @HiltViewModel
 class DailyFamilyTopViewModel @Inject constructor(
     private val restAPI: RestAPI,
-) : BaseViewModel<Map<String, Boolean>>() {
-    override fun initState(): Map<String, Boolean> {
+) : BaseViewModel<Map<String, Int>>() {
+    override fun initState(): Map<String, Int> {
         return emptyMap()
     }
 
     override fun invoke(arguments: Arguments) {
         withMutexScope(Dispatchers.IO) {
-            val newMap = HashMap<String, Boolean>()
+            val newMap = HashMap<String, Int>()
             restAPI
                 .getPostApi()
                 .getPosts(
@@ -30,7 +30,7 @@ class DailyFamilyTopViewModel @Inject constructor(
                     sort = "ASC"
                 ).suspendOnSuccess {
                     data.results.forEachIndexed { index, post ->
-                        newMap[post.authorId] = index == 0
+                        newMap[post.authorId] = index
                     }
                     setState(newMap)
                 }

@@ -136,17 +136,8 @@ fun PostViewContent(
                                     )
                                 )
                             )
-                        } else {
-                            removePostReactionViewModel.invoke(
-                                Arguments(
-                                    resourceId = post.postId,
-                                    mapOf(
-                                        "emoji" to it
-                                    )
-                                )
-                            )
+                            addEmojiBarState.value = false
                         }
-                        addEmojiBarState.value = false
                     },
                     onTapRealEmoji = {
                         val toggled =
@@ -164,18 +155,8 @@ fun PostViewContent(
                                     )
                                 )
                             )
-                        } else {
-                           // val reactionId = familyPostReactionBarViewModel.getRealEmojiIdByRealEmoji(memberId, it.realEmojiId)
-                            removeRealEmojiViewModel.invoke(
-                                Arguments(
-                                    resourceId = post.postId,
-                                    mapOf(
-                                        "realEmojiId" to  it.realEmojiId
-                                    )
-                                )
-                            )
+                            addEmojiBarState.value = false
                         }
-                        addEmojiBarState.value = false
                     },
                     onDispose = {
                         addEmojiBarState.value = false
