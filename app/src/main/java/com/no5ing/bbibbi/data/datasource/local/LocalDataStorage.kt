@@ -91,6 +91,10 @@ class LocalDataStorage @Inject constructor(val context: Context) {
 
     fun getRealEmojiList(): List<MemberRealEmoji> {
         val json = preferences.getString(REAL_EMOJI_KEY, null)
-        return json?.let { runCatching { Gson().fromJson(it, Array<MemberRealEmoji>::class.java).toList() }.getOrNull() } ?: emptyList()
+        return json?.let {
+            runCatching {
+                Gson().fromJson(it, Array<MemberRealEmoji>::class.java).toList()
+            }.getOrNull()
+        } ?: emptyList()
     }
 }

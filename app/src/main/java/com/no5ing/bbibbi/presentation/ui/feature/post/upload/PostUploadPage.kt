@@ -60,13 +60,11 @@ import coil.compose.rememberAsyncImagePainter
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
-import com.no5ing.bbibbi.presentation.ui.common.button.IconedCTAButton
 import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.common.component.TextBubbleBox
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarCamera
-import com.no5ing.bbibbi.presentation.ui.snackBarInfo
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
@@ -75,7 +73,8 @@ import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
 import kotlinx.coroutines.launch
 
-const val defaultText =  "여덟자로입력해요"
+const val defaultText = "여덟자로입력해요"
+
 @Composable
 fun PostUploadPage(
     onDispose: () -> Unit,
@@ -363,7 +362,7 @@ fun PostUploadPage(
                         }
 
                     }
-                    TextBubbleBox(text = if(imageText.value.isEmpty()) defaultText else imageText.value)
+                    TextBubbleBox(text = if (imageText.value.isEmpty()) defaultText else imageText.value)
                 }
             }
 

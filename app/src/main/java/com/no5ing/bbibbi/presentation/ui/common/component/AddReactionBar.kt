@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -54,14 +53,17 @@ fun AddReactionBar(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
+                    horizontalArrangement = Arrangement.spacedBy(
+                        16.dp,
+                        Alignment.CenterHorizontally
+                    )
                 ) {
                     emojiList.forEach { emojiType ->
                         Image(
                             painter = getEmojiResource(emojiName = emojiType),
                             contentDescription = null, // 필수 param
                             modifier = Modifier
-                                .size(40 .dp)
+                                .size(40.dp)
                                 .clickable {
                                     onTapEmoji(emojiType)
                                 }
@@ -72,10 +74,13 @@ fun AddReactionBar(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        16.dp,
+                        Alignment.CenterHorizontally
+                    ),
                 ) {
                     emojiList.forEach { emojiType ->
-                        if(realEmojiMap.containsKey(emojiType)) {
+                        if (realEmojiMap.containsKey(emojiType)) {
                             val realEmoji = realEmojiMap[emojiType]!!
                             Box(
                                 modifier = Modifier.clickable {
@@ -120,9 +125,11 @@ fun AddReactionBar(
                     Image(
                         painter = painterResource(id = R.drawable.camera_button),
                         contentDescription = null,
-                        modifier = Modifier.size(40.dp).clickable {
-                            onTapRealEmojiCreate(emojiList.first())
-                        },
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clickable {
+                                onTapRealEmojiCreate(emojiList.first())
+                            },
                     )
                 }
             }

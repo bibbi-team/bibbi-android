@@ -21,10 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -54,7 +51,6 @@ import com.no5ing.bbibbi.presentation.viewmodel.members.ChangeNicknameViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
-import timber.log.Timber
 
 @Composable
 fun ChangeNicknamePage(

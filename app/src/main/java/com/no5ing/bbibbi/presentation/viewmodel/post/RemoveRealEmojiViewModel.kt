@@ -1,7 +1,6 @@
 package com.no5ing.bbibbi.presentation.viewmodel.post
 
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
-import com.no5ing.bbibbi.data.datasource.network.request.post.DeletePostReactionRequest
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

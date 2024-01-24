@@ -43,7 +43,6 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarMonthViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.MonthlyStatisticsViewModel
-import com.no5ing.bbibbi.util.dpToPx
 import com.no5ing.bbibbi.util.getScreenSize
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
@@ -157,8 +156,10 @@ fun MainCalendarPage(
                             }
                             Spacer(modifier = Modifier.height(5.dp))
                             Text(
-                                text = stringResource(id = R.string.calendar_banner_subtitle,
-                                    statState.data.allFamilyMembersUploadedDays),
+                                text = stringResource(
+                                    id = R.string.calendar_banner_subtitle,
+                                    statState.data.allFamilyMembersUploadedDays
+                                ),
                                 color = MaterialTheme.bbibbiScheme.backgroundPrimary,
                                 style = MaterialTheme.bbibbiTypo.caption,
                             )
@@ -218,12 +219,15 @@ private fun resolveBannerImageByPercent(percent: Int): Int {
         in 0..1 -> {
             R.drawable.calendar_1
         }
+
         in 2..33 -> {
             R.drawable.calendar_33
         }
+
         in 34..66 -> {
             R.drawable.calendar_66
         }
+
         else -> {
             R.drawable.calendar_99
         }
@@ -297,15 +301,18 @@ fun MainCalendarYearMonthBar(
 
             }
         }
-        if(statistics.isReady()) {
+        if (statistics.isReady()) {
             Text(
-                text = stringResource(id = R.string.calendar_history_cnt, statistics.data.allFamilyMembersUploadedDays),
+                text = stringResource(
+                    id = R.string.calendar_history_cnt,
+                    statistics.data.allFamilyMembersUploadedDays
+                ),
                 color = MaterialTheme.bbibbiScheme.textPrimary,
                 style = MaterialTheme.bbibbiTypo.bodyOneRegular,
             )
 
-        }else {
-            Box{}
+        } else {
+            Box {}
         }
     }
 

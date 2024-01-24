@@ -81,8 +81,8 @@ fun ReactionListDialog(
     selectedEmoji: String,
     selectedEmojiType: String,
     isEnabled: MutableState<Boolean> = remember { mutableStateOf(false) },
-   // emojiMap: Map<String, List<PostReactionUiState>>,
-    myGroup:  List<PostReactionUiState>,
+    // emojiMap: Map<String, List<PostReactionUiState>>,
+    myGroup: List<PostReactionUiState>,
     //  postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
 ) {
     if (isEnabled.value) {
@@ -114,7 +114,7 @@ fun ReactionListDialog(
 
 
             //  val memberState = postViewReactionMemberViewModel.uiState.collectAsState()
-           // val myGroup = emojiMap[selectedEmoji] ?: emptyList()
+            // val myGroup = emojiMap[selectedEmoji] ?: emptyList()
             val totalCntMessage = stringResource(id = R.string.emoji_reaction_total, myGroup.size)
             Box(
                 modifier = Modifier
@@ -192,7 +192,7 @@ fun ReactionListDialog(
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    if(isRealEmoji) {
+                                    if (isRealEmoji) {
                                         Box(
                                             contentAlignment = Alignment.BottomEnd,
                                         ) {

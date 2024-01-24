@@ -79,19 +79,19 @@ fun UploadCountDownBar(
                 else if (warningState.value == 2) stringResource(id = R.string.home_time_over)
                 else stringResource(id = R.string.home_image_on_duration),
                 color = MaterialTheme.bbibbiScheme.textSecondary,
-                style = MaterialTheme.bbibbiTypo.bodyTwoRegular ,
+                style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
             )
 
-            if(warningState.value == 1) {
+            if (warningState.value == 1) {
                 Image(
                     painter = painterResource(id = R.drawable.fire_icon),
-                    contentDescription =null,
+                    contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
-            } else if(warningState.value == 0) {
+            } else if (warningState.value == 0) {
                 Image(
                     painter = painterResource(id = R.drawable.smile_icon),
-                    contentDescription =null,
+                    contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
             }

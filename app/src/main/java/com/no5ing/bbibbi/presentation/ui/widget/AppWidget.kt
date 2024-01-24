@@ -115,7 +115,7 @@ class AppWidget(
     @Composable
     fun WidgetBody() {
         val size = LocalSize.current
-        val aspectSize = if(size.width > size.height) size.height else size.width
+        val aspectSize = if (size.width > size.height) size.height else size.width
         val result = currentState(resultKey)
         Box(
             modifier = GlanceModifier.fillMaxSize(),
@@ -200,7 +200,11 @@ class AppWidget(
                     Box(
                         modifier = GlanceModifier
                             .size(iconSize)
-                            .background(if(profileImagePath != null) Color.Transparent else Color(0xFF3F3F43))
+                            .background(
+                                if (profileImagePath != null) Color.Transparent else Color(
+                                    0xFF3F3F43
+                                )
+                            )
                             .cornerRadius(iconSize),
                         contentAlignment = Alignment.Center,
                     ) {
@@ -248,7 +252,8 @@ class AppWidget(
                             itemPadding = 6.dp.value.toPx.toInt(),
                             textPadding = 3.dp.value.toPx.toInt(),
                         )
-                        val actualContent = postContent.codePoints().toList().map { String(Character.toChars(it)) }
+                        val actualContent =
+                            postContent.codePoints().toList().map { String(Character.toChars(it)) }
                         val lastIndex = actualContent.size - 1
                         actualContent.forEachIndexed { index, character ->
                             Row {
@@ -293,7 +298,7 @@ class AppWidget(
             Column(
                 modifier = GlanceModifier.fillMaxSize()
             ) {
-                val imageResource = if(size > 200.dp) largeImageId else smallImageId
+                val imageResource = if (size > 200.dp) largeImageId else smallImageId
                 Image(
                     provider = AndroidResourceImageProvider(imageResource),
                     contentDescription = null,

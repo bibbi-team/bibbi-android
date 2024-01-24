@@ -6,7 +6,6 @@ import androidx.navigation.navArgument
 import com.no5ing.bbibbi.presentation.ui.feature.post.create_real_emoji.CreateRealEmojiPage
 import com.no5ing.bbibbi.presentation.ui.feature.post.upload.PostUploadPage
 import com.no5ing.bbibbi.presentation.ui.feature.post.view.PostViewPage
-import com.no5ing.bbibbi.util.emojiList
 
 object PostViewDestination : NavigationDestination(
     route = postViewPageRoute,
@@ -55,7 +54,8 @@ object CreateRealEmojiDestination : NavigationDestination(
     route = postCreateRealEmojiRoute,
     content = { navController, backStackEntry ->
         CreateRealEmojiPage(
-            initialEmoji = backStackEntry.arguments?.getString("initialEmoji") ?: throw RuntimeException(),
+            initialEmoji = backStackEntry.arguments?.getString("initialEmoji")
+                ?: throw RuntimeException(),
             onDispose = {
                 navController.popBackStack()
             },

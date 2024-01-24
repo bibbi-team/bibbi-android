@@ -106,7 +106,7 @@ fun CustomAlertDialog(
                 text = {
                     Text(
                         description,
-                        color = MaterialTheme.bbibbiScheme.textSecondary ,
+                        color = MaterialTheme.bbibbiScheme.textSecondary,
                         style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                         textAlign = TextAlign.Center,
                     )

@@ -87,7 +87,7 @@ fun RegisterNickNamePage(
                         if (it.length > maxWord) {
                             state.isInvalidInputState.value = true
                             state.invalidInputDescState.value = wordExceedMessage
-                        } else if(prevWord != it) {
+                        } else if (prevWord != it) {
                             state.nicknameTextState.value = it
                             state.isInvalidInputState.value = false
                         }

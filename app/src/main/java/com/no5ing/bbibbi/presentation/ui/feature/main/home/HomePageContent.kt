@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -30,7 +29,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,7 +61,6 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.MainPostFeedViewModel
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.gapBetweenNow
 import com.no5ing.bbibbi.util.todayAsString
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -102,9 +99,9 @@ fun HomePageContent(
         }
     }
     LaunchedEffect(postItems.loadState.refresh) {
-        if(isRefreshing && postItems.loadState.refresh is LoadState.NotLoading) {
+        if (isRefreshing && postItems.loadState.refresh is LoadState.NotLoading) {
             isRefreshing = false
-        } else if(!isRefreshing && postItems.loadState.refresh is LoadState.Loading) {
+        } else if (!isRefreshing && postItems.loadState.refresh is LoadState.Loading) {
             isRefreshing = true
         }
     }
@@ -134,7 +131,10 @@ fun HomePageContent(
                         onTapInvite = onTapInvite,
                     )
                     Spacer(modifier = Modifier.height(24.dp))
-                    Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+                    Divider(
+                        thickness = 1.dp,
+                        color = MaterialTheme.bbibbiScheme.backgroundSecondary
+                    )
                     Spacer(modifier = Modifier.height(24.dp))
                     UploadCountDownBar()
                 }

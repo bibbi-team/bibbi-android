@@ -1,7 +1,6 @@
 package com.no5ing.bbibbi.presentation.viewmodel.post
 
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
-import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostReactionRequest
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.APIResponse.Companion.wrapToAPIResponse
 import com.no5ing.bbibbi.data.model.post.CalendarBanner

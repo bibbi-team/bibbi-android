@@ -117,11 +117,12 @@ fun CreateRealEmojiPage(
 
     val resources = localResources()
     LaunchedEffect(uploadState) {
-        when(uploadState.status) {
+        when (uploadState.status) {
             is APIResponse.Status.SUCCESS -> {
                 updateMemberPostRealEmojiViewModel.resetState()
                 memberRealEmojiListViewModel.invoke(Arguments())
             }
+
             is APIResponse.Status.ERROR -> {
                 snackBarHost.showSnackBarWithDismiss(
                     message = resources.getErrorMessage(errorCode = uploadState.errorCode),
@@ -129,6 +130,7 @@ fun CreateRealEmojiPage(
                 )
                 updateMemberPostRealEmojiViewModel.resetState()
             }
+
             else -> {}
         }
     }
@@ -245,7 +247,10 @@ fun CreateRealEmojiPage(
                         color = MaterialTheme.bbibbiScheme.emojiYellow,
                         center = center,
                         radius = (size.minDimension / 2) - 4.dp.toPx(),
-                        style = Stroke(4.dp.toPx(), pathEffect = PathEffect.dashPathEffect(floatArrayOf(50f, 50f), 0f))
+                        style = Stroke(
+                            4.dp.toPx(),
+                            pathEffect = PathEffect.dashPathEffect(floatArrayOf(50f, 50f), 0f)
+                        )
                     )
                 }
             }
@@ -312,7 +317,7 @@ fun CreateRealEmojiPage(
                     .padding(vertical = 10.dp, horizontal = 16.dp)
             ) {
                 emojiList.forEach { emojiType ->
-                    if(emojiMap.containsKey(emojiType)) {
+                    if (emojiMap.containsKey(emojiType)) {
                         val realEmoji = emojiMap[emojiType]!!
                         Box(
                             modifier = Modifier.clickable {

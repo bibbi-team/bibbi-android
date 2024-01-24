@@ -1,20 +1,14 @@
 package com.no5ing.bbibbi.presentation.ui.feature.common
 
-import android.content.ContentValues
-import android.content.Context
 import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
 import android.util.Rational
 import android.view.Surface.ROTATION_0
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.core.UseCaseGroup
 import androidx.camera.core.ViewPort
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -30,8 +24,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -48,7 +40,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -56,13 +47,9 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.ui.common.button.CameraCaptureButton
 import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.ClosableTopBar
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.getCameraProvider
 import com.no5ing.bbibbi.util.takePhoto
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -172,12 +159,14 @@ fun CameraView(
                     Image(
                         painter = painterResource(id = R.drawable.zoom_button),
                         contentDescription = null,
-                        modifier = Modifier.size(43.dp).clickable {
-                            isZoomed = !isZoomed
-                            cameraState.value?.cameraControl?.setLinearZoom(
-                                if (isZoomed) 0.5f else 0.0f
-                            )
-                        }
+                        modifier = Modifier
+                            .size(43.dp)
+                            .clickable {
+                                isZoomed = !isZoomed
+                                cameraState.value?.cameraControl?.setLinearZoom(
+                                    if (isZoomed) 0.5f else 0.0f
+                                )
+                            }
                     )
 
                 }

@@ -20,6 +20,7 @@ class MemberRealEmojiListViewModel @Inject constructor(
     init {
         loadDefault()
     }
+
     override fun initState(): Map<String, MemberRealEmoji> {
         return emptyMap()
     }

@@ -341,7 +341,7 @@ fun KeyboardBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-               // .border(1.dp, MaterialTheme.bbibbiScheme.gray600, RoundedCornerShape(20.dp))
+            // .border(1.dp, MaterialTheme.bbibbiScheme.gray600, RoundedCornerShape(20.dp))
 
         ) {
             BasicTextField(

@@ -8,16 +8,12 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.no5ing.bbibbi.R
-import java.lang.Math.abs
 
 fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) =
     drawBehind {

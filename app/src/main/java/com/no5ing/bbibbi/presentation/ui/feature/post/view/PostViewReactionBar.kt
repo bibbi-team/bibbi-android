@@ -1,4 +1,4 @@
- package com.no5ing.bbibbi.presentation.ui.feature.post.view
+package com.no5ing.bbibbi.presentation.ui.feature.post.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,7 +40,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.RemoveRealEmojiViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.emojiList
 
- @OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PostViewReactionBar(
     modifier: Modifier,
@@ -71,9 +69,9 @@ fun PostViewReactionBar(
     }
     val selectedEmoji = remember { mutableStateOf(emojiList.first()) }
     val selectedEmojiKey = remember { mutableStateOf(emojiList.first()) }
-     val selectedEmojiType = remember { mutableStateOf(emojiList.first()) }
-    val emojiMap =  uiState.value.groupBy { it.emojiType }
-    val groupEmoji =  emojiMap.toList()
+    val selectedEmojiType = remember { mutableStateOf(emojiList.first()) }
+    val emojiMap = uiState.value.groupBy { it.emojiType }
+    val groupEmoji = emojiMap.toList()
     val reactionDialogState = remember { mutableStateOf(false) }
     ReactionListDialog(
         isEnabled = reactionDialogState,
@@ -86,13 +84,13 @@ fun PostViewReactionBar(
         isEnabled = postCommentDialogState,
     )
     Box(modifier = Modifier) {
-        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = modifier//.fillMaxWidth()
             ) {
-                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr ) {
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     PostCommentBoxIcon(
                         commentCount = post.commentCount,
                         onClick = {
@@ -110,14 +108,15 @@ fun PostViewReactionBar(
                                             MaterialTheme.bbibbiScheme.mainYellow,
                                             RoundedCornerShape(100.dp)
                                         )
-                                       // .padding(vertical = 6.dp, horizontal = 8.dp)
-                                else it.clip(RoundedCornerShape(100.dp))
+                                // .padding(vertical = 6.dp, horizontal = 8.dp)
+                                else it
+                                    .clip(RoundedCornerShape(100.dp))
                                     .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-                                   // .padding(vertical = 6.dp, horizontal = 8.dp)
+                                // .padding(vertical = 6.dp, horizontal = 8.dp)
                             }
                             .size(width = 53.dp, height = 36.dp)
                             .clickable { onTapAddEmojiButton() },
-                        contentAlignment  = Alignment.Center
+                        contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.add_emoji_icon),
@@ -164,7 +163,8 @@ fun PostViewReactionBar(
                                 onLongTap = {
                                     selectedEmojiKey.value = item.first
                                     selectedEmoji.value = item.second.first().realEmojiUrl!!
-                                    selectedEmojiType.value = item.second.first().realEmojiType ?: emojiList.first()
+                                    selectedEmojiType.value =
+                                        item.second.first().realEmojiType ?: emojiList.first()
                                     reactionDialogState.value = true
                                 }
                             )

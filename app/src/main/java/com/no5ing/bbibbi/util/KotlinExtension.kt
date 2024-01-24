@@ -118,6 +118,7 @@ suspend fun ImageCapture.takePhoto(context: Context): Uri? =
             }
         )
     }
+
 fun Context.openMarket() {
     val intent = Intent(Intent.ACTION_VIEW)
     intent.data = Uri.parse("market://details?id=com.no5ing.bbibbi")

@@ -14,7 +14,6 @@ import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import com.no5ing.bbibbi.util.fileFromContentUriStr
 import com.no5ing.bbibbi.util.uploadImage
 import com.skydoves.sandwich.suspendOnError
-import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +51,7 @@ class UpdateMemberPostRealEmojiViewModel @Inject constructor(
                     setState(APIResponse.unknownError())
                     return@suspendOnSuccess
                 }
-                val result = if(prevEmojiKey == null) {
+                val result = if (prevEmojiKey == null) {
                     restAPI.getMemberApi().createMemberRealEmoji(
                         memberId = sessionModule.sessionState.value.memberId,
                         body = CreateMemberRealEmojiRequest(

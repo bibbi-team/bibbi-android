@@ -100,11 +100,12 @@ class PostReactionBarViewModel @Inject constructor(
         val memberId = arguments.get("memberId") ?: throw RuntimeException()
         setState(initState())
         withMutexScope(Dispatchers.IO) {
-            val postReactions = async { restAPI
+            val postReactions = async {
+                restAPI
                     .getPostApi()
-                .getPostReactions(
-                    postId = postId,
-                )
+                    .getPostReactions(
+                        postId = postId,
+                    )
             }
             val realEmojiReactions = async {
                 restAPI.getPostApi().getPostRealEmojiList(
