@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -15,6 +17,7 @@ import android.view.WindowManager
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.ImageProxy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
@@ -36,7 +39,11 @@ import com.google.accompanist.permissions.PermissionStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import okio.BufferedSink
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -119,6 +126,52 @@ suspend fun ImageCapture.takePhoto(context: Context): Uri? =
             }
         )
     }
+
+suspend fun ImageCapture.takePhotoTemporary(context: Context): ImageProxy? =
+    suspendCoroutine { continuation ->
+        this.takePicture(
+            ContextCompat.getMainExecutor(context),
+            object : ImageCapture.OnImageCapturedCallback() {
+                override fun onError(e: ImageCaptureException) {
+                    Timber.e("[CameraView] photo capture failed", e)
+                    continuation.resume(null)
+                }
+
+                override fun onCaptureSuccess(image: ImageProxy) {
+                    continuation.resume(image)
+                }
+            }
+        )
+    }
+
+fun ImageProxy.toRequestBody(
+    contentType: MediaType? = null,
+    offset: Int = 0,
+): RequestBody {
+    val baos = ByteArrayOutputStream()
+    val actualBitmap = toBitmap().rotateWithCropCenter(imageInfo.rotationDegrees)
+    actualBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+    return object : RequestBody() {
+        override fun contentType() = contentType
+
+        override fun contentLength() = baos.size().toLong()
+
+        override fun writeTo(sink: BufferedSink) {
+            baos.use {
+                sink.write(it.toByteArray(), offset, it.size())
+            }
+        }
+    }
+}
+
+fun Bitmap.rotateWithCropCenter(degrees: Int): Bitmap {
+    val matrix = Matrix().apply { postRotate(degrees.toFloat()) }
+    return if (width >= height) {
+        Bitmap.createBitmap(this, width/2 - height/2, 0, height, height, matrix, true)
+    } else {
+        Bitmap.createBitmap(this, 0, height/2 - width/2, width, width, matrix, true)
+    }
+}
 
 fun Context.openMarket() {
     val intent = Intent(Intent.ACTION_VIEW)

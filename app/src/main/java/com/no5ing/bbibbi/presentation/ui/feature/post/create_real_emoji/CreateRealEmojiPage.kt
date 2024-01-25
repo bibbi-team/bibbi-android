@@ -85,6 +85,7 @@ import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.getRealEmojiResource
 import com.no5ing.bbibbi.util.localResources
 import com.no5ing.bbibbi.util.takePhoto
+import com.no5ing.bbibbi.util.takePhotoTemporary
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -147,12 +148,6 @@ fun CreateRealEmojiPage(
         if (!isPermissionGranted.value) return@LaunchedEffect
         val cameraProvider = context.getCameraProvider()
         cameraProvider.unbindAll()
-
-        if(cameraDirection.value.lensFacing == CameraSelector.LENS_FACING_FRONT) {
-            previewView.scaleX = -1f
-        } else {
-            previewView.scaleX = 1f
-        }
 
         val preview = Preview
             .Builder()
@@ -315,13 +310,13 @@ fun CreateRealEmojiPage(
                     onClick = {
                         coroutineScope.launch {
                             isCapturing = true
-                            val uri = captureState.value.takePhoto(context)
+                            val image = captureState.value.takePhotoTemporary(context)
                             isCapturing = false
                             updateMemberPostRealEmojiViewModel.invoke(
                                 Arguments(
                                     arguments = mapOf(
                                         "emojiType" to selectedEmoji,
-                                        "imageUri" to uri?.toString(),
+                                        "image" to image,
                                         "prevEmojiKey" to emojiMap[selectedEmoji]?.realEmojiId,
                                     )
                                 )

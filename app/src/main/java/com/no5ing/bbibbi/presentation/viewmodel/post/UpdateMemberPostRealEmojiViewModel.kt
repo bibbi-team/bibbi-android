@@ -1,6 +1,9 @@
 package com.no5ing.bbibbi.presentation.viewmodel.post
 
 import android.content.Context
+import androidx.annotation.OptIn
+import androidx.camera.core.ExperimentalGetImage
+import androidx.camera.core.ImageProxy
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.CreateMemberRealEmojiRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
@@ -11,12 +14,13 @@ import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
-import com.no5ing.bbibbi.util.fileFromContentUriStr
-import com.no5ing.bbibbi.util.uploadImage
+import com.no5ing.bbibbi.util.toRequestBody
+import com.no5ing.bbibbi.util.upload
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import javax.inject.Inject
 
@@ -24,29 +28,29 @@ import javax.inject.Inject
 class UpdateMemberPostRealEmojiViewModel @Inject constructor(
     private val restAPI: RestAPI,
     private val sessionModule: SessionModule,
-    private val context: Context,
     private val client: OkHttpClient,
 ) : BaseViewModel<APIResponse<MemberRealEmoji>>() {
     override fun initState(): APIResponse<MemberRealEmoji> {
         return APIResponse.idle()
     }
 
-    override fun invoke(arguments: Arguments) {
+    @OptIn(ExperimentalGetImage::class) override fun invoke(arguments: Arguments) {
         val emojiType = arguments.get("emojiType") ?: throw RuntimeException()
-        val imageUri = arguments.get("imageUri") ?: throw RuntimeException()
+        val image = arguments.getObject<ImageProxy>("image") ?: throw RuntimeException()
         val prevEmojiKey = arguments.get("prevEmojiKey")
         withMutexScope(Dispatchers.IO, uiState.value.isIdle()) {
             setState(APIResponse.loading())
-            val file = fileFromContentUriStr(context, imageUri)
-            restAPI.getMemberApi().getUploadImageRequest(
+            restAPI.getMemberApi().getRealEmojiImageRequest(
+                memberId = sessionModule.sessionState.value.memberId,
                 ImageUploadRequest(
-                    file.name
+                    "${image.imageInfo.timestamp}.jpg"
                 )
             ).suspendOnSuccess {
-                val uploadResult = client.uploadImage(
-                    targetFile = file,
+                val uploadResult = client.upload(
+                    body = image.toRequestBody("image/jpeg".toMediaType()),
                     targetUrl = data.url
                 )
+                image.close()
                 if (uploadResult == null) {
                     setState(APIResponse.unknownError())
                     return@suspendOnSuccess
