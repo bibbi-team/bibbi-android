@@ -111,7 +111,6 @@ fun CreateRealEmojiPage(
         ).apply {
             implementationMode = PreviewView.ImplementationMode.COMPATIBLE
             scaleType = PreviewView.ScaleType.FIT_CENTER
-            scaleX = -1f
         }
     }
 
@@ -143,6 +142,12 @@ fun CreateRealEmojiPage(
         if (!isPermissionGranted.value) return@LaunchedEffect
         val cameraProvider = context.getCameraProvider()
         cameraProvider.unbindAll()
+
+        if(cameraDirection.value.lensFacing == CameraSelector.LENS_FACING_FRONT) {
+            previewView.scaleX = -1f
+        } else {
+            previewView.scaleX = 1f
+        }
 
         val preview = Preview
             .Builder()

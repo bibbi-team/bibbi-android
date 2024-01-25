@@ -40,6 +40,7 @@ import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlin.streams.toList
 
 fun <A, B> List<A>.parallelMap(
     context: CoroutineContext = Dispatchers.Default,
@@ -212,3 +213,6 @@ suspend fun getInstallReferrerClient(context: Context) = suspendCoroutine {
         override fun onInstallReferrerServiceDisconnected() {}
     })
 }
+
+fun String.toCodePointList() = codePoints().toList().map { String(Character.toChars(it)) }
+fun String.codePointLength() = codePoints().count()

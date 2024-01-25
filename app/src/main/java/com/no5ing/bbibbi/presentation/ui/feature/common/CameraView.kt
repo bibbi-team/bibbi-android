@@ -82,6 +82,12 @@ fun CameraView(
         val cameraProvider = context.getCameraProvider()
         cameraProvider.unbindAll()
 
+        if(cameraDirection.value.lensFacing == CameraSelector.LENS_FACING_FRONT) {
+            previewView.scaleX = -1f
+        } else {
+            previewView.scaleX = 1f
+        }
+
         val preview = Preview
             .Builder()
             .build()

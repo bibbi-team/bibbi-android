@@ -51,6 +51,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -70,7 +71,9 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.CreatePostViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
+import com.no5ing.bbibbi.util.codePointLength
 import com.no5ing.bbibbi.util.getErrorMessage
+import com.no5ing.bbibbi.util.toCodePointList
 import kotlinx.coroutines.launch
 
 const val defaultText = "여덟자로입력해요"
@@ -169,7 +172,7 @@ fun PostUploadPage(
                                 Row(
                                     horizontalArrangement = Arrangement.spacedBy(2.dp)
                                 ) {
-                                    imageText.value.forEach { character ->
+                                    imageText.value.toCodePointList().forEach { character ->
                                         Box(
                                             modifier = Modifier
                                                 .clip(RoundedCornerShape(10.dp))
@@ -178,7 +181,7 @@ fun PostUploadPage(
                                             contentAlignment = Alignment.Center
                                         ) {
                                             Text(
-                                                text = character.toString(),
+                                                text = character,
                                                 color = MaterialTheme.bbibbiScheme.white,
                                                 style = MaterialTheme.bbibbiTypo.headTwoBold,
                                             )
@@ -302,7 +305,7 @@ fun PostUploadPage(
                                             }
                                         },
                                     onValueChange = { nextValue ->
-                                        if (nextValue.length <= 8) {
+                                        if (nextValue.codePointLength() <= 8) {
                                             if (nextValue.contains(" ")) {
                                                 coroutineScope.launch {
                                                     snackBarHost.showSnackBarWithDismiss(
@@ -362,7 +365,11 @@ fun PostUploadPage(
                         }
 
                     }
-                    TextBubbleBox(text = if (imageText.value.isEmpty()) defaultText else imageText.value)
+                    TextBubbleBox(
+                        text = imageText.value.ifEmpty { defaultText },
+                        textStyle = if(imageText.value.isEmpty()) MaterialTheme.bbibbiTypo.headOne.copy(fontWeight = FontWeight.Normal) else MaterialTheme.bbibbiTypo.headOne,
+                        textColor = if(imageText.value.isEmpty()) MaterialTheme.bbibbiScheme.textSecondary else MaterialTheme.bbibbiScheme.white,
+                    )
                 }
             }
 
