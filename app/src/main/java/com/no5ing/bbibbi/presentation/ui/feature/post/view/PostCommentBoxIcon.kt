@@ -43,7 +43,7 @@ fun PostCommentBoxIcon(
             Icon(
                 painter = painterResource(id = R.drawable.message_icon),
                 contentDescription = null,
-                tint = MaterialTheme.bbibbiScheme.textPrimary,
+                tint = MaterialTheme.bbibbiScheme.iconSelected,
                 modifier = Modifier.size(22.dp)
             )
             Text(

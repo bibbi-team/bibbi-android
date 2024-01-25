@@ -32,11 +32,16 @@ fun PostViewReactionElement(
 ) {
     Box(
         modifier = Modifier
-            .border(
-                width = if (isMeReacted) 1.dp else 0.dp,
-                color = MaterialTheme.bbibbiScheme.mainYellow,
-                RoundedCornerShape(100.dp)
-            )
+            .let {
+                if(isMeReacted)
+                    it.border(
+                        width = 1.dp,
+                        color = MaterialTheme.bbibbiScheme.mainYellow,
+                        RoundedCornerShape(100.dp)
+                    )
+                else
+                    it
+            }
             .background(
                 color = if (isMeReacted) MaterialTheme.bbibbiScheme.button else MaterialTheme.bbibbiScheme.backgroundPrimary,
                 RoundedCornerShape(100.dp)

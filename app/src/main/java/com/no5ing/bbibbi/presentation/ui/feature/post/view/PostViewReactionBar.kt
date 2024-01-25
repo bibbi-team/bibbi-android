@@ -103,17 +103,16 @@ fun PostViewReactionBar(
                             .let {
                                 if (isEmojiBarActive)
                                     it
-                                        .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+                                        .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary,
+                                            RoundedCornerShape(100.dp))
                                         .border(
                                             1.dp,
                                             MaterialTheme.bbibbiScheme.mainYellow,
                                             RoundedCornerShape(100.dp)
                                         )
-                                // .padding(vertical = 6.dp, horizontal = 8.dp)
                                 else it
                                     .clip(RoundedCornerShape(100.dp))
                                     .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-                                // .padding(vertical = 6.dp, horizontal = 8.dp)
                             }
                             .size(width = 53.dp, height = 36.dp)
                             .clickable { onTapAddEmojiButton() },
