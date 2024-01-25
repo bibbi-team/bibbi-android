@@ -49,7 +49,7 @@ abstract class BaseViewModel<T> : ViewModel() {
         _uiState.value = newState
     }
 
-    fun resetState() {
+    open fun resetState() {
         _uiState.value = initState()
     }
 

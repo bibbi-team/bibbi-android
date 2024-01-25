@@ -53,25 +53,12 @@ fun PostViewReactionBar(
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
     addRealEmojiViewModel: AddRealEmojiViewModel = hiltViewModel(),
     removeRealEmojiViewModel: RemoveRealEmojiViewModel = hiltViewModel(),
-    //   postViewReactionMemberViewModel: PostViewReactionMemberViewModel = hiltViewModel(),
     onTapAddEmojiButton: () -> Unit,
     postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     val memberId = LocalSessionState.current.memberId
     val uiState = familyPostReactionBarViewModel.uiState.collectAsState()
-    LaunchedEffect(post) {
-        familyPostReactionBarViewModel.invoke(
-            Arguments(
-                arguments = mapOf(
-                    "postId" to post.postId,
-                    "memberId" to memberId
-                )
-            )
-        )
-    }
     val selectedEmoji = remember { mutableStateOf<PostReactionUiState>(PostReactionUiState.mock()) }
-   // val selectedEmojiKey = remember { mutableStateOf(emojiList.first()) }
- //   val selectedEmojiType = remember { mutableStateOf(emojiList.first()) }
     val emojiMap = uiState.value.groupBy { it.getGroupKey() }
     val groupEmoji = emojiMap.toList()
     val reactionDialogState = remember { mutableStateOf(false) }

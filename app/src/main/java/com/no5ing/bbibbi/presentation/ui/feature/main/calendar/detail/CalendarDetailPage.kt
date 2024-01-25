@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -53,12 +54,16 @@ import com.no5ing.bbibbi.presentation.ui.snackBarFire
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.presentation.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarDetailContentViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarWeekViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalenderDetailContentUiState
+import com.no5ing.bbibbi.presentation.viewmodel.post.FamilyPostViewModel
+import com.no5ing.bbibbi.presentation.viewmodel.post.FamilySwipePostsViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
+import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.localResources
@@ -81,28 +86,22 @@ fun CalendarDetailPage(
     onDispose: () -> Unit,
     onTapProfile: (Member) -> Unit,
     onTapRealEmojiCreate: (String) -> Unit,
-    calendarDetailContentViewModel: CalendarDetailContentViewModel = hiltViewModel(),
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
     calendarWeekViewModel: CalendarWeekViewModel = hiltViewModel(),
+    familyPostsViewModel: FamilySwipePostsViewModel = hiltViewModel(),
 ) {
     // val postState = familyPostViewModel.uiState.collectAsState()
     val resources = localResources()
     val snackBarState = LocalSnackbarHostState.current
     val uiState = calendarWeekViewModel.uiState.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(
-        pageCount = { 3 },
-        initialPage = 1,
-    )
+    val memberId = LocalSessionState.current.memberId
+
     val scrollEnabled = remember {
         mutableStateOf(true)
     }
-    val calendarDetailState = calendarDetailContentViewModel.uiState.collectAsState()
-    val currentPostState = remember {
-        mutableStateOf(CalenderDetailContentUiState(null, null, null))
-    }
+
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.fire_lottie))
     var playLottie by remember {
         mutableStateOf(false)
@@ -155,90 +154,72 @@ fun CalendarDetailPage(
                 playLottie = true
             }
         }
-        val uiStateList = uiState.value.toList()
-        val centerIdx = uiStateList.indexOf(currentSelection to uiValue)
 
-        val left = uiStateList.getOrNull(centerIdx - 1)
-        val right = uiStateList.getOrNull(centerIdx + 1)
-
-        Timber.d("[CalendarDetailPage] Invoking detail content with idx = $centerIdx")
-        calendarDetailContentViewModel.invoke(
+        familyPostsViewModel.invoke(
             Arguments(
-                resourceId = uiValue.representativePostId,
                 arguments = mapOf(
-                    "left" to left?.second?.representativePostId,
-                    "right" to right?.second?.representativePostId,
-                )
+                    "date" to currentSelection.toString(),
+                ),
             )
         )
     }
 
-    LaunchedEffect(calendarDetailState.value) {
-        val actualValue = calendarDetailState.value
-        if (actualValue.isReady()) {
-            Timber.d("[CalendarDetailPage] hasLeft = ${actualValue.data.first != null}, hasRight = ${actualValue.data.third != null}")
-            currentPostState.value = actualValue.data
-            pagerState.scrollToPage(1)
-            calendarDetailContentViewModel.resetState()
-            scrollEnabled.value = true
+    val currentPostState by familyPostsViewModel.uiState.collectAsState()
 
+    val pagerState = key(currentPostState) {
+        if (currentPostState.isReady()) {
+            val index =
+                0.coerceAtLeast(uiState.value[currentSelection]?.representativePostId?.let { postId ->
+                    currentPostState.data.indexOfFirst { it.post.postId == postId }
+                } ?: 0)
+            rememberPagerState(
+                pageCount = { currentPostState.data.size },
+                initialPage = index,
+            )
+        } else {
+            rememberPagerState(
+                pageCount = { 1 },
+                initialPage = 0,
+            )
         }
     }
-
-    val noMoreItemMessage = stringResource(id = R.string.no_more_calendar_items)
-    LaunchedEffect(pagerState.currentPage) {
-        Timber.d("[CalendarDetailPage] CurrentPage: ${pagerState.currentPage}")
-        if (pagerState.currentPage != 1) {
-            scrollEnabled.value = false
-            val item = when (pagerState.currentPage) {
-                0 -> currentPostState.value.first
-                2 -> currentPostState.value.third
-                else -> null
-            }
-            item?.let { newItem ->
-                val newItemDate = newItem.post.createdAt.toLocalDate()
-                Timber.d("[CalendarDetailPage] New Item Date: $newItemDate")
-                currentCalendarState.selectionState.onDateSelected(newItemDate)
-                currentCalendarState.weekState.currentWeek = Week(newItemDate.weekDates())
-            } ?: Unit.apply {
-                snackBarState.showSnackBarWithDismiss(
-                    noMoreItemMessage,
-                    snackBarWarning
+    
+    LaunchedEffect(currentPostState, pagerState.currentPage) {
+        if(currentPostState.isReady()) {
+            familyPostReactionBarViewModel.invoke(
+                Arguments(
+                    arguments = mapOf(
+                        "postId" to currentPostState.data[pagerState.currentPage].post.postId,
+                        "memberId" to memberId,
+                    ),
                 )
-                coroutineScope.launch {
-                    delay(50L)
-                    pagerState.animateScrollToPage(1)
-                    scrollEnabled.value = true
-
-                }
-
-            }
+            )
         }
-
     }
+
     val yearStr = stringResource(id = R.string.year)
     val monthStr = stringResource(id = R.string.month)
     val currentYearMonth = currentCalendarState.weekState.currentWeek.yearMonth
 
     BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
         Box {
-            AnimatedVisibility(
-                visible = currentPostState.value.second != null,
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                Box {
-                    AsyncImage(
-                        model = asyncImagePainter(source = currentPostState.value.second?.post?.imageUrl),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .blur(50.dp)
-                            .fillMaxSize(),
-                        contentScale = ContentScale.Crop,
-                        alpha = 0.1f,
-                    )
-                }
-            }
+//            AnimatedVisibility(
+//                visible = currentPostState.value.second != null,
+//                enter = fadeIn(),
+//                exit = fadeOut()
+//            ) {
+//                Box {
+//                    AsyncImage(
+//                        model = asyncImagePainter(source = currentPostState.value.second?.post?.imageUrl),
+//                        contentDescription = null,
+//                        modifier = Modifier
+//                            .blur(50.dp)
+//                            .fillMaxSize(),
+//                        contentScale = ContentScale.Crop,
+//                        alpha = 0.1f,
+//                    )
+//                }
+//            }
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(
                     modifier = Modifier.fillMaxSize()
@@ -266,34 +247,27 @@ fun CalendarDetailPage(
                         weekHeader = {},
                         daysOfWeekHeader = {}
                     )
-                    HorizontalPager(
-                        state = pagerState,
-                        userScrollEnabled = scrollEnabled.value,
-                    ) { index ->
-                        val item = when (index) {
-                            0 -> currentPostState.value.first
-                            1 -> currentPostState.value.second
-                            2 -> currentPostState.value.third
-                            else -> null
-                        }
-                        Column(
-                            modifier = Modifier
-                        ) {
-                            Spacer(modifier = Modifier.height(12.dp))
-                            if (item != null) {
-                                PostViewDetailTopBar(
-                                    member = item.writer,
-                                    onTap = {
-                                        onTapProfile(item.writer)
-                                    }
-                                )
-                                PostViewContent(
-                                    post = item.post,
-                                    familyPostReactionBarViewModel = familyPostReactionBarViewModel,
-                                    removePostReactionViewModel = removePostReactionViewModel,
-                                    addPostReactionViewModel = addPostReactionViewModel,
-                                    onTapRealEmojiCreate = onTapRealEmojiCreate,
-                                )
+                    if(currentPostState.isReady()) {
+                        HorizontalPager(
+                            state = pagerState,
+                            userScrollEnabled = scrollEnabled.value,
+                        ) { index ->
+                            val item = currentPostState.data.getOrNull(index)
+                            Column(
+                                modifier = Modifier
+                            ) {
+                                Spacer(modifier = Modifier.height(12.dp))
+                                if (item != null) {
+                                    CalendarDetailBody(
+                                        onTapProfile = onTapProfile,
+                                        onTapRealEmojiCreate = onTapRealEmojiCreate,
+                                        item = item,
+                                        familyPostReactionBarViewModel = familyPostReactionBarViewModel,
+                                        removePostReactionViewModel = removePostReactionViewModel,
+                                        addPostReactionViewModel = addPostReactionViewModel,
+                                    )
+
+                                }
                             }
                         }
                     }
@@ -313,6 +287,32 @@ fun CalendarDetailPage(
 
     }
 
+}
+
+@Composable
+fun CalendarDetailBody(
+    onTapProfile: (Member) -> Unit,
+    onTapRealEmojiCreate: (String) -> Unit,
+    item: MainFeedUiState,
+    familyPostReactionBarViewModel: PostReactionBarViewModel,
+    removePostReactionViewModel: RemovePostReactionViewModel,
+    addPostReactionViewModel: AddPostReactionViewModel,
+) {
+    Column {
+        PostViewDetailTopBar(
+            member = item.writer,
+            onTap = {
+                onTapProfile(item.writer)
+            }
+        )
+        PostViewContent(
+            post = item.post,
+            familyPostReactionBarViewModel = familyPostReactionBarViewModel,
+            removePostReactionViewModel = removePostReactionViewModel,
+            addPostReactionViewModel = addPostReactionViewModel,
+            onTapRealEmojiCreate = onTapRealEmojiCreate,
+        )
+    }
 }
 
 

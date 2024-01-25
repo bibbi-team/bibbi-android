@@ -125,6 +125,7 @@ class PostReactionBarViewModel @Inject constructor(
         }
     }
 
+
     override fun invoke(arguments: Arguments) {
         val postId = arguments.get("postId") ?: throw RuntimeException()
         val memberId = arguments.get("memberId") ?: throw RuntimeException()
