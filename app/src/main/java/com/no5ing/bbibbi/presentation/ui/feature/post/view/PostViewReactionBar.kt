@@ -87,8 +87,8 @@ fun PostViewReactionBar(
     Box(modifier = Modifier) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.Start),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = modifier//.fillMaxWidth()
             ) {
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
@@ -103,7 +103,7 @@ fun PostViewReactionBar(
                             .let {
                                 if (isEmojiBarActive)
                                     it
-                                        .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary,
+                                        .background(color = MaterialTheme.bbibbiScheme.mainYellow.copy(alpha = 0.1f),
                                             RoundedCornerShape(100.dp))
                                         .border(
                                             1.dp,
@@ -112,7 +112,7 @@ fun PostViewReactionBar(
                                         )
                                 else it
                                     .clip(RoundedCornerShape(100.dp))
-                                    .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+                                    .background(color = MaterialTheme.bbibbiScheme.button)
                             }
                             .size(width = 53.dp, height = 36.dp)
                             .clickable { onTapAddEmojiButton() },

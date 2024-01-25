@@ -96,6 +96,13 @@ class PostReactionBarViewModel @Inject constructor(
         }
     }
 
+    fun hasEmoji(memberId: String, emojiType: String): Boolean {
+        return uiState.value.any {
+            it is NormalPostReactionUiState && it.emojiType == emojiType && it.memberId == memberId
+        }
+    }
+
+
     fun toggleRealEmoji(memberId: String, realEmoji: MemberRealEmoji): Boolean {
         return toggleRealEmoji(memberId, realEmoji.realEmojiId, realEmoji.imageUrl, realEmoji.type)
     }

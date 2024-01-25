@@ -43,30 +43,31 @@ fun PostViewReactionElement(
                     it
             }
             .background(
-                color = if (isMeReacted) MaterialTheme.bbibbiScheme.button else MaterialTheme.bbibbiScheme.backgroundPrimary,
+                color = if (isMeReacted) MaterialTheme.bbibbiScheme.mainYellow.copy(alpha = 0.1f) else MaterialTheme.bbibbiScheme.button,
                 RoundedCornerShape(100.dp)
             )
-            .padding(vertical = 6.dp, horizontal = 8.dp)
+            .size(width = 53.dp, height = 36.dp)
             .combinedClickable(
                 onClick = onTap,
                 onLongClick = onLongTap,
-            )
+            ),
+        contentAlignment = Alignment.Center,
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = getEmojiResource(emojiName = emojiType),
                 contentDescription = null, // 필수 param
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(26.dp)
             )
             Text(
                 text = emojiCnt.toString(),
-                color = if (isMeReacted) MaterialTheme.bbibbiScheme.iconSelected
+                color = if (isMeReacted) MaterialTheme.bbibbiScheme.mainYellow
                 else MaterialTheme.bbibbiScheme.textSecondary,
-                style = MaterialTheme.bbibbiTypo.bodyOneBold,
+                style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
             )
         }
 

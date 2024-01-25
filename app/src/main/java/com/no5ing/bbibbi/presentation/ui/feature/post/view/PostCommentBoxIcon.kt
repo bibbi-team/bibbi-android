@@ -28,14 +28,14 @@ fun PostCommentBoxIcon(
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(100.dp))
-            .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+            .background(color = MaterialTheme.bbibbiScheme.button)
             .size(width = 53.dp, height = 36.dp)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(
-                8.dp,
+                2.dp,
                 Alignment.CenterHorizontally
             ),
             verticalAlignment = Alignment.CenterVertically,
@@ -49,7 +49,7 @@ fun PostCommentBoxIcon(
             Text(
                 text = commentCount.toString(),
                 color = MaterialTheme.bbibbiScheme.textPrimary,
-                style = MaterialTheme.bbibbiTypo.bodyOneBold,
+                style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
             )
         }
 

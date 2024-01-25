@@ -1,5 +1,11 @@
 package com.no5ing.bbibbi.presentation.ui.feature.post.view
 
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -77,84 +83,99 @@ fun PostViewContent(
             )
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.End
-        ) {
+        Box {
+            Box {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.End
+                ) {
 
-            Row(
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(vertical = 12.dp, horizontal = 20.dp)
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 13.dp)
+                    ) {
+                        PostViewReactionBar(
+                            modifier = Modifier.weight(1.0f),
+                            post = post,
+                            isEmojiBarActive = addEmojiBarState.value,
+                            onTapAddEmojiButton = {
+                                addEmojiBarState.value = !addEmojiBarState.value
+                            },
+                            familyPostReactionBarViewModel = familyPostReactionBarViewModel,
+                            removePostReactionViewModel = removePostReactionViewModel,
+                            addPostReactionViewModel = addPostReactionViewModel,
+                        )
+                    }
+
+
+                }
+            }
+            androidx.compose.animation.AnimatedVisibility(
+                visible = addEmojiBarState.value,
+                enter = fadeIn(animationSpec = tween(130)),
+                exit = fadeOut(animationSpec = tween(130))
             ) {
-                PostViewReactionBar(
-                    modifier = Modifier.weight(1.0f),
-                    post = post,
-                    isEmojiBarActive = addEmojiBarState.value,
-                    onTapAddEmojiButton = {
-                        addEmojiBarState.value = !addEmojiBarState.value
-                    },
-                    familyPostReactionBarViewModel = familyPostReactionBarViewModel,
-                    removePostReactionViewModel = removePostReactionViewModel,
-                    addPostReactionViewModel = addPostReactionViewModel,
-                )
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-
-            if (addEmojiBarState.value) {
-                Spacer(modifier = Modifier.height(8.dp))
-                AddReactionBar(
-                    modifier = Modifier.fillMaxWidth(),
-                    realEmojiMap = memberRealEmojiState,
-                    onTapEmoji = {
-                        val toggled =
-                            familyPostReactionBarViewModel.toggleEmoji(
-                                memberId = memberId,
-                                emojiType = it
-                            )
-
-                        if (toggled) {
-                            addPostReactionViewModel.invoke(
-                                Arguments(
-                                    resourceId = post.postId,
-                                    mapOf(
-                                        "emoji" to it
-                                    )
-                                )
-                            )
-                            addEmojiBarState.value = false
-                        }
-                    },
-                    onTapRealEmoji = {
-                        if (!familyPostReactionBarViewModel.hasRealEmoji(
-                                memberId = memberId,
-                                realEmojiId = it.realEmojiId
+                Box(
+                    modifier = Modifier.padding(
+                        top = 54.dp
+                    )
+                ) {
+                    AddReactionBar(
+                        modifier = Modifier.fillMaxWidth(),
+                        realEmojiMap = memberRealEmojiState,
+                        onTapEmoji = {
+                            if (!familyPostReactionBarViewModel.hasEmoji(
+                                    memberId = memberId,
+                                    emojiType = it
                             )) {
-                            familyPostReactionBarViewModel.reactRealEmoji(
-                                memberId = memberId,
-                                realEmojiType = it.type,
-                                realEmojiId = it.realEmojiId,
-                                realEmojiUrl = it.imageUrl
-                            )
-                            addRealEmojiViewModel.invoke(
-                                Arguments(
-                                    resourceId = post.postId,
-                                    mapOf(
-                                        "realEmojiId" to it.realEmojiId
+                                familyPostReactionBarViewModel.toggleEmoji(
+                                    memberId = memberId,
+                                    emojiType = it
+                                )
+                                addPostReactionViewModel.invoke(
+                                    Arguments(
+                                        resourceId = post.postId,
+                                        mapOf(
+                                            "emoji" to it
+                                        )
                                     )
                                 )
-                            )
+                                addEmojiBarState.value = false
+                            }
+                        },
+                        onTapRealEmoji = {
+                            if (!familyPostReactionBarViewModel.hasRealEmoji(
+                                    memberId = memberId,
+                                    realEmojiId = it.realEmojiId
+                                )
+                            ) {
+                                familyPostReactionBarViewModel.reactRealEmoji(
+                                    memberId = memberId,
+                                    realEmojiType = it.type,
+                                    realEmojiId = it.realEmojiId,
+                                    realEmojiUrl = it.imageUrl
+                                )
+                                addRealEmojiViewModel.invoke(
+                                    Arguments(
+                                        resourceId = post.postId,
+                                        mapOf(
+                                            "realEmojiId" to it.realEmojiId
+                                        )
+                                    )
+                                )
+                                addEmojiBarState.value = false
+                            }
+                        },
+                        onDispose = {
                             addEmojiBarState.value = false
-                        }
-                    },
-                    onDispose = {
-                        addEmojiBarState.value = false
-                    },
-                    onTapRealEmojiCreate = onTapRealEmojiCreate,
-                )
+                        },
+                        onTapRealEmojiCreate = onTapRealEmojiCreate,
+                    )
+                }
             }
-        }
 
+        }
     }
 }
