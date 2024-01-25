@@ -203,23 +203,23 @@ fun CalendarDetailPage(
 
     BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
         Box {
-//            AnimatedVisibility(
-//                visible = currentPostState.value.second != null,
-//                enter = fadeIn(),
-//                exit = fadeOut()
-//            ) {
-//                Box {
-//                    AsyncImage(
-//                        model = asyncImagePainter(source = currentPostState.value.second?.post?.imageUrl),
-//                        contentDescription = null,
-//                        modifier = Modifier
-//                            .blur(50.dp)
-//                            .fillMaxSize(),
-//                        contentScale = ContentScale.Crop,
-//                        alpha = 0.1f,
-//                    )
-//                }
-//            }
+            AnimatedVisibility(
+                visible = currentPostState.isReady(),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                Box {
+                    AsyncImage(
+                        model = asyncImagePainter(source = currentPostState.data.getOrNull(pagerState.currentPage)?.post?.imageUrl),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .blur(50.dp)
+                            .fillMaxSize(),
+                        contentScale = ContentScale.Crop,
+                        alpha = 0.1f,
+                    )
+                }
+            }
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(
                     modifier = Modifier.fillMaxSize()
