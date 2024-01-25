@@ -54,6 +54,7 @@ fun CustomSnackBarHost(
                     snackBarWarning -> WarningIcon()
                     snackBarInfo -> InfoIcon()
                     snackBarCamera -> CameraIcon()
+                    snackBarFire -> FireIcon()
                     else -> Icon(
                         imageVector = Icons.Default.Email,
                         tint = MaterialTheme.bbibbiScheme.white,
@@ -74,11 +75,21 @@ const val snackBarWarning = "warning"
 const val snackBarInfo = "info"
 const val snackBarCamera = "camera"
 const val snackBarSuccess = "info"
+const val snackBarFire = "fire"
 
 @Composable
 private fun WarningIcon() {
     Icon(
         painter = painterResource(id = R.drawable.warning_circle_icon),
+        tint = MaterialTheme.bbibbiScheme.warningRed,
+        contentDescription = null
+    )
+}
+
+@Composable
+private fun FireIcon() {
+    Icon(
+        painter = painterResource(id = R.drawable.fire_icon),
         tint = MaterialTheme.bbibbiScheme.warningRed,
         contentDescription = null
     )

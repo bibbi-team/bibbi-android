@@ -23,9 +23,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -34,6 +36,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
@@ -43,6 +49,7 @@ import com.no5ing.bbibbi.presentation.ui.common.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.ui.feature.main.calendar.MainCalendarDay
 import com.no5ing.bbibbi.presentation.ui.feature.post.view.PostViewContent
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
+import com.no5ing.bbibbi.presentation.ui.snackBarFire
 import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
@@ -54,6 +61,7 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.asyncImagePainter
+import com.no5ing.bbibbi.util.localResources
 import com.no5ing.bbibbi.util.weekDates
 import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
 import io.github.boguszpawlowski.composecalendar.WeekCalendarState
@@ -80,6 +88,7 @@ fun CalendarDetailPage(
     calendarWeekViewModel: CalendarWeekViewModel = hiltViewModel(),
 ) {
     // val postState = familyPostViewModel.uiState.collectAsState()
+    val resources = localResources()
     val snackBarState = LocalSnackbarHostState.current
     val uiState = calendarWeekViewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
@@ -94,6 +103,11 @@ fun CalendarDetailPage(
     val currentPostState = remember {
         mutableStateOf(CalenderDetailContentUiState(null, null, null))
     }
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.fire_lottie))
+    var playLottie by remember {
+        mutableStateOf(false)
+    }
+    val progress = animateLottieCompositionAsState(composition, isPlaying = playLottie)
     val currentCalendarState = remember {
         WeekCalendarState(
             weekState = WeekState(
@@ -108,6 +122,12 @@ fun CalendarDetailPage(
                 }
             ),
         )
+    }
+    
+    LaunchedEffect(progress.isAtEnd) {
+        if (progress.isAtEnd) {
+            playLottie = false
+        }
     }
 
     LaunchedEffect(currentCalendarState.weekState.currentWeek) {
@@ -125,6 +145,16 @@ fun CalendarDetailPage(
     val currentSelection = currentCalendarState.selectionState.selection.first()
     LaunchedEffect(uiState.value[currentSelection], currentSelection) {
         val uiValue = uiState.value[currentSelection] ?: return@LaunchedEffect
+        if (uiValue.allFamilyMembersUploaded) {
+            launch {
+                delay(500L)
+                snackBarState.showSnackBarWithDismiss(
+                    resources.getString(R.string.snack_bar_everyone_uploaded_day),
+                    snackBarFire
+                )
+                playLottie = true
+            }
+        }
         val uiStateList = uiState.value.toList()
         val centerIdx = uiStateList.indexOf(currentSelection to uiValue)
 
@@ -267,6 +297,16 @@ fun CalendarDetailPage(
                             }
                         }
                     }
+                }
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    LottieAnimation(
+                        composition,
+                        progress = { progress.value },
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.FillBounds
+                    )
                 }
             }
         }

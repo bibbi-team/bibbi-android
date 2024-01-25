@@ -39,7 +39,6 @@ class BBiBBiApplication : Application(), ImageLoaderFactory {
                     .build()
             }
             .dispatcher(dispatcher)
-            .logger(DebugLogger())
             .bitmapFactoryMaxParallelism(4)
             .respectCacheHeaders(false)
             .build()

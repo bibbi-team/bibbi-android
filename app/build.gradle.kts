@@ -107,7 +107,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
-
+    implementation("com.airbnb.android:lottie-compose:6.3.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
     implementation("androidx.camera:camera-camera2:1.4.0-alpha03")

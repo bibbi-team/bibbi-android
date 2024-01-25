@@ -151,6 +151,7 @@
     <string name="already_family_exists_confirm">확인</string>
 
     <string name="no_more_calendar_items">더 이상 게시물이 없어요</string>
+    <string name="snack_bar_everyone_uploaded_day">우리 가족 모두가 사진을 올린 날</string>
 
     <string name="yellow_widget_name">삐삐</string>
     <string name="widget_description">가족들이 생존신고 한 사진을 빠르게 확인할 수 있어요.</string>
