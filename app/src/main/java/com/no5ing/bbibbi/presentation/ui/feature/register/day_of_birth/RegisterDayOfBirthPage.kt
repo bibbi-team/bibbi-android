@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,8 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -51,6 +54,7 @@ fun RegisterDayOfBirthPage(
     val yearFocus = remember { FocusRequester() }
     val monthFocus = remember { FocusRequester() }
     val dayFocus = remember { FocusRequester() }
+    val localFocusManager = LocalFocusManager.current
     BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
@@ -87,14 +91,19 @@ fun RegisterDayOfBirthPage(
                         value = state.yearTextState.value,
                         focusRequester = yearFocus,
                         onValueChange = {
-                            val number = it.toIntOrNull() ?: return@DigitizedNumberInput
+                            val number = it.toIntOrNull()
+                            if (number == null) {
+                                state.yearTextState.value = 0
+                                return@DigitizedNumberInput
+                            }
                             if (number < 0 || number > 9999) return@DigitizedNumberInput
                             state.isInvalidYearState.value =
                                 number > YearMonth.now().year || number < 1900 //TODO
                             if (it.length == 4 && state.yearTextState.value / 100 > 0) monthFocus.requestFocus()
                             state.yearTextState.value = number
                         },
-                        isInvalidInput = state.isInvalidInput()
+                        isInvalidInput = state.isInvalidInput(),
+                        onDone = { monthFocus.requestFocus() }
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     DigitizedNumberInput(
@@ -113,7 +122,8 @@ fun RegisterDayOfBirthPage(
                             if (it.length == 2 && state.monthTextState.value < 10) dayFocus.requestFocus()
                             state.monthTextState.value = number
                         },
-                        isInvalidInput = state.isInvalidInput()
+                        isInvalidInput = state.isInvalidInput(),
+                        onDone = { dayFocus.requestFocus() }
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     DigitizedNumberInput(
@@ -131,7 +141,8 @@ fun RegisterDayOfBirthPage(
                             state.isInvalidDayState.value = number > 31
                             state.dayTextState.value = number
                         },
-                        isInvalidInput = state.isInvalidInput()
+                        isInvalidInput = state.isInvalidInput(),
+                        onDone = { localFocusManager.clearFocus() }
                     )
                 }
                 if (state.isInvalidInput()) {
@@ -197,13 +208,20 @@ fun DigitizedNumberInput(
     onValueChange: (String) -> Unit,
     isInvalidInput: Boolean,
     focusRequester: FocusRequester = remember { FocusRequester() },
+    onDone: () -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         BasicTextField(
             value = if (value != 0) value.toString() else "",
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done,
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { onDone() },
+            ),
             onValueChange = onValueChange,
             modifier = Modifier
                 .width(IntrinsicSize.Min)
