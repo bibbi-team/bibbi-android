@@ -186,6 +186,9 @@ fun CalendarDetailPage(
     
     LaunchedEffect(currentPostState, pagerState.currentPage) {
         if(currentPostState.isReady()) {
+            if(currentPostState.data.size <= pagerState.currentPage) {
+                return@LaunchedEffect
+            }
             familyPostReactionBarViewModel.invoke(
                 Arguments(
                     arguments = mapOf(
