@@ -7,7 +7,6 @@ import android.graphics.Rect
 import android.text.TextPaint
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -52,16 +51,15 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.no5ing.bbibbi.MainActivity
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.util.codePointLength
+import com.no5ing.bbibbi.util.randomBoolean
+import com.no5ing.bbibbi.util.toCodePointList
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 import java.time.Duration
 import kotlin.streams.toList
 
-class AppWidget(
-    val uid: String = "yellow",
-    val smallImageId: Int = R.drawable.widget_small,
-    val largeImageId: Int = R.drawable.widget_large,
-) : GlanceAppWidget() {
+class AppWidget: GlanceAppWidget() {
     companion object {
         const val WIDGET_UNAUTHENTICATED = "unauthenticated"
         const val WIDGET_SUCCESS = "success"
@@ -86,7 +84,7 @@ class AppWidget(
         val glanceIds = manager.getGlanceIds(AppWidget::class.java)
         if (glanceIds.isEmpty()) {
             Timber.d("Cancel Widget Schedule")
-            WorkManager.getInstance(context).cancelUniqueWork(WIDGET_WORKER_NAME + uid)
+            WorkManager.getInstance(context).cancelUniqueWork(WIDGET_WORKER_NAME )
         }
     }
 
@@ -94,7 +92,7 @@ class AppWidget(
         coroutineScope {
             Timber.d("Start Widget Schedule")
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-                WIDGET_WORKER_NAME + uid,
+                WIDGET_WORKER_NAME,
                 ExistingPeriodicWorkPolicy.KEEP,
                 PeriodicWorkRequest.Builder(
                     WidgetImageWorker::class.java,
@@ -116,6 +114,7 @@ class AppWidget(
     fun WidgetBody() {
         val size = LocalSize.current
         val aspectSize = if (size.width > size.height) size.height else size.width
+        val isSmallSize = aspectSize < 200.dp
         val result = currentState(resultKey)
         Box(
             modifier = GlanceModifier.fillMaxSize(),
@@ -129,7 +128,7 @@ class AppWidget(
             ) {
                 when (result) {
                     WIDGET_SUCCESS -> {
-                        ImagePreviewBox(size)
+                        ImagePreviewBox(size, isSmallSize)
                     }
 
                     WIDGET_LOADING, null -> {
@@ -144,7 +143,7 @@ class AppWidget(
                     }
 
                     else -> {
-                        EmptyBox(aspectSize)
+                        EmptyBox(isSmallSize)
                     }
                 }
             }
@@ -160,7 +159,7 @@ class AppWidget(
     }
 
     @Composable
-    fun ImagePreviewBox(size: DpSize) {
+    fun ImagePreviewBox(size: DpSize, isSmallSize: Boolean) {
         val postImagePath = currentState(imageKey)!!
         val profileImagePath = currentState(profileImageKey)
         val postContent = currentState(postContentKey)!!
@@ -177,25 +176,24 @@ class AppWidget(
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = GlanceModifier.fillMaxSize()
-                    //  .clickable(actionRunCallback<RefreshAction>())
                 )
             }
             Box(
                 modifier = GlanceModifier
                     .fillMaxSize()
-                    .padding(12.dp),
+                    .padding(if(isSmallSize) 13.dp else 18.dp),
                 contentAlignment = Alignment.TopStart
             ) {
-                val iconBgSound = size.width * 0.3f
-                val iconSize = size.width * 0.28f
+                val nameIconSize = if(isSmallSize) 32.dp else 48.dp
+                val iconSize = if(isSmallSize) 29.6.dp else 44.dp
                 Box(
                     contentAlignment = Alignment.Center
                 ) {
                     Box(
                         modifier = GlanceModifier
-                            .size(iconBgSound)
+                            .size(nameIconSize)
                             .background(Color.White)
-                            .cornerRadius(iconBgSound)
+                            .cornerRadius(nameIconSize)
                     ) {}
                     Box(
                         modifier = GlanceModifier
@@ -223,7 +221,7 @@ class AppWidget(
                                 style = TextStyle(
                                     color = ColorProvider(Color.White),
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = (iconSize.value * 0.65).sp,
+                                    fontSize = if(isSmallSize) 14.sp else 18.sp,
                                 )
                             )
                         }
@@ -235,7 +233,7 @@ class AppWidget(
             }
             Box(
                 modifier = GlanceModifier
-                    .padding(12.dp)
+                    .padding(if(isSmallSize) 16.dp else 22.dp)
             ) {
                 Column(
                     verticalAlignment = Alignment.Bottom,
@@ -245,22 +243,13 @@ class AppWidget(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = GlanceModifier.fillMaxWidth()
                     ) {
-                        val evaluatedSize = autoSizeBox(
-                            postContent,
-                            size.width.value.toPx.toInt() - 24.dp.value.toPx.toInt(),
-                            fontSize = 24.0f,
-                            itemPadding = 6.dp.value.toPx.toInt(),
-                            textPadding = 3.dp.value.toPx.toInt(),
-                        )
-                        val actualContent =
-                            postContent.codePoints().toList().map { String(Character.toChars(it)) }
-                        val lastIndex = actualContent.size - 1
-                        actualContent.forEachIndexed { index, character ->
+                        val lastIndex = (postContent.codePointLength() - 1).toInt()
+                        postContent.toCodePointList().forEachIndexed { index, character ->
                             Row {
                                 Box(
                                     modifier = GlanceModifier
-                                        .cornerRadius(5.dp)
-                                        .padding(vertical = 4.dp, horizontal = 3.dp)
+                                        .cornerRadius(if(isSmallSize) 5.dp else 10.dp)
+                                        .padding(vertical = if(isSmallSize) 4.dp else 8.dp, horizontal = if(isSmallSize) 3.dp else 6.dp)
                                         .background(Color.Black.copy(alpha = 0.3f)),
                                     contentAlignment = Alignment.Center
                                 ) {
@@ -269,12 +258,12 @@ class AppWidget(
                                         style = TextStyle(
                                             color = ColorProvider(Color.White),
                                             fontWeight = FontWeight.Bold,
-                                            fontSize = evaluatedSize,
+                                            fontSize = if(isSmallSize) 12.sp else 18.sp,
                                         )
                                     )
                                 }
                                 if (index != lastIndex) {
-                                    Box(GlanceModifier.width(width = 6.dp)) {}
+                                    Box(GlanceModifier.width(width = if(isSmallSize) 1.5.dp else 2.dp)) {}
                                 }
                             }
 
@@ -290,7 +279,9 @@ class AppWidget(
     }
 
     @Composable
-    fun EmptyBox(size: Dp) {
+    fun EmptyBox(
+        isSmallSize: Boolean,
+    ) {
         Box(
             modifier = GlanceModifier
                 .fillMaxSize()
@@ -298,7 +289,10 @@ class AppWidget(
             Column(
                 modifier = GlanceModifier.fillMaxSize()
             ) {
-                val imageResource = if (size > 200.dp) largeImageId else smallImageId
+                val imageResource = if (!isSmallSize)
+                    if(randomBoolean()) R.drawable.widget_large else R.drawable.widget_large_green
+                else
+                    if(randomBoolean()) R.drawable.widget_small else R.drawable.widget_small_green
                 Image(
                     provider = AndroidResourceImageProvider(imageResource),
                     contentDescription = null,

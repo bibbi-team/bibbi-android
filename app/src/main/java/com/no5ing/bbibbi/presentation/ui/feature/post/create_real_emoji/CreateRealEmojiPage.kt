@@ -9,6 +9,9 @@ import androidx.camera.core.Preview
 import androidx.camera.core.UseCaseGroup
 import androidx.camera.core.ViewPort
 import androidx.camera.view.PreviewView
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -76,6 +79,7 @@ import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.getCameraProvider
+import com.no5ing.bbibbi.util.getDisabledEmojiResource
 import com.no5ing.bbibbi.util.getEmojiResource
 import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.getRealEmojiResource
@@ -105,6 +109,7 @@ fun CreateRealEmojiPage(
     val cameraState = remember { mutableStateOf<Camera?>(null) }
     val captureState = remember { mutableStateOf(ImageCapture.Builder().build()) }
     var isCapturing by remember { mutableStateOf(false) }
+    var isZoomed by remember { mutableStateOf(false) }
     val previewView = remember {
         PreviewView(
             context,
@@ -195,6 +200,18 @@ fun CreateRealEmojiPage(
             perm.launchPermissionRequest()
         }
     }
+    val zoomValue: Float by animateFloatAsState(
+        targetValue = if (isZoomed) 0.5f else 0.0f,
+        animationSpec = tween(
+            durationMillis = 150,
+            easing = LinearEasing,
+        ), label = ""
+    )
+    LaunchedEffect(zoomValue) {
+        cameraState.value?.cameraControl?.setLinearZoom(
+            zoomValue
+        )
+    }
     BBiBBiSurface(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -211,15 +228,25 @@ fun CreateRealEmojiPage(
             Spacer(modifier = Modifier.height(48.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Image(
-                    painter = getEmojiResource(emojiName = selectedEmoji),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                    contentScale = ContentScale.FillBounds,
-                )
+                Box(
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .background(MaterialTheme.bbibbiScheme.gray600, CircleShape)
+                    )
+                    Image(
+                        painter = getEmojiResource(emojiName = selectedEmoji),
+                        contentDescription = null,
+                        modifier = Modifier.size(26.dp),
+                        contentScale = ContentScale.FillBounds,
+                    )
+                }
+
                 Text(
                     text = stringResource(id = R.string.real_emoji_follow_emoji),
                     color = MaterialTheme.bbibbiScheme.emojiYellow,
@@ -248,15 +275,24 @@ fun CreateRealEmojiPage(
                     clipPath(circlePath, clipOp = ClipOp.Difference) {
                         drawRect(SolidColor(Color.Black.copy(alpha = 0.3f)))
                     }
-                    drawCircle(
-                        color = MaterialTheme.bbibbiScheme.emojiYellow,
-                        center = center,
-                        radius = (size.minDimension / 2) - 4.dp.toPx(),
-                        style = Stroke(
-                            4.dp.toPx(),
-                            pathEffect = PathEffect.dashPathEffect(floatArrayOf(50f, 50f), 0f)
-                        )
+                }
+                Box(
+                    modifier = Modifier
+                        .aspectRatio(1.0f)
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.zoom_button),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(43.dp)
+                            .clickable {
+                                isZoomed = !isZoomed
+                            }
                     )
+
                 }
             }
             Spacer(modifier = Modifier.height(36.dp))
@@ -316,10 +352,10 @@ fun CreateRealEmojiPage(
                 horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
                 modifier = Modifier
                     .background(
-                        color = MaterialTheme.bbibbiScheme.backgroundSecondary,
+                        color = MaterialTheme.bbibbiScheme.button,
                         shape = RoundedCornerShape(1000.dp)
                     )
-                    .padding(vertical = 10.dp, horizontal = 16.dp)
+                    .padding(vertical = 10.dp, horizontal = 24.dp)
             ) {
                 emojiList.forEach { emojiType ->
                     if (emojiMap.containsKey(emojiType)) {
@@ -352,13 +388,12 @@ fun CreateRealEmojiPage(
                         }
                     } else {
                         Image(
-                            painter = getEmojiResource(emojiName = emojiType),
+                            painter = if(selectedEmoji == emojiType) getEmojiResource(emojiName = emojiType)
+                                else getDisabledEmojiResource(emojiName = emojiType),
                             contentDescription = null, // 필수 param
                             modifier = Modifier
                                 .size(42.dp)
-                                .border(
-                                    width = if (selectedEmoji == emojiType) 1.5.dp else 0.dp,
-                                    color = MaterialTheme.bbibbiScheme.emojiYellow,
+                                .clip(
                                     CircleShape
                                 )
                                 .clickable {

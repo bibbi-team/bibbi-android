@@ -28,6 +28,7 @@ import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.emojiList
+import com.no5ing.bbibbi.util.getDisabledEmojiResource
 import com.no5ing.bbibbi.util.getEmojiResource
 import com.no5ing.bbibbi.util.getRealEmojiResource
 
@@ -45,8 +46,8 @@ fun AddReactionBar(
         Box(
             modifier = modifier
                 .align(Alignment.TopEnd)
-                .clip(RoundedCornerShape(1000.dp))
-                .background(color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+                .clip(RoundedCornerShape(48.dp))
+                .background(color = MaterialTheme.bbibbiScheme.button)
                 .padding(vertical = 10.dp, horizontal = 16.dp)
         ) {
             Column {
@@ -111,7 +112,7 @@ fun AddReactionBar(
 
                         } else {
                             Image(
-                                painter = getEmojiResource(emojiName = emojiType),
+                                painter = getDisabledEmojiResource(emojiName = emojiType),
                                 contentDescription = null, // 필수 param
                                 modifier = Modifier
                                     .size(40.dp)

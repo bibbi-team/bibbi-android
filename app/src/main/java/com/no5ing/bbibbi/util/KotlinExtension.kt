@@ -216,3 +216,5 @@ suspend fun getInstallReferrerClient(context: Context) = suspendCoroutine {
 
 fun String.toCodePointList() = codePoints().toList().map { String(Character.toChars(it)) }
 fun String.codePointLength() = codePoints().count()
+
+fun randomBoolean() = (0..1).random() == 1

@@ -10,6 +10,9 @@ import androidx.camera.core.Preview
 import androidx.camera.core.UseCaseGroup
 import androidx.camera.core.ViewPort
 import androidx.camera.view.PreviewView
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -119,6 +122,19 @@ fun CameraView(
         preview.setSurfaceProvider(previewView.surfaceProvider)
     }
 
+    val zoomValue: Float by animateFloatAsState(
+        targetValue = if (isZoomed) 0.5f else 0.0f,
+        animationSpec = tween(
+            durationMillis = 150,
+            easing = LinearEasing,
+        ), label = ""
+    )
+    LaunchedEffect(zoomValue) {
+        cameraState.value?.cameraControl?.setLinearZoom(
+            zoomValue
+        )
+    }
+
     val perm =
         rememberPermissionState(permission = android.Manifest.permission.CAMERA) { isGranted ->
             if (!isGranted) {
@@ -169,9 +185,6 @@ fun CameraView(
                             .size(43.dp)
                             .clickable {
                                 isZoomed = !isZoomed
-                                cameraState.value?.cameraControl?.setLinearZoom(
-                                    if (isZoomed) 0.5f else 0.0f
-                                )
                             }
                     )
 

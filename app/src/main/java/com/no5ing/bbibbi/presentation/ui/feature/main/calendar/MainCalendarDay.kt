@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.calendar
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -120,12 +122,12 @@ fun <T : SelectionState> MainCalendarDay(
                     Box(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .size(12.dp)
+                            .padding(horizontal = 3.dp, vertical = 3.dp)
+                            .size(20.dp)
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.bbibbi_smile),
+                        Image(
+                            painter = painterResource(id = R.drawable.fire_icon),
                             contentDescription = null,
-                            tint = MaterialTheme.bbibbiScheme.mainYellow,
                             modifier = Modifier
                                 .fillMaxSize(),
                         )
