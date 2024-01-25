@@ -1,6 +1,7 @@
 package com.no5ing.bbibbi.di
 
 import android.content.Context
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
@@ -164,19 +165,11 @@ object NetworkModule {
             .addConverterFactory(
                 JacksonConverterFactory.create(
                     jacksonObjectMapper()
+                        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                         .registerModule(kotlinModule())
                         .registerModule(JavaTimeModule())
                 )
             )
-//            .addConverterFactory(
-//                GsonConverterFactory.create(
-//                    GsonBuilder().registerTypeAdapter(
-//                        ZonedDateTime::class.java,
-//                        ZonedDateTimeAdapter()
-//                    )
-//                        .create()
-//                )
-//            )
             .build()
     }
 

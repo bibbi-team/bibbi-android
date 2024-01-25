@@ -115,7 +115,7 @@ fun MainCalendarPage(
                         .fillMaxWidth()
                 ) {
                     Image(
-                        painter = painterResource(id = resolveBannerImageByPercent(statState.data.familyTopPercentage)),
+                        painter = painterResource(id = resolveBannerImageByName(statState.data.bannerImageType)),
                         contentDescription = null,
                         modifier = Modifier.fillMaxWidth(),
                         contentScale = ContentScale.FillWidth
@@ -214,22 +214,22 @@ fun MainCalendarPage(
     }
 }
 
-private fun resolveBannerImageByPercent(percent: Int): Int {
-    return when (percent) {
-        in 0..1 -> {
-            R.drawable.calendar_1
+private fun resolveBannerImageByName(bannerName: String): Int {
+    return when (bannerName) {
+        "SKULL_FLAG" -> {
+            R.drawable.calendar_99
         }
 
-        in 2..33 -> {
-            R.drawable.calendar_33
-        }
-
-        in 34..66 -> {
+        "ALONE_WALING" -> {
             R.drawable.calendar_66
         }
 
+        "WE_ARE_FRIENDS" -> {
+            R.drawable.calendar_33
+        }
+
         else -> {
-            R.drawable.calendar_99
+            R.drawable.calendar_1
         }
     }
 }

@@ -8,4 +8,6 @@ import kotlinx.parcelize.Parcelize
 data class CalendarBanner(
     val familyTopPercentage: Int,
     val allFamilyMembersUploadedDays: Int,
+    val familyLevel: Int,
+    val bannerImageType: String,
 ) : Parcelable, BaseModel()
