@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.family
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -203,11 +205,29 @@ fun MemberItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row {
-            CircleProfileImage(
-                member = member,
-                size = 52.dp,
-                onTap = onTap,
-            )
+            Box(
+                contentAlignment = Alignment.TopEnd,
+            ){
+                CircleProfileImage(
+                    member = member,
+                    size = 52.dp,
+                    onTap = onTap,
+                )
+                if (member.isBirthdayToday) {
+                    Box {
+                        Image(
+                            painter = painterResource(id = R.drawable.birthday_badge),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .align(Alignment.TopEnd)
+                                .offset(x = (5).dp, y = -(5).dp),
+                        )
+                    }
+
+                }
+            }
+
             Spacer(modifier = Modifier.width(12.dp))
             Column(
                 modifier = Modifier.height(52.dp),

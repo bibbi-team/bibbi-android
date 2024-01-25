@@ -5,6 +5,7 @@ import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
+import coil.util.DebugLogger
 import com.google.firebase.FirebaseApp
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
@@ -34,10 +35,11 @@ class BBiBBiApplication : Application(), ImageLoaderFactory {
             .diskCache {
                 DiskCache.Builder()
                     .directory(this.cacheDir.resolve("image_cache"))
-                    .maxSizeBytes(5 * 1024 * 1024)
+                    .maxSizeBytes(50 * 1024 * 1024)
                     .build()
             }
             .dispatcher(dispatcher)
+            .logger(DebugLogger())
             .bitmapFactoryMaxParallelism(4)
             .respectCacheHeaders(false)
             .build()

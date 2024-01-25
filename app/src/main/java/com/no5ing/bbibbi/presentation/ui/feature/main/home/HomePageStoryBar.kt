@@ -158,14 +158,13 @@ fun StoryBarIcon(
                     .size(64.dp)
             ) {
                 if (member.isBirthdayToday) {
-                    Icon(
+                    Image(
                         painter = painterResource(id = R.drawable.birthday_badge),
                         contentDescription = null,
                         modifier = Modifier
                             .size(20.dp)
                             .align(Alignment.TopEnd)
                             .offset(x = (4).dp, y = -(4).dp),
-                        tint = MaterialTheme.bbibbiScheme.graphicPink,
                     )
                 }
             }

@@ -32,7 +32,7 @@ fun CircleProfileImage(
     onTap: () -> Unit = {},
 ) {
     Box {
-        if (member.imageUrl != null) {
+        if (member.hasProfileImage()) {
             AsyncImage(
                 model = asyncImagePainter(source = member.imageUrl),
                 contentDescription = null,
