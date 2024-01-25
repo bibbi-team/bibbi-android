@@ -80,6 +80,7 @@ fun HomePageContent(
     onTapInvite: () -> Unit = {},
 ) {
     val postItems = homePageContentState.uiState.collectAsLazyPagingItems()
+    val memberItems = storyBarState.uiState.collectAsLazyPagingItems()
     var isRefreshing by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
         if (familyPostsViewModel.isInitialize()) {
@@ -98,19 +99,22 @@ fun HomePageContent(
             familyPostsViewModel.refresh()
         }
     }
-    LaunchedEffect(postItems.loadState.refresh) {
-        if (isRefreshing && postItems.loadState.refresh is LoadState.NotLoading) {
+    LaunchedEffect(postItems.loadState.refresh, memberItems.loadState.refresh) {
+        if (isRefreshing &&
+            postItems.loadState.refresh is LoadState.NotLoading &&
+            memberItems.loadState.refresh is LoadState.NotLoading
+            ) {
             isRefreshing = false
-        } else if (!isRefreshing && postItems.loadState.refresh is LoadState.Loading) {
-            isRefreshing = true
         }
     }
     val pullRefreshStyle = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = {
+            if(isRefreshing) return@rememberPullRefreshState
+            isRefreshing = true
             familyPostTopViewModel.invoke(Arguments())
-            familyMembersViewModel.invoke(Arguments())
             retrieveMeViewModel.invoke(Arguments())
+            memberItems.refresh()
             postItems.refresh()
         }
     )

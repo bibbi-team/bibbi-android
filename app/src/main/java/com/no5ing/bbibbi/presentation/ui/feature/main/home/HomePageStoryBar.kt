@@ -46,11 +46,11 @@ fun HomePageStoryBar(
     onTapProfile: (Member) -> Unit = {},
     onTapInvite: () -> Unit = {},
     storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(),
-    items: LazyPagingItems<Member> = storyBarState.uiState.collectAsLazyPagingItems()
 ) {
     val postTopState by storyBarState.topState.collectAsState()
     val meId = LocalSessionState.current.memberId
     val meState by storyBarState.meState.collectAsState()
+    val items = storyBarState.uiState.collectAsLazyPagingItems()
 
     if (items.itemCount == 1) {
         HomePageNoFamilyBar(
