@@ -1,6 +1,7 @@
 package com.no5ing.bbibbi.presentation.viewmodel.members
 
 import android.content.Context
+import android.net.Uri
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeProfileImageRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
@@ -17,12 +18,13 @@ import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
+import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class ChangeProfileImageViewModel @Inject constructor(
     private val restAPI: RestAPI,
-    private val context: Context,
     private val client: OkHttpClient,
 ) : BaseViewModel<APIResponse<Member>>() {
     override fun initState(): APIResponse<Member> {
@@ -34,7 +36,8 @@ class ChangeProfileImageViewModel @Inject constructor(
         val memberId = arguments.get("memberId") ?: throw RuntimeException()
         withMutexScope(Dispatchers.IO, uiState.value.isIdle()) {
             setState(loading())
-            val file = fileFromContentUriStr(context, imageUri)
+            val file = File(Uri.parse(imageUri).path!!)
+            Timber.d("file: $file")
             restAPI.getMemberApi().getUploadImageRequest(
                 ImageUploadRequest(
                     imageName = file.name

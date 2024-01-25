@@ -127,6 +127,28 @@ suspend fun ImageCapture.takePhoto(context: Context): Uri? =
         )
     }
 
+suspend fun ImageCapture.takePhotoWithImage(context: Context): Uri? =
+    suspendCoroutine { continuation ->
+        this.takePicture(
+            ContextCompat.getMainExecutor(context),
+            object : ImageCapture.OnImageCapturedCallback() {
+                override fun onError(e: ImageCaptureException) {
+                    Timber.e("[CameraView] photo capture failed", e)
+                    continuation.resume(null)
+                }
+
+                override fun onCaptureSuccess(image: ImageProxy) {
+                    val fileName = "${System.currentTimeMillis()}.jpg"
+                    val faos = context.openFileOutput(fileName, Context.MODE_PRIVATE)
+                    val bitmap = image.toBitmap().rotateWithCropCenter(image.imageInfo.rotationDegrees)
+                    bitmap.compress( Bitmap.CompressFormat.PNG, 100, faos)
+                    faos.close()
+                    continuation.resume(Uri.fromFile(context.getFileStreamPath(fileName)))
+                }
+            }
+        )
+    }
+
 suspend fun ImageCapture.takePhotoTemporary(context: Context): ImageProxy? =
     suspendCoroutine { continuation ->
         this.takePicture(

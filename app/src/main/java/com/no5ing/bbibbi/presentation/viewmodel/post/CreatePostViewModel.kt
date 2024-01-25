@@ -1,6 +1,7 @@
 package com.no5ing.bbibbi.presentation.viewmodel.post
 
 import android.content.Context
+import android.net.Uri
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostRequest
@@ -17,13 +18,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class CreatePostViewModel @Inject constructor(
     private val restAPI: RestAPI,
     private val client: OkHttpClient,
-    private val context: Context,
 ) : BaseViewModel<APIResponse<Post>>() {
     override fun initState(): APIResponse<Post> {
         return APIResponse.loading()
@@ -35,7 +36,7 @@ class CreatePostViewModel @Inject constructor(
         withMutexScope(Dispatchers.IO) {
             Timber.d("imageUri: $imageUri")
 
-            val file = fileFromContentUriStr(context, imageUri)
+            val file = File(Uri.parse(imageUri).path!!)
             Timber.d("fileName : ${file.name}")
             val uploadRequest = restAPI.getPostApi().getUploadPostImageRequest(
                 ImageUploadRequest(

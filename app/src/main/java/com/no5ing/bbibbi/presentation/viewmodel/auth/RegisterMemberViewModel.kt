@@ -1,6 +1,7 @@
 package com.no5ing.bbibbi.presentation.viewmodel.auth
 
 import android.content.Context
+import android.net.Uri
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
 import com.no5ing.bbibbi.data.model.APIResponse
@@ -20,6 +21,7 @@ import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,7 +42,7 @@ class RegisterMemberViewModel @Inject constructor(
         withMutexScope(Dispatchers.IO, uiState.value.isIdle()) {
             setState(APIResponse.loading())
             val uploadedImageUrl = if (imageUri != null) {
-                val file = fileFromContentUriStr(context, imageUri)
+                val file = File(Uri.parse(imageUri).path!!)
                 var uploadedUrl: String? = null
                 restAPI.getMemberApi().getUploadImageRequest(
                     ImageUploadRequest(
