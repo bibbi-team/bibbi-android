@@ -53,7 +53,7 @@ fun HomePageTopBar(
             modifier = Modifier
                 .height(18.dp)
                 .clickable { },
-            tint = Color(0xffE8E8E8)
+            tint = Color(0xFFFFFFFF)
         )
         Box(
             modifier = Modifier
