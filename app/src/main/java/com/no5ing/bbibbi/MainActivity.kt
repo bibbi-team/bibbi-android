@@ -37,8 +37,8 @@ import com.no5ing.bbibbi.di.NetworkModule
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.ui.MainPage
 import com.no5ing.bbibbi.presentation.ui.navigation.NavDestinationListener
-import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingAlreadyFamilyExistsDestination
-import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.navigate
+import com.no5ing.bbibbi.presentation.view_controller.LandingAlreadyFamilyExistsDestination
+import com.no5ing.bbibbi.presentation.view_controller.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalDeepLinkState

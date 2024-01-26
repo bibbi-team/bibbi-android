@@ -1,8 +1,5 @@
 package com.no5ing.bbibbi.presentation.ui
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
@@ -19,9 +16,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.defaultFadeIn
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.defaultFadeOut
-import com.no5ing.bbibbi.presentation.ui.navigation.destination.CameraViewDestination
-import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination
-import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
+import com.no5ing.bbibbi.presentation.view_controller.CameraViewDestination
+import com.no5ing.bbibbi.presentation.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.view_controller.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.landingGraph
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.mainGraph
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.registerGraph
