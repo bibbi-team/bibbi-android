@@ -7,6 +7,9 @@ import com.no5ing.bbibbi.BuildConfig
 import com.no5ing.bbibbi.presentation.feature.view.main.setting_home.SettingHomePage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.JoinFamilyPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.JoinFamilyPageController.goJoinFamilyPage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.QuitPageController.goQuitPage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.WebViewPageController.goWebViewPage
 import com.no5ing.bbibbi.util.forceRestart
 
 object SettingHomePageController : NavigationDestination(
@@ -18,36 +21,26 @@ object SettingHomePageController : NavigationDestination(
             onDispose = {
                 navController.popBackStack()
             },
-            onLogout = {
+            onLogOutCompleted = {
                 navController.context.forceRestart()
             },
             onQuit = {
-                navController.navigate(
-                    QuitPageController
-                )
+                navController.goQuitPage()
             },
             onPrivacy = {
-                navController.navigate(
-                    WebViewPageController,
-                    params = listOf(
-                        "webViewUrl" to BuildConfig.privacyUrl
-                    )
-                )
+                navController.goWebViewPage(BuildConfig.privacyUrl)
             },
             onTerm = {
-                navController.navigate(
-                    WebViewPageController,
-                    params = listOf(
-                        "webViewUrl" to BuildConfig.termUrl
-                    )
-                )
+                navController.goWebViewPage(BuildConfig.termUrl)
             },
             onFamilyQuitCompleted = {
                 navController.popAll()
-                navController.navigate(
-                    JoinFamilyPageController
-                )
+                navController.goJoinFamilyPage()
             }
         )
+    }
+
+    fun NavHostController.goSettingHomePage() {
+        navigate(SettingHomePageController)
     }
 }

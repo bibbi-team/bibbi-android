@@ -5,7 +5,9 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.no5ing.bbibbi.presentation.feature.view.landing.onboarding.OnBoardingPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.JoinFamilyPageController.goJoinFamilyPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.HomePageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.HomePageController.goHomePage
 
 object OnBoardingPageController : NavigationDestination(
     route = landingOnBoardingRoute,
@@ -15,11 +17,15 @@ object OnBoardingPageController : NavigationDestination(
         OnBoardingPage(
             onAlreadyHaveFamily = {
                 navController.popAll()
-                navController.navigate(HomePageController)
+                navController.goHomePage()
             },
             onFamilyNotExists = {
-                navController.navigate(JoinFamilyPageController)
+                navController.goJoinFamilyPage()
             }
         )
+    }
+
+    fun NavHostController.goOnBoardingPage() {
+        navigate(OnBoardingPageController)
     }
 }

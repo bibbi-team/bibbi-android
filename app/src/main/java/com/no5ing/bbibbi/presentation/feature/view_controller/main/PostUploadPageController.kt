@@ -26,6 +26,10 @@ object PostUploadPageController : NavigationDestination(
             },
         )
     }
+
+    fun NavHostController.goPostUploadPage() {
+        navigate(PostUploadPageController)
+    }
 }
 
 object PostReUploadPageController : NavigationDestination(
@@ -43,5 +47,9 @@ object PostReUploadPageController : NavigationDestination(
                 navController.popBackStack()
             },
         )
+    }
+
+    fun NavHostController.goPostReUploadPage(imageUrl: String) {
+        navigate(PostReUploadPageController, params = listOf("imageUrl" to imageUrl))
     }
 }

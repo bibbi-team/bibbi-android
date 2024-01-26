@@ -16,7 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.no5ing.bbibbi.presentation.navigation.animation.defaultFadeIn
 import com.no5ing.bbibbi.presentation.navigation.animation.defaultFadeOut
-import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.component.CustomSnackBarHost
@@ -57,7 +57,7 @@ fun MainPage(
             ) {
                 composable(
                     controller = navController,
-                    destination = CameraViewDestination,
+                    destination = CameraViewPageController,
                     enterTransition = {
                         slideInVertically {
                             it

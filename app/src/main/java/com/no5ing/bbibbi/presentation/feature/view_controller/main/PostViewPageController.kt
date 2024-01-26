@@ -6,6 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.presentation.feature.view.main.post_view.PostViewPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.CreateRealEmojiPageController.goCreateRealEmojiPage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ProfilePageController.goProfilePage
 
 object PostViewPageController : NavigationDestination(
     route = postViewPageRoute,
@@ -19,19 +21,15 @@ object PostViewPageController : NavigationDestination(
                 navController.popBackStack()
             },
             onTapProfile = {
-                navController.navigate(
-                    destination = ProfilePageController,
-                    path = it.memberId
-                )
+                navController.goProfilePage(it.memberId)
             },
             onTapRealEmojiCreate = {
-                navController.navigate(
-                    destination = CreateRealEmojiPageController,
-                    params = listOf(
-                        "initialEmoji" to it
-                    )
-                )
+                navController.goCreateRealEmojiPage(it)
             }
         )
+    }
+
+    fun NavHostController.goPostViewPage(postId: String) {
+        navigate(PostViewPageController, path = postId)
     }
 }

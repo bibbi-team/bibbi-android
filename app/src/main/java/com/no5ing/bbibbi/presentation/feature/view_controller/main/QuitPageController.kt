@@ -21,4 +21,8 @@ object QuitPageController : NavigationDestination(
             }
         )
     }
+
+    fun NavHostController.goQuitPage() {
+        navigate(QuitPageController)
+    }
 }

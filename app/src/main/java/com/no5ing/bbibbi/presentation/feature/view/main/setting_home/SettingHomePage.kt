@@ -53,7 +53,7 @@ import timber.log.Timber
 @Composable
 fun SettingHomePage(
     onDispose: () -> Unit,
-    onLogout: () -> Unit,
+    onLogOutCompleted: () -> Unit,
     onQuit: () -> Unit,
     onFamilyQuitCompleted: () -> Unit,
     onTerm: () -> Unit,
@@ -71,7 +71,7 @@ fun SettingHomePage(
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(logOutState.value) {
         when (logOutState.value) {
-            OperationStatus.SUCCESS -> onLogout()
+            OperationStatus.SUCCESS -> onLogOutCompleted()
             else -> {}
         }
     }

@@ -21,4 +21,8 @@ object WebViewPageController : NavigationDestination(
                 ?: throw IllegalArgumentException("webViewUrl is null")
         )
     }
+
+    fun NavHostController.goWebViewPage(webViewUrl: String) {
+        navigate(WebViewPageController, params = listOf("webViewUrl" to webViewUrl))
+    }
 }

@@ -9,10 +9,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.presentation.feature.state.register.profile_image.rememberRegisterProfileImagePageState
 import com.no5ing.bbibbi.presentation.feature.view.register.profile_image.RegisterProfileImagePage
-import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.LoginPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.LoginPageController.goLoginPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.OnBoardingPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.OnBoardingPageController.goOnBoardingPage
 
 
 object RegisterProfileImagePageController : NavigationDestination(
@@ -40,18 +42,21 @@ object RegisterProfileImagePageController : NavigationDestination(
                     route = LoginPageController.route,
                     inclusive = true
                 )
-                navController.navigate(
-                    destination = LoginPageController,
-                )
-                navController.navigate(
-                    destination = OnBoardingPageController,
-                )
+                navController.goLoginPage()
+                navController.goOnBoardingPage()
             },
             onTapCamera = {
                 navController.navigate(
-                    destination = CameraViewDestination,
+                    destination = CameraViewPageController,
                 )
             }
+        )
+    }
+
+    fun NavHostController.goRegisterProfileImagePage(nickName: String, dayOfBirth: String) {
+        navigate(
+            RegisterProfileImagePageController,
+            params = listOf("nickName" to nickName, "dayOfBirth" to dayOfBirth)
         )
     }
 }

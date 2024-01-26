@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import com.no5ing.bbibbi.presentation.feature.view.landing.join_family_with_link.JoinFamilyWithLinkPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.HomePageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.HomePageController.goHomePage
 
 object JoinFamilyWithLinkPageController : NavigationDestination(
     route = landingJoinFamilyWithLinkRoute,
@@ -18,8 +19,12 @@ object JoinFamilyWithLinkPageController : NavigationDestination(
             },
             onJoinComplete = {
                 navController.popAll()
-                navController.navigate(HomePageController)
+                navController.goHomePage()
             }
         )
+    }
+
+    fun NavHostController.goJoinFamilyWithLinkPage() {
+        navigate(JoinFamilyWithLinkPageController)
     }
 }

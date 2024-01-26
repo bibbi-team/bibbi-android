@@ -6,6 +6,8 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.no5ing.bbibbi.presentation.feature.view.main.family.FamilyPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ProfilePageController.goProfilePage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.SettingHomePageController.goSettingHomePage
 
 object FamilyListPageController : NavigationDestination(
     route = mainFamilyPageRoute,
@@ -17,10 +19,7 @@ object FamilyListPageController : NavigationDestination(
                 navController.popBackStack()
             },
             onTapFamily = {
-                navController.navigate(
-                    destination = ProfilePageController,
-                    path = it.memberId
-                )
+                navController.goProfilePage(it.memberId)
             },
             onTapShare = { url ->
                 val sendIntent = Intent(Intent.ACTION_SEND).apply {
@@ -32,8 +31,12 @@ object FamilyListPageController : NavigationDestination(
                 navController.context.startActivity(shareIntent)
             },
             onTapSetting = {
-                navController.navigate(SettingHomePageController)
+                navController.goSettingHomePage()
             }
         )
+    }
+
+    fun NavHostController.goFamilyListPage() {
+        navigate(FamilyListPageController)
     }
 }

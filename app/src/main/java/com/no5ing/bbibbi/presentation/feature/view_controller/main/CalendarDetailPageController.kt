@@ -6,6 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.presentation.feature.view.main.calendar.detail.CalendarDetailPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.CreateRealEmojiPageController.goCreateRealEmojiPage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ProfilePageController.goProfilePage
 import java.time.LocalDate
 
 object CalendarDetailPageController : NavigationDestination(
@@ -22,19 +24,15 @@ object CalendarDetailPageController : NavigationDestination(
                 navController.popBackStack()
             },
             onTapProfile = {
-                navController.navigate(
-                    destination = ProfilePageController,
-                    path = it.memberId
-                )
+                navController.goProfilePage(it.memberId)
             },
             onTapRealEmojiCreate = {
-                navController.navigate(
-                    destination = CreateRealEmojiPageController,
-                    params = listOf(
-                        "initialEmoji" to it
-                    )
-                )
+                navController.goCreateRealEmojiPage(it)
             }
         )
+    }
+
+    fun NavHostController.goCalendarDetailPage(date: LocalDate) {
+        navigate(CalendarDetailPageController, params = listOf("date" to date.toString()))
     }
 }

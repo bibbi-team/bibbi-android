@@ -17,4 +17,8 @@ object ChangeNickNamePageController : NavigationDestination(
             }
         )
     }
+
+    fun NavHostController.goChangeNickNamePage() {
+        navigate(ChangeNickNamePageController)
+    }
 }

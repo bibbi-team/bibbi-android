@@ -5,7 +5,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.no5ing.bbibbi.presentation.feature.view.common.CameraView
 
-object CameraViewDestination : NavigationDestination(
+object CameraViewPageController : NavigationDestination(
     route = cameraViewRoute,
     arguments = emptyList(),
 ) {
@@ -23,5 +23,9 @@ object CameraViewDestination : NavigationDestination(
                 navController.popBackStack()
             }
         )
+    }
+
+    fun NavHostController.goCameraViewPage() {
+        navigate(CameraViewPageController)
     }
 }

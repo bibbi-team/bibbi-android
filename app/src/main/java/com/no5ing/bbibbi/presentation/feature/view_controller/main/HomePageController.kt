@@ -4,8 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.no5ing.bbibbi.presentation.feature.view.main.home.HomePage
-import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewPageController.goCameraViewPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarPageController.goCalendarPage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyListPageController.goFamilyListPage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostReUploadPageController.goPostReUploadPage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostUploadPageController.goPostUploadPage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostViewPageController.goPostViewPage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ProfilePageController.goProfilePage
 
 object HomePageController : NavigationDestination(
     route = mainHomePageRoute,
@@ -14,38 +20,31 @@ object HomePageController : NavigationDestination(
     override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         HomePage(
             onTapLeft = {
-                navController.navigate(FamilyListPageController)
+                navController.goFamilyListPage()
             },
             onTapRight = {
-                navController.navigate(CalendarPageController)
+                navController.goCalendarPage()
             },
             onTapProfile = {
-                navController.navigate(
-                    destination = ProfilePageController,
-                    path = it.memberId
-                )
+                navController.goProfilePage(it.memberId)
             },
             onTapContent = {
-                navController.navigate(
-                    destination = PostViewPageController,
-                    path = it.postId
-                )
+                navController.goPostViewPage(it.postId)
             },
             onTapUpload = {
-                navController.navigate(PostUploadPageController)
-                navController.navigate(
-                    destination = CameraViewDestination,
-                )
+                navController.goPostUploadPage()
+                navController.goCameraViewPage()
             },
             onTapInvite = {
-                navController.navigate(FamilyListPageController)
+                navController.goFamilyListPage()
             },
             onUnsavedPost = {
-                navController.navigate(
-                    PostReUploadPageController,
-                    params = listOf("imageUrl" to it.toString())
-                )
+                navController.goPostReUploadPage(it.toString())
             }
         )
+    }
+
+    fun NavHostController.goHomePage() {
+        navigate(HomePageController)
     }
 }

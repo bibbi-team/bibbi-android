@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import com.no5ing.bbibbi.presentation.feature.state.register.nickname.rememberRegisterNickNamePageState
 import com.no5ing.bbibbi.presentation.feature.view.register.nickname.RegisterNickNamePage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.register.RegisterDayOfBirthPageController.goRegisterDayOfBirthPage
 
 object RegisterNicknamePageController : NavigationDestination(
     route = registerNickNameRoute,
@@ -16,10 +17,11 @@ object RegisterNicknamePageController : NavigationDestination(
         RegisterNickNamePage(
             state = nickNameState,
             onNextPage = {
-                navController.navigate(
-                    destination = RegisterDayOfBirthPageController,
-                    params = listOf("nickName" to nickNameState.nicknameTextState.value)
-                )
+                navController.goRegisterDayOfBirthPage(nickNameState.nicknameTextState.value)
             })
+    }
+
+    fun NavHostController.goRegisterNicknamePage() {
+        navigate(RegisterNicknamePageController)
     }
 }

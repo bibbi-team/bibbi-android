@@ -21,4 +21,8 @@ object CreateRealEmojiPageController : NavigationDestination(
             },
         )
     }
+
+    fun NavHostController.goCreateRealEmojiPage(initialEmoji: String) {
+        navigate(CreateRealEmojiPageController, params = listOf("initialEmoji" to initialEmoji))
+    }
 }

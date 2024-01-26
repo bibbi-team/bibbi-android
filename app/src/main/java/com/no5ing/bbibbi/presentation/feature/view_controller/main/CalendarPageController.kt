@@ -5,6 +5,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.no5ing.bbibbi.presentation.feature.view.main.calendar.MainCalendarPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarDetailPageController.goCalendarDetailPage
 
 object CalendarPageController : NavigationDestination(
     route = mainCalendarPageRoute,
@@ -16,13 +17,12 @@ object CalendarPageController : NavigationDestination(
                 navController.popBackStack()
             },
             onTapDay = {
-                navController.navigate(
-                    CalendarDetailPageController,
-                    params = listOf(
-                        "date" to it.toString()
-                    )
-                )
+                navController.goCalendarDetailPage(it)
             }
         )
+    }
+
+    fun NavHostController.goCalendarPage() {
+        navigate(CalendarPageController)
     }
 }

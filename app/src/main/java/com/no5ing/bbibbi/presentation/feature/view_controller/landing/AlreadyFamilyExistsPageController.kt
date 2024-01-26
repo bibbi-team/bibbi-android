@@ -18,6 +18,10 @@ object AlreadyFamilyExistsPageController : NavigationDestination(
             }
         )
     }
+
+    fun NavHostController.goAlreadyFamilyExistsPage() {
+        navigate(AlreadyFamilyExistsPageController)
+    }
 }
 
 

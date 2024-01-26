@@ -91,7 +91,6 @@ fun HomePage(
         }
     }
 
-
     BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()

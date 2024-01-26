@@ -8,8 +8,10 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.presentation.feature.view.main.profile.ProfilePage
-import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewPageController.goCameraViewPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ChangeNickNamePageController.goChangeNickNamePage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.SettingHomePageController.goSettingHomePage
 import timber.log.Timber
 
 object ProfilePageController : NavigationDestination(
@@ -31,25 +33,22 @@ object ProfilePageController : NavigationDestination(
                 navController.popBackStack()
             },
             onTapSetting = {
-                navController.navigate(SettingHomePageController)
+                navController.goSettingHomePage()
             },
             onTapPost = {
-                navController.navigate(
-                    destination = PostViewPageController,
-                    path = it.postId
-                )
+                navController.goProfilePage(it.postId)
             },
             onTapChangeNickname = {
-                navController.navigate(
-                    ChangeNickNamePageController
-                )
+                navController.goChangeNickNamePage()
             },
             onTapCamera = {
-                navController.navigate(
-                    destination = CameraViewDestination,
-                )
+                navController.goCameraViewPage()
             },
             changeableUriState = imgState,
         )
+    }
+
+    fun NavHostController.goProfilePage(memberId: String) {
+        navigate(ProfilePageController, path = memberId)
     }
 }
