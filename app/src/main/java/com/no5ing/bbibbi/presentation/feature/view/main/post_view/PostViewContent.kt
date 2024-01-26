@@ -30,6 +30,7 @@ import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.AddReactionBar
 import com.no5ing.bbibbi.presentation.component.MiniTextBubbleBox
+import com.no5ing.bbibbi.presentation.feature.view.common.AddReactionDialog
 import com.no5ing.bbibbi.presentation.feature.view_model.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.AddRealEmojiViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.MemberRealEmojiListViewModel
@@ -55,6 +56,59 @@ fun PostViewContent(
     LaunchedEffect(Unit) {
         postRealEmojiListViewModel.invoke(Arguments())
     }
+    AddReactionDialog(
+        isEnabled = addEmojiBarState,
+        //modifier = Modifier.fillMaxWidth(),
+        realEmojiMap = memberRealEmojiState,
+        onTapEmoji = {
+            if (!familyPostReactionBarViewModel.hasEmoji(
+                    memberId = memberId,
+                    emojiType = it
+                )
+            ) {
+                familyPostReactionBarViewModel.toggleEmoji(
+                    memberId = memberId,
+                    emojiType = it
+                )
+                addPostReactionViewModel.invoke(
+                    Arguments(
+                        resourceId = post.postId,
+                        mapOf(
+                            "emoji" to it
+                        )
+                    )
+                )
+                addEmojiBarState.value = false
+            }
+        },
+        onTapRealEmoji = {
+            if (!familyPostReactionBarViewModel.hasRealEmoji(
+                    memberId = memberId,
+                    realEmojiId = it.realEmojiId
+                )
+            ) {
+                familyPostReactionBarViewModel.reactRealEmoji(
+                    memberId = memberId,
+                    realEmojiType = it.type,
+                    realEmojiId = it.realEmojiId,
+                    realEmojiUrl = it.imageUrl
+                )
+                addRealEmojiViewModel.invoke(
+                    Arguments(
+                        resourceId = post.postId,
+                        mapOf(
+                            "realEmojiId" to it.realEmojiId
+                        )
+                    )
+                )
+                addEmojiBarState.value = false
+            }
+        },
+        onDispose = {
+            addEmojiBarState.value = false
+        },
+        onTapRealEmojiCreate = onTapRealEmojiCreate,
+    )
     Column(
         modifier = modifier,
     ) {
@@ -106,70 +160,7 @@ fun PostViewContent(
 
                 }
             }
-            androidx.compose.animation.AnimatedVisibility(
-                visible = addEmojiBarState.value,
-                enter = fadeIn(animationSpec = tween(130)),
-                exit = fadeOut(animationSpec = tween(130))
-            ) {
-                Box(
-                    modifier = Modifier.padding(
-                        top = 54.dp
-                    )
-                ) {
-                    AddReactionBar(
-                        modifier = Modifier.fillMaxWidth(),
-                        realEmojiMap = memberRealEmojiState,
-                        onTapEmoji = {
-                            if (!familyPostReactionBarViewModel.hasEmoji(
-                                    memberId = memberId,
-                                    emojiType = it
-                                )
-                            ) {
-                                familyPostReactionBarViewModel.toggleEmoji(
-                                    memberId = memberId,
-                                    emojiType = it
-                                )
-                                addPostReactionViewModel.invoke(
-                                    Arguments(
-                                        resourceId = post.postId,
-                                        mapOf(
-                                            "emoji" to it
-                                        )
-                                    )
-                                )
-                                addEmojiBarState.value = false
-                            }
-                        },
-                        onTapRealEmoji = {
-                            if (!familyPostReactionBarViewModel.hasRealEmoji(
-                                    memberId = memberId,
-                                    realEmojiId = it.realEmojiId
-                                )
-                            ) {
-                                familyPostReactionBarViewModel.reactRealEmoji(
-                                    memberId = memberId,
-                                    realEmojiType = it.type,
-                                    realEmojiId = it.realEmojiId,
-                                    realEmojiUrl = it.imageUrl
-                                )
-                                addRealEmojiViewModel.invoke(
-                                    Arguments(
-                                        resourceId = post.postId,
-                                        mapOf(
-                                            "realEmojiId" to it.realEmojiId
-                                        )
-                                    )
-                                )
-                                addEmojiBarState.value = false
-                            }
-                        },
-                        onDispose = {
-                            addEmojiBarState.value = false
-                        },
-                        onTapRealEmojiCreate = onTapRealEmojiCreate,
-                    )
-                }
-            }
+
 
         }
     }
