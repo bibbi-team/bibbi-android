@@ -27,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,15 +50,11 @@ import com.no5ing.bbibbi.presentation.ui.feature.main.calendar.MainCalendarDay
 import com.no5ing.bbibbi.presentation.ui.feature.post.view.PostViewContent
 import com.no5ing.bbibbi.presentation.ui.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.ui.snackBarFire
-import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.presentation.viewmodel.post.AddPostReactionViewModel
-import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarDetailContentViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.CalendarWeekViewModel
-import com.no5ing.bbibbi.presentation.viewmodel.post.CalenderDetailContentUiState
-import com.no5ing.bbibbi.presentation.viewmodel.post.FamilyPostViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.FamilySwipePostsViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
@@ -122,7 +117,7 @@ fun CalendarDetailPage(
             ),
         )
     }
-    
+
     LaunchedEffect(progress.isAtEnd) {
         if (progress.isAtEnd) {
             playLottie = false
@@ -183,10 +178,10 @@ fun CalendarDetailPage(
             )
         }
     }
-    
+
     LaunchedEffect(currentPostState, pagerState.currentPage) {
-        if(currentPostState.isReady()) {
-            if(currentPostState.data.size <= pagerState.currentPage) {
+        if (currentPostState.isReady()) {
+            if (currentPostState.data.size <= pagerState.currentPage) {
                 return@LaunchedEffect
             }
             familyPostReactionBarViewModel.invoke(
@@ -213,7 +208,11 @@ fun CalendarDetailPage(
             ) {
                 Box {
                     AsyncImage(
-                        model = asyncImagePainter(source = currentPostState.data.getOrNull(pagerState.currentPage)?.post?.imageUrl),
+                        model = asyncImagePainter(
+                            source = currentPostState.data.getOrNull(
+                                pagerState.currentPage
+                            )?.post?.imageUrl
+                        ),
                         contentDescription = null,
                         modifier = Modifier
                             .blur(50.dp)
@@ -250,7 +249,7 @@ fun CalendarDetailPage(
                         weekHeader = {},
                         daysOfWeekHeader = {}
                     )
-                    if(currentPostState.isReady()) {
+                    if (currentPostState.isReady()) {
                         HorizontalPager(
                             state = pagerState,
                             userScrollEnabled = scrollEnabled.value,

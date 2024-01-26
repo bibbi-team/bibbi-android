@@ -29,7 +29,7 @@ class NormalPostReactionUiState(
     emojiType: String,
     isMe: Boolean,
     member: Member?,
-): PostReactionUiState(
+) : PostReactionUiState(
     reactionId,
     memberId,
     emojiType,
@@ -49,7 +49,7 @@ class RealEmojiPostReactionUiState(
     emojiType: String,
     isMe: Boolean,
     member: Member?,
-): PostReactionUiState(
+) : PostReactionUiState(
     reactionId,
     memberId,
     emojiType,

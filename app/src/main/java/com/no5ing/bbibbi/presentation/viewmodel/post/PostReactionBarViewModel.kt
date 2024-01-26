@@ -9,7 +9,6 @@ import com.no5ing.bbibbi.presentation.uistate.post.NormalPostReactionUiState
 import com.no5ing.bbibbi.presentation.uistate.post.PostReactionUiState
 import com.no5ing.bbibbi.presentation.uistate.post.RealEmojiPostReactionUiState
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
-import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.parallelMap
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,7 +42,12 @@ class PostReactionBarViewModel @Inject constructor(
         }
     }
 
-    fun reactRealEmoji(memberId: String, realEmojiType: String, realEmojiUrl: String, realEmojiId: String) {
+    fun reactRealEmoji(
+        memberId: String,
+        realEmojiType: String,
+        realEmojiUrl: String,
+        realEmojiId: String
+    ) {
         val previousList = uiState.value.toMutableList()
         viewModelScope.launch {
             previousList.add(
@@ -107,7 +111,12 @@ class PostReactionBarViewModel @Inject constructor(
         return toggleRealEmoji(memberId, realEmoji.realEmojiId, realEmoji.imageUrl, realEmoji.type)
     }
 
-    fun toggleRealEmoji(memberId: String, realEmojiId: String, realEmojiUrl: String, realEmojiType: String): Boolean {
+    fun toggleRealEmoji(
+        memberId: String,
+        realEmojiId: String,
+        realEmojiUrl: String,
+        realEmojiType: String
+    ): Boolean {
         val isMeReacted = uiState.value.any {
             it is RealEmojiPostReactionUiState && it.realEmojiId == realEmojiId && it.isMe
         }
@@ -115,7 +124,7 @@ class PostReactionBarViewModel @Inject constructor(
             unReactRealEmoji(realEmojiId)
             false
         } else {
-           reactRealEmoji(
+            reactRealEmoji(
                 memberId = memberId,
                 realEmojiType = realEmojiType,
                 realEmojiId = realEmojiId,

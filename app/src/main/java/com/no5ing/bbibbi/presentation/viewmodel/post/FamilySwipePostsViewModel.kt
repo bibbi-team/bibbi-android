@@ -43,7 +43,4 @@ class FamilySwipePostsViewModel @Inject constructor(
         }
     }
 
-    override fun release() {
-        super.release()
-    }
 }

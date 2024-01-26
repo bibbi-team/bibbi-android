@@ -13,7 +13,6 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
-import com.no5ing.bbibbi.util.fileFromContentUriStr
 import com.no5ing.bbibbi.util.uploadImage
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onSuccess

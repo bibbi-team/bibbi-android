@@ -103,14 +103,14 @@ fun HomePageContent(
         if (isRefreshing &&
             postItems.loadState.refresh is LoadState.NotLoading &&
             memberItems.loadState.refresh is LoadState.NotLoading
-            ) {
+        ) {
             isRefreshing = false
         }
     }
     val pullRefreshStyle = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = {
-            if(isRefreshing) return@rememberPullRefreshState
+            if (isRefreshing) return@rememberPullRefreshState
             isRefreshing = true
             familyPostTopViewModel.invoke(Arguments())
             retrieveMeViewModel.invoke(Arguments())

@@ -1,19 +1,15 @@
 package com.no5ing.bbibbi.presentation.ui.feature.post.view
 
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -39,10 +35,8 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.AddRealEmojiViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.MemberRealEmojiListViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
-import com.no5ing.bbibbi.presentation.viewmodel.post.RemoveRealEmojiViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.asyncImagePainter
-import timber.log.Timber
 
 @Composable
 fun PostViewContent(
@@ -129,7 +123,8 @@ fun PostViewContent(
                             if (!familyPostReactionBarViewModel.hasEmoji(
                                     memberId = memberId,
                                     emojiType = it
-                            )) {
+                                )
+                            ) {
                                 familyPostReactionBarViewModel.toggleEmoji(
                                     memberId = memberId,
                                     emojiType = it

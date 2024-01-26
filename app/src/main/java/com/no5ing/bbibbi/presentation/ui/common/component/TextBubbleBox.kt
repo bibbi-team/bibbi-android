@@ -1,9 +1,7 @@
 package com.no5ing.bbibbi.presentation.ui.common.component
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkOut
@@ -40,7 +38,7 @@ import kotlin.streams.toList
 fun BoxScope.TextBubbleBox(
     text: String,
     alignment: Alignment = Alignment.Center,
-    textStyle: TextStyle  = MaterialTheme.bbibbiTypo.headOne,
+    textStyle: TextStyle = MaterialTheme.bbibbiTypo.headOne,
     textColor: Color = MaterialTheme.bbibbiScheme.white,
 ) {
     val wordList = text.toCodePointList()

@@ -198,7 +198,13 @@ class MainActivity : ComponentActivity() {
             val snackBarHostState = remember { SnackbarHostState() }
             val sessionState by sessionModule.sessionState.collectAsState()
             val deepLinkState by deepLinkStateFlow.collectAsState()
-            val mixPanelState = remember { MixpanelAPI.getInstance(this@MainActivity, BuildConfig.mixPanelToken, true) }
+            val mixPanelState = remember {
+                MixpanelAPI.getInstance(
+                    this@MainActivity,
+                    BuildConfig.mixPanelToken,
+                    true
+                )
+            }
             DisposableEffect(navController) {
                 localNavController = navController
                 navController
@@ -235,44 +241,45 @@ class MainActivity : ComponentActivity() {
                 ) {
                     CompositionLocalProvider(LocalMixpanelProvider provides mixPanelState) {
 
-                    CompositionLocalProvider(value = LocalDeepLinkState provides deepLinkState) {
-                        BbibbiTheme {
-                            Surface(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
-                                    .statusBarsPadding(),
-                                color = MaterialTheme.bbibbiScheme.backgroundPrimary
-                            ) {
-                                AnimatedVisibility(
-                                    visible = isReady,
-                                    enter = fadeIn(),
-                                    exit = fadeOut(),
+                        CompositionLocalProvider(value = LocalDeepLinkState provides deepLinkState) {
+                            BbibbiTheme {
+                                Surface(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
+                                        .statusBarsPadding(),
+                                    color = MaterialTheme.bbibbiScheme.backgroundPrimary
                                 ) {
-                                    LaunchedEffect(sessionState) {
-                                        Timber.d("[MainActivity] Session State Changed to $sessionState")
-                                        if (sessionState.isLoggedIn()) {
-                                            mixPanelState.registerSuperPropertiesMap(mapOf("memberId" to sessionState.memberId))
-                                            localDataStorage.setAuthTokens(sessionState.apiToken)
-                                        } else {
-                                            mixPanelState.unregisterSuperProperty("memberId")
-                                            localDataStorage.logOut()
-                                        }
-                                    }
-                                    CompositionLocalProvider(
-                                        LocalSessionState provides sessionState
+                                    AnimatedVisibility(
+                                        visible = isReady,
+                                        enter = fadeIn(),
+                                        exit = fadeOut(),
                                     ) {
-                                        MainPage(
-                                            snackBarHostState = snackBarHostState,
-                                            navController = navController,
-                                            isAlreadyLoggedIn = sessionState.isLoggedIn()
-                                                    && sessionState.hasFamily(),
-                                        )
+                                        LaunchedEffect(sessionState) {
+                                            Timber.d("[MainActivity] Session State Changed to $sessionState")
+                                            if (sessionState.isLoggedIn()) {
+                                                mixPanelState.registerSuperPropertiesMap(mapOf("memberId" to sessionState.memberId))
+                                                localDataStorage.setAuthTokens(sessionState.apiToken)
+                                            } else {
+                                                mixPanelState.unregisterSuperProperty("memberId")
+                                                localDataStorage.logOut()
+                                            }
+                                        }
+                                        CompositionLocalProvider(
+                                            LocalSessionState provides sessionState
+                                        ) {
+                                            MainPage(
+                                                snackBarHostState = snackBarHostState,
+                                                navController = navController,
+                                                isAlreadyLoggedIn = sessionState.isLoggedIn()
+                                                        && sessionState.hasFamily(),
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
-                    }}
+                    }
                 }
             }
         }

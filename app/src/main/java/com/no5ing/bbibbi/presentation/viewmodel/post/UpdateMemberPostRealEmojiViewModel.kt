@@ -1,10 +1,8 @@
 package com.no5ing.bbibbi.presentation.viewmodel.post
 
-import android.content.Context
 import android.net.Uri
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage
-import androidx.camera.core.ImageProxy
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.CreateMemberRealEmojiRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
@@ -15,14 +13,11 @@ import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
-import com.no5ing.bbibbi.util.toRequestBody
-import com.no5ing.bbibbi.util.upload
 import com.no5ing.bbibbi.util.uploadImage
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import java.io.File
 import javax.inject.Inject
@@ -37,7 +32,8 @@ class UpdateMemberPostRealEmojiViewModel @Inject constructor(
         return APIResponse.idle()
     }
 
-    @OptIn(ExperimentalGetImage::class) override fun invoke(arguments: Arguments) {
+    @OptIn(ExperimentalGetImage::class)
+    override fun invoke(arguments: Arguments) {
         val emojiType = arguments.get("emojiType") ?: throw RuntimeException()
         val image = arguments.getObject<Uri?>("image") ?: throw RuntimeException()
         val prevEmojiKey = arguments.get("prevEmojiKey")

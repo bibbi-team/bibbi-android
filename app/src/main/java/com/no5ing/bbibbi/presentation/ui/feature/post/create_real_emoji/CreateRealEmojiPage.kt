@@ -15,7 +15,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,9 +46,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -84,8 +81,6 @@ import com.no5ing.bbibbi.util.getEmojiResource
 import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.getRealEmojiResource
 import com.no5ing.bbibbi.util.localResources
-import com.no5ing.bbibbi.util.takePhoto
-import com.no5ing.bbibbi.util.takePhotoTemporary
 import com.no5ing.bbibbi.util.takePhotoWithImage
 import kotlinx.coroutines.launch
 
@@ -311,7 +306,10 @@ fun CreateRealEmojiPage(
                     onClick = {
                         coroutineScope.launch {
                             isCapturing = true
-                            val image = captureState.value.takePhotoWithImage(context, requiredFlip = cameraDirection.value == CameraSelector.DEFAULT_FRONT_CAMERA)
+                            val image = captureState.value.takePhotoWithImage(
+                                context,
+                                requiredFlip = cameraDirection.value == CameraSelector.DEFAULT_FRONT_CAMERA
+                            )
                             isCapturing = false
                             updateMemberPostRealEmojiViewModel.invoke(
                                 Arguments(
@@ -384,8 +382,8 @@ fun CreateRealEmojiPage(
                         }
                     } else {
                         Image(
-                            painter = if(selectedEmoji == emojiType) getEmojiResource(emojiName = emojiType)
-                                else getDisabledEmojiResource(emojiName = emojiType),
+                            painter = if (selectedEmoji == emojiType) getEmojiResource(emojiName = emojiType)
+                            else getDisabledEmojiResource(emojiName = emojiType),
                             contentDescription = null, // 필수 param
                             modifier = Modifier
                                 .size(42.dp)

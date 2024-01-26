@@ -54,7 +54,6 @@ import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.ClosableTopBar
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.getCameraProvider
-import com.no5ing.bbibbi.util.takePhoto
 import com.no5ing.bbibbi.util.takePhotoWithImage
 import kotlinx.coroutines.launch
 
@@ -210,7 +209,10 @@ fun CameraView(
                     onClick = {
                         coroutineScope.launch {
                             isCapturing = true
-                            val uri = captureState.value.takePhotoWithImage(context, requiredFlip = cameraDirection.value == CameraSelector.DEFAULT_FRONT_CAMERA)
+                            val uri = captureState.value.takePhotoWithImage(
+                                context,
+                                requiredFlip = cameraDirection.value == CameraSelector.DEFAULT_FRONT_CAMERA
+                            )
                             isCapturing = false
                             onImageCaptured(uri)
                         }

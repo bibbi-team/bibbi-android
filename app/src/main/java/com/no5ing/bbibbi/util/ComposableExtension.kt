@@ -1,10 +1,6 @@
 package com.no5ing.bbibbi.util
 
-import androidx.compose.material.DismissDirection
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
@@ -18,7 +14,6 @@ import androidx.compose.ui.unit.Dp
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.no5ing.bbibbi.R
-import kotlinx.coroutines.delay
 
 fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) =
     drawBehind {

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,7 +38,7 @@ fun PostViewRealEmojiElement(
     Box(
         modifier = Modifier
             .let {
-                if(isMeReacted)
+                if (isMeReacted)
                     it.border(
                         width = 1.dp,
                         color = MaterialTheme.bbibbiScheme.mainYellow,

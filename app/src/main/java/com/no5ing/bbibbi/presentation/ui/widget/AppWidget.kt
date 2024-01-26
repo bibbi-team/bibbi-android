@@ -57,9 +57,8 @@ import com.no5ing.bbibbi.util.toCodePointList
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 import java.time.Duration
-import kotlin.streams.toList
 
-class AppWidget: GlanceAppWidget() {
+class AppWidget : GlanceAppWidget() {
     companion object {
         const val WIDGET_UNAUTHENTICATED = "unauthenticated"
         const val WIDGET_SUCCESS = "success"
@@ -84,7 +83,7 @@ class AppWidget: GlanceAppWidget() {
         val glanceIds = manager.getGlanceIds(AppWidget::class.java)
         if (glanceIds.isEmpty()) {
             Timber.d("Cancel Widget Schedule")
-            WorkManager.getInstance(context).cancelUniqueWork(WIDGET_WORKER_NAME )
+            WorkManager.getInstance(context).cancelUniqueWork(WIDGET_WORKER_NAME)
         }
     }
 
@@ -181,11 +180,11 @@ class AppWidget: GlanceAppWidget() {
             Box(
                 modifier = GlanceModifier
                     .fillMaxSize()
-                    .padding(if(isSmallSize) 13.dp else 18.dp),
+                    .padding(if (isSmallSize) 13.dp else 18.dp),
                 contentAlignment = Alignment.TopStart
             ) {
-                val nameIconSize = if(isSmallSize) 32.dp else 48.dp
-                val iconSize = if(isSmallSize) 29.6.dp else 44.dp
+                val nameIconSize = if (isSmallSize) 32.dp else 48.dp
+                val iconSize = if (isSmallSize) 29.6.dp else 44.dp
                 Box(
                     contentAlignment = Alignment.Center
                 ) {
@@ -221,7 +220,7 @@ class AppWidget: GlanceAppWidget() {
                                 style = TextStyle(
                                     color = ColorProvider(Color.White),
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = if(isSmallSize) 14.sp else 18.sp,
+                                    fontSize = if (isSmallSize) 14.sp else 18.sp,
                                 )
                             )
                         }
@@ -233,7 +232,7 @@ class AppWidget: GlanceAppWidget() {
             }
             Box(
                 modifier = GlanceModifier
-                    .padding(if(isSmallSize) 16.dp else 22.dp)
+                    .padding(if (isSmallSize) 16.dp else 22.dp)
             ) {
                 Column(
                     verticalAlignment = Alignment.Bottom,
@@ -248,8 +247,11 @@ class AppWidget: GlanceAppWidget() {
                             Row {
                                 Box(
                                     modifier = GlanceModifier
-                                        .cornerRadius(if(isSmallSize) 5.dp else 10.dp)
-                                        .padding(vertical = if(isSmallSize) 4.dp else 8.dp, horizontal = if(isSmallSize) 3.dp else 6.dp)
+                                        .cornerRadius(if (isSmallSize) 5.dp else 10.dp)
+                                        .padding(
+                                            vertical = if (isSmallSize) 4.dp else 8.dp,
+                                            horizontal = if (isSmallSize) 3.dp else 6.dp
+                                        )
                                         .background(Color.Black.copy(alpha = 0.3f)),
                                     contentAlignment = Alignment.Center
                                 ) {
@@ -258,12 +260,12 @@ class AppWidget: GlanceAppWidget() {
                                         style = TextStyle(
                                             color = ColorProvider(Color.White),
                                             fontWeight = FontWeight.Bold,
-                                            fontSize = if(isSmallSize) 12.sp else 18.sp,
+                                            fontSize = if (isSmallSize) 12.sp else 18.sp,
                                         )
                                     )
                                 }
                                 if (index != lastIndex) {
-                                    Box(GlanceModifier.width(width = if(isSmallSize) 1.5.dp else 2.dp)) {}
+                                    Box(GlanceModifier.width(width = if (isSmallSize) 1.5.dp else 2.dp)) {}
                                 }
                             }
 
@@ -290,9 +292,9 @@ class AppWidget: GlanceAppWidget() {
                 modifier = GlanceModifier.fillMaxSize()
             ) {
                 val imageResource = if (!isSmallSize)
-                    if(randomBoolean()) R.drawable.widget_large else R.drawable.widget_large_green
+                    if (randomBoolean()) R.drawable.widget_large else R.drawable.widget_large_green
                 else
-                    if(randomBoolean()) R.drawable.widget_small else R.drawable.widget_small_green
+                    if (randomBoolean()) R.drawable.widget_small else R.drawable.widget_small_green
                 Image(
                     provider = AndroidResourceImageProvider(imageResource),
                     contentDescription = null,

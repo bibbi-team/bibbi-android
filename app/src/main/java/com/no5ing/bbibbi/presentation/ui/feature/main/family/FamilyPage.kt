@@ -207,7 +207,7 @@ fun MemberItem(
         Row {
             Box(
                 contentAlignment = Alignment.TopEnd,
-            ){
+            ) {
                 CircleProfileImage(
                     member = member,
                     size = 52.dp,

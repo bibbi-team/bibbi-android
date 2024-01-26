@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.util
 
-import android.graphics.Bitmap
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request

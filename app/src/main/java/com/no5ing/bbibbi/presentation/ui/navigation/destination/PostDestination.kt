@@ -1,7 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.destination
 
 import android.net.Uri
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,7 +56,7 @@ object PostReUploadDestination : NavigationDestination(
     arguments = listOf(navArgument("imageUrl") {}),
     content = { navController, backStackEntry ->
         val imageCaptureState = backStackEntry.arguments?.getString("imageUrl")
-        val uriState = remember { mutableStateOf( Uri.parse(imageCaptureState) ) }
+        val uriState = remember { mutableStateOf(Uri.parse(imageCaptureState)) }
         PostUploadPage(
             imageUrl = uriState,
             isUnsaveMode = true,

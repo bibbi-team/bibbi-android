@@ -13,7 +13,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +39,6 @@ import com.no5ing.bbibbi.presentation.viewmodel.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemovePostReactionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.post.RemoveRealEmojiViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
-import com.no5ing.bbibbi.util.emojiList
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -90,8 +88,10 @@ fun PostViewReactionBar(
                             .let {
                                 if (isEmojiBarActive)
                                     it
-                                        .background(color = MaterialTheme.bbibbiScheme.mainYellow.copy(alpha = 0.1f),
-                                            RoundedCornerShape(100.dp))
+                                        .background(
+                                            color = MaterialTheme.bbibbiScheme.mainYellow.copy(alpha = 0.1f),
+                                            RoundedCornerShape(100.dp)
+                                        )
                                         .border(
                                             1.dp,
                                             MaterialTheme.bbibbiScheme.mainYellow,

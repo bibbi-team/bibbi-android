@@ -109,7 +109,7 @@ fun PostUploadPage(
         if (imageUrl.value == null) {
             onDispose()
         } else {
-            if(!isUnsaveMode)
+            if (!isUnsaveMode)
                 createPostViewModel.saveTemporaryUri(imageUrl.value!!)
         }
     }
@@ -379,8 +379,10 @@ fun PostUploadPage(
                     }
                     TextBubbleBox(
                         text = imageText.value.ifEmpty { defaultText },
-                        textStyle = if(imageText.value.isEmpty()) MaterialTheme.bbibbiTypo.headOne.copy(fontWeight = FontWeight.Normal) else MaterialTheme.bbibbiTypo.headOne,
-                        textColor = if(imageText.value.isEmpty()) MaterialTheme.bbibbiScheme.textSecondary else MaterialTheme.bbibbiScheme.white,
+                        textStyle = if (imageText.value.isEmpty()) MaterialTheme.bbibbiTypo.headOne.copy(
+                            fontWeight = FontWeight.Normal
+                        ) else MaterialTheme.bbibbiTypo.headOne,
+                        textColor = if (imageText.value.isEmpty()) MaterialTheme.bbibbiScheme.textSecondary else MaterialTheme.bbibbiScheme.white,
                     )
                 }
             }

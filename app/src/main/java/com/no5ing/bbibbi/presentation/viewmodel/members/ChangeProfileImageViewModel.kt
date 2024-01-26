@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.presentation.viewmodel.members
 
-import android.content.Context
 import android.net.Uri
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeProfileImageRequest
@@ -11,7 +10,6 @@ import com.no5ing.bbibbi.data.model.APIResponse.Companion.wrapToAPIResponse
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
-import com.no5ing.bbibbi.util.fileFromContentUriStr
 import com.no5ing.bbibbi.util.uploadImage
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess

@@ -23,7 +23,7 @@ data class Member(
         .isBirthdayNow()
 
     val name: String
-        get() = if(_name != deletedMemberName) _name else "알 수 없음"
+        get() = if (_name != deletedMemberName) _name else "알 수 없음"
 
     fun hasFamily(): Boolean = familyId != null
 

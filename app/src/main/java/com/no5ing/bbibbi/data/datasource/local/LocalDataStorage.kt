@@ -106,7 +106,7 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         editor.commit()
     }
 
-    fun clearTemporaryUri(){
+    fun clearTemporaryUri() {
         val editor = preferences.edit()
         editor.remove(TEMPORARY_POST_URI)
         editor.apply()

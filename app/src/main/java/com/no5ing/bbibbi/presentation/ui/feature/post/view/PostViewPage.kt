@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -83,7 +82,7 @@ fun PostViewPage(
     val siblingPostState by familyPostsViewModel.uiState.collectAsState()
     val pagerState = key(siblingPostState.isReady()) {
         rememberPagerState(
-            initialPage = if(siblingPostState.isReady()) siblingPostState.data
+            initialPage = if (siblingPostState.isReady()) siblingPostState.data
                 .indexOfFirst { it.post.postId == postId } else 0,
             pageCount = {
                 if (siblingPostState.isReady()) siblingPostState.data.size else 1
@@ -91,7 +90,7 @@ fun PostViewPage(
         )
     }
     LaunchedEffect(postState) {
-        if(postState.isReady()) {
+        if (postState.isReady()) {
             val currentPost = postState.data.post
             familyPostsViewModel.invoke(
                 Arguments(
@@ -103,13 +102,14 @@ fun PostViewPage(
         }
     }
     LaunchedEffect(siblingPostState) {
-        if(siblingPostState.isReady()) {
+        if (siblingPostState.isReady()) {
             isPagerReady = true
         }
     }
     LaunchedEffect(postState, pagerState.currentPage) {
-        if(postState.isReady()) {
-            val currentPost = if(siblingPostState.isReady()) siblingPostState.data[pagerState.currentPage] else postState.data
+        if (postState.isReady()) {
+            val currentPost =
+                if (siblingPostState.isReady()) siblingPostState.data[pagerState.currentPage] else postState.data
             familyPostReactionBarViewModel.invoke(
                 Arguments(
                     arguments = mapOf(
