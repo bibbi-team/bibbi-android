@@ -76,7 +76,6 @@ fun UploadCountDownBar(
         ) {
             Text(
                 text = if (warningState.value == 1) stringResource(id = R.string.home_time_not_much)
-                else if (warningState.value == 2) stringResource(id = R.string.home_time_over)
                 else stringResource(id = R.string.home_image_on_duration),
                 color = MaterialTheme.bbibbiScheme.textSecondary,
                 style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
@@ -88,7 +87,7 @@ fun UploadCountDownBar(
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
-            } else if (warningState.value == 0) {
+            } else {
                 Image(
                     painter = painterResource(id = R.drawable.smile_icon),
                     contentDescription = null,
