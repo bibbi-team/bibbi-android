@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,6 +35,7 @@ import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.emptyPermissionState
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalPermissionsApi::class)
@@ -43,6 +45,7 @@ fun OnBoardingPage(
     onFamilyNotExists: () -> Unit = {},
     onBoardingPageState: OnBoardingPageState = rememberOnBoardingPageState(),
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val mixPanel = LocalMixpanelProvider.current
     val sessionState = LocalSessionState.current
     val nextViewRoute =
@@ -106,16 +109,24 @@ fun OnBoardingPage(
                         .padding(vertical = 12.dp),
                     contentPadding = PaddingValues(vertical = 18.dp),
                     onClick = {
-                        if (!perm.status.isGranted) {
-                            perm.launchPermissionRequest()
+                        if(onBoardingPageState.pagerState.currentPage >= 2) {
+                            if (!perm.status.isGranted) {
+                                perm.launchPermissionRequest()
+                            } else {
+                                mixPanel.track("View_Login")
+                                nextViewRoute()
+                            }
                         } else {
-                            mixPanel.track("View_Login")
-                            nextViewRoute()
+                            coroutineScope.launch {
+                                onBoardingPageState.pagerState
+                                    .animateScrollToPage(onBoardingPageState.pagerState.currentPage + 1)
+                            }
                         }
                     },
                     buttonColor = MaterialTheme.bbibbiScheme.backgroundPrimary,
                     textColor = MaterialTheme.bbibbiScheme.white,
                     isActive = onBoardingPageState.pagerState.currentPage == 2,
+                    byPassCtaIgnore = true,
                 )
             }
         }

@@ -26,6 +26,7 @@ fun CTAButton(
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     onClick: () -> Unit = {},
     isActive: Boolean = true,
+    byPassCtaIgnore: Boolean = false,
 ) {
     val opacityAlpha: Float by animateFloatAsState(
         targetValue = if (isActive) 1f else 0.2f,
@@ -36,7 +37,7 @@ fun CTAButton(
     )
     Button(
         shape = RoundedCornerShape(100.dp),
-        onClick = { if (isActive) onClick() },
+        onClick = { if (isActive || byPassCtaIgnore) onClick() },
         colors = ButtonDefaults.buttonColors(
             containerColor = buttonColor.copy(
                 alpha = opacityAlpha
