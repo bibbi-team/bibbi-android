@@ -252,8 +252,10 @@ class MainActivity : ComponentActivity() {
                                     LaunchedEffect(sessionState) {
                                         Timber.d("[MainActivity] Session State Changed to $sessionState")
                                         if (sessionState.isLoggedIn()) {
+                                            mixPanelState.registerSuperPropertiesMap(mapOf("memberId" to sessionState.memberId))
                                             localDataStorage.setAuthTokens(sessionState.apiToken)
                                         } else {
+                                            mixPanelState.unregisterSuperProperty("memberId")
                                             localDataStorage.logOut()
                                         }
                                     }
