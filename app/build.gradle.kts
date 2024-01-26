@@ -119,7 +119,7 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0-alpha01")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
     implementation("androidx.compose.material:material:1.5.4")
-
+    implementation("com.mixpanel.android:mixpanel-android:7.4.0")
     implementation("com.google.dagger:hilt-android:2.49")
     kapt("com.google.dagger:hilt-android-compiler:2.49")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

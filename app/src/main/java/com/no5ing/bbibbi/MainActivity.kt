@@ -29,6 +29,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.messaging.FirebaseMessaging
+import com.mixpanel.android.mpmetrics.MixpanelAPI
 import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenRequest
@@ -41,6 +42,7 @@ import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestin
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalDeepLinkState
+import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
@@ -196,6 +198,7 @@ class MainActivity : ComponentActivity() {
             val snackBarHostState = remember { SnackbarHostState() }
             val sessionState by sessionModule.sessionState.collectAsState()
             val deepLinkState by deepLinkStateFlow.collectAsState()
+            val mixPanelState = remember { MixpanelAPI.getInstance(this@MainActivity, BuildConfig.mixPanelToken, true) }
             DisposableEffect(navController) {
                 localNavController = navController
                 navController
@@ -230,6 +233,8 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalNavigateControllerState provides navController
                 ) {
+                    CompositionLocalProvider(LocalMixpanelProvider provides mixPanelState) {
+
                     CompositionLocalProvider(value = LocalDeepLinkState provides deepLinkState) {
                         BbibbiTheme {
                             Surface(
@@ -265,7 +270,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         }
-                    }
+                    }}
                 }
             }
         }
