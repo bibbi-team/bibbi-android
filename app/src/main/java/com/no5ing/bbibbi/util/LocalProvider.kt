@@ -5,7 +5,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.NavHostController
 import com.mixpanel.android.mpmetrics.MixpanelAPI
-import com.no5ing.bbibbi.presentation.uistate.common.SessionState
+import com.no5ing.bbibbi.presentation.feature.uistate.common.SessionState
 
 val LocalSnackbarHostState =
     staticCompositionLocalOf<SnackbarHostState> { error("No SnackbarHostState provided") }

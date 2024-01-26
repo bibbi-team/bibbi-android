@@ -6,11 +6,11 @@ import androidx.compose.runtime.Stable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
-import com.no5ing.bbibbi.presentation.view_controller.NavigationDestination.Companion.composable
-import com.no5ing.bbibbi.presentation.view_controller.NavigationDestination.Companion.registerPageRoute
-import com.no5ing.bbibbi.presentation.view_controller.RegisterDayOfBirthDestination
-import com.no5ing.bbibbi.presentation.view_controller.RegisterNicknameDestination
-import com.no5ing.bbibbi.presentation.view_controller.RegisterProfileImageDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.composable
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.registerPageRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.RegisterDayOfBirthDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.RegisterNicknameDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.RegisterProfileImageDestination
 
 @Stable
 fun NavGraphBuilder.registerGraph(

@@ -9,7 +9,7 @@ import com.no5ing.bbibbi.data.datasource.network.response.Pagination
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.data.repository.BasePageSource
 import com.no5ing.bbibbi.data.repository.BaseRepository
-import com.no5ing.bbibbi.presentation.uistate.post.PostCommentUiState
+import com.no5ing.bbibbi.presentation.feature.uistate.post.PostCommentUiState
 import com.no5ing.bbibbi.util.parallelMap
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.mapSuccess

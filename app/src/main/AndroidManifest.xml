@@ -87,7 +87,7 @@
         </service>
 
         <receiver
-            android:name=".WidgetReceiver"
+            android:name=".widget.WidgetReceiver"
             android:exported="false"
             android:label="@string/yellow_widget_name">
             <intent-filter>

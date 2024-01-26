@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "bbibbi"
 include(":app")
 include(":benchmark")
+include(":widget")

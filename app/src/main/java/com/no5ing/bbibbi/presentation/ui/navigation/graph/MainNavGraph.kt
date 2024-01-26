@@ -13,21 +13,21 @@ import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlid
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideOutToRight
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullSlideInVertically
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullSlideOutVertically
-import com.no5ing.bbibbi.presentation.view_controller.ChangeNicknameDestination
-import com.no5ing.bbibbi.presentation.view_controller.CreateRealEmojiDestination
-import com.no5ing.bbibbi.presentation.view_controller.MainCalendarDestination
-import com.no5ing.bbibbi.presentation.view_controller.MainCalendarDetailDestination
-import com.no5ing.bbibbi.presentation.view_controller.MainFamilyDestination
-import com.no5ing.bbibbi.presentation.view_controller.MainHomeDestination
-import com.no5ing.bbibbi.presentation.view_controller.MainProfileDestination
-import com.no5ing.bbibbi.presentation.view_controller.NavigationDestination.Companion.composable
-import com.no5ing.bbibbi.presentation.view_controller.NavigationDestination.Companion.mainPageRoute
-import com.no5ing.bbibbi.presentation.view_controller.PostReUploadDestination
-import com.no5ing.bbibbi.presentation.view_controller.PostUploadDestination
-import com.no5ing.bbibbi.presentation.view_controller.PostViewDestination
-import com.no5ing.bbibbi.presentation.view_controller.QuitDestination
-import com.no5ing.bbibbi.presentation.view_controller.SettingDestination
-import com.no5ing.bbibbi.presentation.view_controller.WebViewDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.ChangeNicknameDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.CreateRealEmojiDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.MainCalendarDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.MainCalendarDetailDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.MainFamilyDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.MainHomeDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.MainProfileDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.composable
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.mainPageRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.PostReUploadDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.PostUploadDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.PostViewDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.QuitDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.SettingDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.WebViewDestination
 
 @OptIn(ExperimentalAnimationApi::class)
 @Stable
