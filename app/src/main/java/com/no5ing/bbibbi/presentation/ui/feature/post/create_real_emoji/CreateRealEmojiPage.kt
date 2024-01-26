@@ -86,6 +86,7 @@ import com.no5ing.bbibbi.util.getRealEmojiResource
 import com.no5ing.bbibbi.util.localResources
 import com.no5ing.bbibbi.util.takePhoto
 import com.no5ing.bbibbi.util.takePhotoTemporary
+import com.no5ing.bbibbi.util.takePhotoWithImage
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -310,7 +311,7 @@ fun CreateRealEmojiPage(
                     onClick = {
                         coroutineScope.launch {
                             isCapturing = true
-                            val image = captureState.value.takePhotoTemporary(context)
+                            val image = captureState.value.takePhotoWithImage(context, requiredFlip = cameraDirection.value == CameraSelector.DEFAULT_FRONT_CAMERA)
                             isCapturing = false
                             updateMemberPostRealEmojiViewModel.invoke(
                                 Arguments(

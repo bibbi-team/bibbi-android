@@ -1,6 +1,7 @@
 package com.no5ing.bbibbi.presentation.viewmodel.post
 
 import android.content.Context
+import android.net.Uri
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
@@ -16,12 +17,14 @@ import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.viewmodel.BaseViewModel
 import com.no5ing.bbibbi.util.toRequestBody
 import com.no5ing.bbibbi.util.upload
+import com.no5ing.bbibbi.util.uploadImage
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,21 +39,21 @@ class UpdateMemberPostRealEmojiViewModel @Inject constructor(
 
     @OptIn(ExperimentalGetImage::class) override fun invoke(arguments: Arguments) {
         val emojiType = arguments.get("emojiType") ?: throw RuntimeException()
-        val image = arguments.getObject<ImageProxy>("image") ?: throw RuntimeException()
+        val image = arguments.getObject<Uri?>("image") ?: throw RuntimeException()
         val prevEmojiKey = arguments.get("prevEmojiKey")
         withMutexScope(Dispatchers.IO, uiState.value.isIdle()) {
             setState(APIResponse.loading())
+            val file = File(image.path!!)
             restAPI.getMemberApi().getRealEmojiImageRequest(
                 memberId = sessionModule.sessionState.value.memberId,
                 ImageUploadRequest(
-                    "${image.imageInfo.timestamp}.jpg"
+                    "${System.currentTimeMillis()}.jpg"
                 )
             ).suspendOnSuccess {
-                val uploadResult = client.upload(
-                    body = image.toRequestBody("image/jpeg".toMediaType()),
+                val uploadResult = client.uploadImage(
+                    targetFile = file,
                     targetUrl = data.url
                 )
-                image.close()
                 if (uploadResult == null) {
                     setState(APIResponse.unknownError())
                     return@suspendOnSuccess

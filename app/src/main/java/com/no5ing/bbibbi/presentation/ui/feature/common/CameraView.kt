@@ -210,7 +210,7 @@ fun CameraView(
                     onClick = {
                         coroutineScope.launch {
                             isCapturing = true
-                            val uri = captureState.value.takePhotoWithImage(context)
+                            val uri = captureState.value.takePhotoWithImage(context, requiredFlip = cameraDirection.value == CameraSelector.DEFAULT_FRONT_CAMERA)
                             isCapturing = false
                             onImageCaptured(uri)
                         }

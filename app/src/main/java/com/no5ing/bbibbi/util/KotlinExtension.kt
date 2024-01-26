@@ -127,7 +127,7 @@ suspend fun ImageCapture.takePhoto(context: Context): Uri? =
         )
     }
 
-suspend fun ImageCapture.takePhotoWithImage(context: Context): Uri? =
+suspend fun ImageCapture.takePhotoWithImage(context: Context, requiredFlip: Boolean): Uri? =
     suspendCoroutine { continuation ->
         this.takePicture(
             ContextCompat.getMainExecutor(context),
@@ -140,7 +140,10 @@ suspend fun ImageCapture.takePhotoWithImage(context: Context): Uri? =
                 override fun onCaptureSuccess(image: ImageProxy) {
                     val fileName = "${System.currentTimeMillis()}.jpg"
                     val faos = context.openFileOutput(fileName, Context.MODE_PRIVATE)
-                    val bitmap = image.toBitmap().rotateWithCropCenter(image.imageInfo.rotationDegrees)
+                    val bitmap = if(!requiredFlip)
+                        image.toBitmap().rotateWithCropCenterRecycle(image.imageInfo.rotationDegrees)
+                    else
+                        image.toBitmap().rotateWithCropCenterRecycle(image.imageInfo.rotationDegrees).flip()
                     bitmap.compress( Bitmap.CompressFormat.PNG, 100, faos)
                     faos.close()
                     continuation.resume(Uri.fromFile(context.getFileStreamPath(fileName)))
@@ -188,11 +191,29 @@ fun ImageProxy.toRequestBody(
 
 fun Bitmap.rotateWithCropCenter(degrees: Int): Bitmap {
     val matrix = Matrix().apply { postRotate(degrees.toFloat()) }
-    return if (width >= height) {
+    val newBitMap = if (width >= height) {
         Bitmap.createBitmap(this, width/2 - height/2, 0, height, height, matrix, true)
     } else {
         Bitmap.createBitmap(this, 0, height/2 - width/2, width, width, matrix, true)
     }
+    return newBitMap
+}
+
+fun Bitmap.rotateWithCropCenterRecycle(degrees: Int): Bitmap {
+    val matrix = Matrix().apply { postRotate(degrees.toFloat()) }
+    val newBitMap = if (width >= height) {
+        Bitmap.createBitmap(this, width/2 - height/2, 0, height, height, matrix, true)
+    } else {
+        Bitmap.createBitmap(this, 0, height/2 - width/2, width, width, matrix, true)
+    }
+    this.recycle()
+    return newBitMap
+}
+
+fun Bitmap.flip(): Bitmap {
+    val matrix = Matrix().apply { preScale(-1.0f, 1f) }
+    return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
+
 }
 
 fun Context.openMarket() {
