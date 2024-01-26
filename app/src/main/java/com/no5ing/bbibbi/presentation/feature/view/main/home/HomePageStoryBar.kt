@@ -29,26 +29,29 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
-import com.no5ing.bbibbi.presentation.feature.state.main.home.HomePageStoryBarState
-import com.no5ing.bbibbi.presentation.feature.state.main.home.rememberHomePageStoryBarState
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.LocalSessionState
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomePageStoryBar(
+    postTopStateFlow: StateFlow<Map<String, Int>>,
+    meStateFlow: StateFlow<APIResponse<Member>>,
+    familyListStateFlow: StateFlow<PagingData<Member>>,
     onTapProfile: (Member) -> Unit = {},
     onTapInvite: () -> Unit = {},
-    storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(),
 ) {
-    val postTopState by storyBarState.topState.collectAsState()
     val meId = LocalSessionState.current.memberId
-    val meState by storyBarState.meState.collectAsState()
-    val items = storyBarState.uiState.collectAsLazyPagingItems()
+    val postTopState by postTopStateFlow.collectAsState()
+    val meState by meStateFlow.collectAsState()
+    val items = familyListStateFlow.collectAsLazyPagingItems()
 
     if (items.itemCount == 1) {
         HomePageNoFamilyBar(

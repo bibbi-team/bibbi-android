@@ -37,10 +37,10 @@ import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 
 @Composable
 fun BoxScope.HomePageUploadButton(
-    isLoading: Boolean,
-    isUploadAbleTime: Boolean,
-    isAlreadyUploaded: Boolean,
-    onTap: () -> Unit,
+    isLoading: Boolean = false,
+    isUploadAbleTime: Boolean = true,
+    isAlreadyUploaded: Boolean = false,
+    onTap: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier

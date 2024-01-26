@@ -17,44 +17,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.PagingData
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
-import com.no5ing.bbibbi.presentation.feature.state.main.home.HomePageContentState
-import com.no5ing.bbibbi.presentation.feature.state.main.home.HomePageState
-import com.no5ing.bbibbi.presentation.feature.state.main.home.HomePageStoryBarState
-import com.no5ing.bbibbi.presentation.feature.state.main.home.rememberHomePageContentState
-import com.no5ing.bbibbi.presentation.feature.state.main.home.rememberHomePageState
-import com.no5ing.bbibbi.presentation.feature.state.main.home.rememberHomePageStoryBarState
+import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
-import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
-import com.no5ing.bbibbi.presentation.theme.BbibbiTheme
-import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.component.BackToExitHandler
+import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.feature.view_model.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.DailyFamilyTopViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.IsMeUploadedTodayViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.MainPostFeedViewModel
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalSessionState
+import com.no5ing.bbibbi.util.todayAsString
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun HomePage(
-    homePageState: HomePageState = rememberHomePageState(),
     retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
     isMeUploadedTodayViewModel: IsMeUploadedTodayViewModel = hiltViewModel(),
     familyPostsViewModel: MainPostFeedViewModel = hiltViewModel(),
     familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),
-    homePageContentState: HomePageContentState = rememberHomePageContentState(
-        uiState = familyPostsViewModel.uiState
-    ),
     familyPostTopViewModel: DailyFamilyTopViewModel = hiltViewModel(),
-    storyBarState: HomePageStoryBarState = rememberHomePageStoryBarState(
-        uiState = familyMembersViewModel.uiState,
-        meState = retrieveMeViewModel.uiState,
-        topState = familyPostTopViewModel.uiState,
-    ),
     onTapLeft: () -> Unit = {},
     onTapRight: () -> Unit = {},
     onTapProfile: (Member) -> Unit = {},
@@ -65,8 +54,6 @@ fun HomePage(
 ) {
     val memberId = LocalSessionState.current.memberId
     val meUploadedState = isMeUploadedTodayViewModel.uiState.collectAsState()
-    //val familyMembersState = familyMembersViewModel.uiState.collectAsState()
-
     val unsavedDialogUri = remember { mutableStateOf<Uri?>(null) }
     val unsavedDialogEnabled = remember { mutableStateOf(false) }
     CustomAlertDialog(
@@ -85,6 +72,22 @@ fun HomePage(
         if (tempUri != null) {
             unsavedDialogUri.value = tempUri
             unsavedDialogEnabled.value = true
+        }
+
+        if (familyPostsViewModel.isInitialize()) {
+            familyMembersViewModel.invoke(Arguments())
+            retrieveMeViewModel.invoke(Arguments())
+            familyPostTopViewModel.invoke(Arguments())// TODO
+            familyPostsViewModel.invoke(
+                Arguments(
+                    arguments = mapOf(
+                        "date" to todayAsString(),
+                    )
+                )
+            )
+        } else {
+            familyPostTopViewModel.invoke(Arguments())
+            familyPostsViewModel.refresh()
         }
     }
 
@@ -105,15 +108,17 @@ fun HomePage(
                     onTapRight = onTapRight
                 )
                 HomePageContent(
-                    familyMembersViewModel = familyMembersViewModel,
-                    familyPostsViewModel = familyPostsViewModel,
-                    familyPostTopViewModel = familyPostTopViewModel,
-                    homePageContentState = homePageContentState,
-                    retrieveMeViewModel = retrieveMeViewModel,
-                    storyBarState = storyBarState,
+                    contentState = familyPostsViewModel.uiState,
+                    familyListState = familyMembersViewModel.uiState,
+                    postTopState = familyPostTopViewModel.uiState,
+                    meState = retrieveMeViewModel.uiState,
                     onTapContent = onTapContent,
                     onTapProfile = onTapProfile,
                     onTapInvite = onTapInvite,
+                    onRefresh = {
+                        familyPostTopViewModel.invoke(Arguments())
+                        retrieveMeViewModel.invoke(Arguments())
+                    }
                 )
             }
             HomePageUploadButton(
@@ -129,16 +134,27 @@ fun HomePage(
 
 @Preview(
     showBackground = true,
-    name = "Preview",
+    name = "HomePagePreview",
     showSystemUi = true
 )
 @Composable
 fun HomePagePreview() {
-    BbibbiTheme {
-        HomePage(
-            retrieveMeViewModel = hiltViewModel(),
-            isMeUploadedTodayViewModel = hiltViewModel(),
-        )
+    BBiBBiPreviewSurface {
+        Box {
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                HomePageTopBar()
+                HomePageContent(
+                    contentState = MutableStateFlow(PagingData.empty()),
+                    familyListState = MutableStateFlow(PagingData.empty()),
+                    postTopState = MutableStateFlow(emptyMap()),
+                    meState = MutableStateFlow(APIResponse.success(Member.unknown()))
+                )
+            }
+            HomePageUploadButton()
+        }
+
     }
 }
 

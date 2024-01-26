@@ -143,11 +143,11 @@ object NetworkModule {
         val client = OkHttpClient.Builder()
         if (authenticator != null) client.authenticator(authenticator)
         if (interceptor != null) client.addInterceptor(interceptor)
-        val httpLoggingInterceptor =
-            HttpLoggingInterceptor { message -> Timber.d("%s", message) }
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+//        val httpLoggingInterceptor =
+//            HttpLoggingInterceptor { message -> Timber.d("%s", message) }
+//        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return client
-            .addInterceptor(httpLoggingInterceptor)
+           // .addInterceptor(httpLoggingInterceptor)
             .connectTimeout(timeout_connect, TimeUnit.SECONDS)
             .readTimeout(timeout_read, TimeUnit.SECONDS)
             .writeTimeout(timeout_write, TimeUnit.SECONDS)
