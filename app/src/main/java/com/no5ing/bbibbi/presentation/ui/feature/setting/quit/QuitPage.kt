@@ -39,6 +39,7 @@ import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.QuitViewModel
+import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.localResources
@@ -49,6 +50,7 @@ fun QuitPage(
     onQuitSuccess: () -> Unit,
     quitViewModel: QuitViewModel = hiltViewModel(),
 ) {
+    val mixPanel = LocalMixpanelProvider.current
     val resources = localResources()
     val snackBarHost = LocalSnackbarHostState.current
     val quitReasons = remember {
@@ -71,6 +73,7 @@ fun QuitPage(
         enabledState = quitModalEnabled,
         confirmMessage = stringResource(id = R.string.dialog_quit_confirm),
         confirmRequest = {
+            mixPanel.track("Click_Withdrawal")
             quitViewModel.invoke(
                 Arguments(
                     arguments = mapOf("reasons" to currentSelection.joinToString(

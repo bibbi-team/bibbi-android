@@ -50,6 +50,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.LogoutViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveAppVersionViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.family.QuitFamilyViewModel
+import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.emptyPermissionState
 import com.no5ing.bbibbi.util.getErrorMessage
@@ -73,7 +74,7 @@ fun SettingHomePage(
     retrieveAppVersionViewModel: RetrieveAppVersionViewModel = hiltViewModel(),
 ) {
     val logOutState = logoutViewModel.uiState.collectAsState()
-
+    val mixPanel = LocalMixpanelProvider.current
     val familyQuitState by familyQuitViewModel.uiState.collectAsState()
     val appVersionState by retrieveAppVersionViewModel.uiState.collectAsState()
     val resources = localResources()
@@ -117,6 +118,7 @@ fun SettingHomePage(
         enabledState = familyQuitModalEnabled,
         confirmMessage = stringResource(id = R.string.dialog_quit_group_confirm),
         confirmRequest = {
+            mixPanel.track("Click_LeaveGroup")
             familyQuitViewModel.invoke(Arguments())
         }
     )

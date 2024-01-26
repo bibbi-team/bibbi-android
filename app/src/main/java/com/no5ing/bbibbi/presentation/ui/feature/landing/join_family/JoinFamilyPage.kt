@@ -39,6 +39,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.viewmodel.family.CreateFamilyAndJoinViewModel
+import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.dashedBorder
 import com.no5ing.bbibbi.util.getErrorMessage
@@ -51,6 +52,7 @@ fun JoinFamilyPage(
     onFamilyCreationComplete: () -> Unit,
     createFamilyAndJoinViewModel: CreateFamilyAndJoinViewModel = hiltViewModel(),
 ) {
+    val mixPanel = LocalMixpanelProvider.current
     val createNewDialogVisible = remember {
         mutableStateOf(false)
     }
@@ -83,6 +85,7 @@ fun JoinFamilyPage(
         title = stringResource(id = R.string.create_new_room_dialog_title),
         description = stringResource(id = R.string.create_new_room_dialog_description),
         confirmRequest = {
+            mixPanel.track("Click_Create_NewGroup_2")
             createFamilyAndJoinViewModel.invoke(Arguments())
         }
     )
@@ -126,6 +129,7 @@ fun JoinFamilyPage(
                         radius = 16.dp
                     )
                     .clickable {
+                        mixPanel.track("Click_Create_NewGroup_1")
                         createNewDialogVisible.value = true
                     },
                 contentAlignment = Alignment.Center

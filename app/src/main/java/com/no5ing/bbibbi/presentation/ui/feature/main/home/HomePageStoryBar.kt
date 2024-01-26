@@ -39,6 +39,7 @@ import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageStoryBarSt
 import com.no5ing.bbibbi.presentation.ui.common.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSessionState
 
 @Composable

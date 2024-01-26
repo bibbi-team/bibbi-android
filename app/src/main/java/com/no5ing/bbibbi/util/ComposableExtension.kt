@@ -67,3 +67,9 @@ fun asyncImagePainter(source: String?) = ImageRequest
     .diskCachePolicy(CachePolicy.ENABLED)
     .memoryCachePolicy(CachePolicy.ENABLED)
     .build()
+
+@Composable
+fun trackMixPanel(eventName: String) {
+    val mixPanel = LocalMixpanelProvider.current
+    mixPanel.track(eventName)
+}

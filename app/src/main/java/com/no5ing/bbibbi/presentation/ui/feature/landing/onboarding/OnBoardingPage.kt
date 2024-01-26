@@ -31,6 +31,7 @@ import com.no5ing.bbibbi.presentation.ui.common.button.CTAButton
 import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.ui.common.component.MeatBall
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.emptyPermissionState
 import timber.log.Timber
@@ -42,6 +43,7 @@ fun OnBoardingPage(
     onFamilyNotExists: () -> Unit = {},
     onBoardingPageState: OnBoardingPageState = rememberOnBoardingPageState(),
 ) {
+    val mixPanel = LocalMixpanelProvider.current
     val sessionState = LocalSessionState.current
     val nextViewRoute =
         if (sessionState.isLoggedIn() && sessionState.hasFamily()) onAlreadyHaveFamily else onFamilyNotExists
@@ -49,6 +51,8 @@ fun OnBoardingPage(
         rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS) { isAccepted ->
             if (!isAccepted) {
                 Timber.d("[OnBoarding] Noti Perm Not Accepted!!")
+            } else {
+                mixPanel.track("Click_AllowNotification")
             }
             nextViewRoute()
         }
@@ -105,6 +109,7 @@ fun OnBoardingPage(
                         if (!perm.status.isGranted) {
                             perm.launchPermissionRequest()
                         } else {
+                            mixPanel.track("View_Login")
                             nextViewRoute()
                         }
                     },

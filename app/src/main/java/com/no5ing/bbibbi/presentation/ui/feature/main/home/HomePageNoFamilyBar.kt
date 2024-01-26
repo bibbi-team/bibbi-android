@@ -26,12 +26,14 @@ import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.util.LocalMixpanelProvider
 
 @Composable
 fun HomePageNoFamilyBar(
     onTap: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val mixPanel = LocalMixpanelProvider.current
     Box(
         modifier = modifier
             .background(
@@ -43,6 +45,7 @@ fun HomePageNoFamilyBar(
                 horizontal = 20.dp,
             )
             .clickable {
+                mixPanel.track("Click_ShareLink_Home")
                 onTap()
             }
     ) {

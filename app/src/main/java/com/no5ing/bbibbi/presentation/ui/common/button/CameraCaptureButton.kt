@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
+import com.no5ing.bbibbi.util.LocalMixpanelProvider
 
 @Composable
 fun CameraCaptureButton(
@@ -15,13 +16,17 @@ fun CameraCaptureButton(
     onClick: () -> Unit = {},
     isCapturing: Boolean,
 ) {
+    val mixPanel = LocalMixpanelProvider.current
     Image(
         painter = painterResource(R.drawable.capture_button),
         contentDescription = null, // 필수 param
         modifier = modifier
             .size(80.dp)
             .clickable {
-                if (!isCapturing) onClick()
+                mixPanel.track("Click_btn_camera")
+                if (!isCapturing) {
+                    onClick()
+                }
             },
         alpha = if (isCapturing) 0.3f else 1.0f,
     )

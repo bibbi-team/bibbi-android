@@ -34,6 +34,7 @@ import com.no5ing.bbibbi.presentation.state.main.family.FamilyPageInvitationStat
 import com.no5ing.bbibbi.presentation.state.main.family.rememberFamilyPageInvitationState
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.viewmodel.family.FamilyInviteLinkViewModel
+import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSessionState
 
 @Composable
@@ -44,6 +45,7 @@ fun FamilyPageInviteButton(
     ),
     onTapShare: (String) -> Unit,
 ) {
+    val mixPanel = LocalMixpanelProvider.current
     val familyId = LocalSessionState.current.familyId
     val uiState by familyPageInvitationState.uiState
     LaunchedEffect(uiState) {
@@ -64,6 +66,7 @@ fun FamilyPageInviteButton(
             )
             .clickable {
                 if (uiState.isReady()) {
+                    mixPanel.track("Click_ShareLink_Family")
                     onTapShare(uiState.data.url)
                 }
             }

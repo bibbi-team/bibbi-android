@@ -70,6 +70,7 @@ import com.no5ing.bbibbi.presentation.ui.snackBarWarning
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.post.CreatePostViewModel
+import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.codePointLength
 import com.no5ing.bbibbi.util.getErrorMessage
@@ -112,6 +113,7 @@ fun PostUploadPage(
                 createPostViewModel.saveTemporaryUri(imageUrl.value!!)
         }
     }
+    val mixPanel = LocalMixpanelProvider.current
     val uploadResult = createPostViewModel.uiState.collectAsState()
     val snackErrorMessage = getErrorMessage(errorCode = uploadResult.value.errorCode)
     LaunchedEffect(uploadResult.value) {
@@ -166,6 +168,7 @@ fun PostUploadPage(
                                 .align(Alignment.BottomCenter)
                                 .padding(bottom = 16.dp)
                                 .clickable {
+                                    mixPanel.track("Click_PhotoText")
                                     textOverlayShown.value = true
                                 }
                         ) {
@@ -213,6 +216,7 @@ fun PostUploadPage(
                             text = stringResource(id = R.string.upload_image),
                             contentPadding = PaddingValues(horizontal = 60.dp, vertical = 15.dp),
                             onClick = {
+                                mixPanel.track("Click_UploadPhoto")
                                 createPostViewModel.invoke(
                                     Arguments(
                                         arguments = mapOf(

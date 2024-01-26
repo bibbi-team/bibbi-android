@@ -50,6 +50,7 @@ import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.viewmodel.family.JoinFamilyWithLinkViewModel
 import com.no5ing.bbibbi.util.LocalDeepLinkState
+import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.getLinkIdFromUrl
@@ -62,6 +63,7 @@ fun JoinFamilyWithLinkPage(
     onDispose: () -> Unit,
     onJoinComplete: () -> Unit,
 ) {
+    val mixPanel = LocalMixpanelProvider.current
     val uiState by joinFamilyWithLinkViewModel.uiState.collectAsState()
     val textBoxFocus = remember { FocusRequester() }
     val interactionSource = remember { MutableInteractionSource() }
@@ -219,6 +221,7 @@ fun JoinFamilyWithLinkPage(
                     contentPadding = PaddingValues(vertical = 18.dp),
                     isActive = state.ctaButtonEnabledState.value && uiState.isIdle(),
                     onClick = {
+                        mixPanel.track("Click_Enter_Group_2")
                         joinFamilyWithLinkViewModel.invoke(
                             Arguments(
                                 arguments = mapOf(
