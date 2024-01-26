@@ -53,7 +53,8 @@ fun ProfilePage(
     memberState: State<APIResponse<Member>> = familyMemberViewModel.uiState.collectAsState(),
 ) {
     val sessionState = LocalSessionState.current
-    val isMe = memberId == LocalSessionState.current.memberId
+    val viewerMemberId = sessionState.memberId
+    val isMe = memberId == viewerMemberId
     val resources = localResources()
     val snackBarHost = LocalSnackbarHostState.current
     LaunchedEffect(Unit) {
@@ -133,7 +134,7 @@ fun ProfilePage(
                 onTapSetting = onTapSetting,
             )
             ProfilePageMemberBar(
-                viewerMemberId = memberId,
+                viewerMemberId = viewerMemberId,
                 onTapChangeNickname = onTapChangeNickname,
                 memberState = memberState,
                 onTapChangeProfileButton = {
