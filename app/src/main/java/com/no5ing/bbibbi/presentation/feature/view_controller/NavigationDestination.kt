@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.feature.view_controller
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -102,6 +103,7 @@ abstract class NavigationDestination(
             }
         }
 
+        @SuppressLint("RestrictedApi")
         fun NavHostController.navigate(
             destination: NavigationDestination,
             path: String? = null,
@@ -115,21 +117,20 @@ abstract class NavigationDestination(
             val node = NavDeepLinkRequest
                 .Builder
                 .fromUri(NavDestination.createRoute(targetRoute).toUri()).build()
-            val deepLinkMatch = graph.matchDeepLink(node) ?: throw RuntimeException()
-
-            val priorStack = currentBackStack.value.firstOrNull {
-                deepLinkMatch.hasMatchingArgs(it.arguments)
-                        && it.destination.route == deepLinkMatch.destination.route
+            graph.matchDeepLink(node)?.let { deepLinkMatch ->
+                val priorStack = currentBackStack.value.firstOrNull {
+                    deepLinkMatch.hasMatchingArgs(it.arguments)
+                            && it.destination.route == deepLinkMatch.destination.route
+                }
+                if (priorStack != null) {
+                    Timber.d("[NavRouter] Going back prior opened stack..")
+                    popBackStack(
+                        destinationId = priorStack.destination.id,
+                        inclusive = false,
+                    )
+                    return
+                }
             }
-            if (priorStack != null) {
-                Timber.d("[NavRouter] Going back prior opened stack..")
-                popBackStack(
-                    destinationId = priorStack.destination.id,
-                    inclusive = false,
-                )
-                return
-            }
-
 
             navigate(
                 targetRoute,
