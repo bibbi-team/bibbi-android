@@ -16,6 +16,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import timber.log.Timber
+import java.net.URLEncoder
 
 abstract class NavigationDestination(
     val route: String,
@@ -113,7 +114,7 @@ abstract class NavigationDestination(
             val targetRoute = if (params.isEmpty())
                 routeWithPath
             else
-                "${routeWithPath}?${params.joinToString("&") { "${it.first}=${it.second}" }}"
+                "${routeWithPath}?${params.joinToString("&") { "${it.first}=${URLEncoder.encode(it.second)}" }}"
             val node = NavDeepLinkRequest
                 .Builder
                 .fromUri(NavDestination.createRoute(targetRoute).toUri()).build()
