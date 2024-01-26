@@ -1,21 +1,22 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.animation
 
+import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.runtime.Stable
 
 @Stable
-fun fullHorizontalSlideInToRight() = slideInHorizontally {
+fun fullHorizontalSlideInToRight() = slideInHorizontally(springSpec()) {
     -it
 }
 
 @Stable
-fun fullHorizontalSlideInToLeft() = slideInHorizontally {
+fun fullHorizontalSlideInToLeft() = slideInHorizontally(springSpec()) {
     +it
 }
 
 @Stable
-fun fullSlideInVertically() = slideInVertically {
+fun fullSlideInVertically() = slideInVertically(springSpec()) {
     +it
 }
 
@@ -23,3 +24,6 @@ fun fullSlideInVertically() = slideInVertically {
 fun miniHorizontalSlideInToRight() = slideInHorizontally(
     initialOffsetX = { -it / 2 },
 )
+
+@Stable
+fun defaultFadeIn() = fadeIn(tweenSpec())

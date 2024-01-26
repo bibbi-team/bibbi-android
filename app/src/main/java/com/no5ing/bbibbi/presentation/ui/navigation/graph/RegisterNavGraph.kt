@@ -13,7 +13,6 @@ import com.no5ing.bbibbi.presentation.ui.navigation.destination.RegisterDayOfBir
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.RegisterNicknameDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.RegisterProfileImageDestination
 
-@OptIn(ExperimentalAnimationApi::class)
 @Stable
 fun NavGraphBuilder.registerGraph(
     navController: NavHostController,

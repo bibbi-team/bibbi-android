@@ -17,14 +17,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.no5ing.bbibbi.presentation.ui.navigation.animation.defaultFadeIn
+import com.no5ing.bbibbi.presentation.ui.navigation.animation.defaultFadeOut
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.CameraViewDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.landingGraph
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.mainGraph
-import com.no5ing.bbibbi.presentation.ui.navigation.graph.postGraph
 import com.no5ing.bbibbi.presentation.ui.navigation.graph.registerGraph
-import com.no5ing.bbibbi.presentation.ui.navigation.graph.settingGraph
 
 @Composable
 fun MainPage(
@@ -54,24 +54,9 @@ fun MainPage(
                     NavigationDestination.mainPageRoute
                 else
                     NavigationDestination.landingPageRoute,
-                enterTransition = { fadeIn(animationSpec = tween(250)) },
-                exitTransition = { fadeOut(animationSpec = tween(200)) },
+                enterTransition = { defaultFadeIn() },
+                exitTransition = { defaultFadeOut() },
             ) {
-                landingGraph(
-                    navController = navController,
-                )
-                registerGraph(
-                    navController = navController,
-                )
-                mainGraph(
-                    navController = navController,
-                )
-                settingGraph(
-                    navController = navController,
-                )
-                postGraph(
-                    navController = navController,
-                )
                 composable(
                     controller = navController,
                     destination = CameraViewDestination,
@@ -85,6 +70,15 @@ fun MainPage(
                             it
                         }
                     }
+                )
+                landingGraph(
+                    navController = navController,
+                )
+                registerGraph(
+                    navController = navController,
+                )
+                mainGraph(
+                    navController = navController,
                 )
             }
         }

@@ -13,7 +13,6 @@ import com.no5ing.bbibbi.presentation.ui.navigation.destination.LandingOnBoardin
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.landingPageRoute
 
-@OptIn(ExperimentalAnimationApi::class)
 @Stable
 fun NavGraphBuilder.landingGraph(
     navController: NavHostController,

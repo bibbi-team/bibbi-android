@@ -13,13 +13,22 @@ import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlid
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullHorizontalSlideOutToRight
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullSlideInVertically
 import com.no5ing.bbibbi.presentation.ui.navigation.animation.fullSlideOutVertically
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.ChangeNicknameDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.CreateRealEmojiDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.MainCalendarDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.MainCalendarDetailDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.MainFamilyDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.MainHomeDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.MainProfileDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.mainPageRoute
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.PostReUploadDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.PostUploadDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.PostViewDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.QuitDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.SettingDestination
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.WebViewDestination
 
 @OptIn(ExperimentalAnimationApi::class)
 @Stable
@@ -85,6 +94,56 @@ fun NavGraphBuilder.mainGraph(
             popExitTransition = {
                 fullHorizontalSlideOutToRight()
             }
+        )
+        composable(
+            controller = navController,
+            destination = PostViewDestination,
+            enterTransition = {
+                fullHorizontalSlideInToLeft()
+            },
+            popExitTransition = {
+                fullHorizontalSlideOutToRight()
+            }
+        )
+        composable(
+            controller = navController,
+            destination = PostUploadDestination
+        )
+        composable(
+            controller = navController,
+            destination = PostReUploadDestination
+        )
+        composable(
+            controller = navController,
+            destination = CreateRealEmojiDestination
+        )
+        composable(
+            controller = navController,
+            destination = SettingDestination,
+            enterTransition = {
+                fullHorizontalSlideInToLeft()
+            },
+            popExitTransition = {
+                fullHorizontalSlideOutToRight()
+            }
+        )
+        composable(
+            controller = navController,
+            destination = ChangeNicknameDestination,
+        )
+        composable(
+            controller = navController,
+            destination = WebViewDestination,
+            enterTransition = {
+                fullHorizontalSlideInToLeft()
+            },
+            popExitTransition = {
+                fullHorizontalSlideOutToRight()
+            }
+        )
+        composable(
+            controller = navController,
+            destination = QuitDestination,
         )
     }
 }
