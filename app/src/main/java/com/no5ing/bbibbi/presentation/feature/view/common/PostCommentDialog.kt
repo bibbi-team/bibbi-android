@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.dialog
+package com.no5ing.bbibbi.presentation.feature.view.common
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi

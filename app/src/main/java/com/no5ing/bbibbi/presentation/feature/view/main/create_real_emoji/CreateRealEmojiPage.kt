@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.post.create_real_emoji
+package com.no5ing.bbibbi.presentation.feature.view.main.create_real_emoji
 
 import android.util.Rational
 import android.view.Surface.ROTATION_0

@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.setting.webview
+package com.no5ing.bbibbi.presentation.feature.view.main.webview
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView

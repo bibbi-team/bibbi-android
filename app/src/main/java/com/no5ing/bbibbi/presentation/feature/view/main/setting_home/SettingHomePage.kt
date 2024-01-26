@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.setting.home
+package com.no5ing.bbibbi.presentation.feature.view.main.setting_home
 
 import android.Manifest
 import android.content.Intent
@@ -41,7 +41,7 @@ import com.no5ing.bbibbi.data.model.OperationStatus
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
-import com.no5ing.bbibbi.presentation.feature.view.dialog.CustomAlertDialog
+import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarInfo
 import com.no5ing.bbibbi.presentation.component.snackBarWarning

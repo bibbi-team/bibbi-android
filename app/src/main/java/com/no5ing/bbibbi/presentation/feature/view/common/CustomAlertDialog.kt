@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.dialog
+package com.no5ing.bbibbi.presentation.feature.view.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

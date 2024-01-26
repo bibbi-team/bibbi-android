@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.post.view
+package com.no5ing.bbibbi.presentation.feature.view.main.post_view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,8 +28,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
-import com.no5ing.bbibbi.presentation.feature.view.dialog.PostCommentDialog
-import com.no5ing.bbibbi.presentation.feature.view.dialog.ReactionListDialog
+import com.no5ing.bbibbi.presentation.feature.view.common.PostCommentDialog
+import com.no5ing.bbibbi.presentation.feature.view.common.ReactionListDialog
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.feature.uistate.post.PostReactionUiState
 import com.no5ing.bbibbi.presentation.feature.uistate.post.RealEmojiPostReactionUiState

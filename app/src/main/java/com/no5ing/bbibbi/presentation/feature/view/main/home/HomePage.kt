@@ -28,7 +28,7 @@ import com.no5ing.bbibbi.presentation.feature.state.main.home.rememberHomePageCo
 import com.no5ing.bbibbi.presentation.feature.state.main.home.rememberHomePageState
 import com.no5ing.bbibbi.presentation.feature.state.main.home.rememberHomePageStoryBarState
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
-import com.no5ing.bbibbi.presentation.feature.view.dialog.CustomAlertDialog
+import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.component.BackToExitHandler

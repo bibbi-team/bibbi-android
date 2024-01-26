@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.setting.change_nickname
+package com.no5ing.bbibbi.presentation.feature.view.main.change_nickname
 
 
 import androidx.compose.foundation.layout.Arrangement

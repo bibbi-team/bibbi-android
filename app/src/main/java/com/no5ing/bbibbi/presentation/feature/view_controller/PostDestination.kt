@@ -8,9 +8,9 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
-import com.no5ing.bbibbi.presentation.feature.view.post.create_real_emoji.CreateRealEmojiPage
-import com.no5ing.bbibbi.presentation.feature.view.post.upload.PostUploadPage
-import com.no5ing.bbibbi.presentation.feature.view.post.view.PostViewPage
+import com.no5ing.bbibbi.presentation.feature.view.main.create_real_emoji.CreateRealEmojiPage
+import com.no5ing.bbibbi.presentation.feature.view.main.post_upload.PostUploadPage
+import com.no5ing.bbibbi.presentation.feature.view.main.post_view.PostViewPage
 
 object PostViewDestination : NavigationDestination(
     route = postViewPageRoute,

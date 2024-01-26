@@ -47,7 +47,7 @@ import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.feature.view.main.calendar.MainCalendarDay
-import com.no5ing.bbibbi.presentation.feature.view.post.view.PostViewContent
+import com.no5ing.bbibbi.presentation.feature.view.main.post_view.PostViewContent
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarFire
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme

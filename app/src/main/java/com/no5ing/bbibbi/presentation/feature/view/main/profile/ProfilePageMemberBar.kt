@@ -39,7 +39,7 @@ import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
-import com.no5ing.bbibbi.presentation.feature.view.dialog.AlbumCameraSelectDialog
+import com.no5ing.bbibbi.presentation.feature.view.common.AlbumCameraSelectDialog
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarInfo
 import com.no5ing.bbibbi.presentation.component.snackBarWarning

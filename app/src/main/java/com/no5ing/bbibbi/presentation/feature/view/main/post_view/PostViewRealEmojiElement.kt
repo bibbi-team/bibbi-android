@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.post.view
+package com.no5ing.bbibbi.presentation.feature.view.main.post_view
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image

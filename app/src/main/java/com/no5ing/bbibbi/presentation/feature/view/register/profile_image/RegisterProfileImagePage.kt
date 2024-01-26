@@ -46,7 +46,7 @@ import com.no5ing.bbibbi.presentation.feature.state.register.profile_image.Regis
 import com.no5ing.bbibbi.presentation.feature.state.register.profile_image.rememberRegisterProfileImagePageState
 import com.no5ing.bbibbi.presentation.component.button.CTAButton
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
-import com.no5ing.bbibbi.presentation.feature.view.dialog.AlbumCameraSelectDialog
+import com.no5ing.bbibbi.presentation.feature.view.common.AlbumCameraSelectDialog
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarWarning
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme

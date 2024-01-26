@@ -5,10 +5,10 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.BuildConfig
-import com.no5ing.bbibbi.presentation.feature.view.setting.change_nickname.ChangeNicknamePage
-import com.no5ing.bbibbi.presentation.feature.view.setting.home.SettingHomePage
-import com.no5ing.bbibbi.presentation.feature.view.setting.quit.QuitPage
-import com.no5ing.bbibbi.presentation.feature.view.setting.webview.WebViewPage
+import com.no5ing.bbibbi.presentation.feature.view.main.change_nickname.ChangeNicknamePage
+import com.no5ing.bbibbi.presentation.feature.view.main.setting_home.SettingHomePage
+import com.no5ing.bbibbi.presentation.feature.view.main.quit.QuitPage
+import com.no5ing.bbibbi.presentation.feature.view.main.webview.WebViewPage
 import com.no5ing.bbibbi.util.forceRestart
 
 object SettingDestination : NavigationDestination(

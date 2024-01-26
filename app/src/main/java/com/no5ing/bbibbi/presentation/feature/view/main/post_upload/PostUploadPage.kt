@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.post.upload
+package com.no5ing.bbibbi.presentation.feature.view.main.post_upload
 
 import android.graphics.ImageDecoder
 import android.net.Uri

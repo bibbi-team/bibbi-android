@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.setting.quit
+package com.no5ing.bbibbi.presentation.feature.view.main.quit
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +33,7 @@ import com.no5ing.bbibbi.presentation.component.button.CTAButton
 import com.no5ing.bbibbi.presentation.component.button.ToggleButton
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
-import com.no5ing.bbibbi.presentation.feature.view.dialog.CustomAlertDialog
+import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarWarning
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
