@@ -30,7 +30,6 @@ import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalSessionState
 import kotlinx.coroutines.flow.MutableStateFlow
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun FamilyPage(
     familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),

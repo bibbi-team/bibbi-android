@@ -24,11 +24,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.button.CTAButton
 import com.no5ing.bbibbi.presentation.component.button.ToggleButton
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
@@ -44,6 +46,14 @@ import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.localResources
 
+val quitReasons = listOf(
+        "NO_NEED_TO_SHARE_DAILY" to "가족과 일상을 공유하고 싶지 않아서",
+        "FAMILY_MEMBER_NOT_USING" to "가족 구성원이 참여하지 않아서",
+        "NO_PREFER_WIDGET_OR_NOTIFICATION" to "위젯이나 알림 기능을 선호하지 않아서",
+        "SERVICE_UX_IS_BAD" to "서비스 이용이 어렵거나 불편해서",
+        "NO_FREQUENTLY_USE" to "자주 사용하지 않아서",
+    )
+
 @Composable
 fun QuitPage(
     onDispose: () -> Unit,
@@ -53,15 +63,7 @@ fun QuitPage(
     val mixPanel = LocalMixpanelProvider.current
     val resources = localResources()
     val snackBarHost = LocalSnackbarHostState.current
-    val quitReasons = remember {
-        listOf(
-            "NO_NEED_TO_SHARE_DAILY" to "가족과 일상을 공유하고 싶지 않아서",
-            "FAMILY_MEMBER_NOT_USING" to "가족 구성원이 참여하지 않아서",
-            "NO_PREFER_WIDGET_OR_NOTIFICATION" to "위젯이나 알림 기능을 선호하지 않아서",
-            "SERVICE_UX_IS_BAD" to "서비스 이용이 어렵거나 불편해서",
-            "NO_FREQUENTLY_USE" to "자주 사용하지 않아서",
-        )
-    }
+
     val currentSelection = remember {
         mutableStateListOf<Int>()
     }
@@ -111,85 +113,61 @@ fun QuitPage(
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
-                DisposableTopBar(
+                QuitPageTopBar(
                     onDispose = onDispose,
-                    title = stringResource(id = R.string.quit_title)
                 )
-                Column(
-                    modifier = Modifier.padding(horizontal = 20.dp)
-                ) {
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Text(
-                        text = stringResource(id = R.string.quit_heading_one),
-                        color = MaterialTheme.bbibbiScheme.icon,
-                        style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+                QuitPageContent(
+                    currentSelection = currentSelection
+                )
+            }
+            CTAButton(
+                text = stringResource(id = R.string.quit_button),
+                onClick = {
+                    quitModalEnabled.value = true
+                },
+                isActive = currentSelection.isNotEmpty(),
+                modifier = Modifier
+                    .padding(
+                        horizontal = 12.dp,
                     )
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Text(
-                        text = stringResource(id = R.string.quit_heading_two),
-                        color = MaterialTheme.bbibbiScheme.textPrimary,
-                        style = MaterialTheme.bbibbiTypo.headOne,
-                    )
-                    Spacer(modifier = Modifier.height(40.dp))
-                    Text(
-                        text = stringResource(id = R.string.quit_minimum_one),
-                        color = MaterialTheme.bbibbiScheme.icon,
-                        style = MaterialTheme.bbibbiTypo.bodyOneRegular,
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Column {
-                        quitReasons.forEachIndexed { index, pair ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 14.dp)
-                                    .clickable {
-                                        if (currentSelection.contains(index)) {
-                                            currentSelection.remove(index)
-                                        } else {
-                                            currentSelection.add(index)
-                                        }
-                                    },
-                                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                ToggleButton(
-                                    isToggled = currentSelection.contains(index),
-                                    onTap = {
-                                        if (currentSelection.contains(index)) {
-                                            currentSelection.remove(index)
-                                        } else {
-                                            currentSelection.add(index)
-                                        }
-                                    }
-                                )
-                                Text(
-                                    text = pair.second,
-                                    color = MaterialTheme.bbibbiScheme.textPrimary,
-                                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
-                                )
-                            }
-                        }
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+                contentPadding = PaddingValues(vertical = 18.dp),
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "QuitPagePreview",
+    showSystemUi = true
+)
+@Composable
+fun QuitPagePreview() {
+    BBiBBiPreviewSurface {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Column {
+                QuitPageTopBar()
+                QuitPageContent(
+                    currentSelection = remember {
+                        mutableStateListOf<Int>()
                     }
-                }
-            }
-            Column(
-                modifier = Modifier.padding(
-                    horizontal = 12.dp,
-                )
-            ) {
-                CTAButton(
-                    text = stringResource(id = R.string.quit_button),
-                    onClick = {
-                        quitModalEnabled.value = true
-                    },
-                    isActive = currentSelection.isNotEmpty(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 12.dp),
-                    contentPadding = PaddingValues(vertical = 18.dp),
                 )
             }
+            CTAButton(
+                text = stringResource(id = R.string.quit_button),
+                isActive = true,
+                modifier = Modifier
+                    .padding(horizontal = 12.dp,)
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+                contentPadding = PaddingValues(vertical = 18.dp),
+            )
+
         }
     }
 }
