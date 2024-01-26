@@ -1,5 +1,8 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.destination
 
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.BuildConfig
 import com.no5ing.bbibbi.presentation.ui.feature.setting.change_nickname.ChangeNicknamePage
@@ -10,7 +13,9 @@ import com.no5ing.bbibbi.util.forceRestart
 
 object SettingDestination : NavigationDestination(
     route = settingHomePageRoute,
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         SettingHomePage(
             onDispose = {
                 navController.popBackStack()
@@ -47,23 +52,27 @@ object SettingDestination : NavigationDestination(
             }
         )
     }
-)
+}
 
 object ChangeNicknameDestination : NavigationDestination(
     route = settingNickNameRoute,
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         ChangeNicknamePage(
             onDispose = {
                 navController.popBackStack()
             }
         )
     }
-)
+}
 
 object WebViewDestination : NavigationDestination(
     route = settingWebViewPageRoute,
     arguments = listOf(navArgument("webViewUrl") {}),
-    content = { navController, backStackEntry ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         WebViewPage(
             onDispose = {
                 navController.popBackStack()
@@ -71,13 +80,14 @@ object WebViewDestination : NavigationDestination(
             webViewUrl = backStackEntry.arguments?.getString("webViewUrl")
                 ?: throw IllegalArgumentException("webViewUrl is null")
         )
-
     }
-)
+}
 
 object QuitDestination : NavigationDestination(
     route = settingQuitPageRoute,
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         QuitPage(
             onDispose = {
                 navController.popBackStack()
@@ -87,4 +97,4 @@ object QuitDestination : NavigationDestination(
             }
         )
     }
-)
+}

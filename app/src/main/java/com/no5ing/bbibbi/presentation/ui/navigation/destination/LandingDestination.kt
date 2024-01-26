@@ -1,5 +1,8 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.destination
 
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import com.no5ing.bbibbi.presentation.state.landing.login.LoginSucceedResult
 import com.no5ing.bbibbi.presentation.ui.feature.landing.already_family_exists.AlreadyFamilyExistsView
 import com.no5ing.bbibbi.presentation.ui.feature.landing.join_family.JoinFamilyPage
@@ -9,7 +12,9 @@ import com.no5ing.bbibbi.presentation.ui.feature.landing.onboarding.OnBoardingPa
 
 object LandingLoginDestination : NavigationDestination(
     route = landingLoginPageRoute,
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         LoginPage(
             onCompleted = { result ->
                 when (result) {
@@ -31,11 +36,13 @@ object LandingLoginDestination : NavigationDestination(
             },
         )
     }
-)
+}
 
 object LandingOnBoardingDestination : NavigationDestination(
     route = landingOnBoardingRoute,
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         OnBoardingPage(
             onAlreadyHaveFamily = {
                 navController.popAll()
@@ -46,23 +53,27 @@ object LandingOnBoardingDestination : NavigationDestination(
             }
         )
     }
-)
+}
 
 
 object LandingAlreadyFamilyExistsDestination : NavigationDestination(
     route = landingAlreadyFamilyExistsRoute,
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         AlreadyFamilyExistsView(
             onTapDispose = {
                 navController.popBackStack()
             }
         )
     }
-)
+}
 
 object LandingJoinFamilyDestination : NavigationDestination(
     route = landingJoinFamilyRoute,
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         JoinFamilyPage(
             onTapJoinWithLink = {
                 navController.navigate(LandingJoinFamilyWithLinkDestination)
@@ -73,11 +84,13 @@ object LandingJoinFamilyDestination : NavigationDestination(
             }
         )
     }
-)
+}
 
 object LandingJoinFamilyWithLinkDestination : NavigationDestination(
     route = landingJoinFamilyWithLinkRoute,
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         JoinFamilyWithLinkPage(
             onDispose = {
                 navController.popBackStack()
@@ -88,4 +101,4 @@ object LandingJoinFamilyWithLinkDestination : NavigationDestination(
             }
         )
     }
-)
+}

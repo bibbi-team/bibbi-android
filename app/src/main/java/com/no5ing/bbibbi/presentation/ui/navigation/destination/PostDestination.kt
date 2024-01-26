@@ -1,9 +1,12 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.destination
 
 import android.net.Uri
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.presentation.ui.feature.post.create_real_emoji.CreateRealEmojiPage
 import com.no5ing.bbibbi.presentation.ui.feature.post.upload.PostUploadPage
@@ -12,9 +15,11 @@ import com.no5ing.bbibbi.presentation.ui.feature.post.view.PostViewPage
 object PostViewDestination : NavigationDestination(
     route = postViewPageRoute,
     pathVariable = navArgument("postId") {},
-    content = { navController, entry ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         PostViewPage(
-            postId = entry.arguments?.getString("postId") ?: "UNKNOWN",
+            postId = backStackEntry.arguments?.getString("postId") ?: "UNKNOWN",
             onDispose = {
                 navController.popBackStack()
             },
@@ -34,11 +39,13 @@ object PostViewDestination : NavigationDestination(
             }
         )
     }
-)
+}
 
 object PostUploadDestination : NavigationDestination(
     route = postUploadRoute,
-    content = { navController, backStackEntry ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         val imageCaptureState = backStackEntry.savedStateHandle
             .getLiveData<Uri?>("imageUrl")
             .observeAsState()
@@ -49,12 +56,14 @@ object PostUploadDestination : NavigationDestination(
             },
         )
     }
-)
+}
 
 object PostReUploadDestination : NavigationDestination(
     route = postReUploadRoute,
     arguments = listOf(navArgument("imageUrl") {}),
-    content = { navController, backStackEntry ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         val imageCaptureState = backStackEntry.arguments?.getString("imageUrl")
         val uriState = remember { mutableStateOf(Uri.parse(imageCaptureState)) }
         PostUploadPage(
@@ -65,12 +74,14 @@ object PostReUploadDestination : NavigationDestination(
             },
         )
     }
-)
+}
 
 object CreateRealEmojiDestination : NavigationDestination(
     arguments = listOf(navArgument("initialEmoji") {}),
     route = postCreateRealEmojiRoute,
-    content = { navController, backStackEntry ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         CreateRealEmojiPage(
             initialEmoji = backStackEntry.arguments?.getString("initialEmoji")
                 ?: throw RuntimeException(),
@@ -79,4 +90,4 @@ object CreateRealEmojiDestination : NavigationDestination(
             },
         )
     }
-)
+}

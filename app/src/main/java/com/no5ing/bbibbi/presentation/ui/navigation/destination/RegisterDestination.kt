@@ -1,8 +1,11 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.destination
 
 import android.net.Uri
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.presentation.state.register.nickname.rememberRegisterNickNamePageState
 import com.no5ing.bbibbi.presentation.state.register.profile_image.rememberRegisterProfileImagePageState
@@ -12,7 +15,9 @@ import com.no5ing.bbibbi.presentation.ui.feature.register.profile_image.Register
 
 object RegisterNicknameDestination : NavigationDestination(
     route = registerNickNameRoute,
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         val nickNameState = rememberRegisterNickNamePageState()
         RegisterNickNamePage(
             state = nickNameState,
@@ -23,12 +28,14 @@ object RegisterNicknameDestination : NavigationDestination(
                 )
             })
     }
-)
+}
 
 object RegisterDayOfBirthDestination : NavigationDestination(
     route = registerDayOfBirthRoute,
     arguments = listOf(navArgument("nickName") { }),
-    content = { navController, backStackEntry ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         val nickName = backStackEntry.arguments?.getString("nickName")
             ?: "UNKNOWN"
         RegisterDayOfBirthPage(
@@ -41,12 +48,14 @@ object RegisterDayOfBirthDestination : NavigationDestination(
             }
         )
     }
-)
+}
 
 object RegisterProfileImageDestination : NavigationDestination(
     route = registerProfileImageRoute,
     arguments = listOf(navArgument("nickName") { }, navArgument("dayOfBirth") { }),
-    content = { navController, backStackEntry ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         val imgState = remember { mutableStateOf<Uri?>(null) }
         val imgUrl = backStackEntry.savedStateHandle.remove<Uri?>("imageUrl")
         if (imgUrl != null) {
@@ -80,4 +89,4 @@ object RegisterProfileImageDestination : NavigationDestination(
             }
         )
     }
-)
+}

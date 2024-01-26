@@ -2,8 +2,11 @@ package com.no5ing.bbibbi.presentation.ui.navigation.destination
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.presentation.ui.feature.main.calendar.MainCalendarPage
 import com.no5ing.bbibbi.presentation.ui.feature.main.calendar.detail.CalendarDetailPage
@@ -15,7 +18,9 @@ import java.time.LocalDate
 
 object MainHomeDestination : NavigationDestination(
     route = mainHomePageRoute,
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         HomePage(
             onTapLeft = {
                 navController.navigate(MainFamilyDestination)
@@ -51,13 +56,15 @@ object MainHomeDestination : NavigationDestination(
                 )
             }
         )
-    },
-)
+    }
+}
 
 object MainProfileDestination : NavigationDestination(
     route = mainProfilePageRoute,
-    pathVariable = navArgument("memberId") {},
-    content = { navController, backStackEntry ->
+    pathVariable = navArgument("memberId") {}
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         val imgState = remember { mutableStateOf<Uri?>(null) }
         val imgUrl = backStackEntry.savedStateHandle.remove<Uri?>("imageUrl")
         if (imgUrl != null) {
@@ -91,13 +98,14 @@ object MainProfileDestination : NavigationDestination(
             },
             changeableUriState = imgState,
         )
-    },
-)
+    }
+}
 
 object MainFamilyDestination : NavigationDestination(
     route = mainFamilyPageRoute,
-    // pathVariable = navArgument("familyId") {},
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         FamilyPage(
             onDispose = {
                 navController.popBackStack()
@@ -121,12 +129,14 @@ object MainFamilyDestination : NavigationDestination(
                 navController.navigate(SettingDestination)
             }
         )
-    },
-)
+    }
+}
 
 object MainCalendarDestination : NavigationDestination(
     route = mainCalendarPageRoute,
-    content = { navController, _ ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         MainCalendarPage(
             onDispose = {
                 navController.popBackStack()
@@ -140,13 +150,15 @@ object MainCalendarDestination : NavigationDestination(
                 )
             }
         )
-    },
-)
+    }
+}
 
 object MainCalendarDetailDestination : NavigationDestination(
     route = mainCalendarDetailPageRoute,
     arguments = listOf(navArgument("date") { }),
-    content = { navController, backStackEntry ->
+) {
+    @Composable
+    override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         val dateStr = backStackEntry.arguments?.getString("date")
         val date = dateStr?.let(LocalDate::parse) ?: LocalDate.now()
         CalendarDetailPage(
@@ -169,5 +181,5 @@ object MainCalendarDetailDestination : NavigationDestination(
                 )
             }
         )
-    },
-)
+    }
+}

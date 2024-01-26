@@ -20,7 +20,6 @@ abstract class NavigationDestination(
     val route: String,
     val arguments: List<NamedNavArgument> = emptyList(),
     val pathVariable: NamedNavArgument? = null,
-    @Stable val content: @Composable (NavHostController, NavBackStackEntry) -> Unit,
 ) {
     val combinedArguments =
         arguments + if (pathVariable != null) listOf(pathVariable) else emptyList()
@@ -29,6 +28,10 @@ abstract class NavigationDestination(
         "${route}${if (pathVariable != null) "/{${pathVariable.name}}" else ""}"
     val routeWithQuery = if (arguments.isEmpty()) routeWithPath
     else "$routeWithPath?${arguments.joinToString("&") { "${it.name}={${it.name}}" }}"
+
+    @Stable
+    @Composable
+    abstract fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry)
 
     companion object {
         internal const val landingPageRoute = "landing"
@@ -80,7 +83,7 @@ abstract class NavigationDestination(
             popEnterTransition = popEnterTransition,
             popExitTransition = popExitTransition,
         ) {
-            destination.content(controller, it)
+            destination.Render(controller, it)
         }
 
         @OptIn(ExperimentalAnimationApi::class)
@@ -91,7 +94,7 @@ abstract class NavigationDestination(
             route = destination.routeWithQuery,
             arguments = destination.arguments,
         ) {
-            destination.content(controller, it)
+            destination.Render(controller, it)
         }
 
         fun NavHostController.popAll() {
@@ -133,19 +136,6 @@ abstract class NavigationDestination(
             ) {
                 restoreState = true
             }
-        }
-
-        @Stable
-        fun NavHostController.dialog(
-            destination: DialogDestination,
-            params: List<Pair<String, String>> = emptyList(),
-        ) {
-            navigate(
-                if (params.isEmpty())
-                    destination.route
-                else
-                    "${destination.route}?${params.joinToString("&") { "${it.first}=${it.second}" }}",
-            )
         }
 
     }
