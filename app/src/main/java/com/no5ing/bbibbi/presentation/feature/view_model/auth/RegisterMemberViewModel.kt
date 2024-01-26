@@ -13,6 +13,7 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.feature.view_model.BaseViewModel
+import com.no5ing.bbibbi.util.fileFromContentUri
 import com.no5ing.bbibbi.util.uploadImage
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onSuccess
@@ -28,6 +29,7 @@ class RegisterMemberViewModel @Inject constructor(
     private val restAPI: RestAPI,
     private val client: OkHttpClient,
     private val sessionModule: SessionModule,
+    private val context: Context,
 ) : BaseViewModel<APIResponse<Member>>() {
     override fun initState(): APIResponse<Member> {
         return APIResponse.idle()
@@ -40,7 +42,10 @@ class RegisterMemberViewModel @Inject constructor(
         withMutexScope(Dispatchers.IO, uiState.value.isIdle()) {
             setState(APIResponse.loading())
             val uploadedImageUrl = if (imageUri != null) {
-                val file = File(Uri.parse(imageUri).path!!)
+                val imageUriValue = Uri.parse(imageUri)
+                val file = fileFromContentUri(context, imageUriValue).let {
+                    if(it.extension.isEmpty()) File(imageUriValue.path!!) else it
+                }
                 var uploadedUrl: String? = null
                 restAPI.getMemberApi().getUploadImageRequest(
                     ImageUploadRequest(
