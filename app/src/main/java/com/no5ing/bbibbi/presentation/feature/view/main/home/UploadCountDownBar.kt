@@ -45,7 +45,6 @@ fun UploadCountDownBar(
             val minuteLeft = gap / 60 % 60
             val secondLeft = gap % 60
 
-
             val gapStr = if (gap < 0) {
                 "00:00:00"
             } else "${String.format("%02d", hourLeft)}:${
@@ -56,7 +55,7 @@ fun UploadCountDownBar(
             }:${String.format("%02d", secondLeft)}"
             timeStr.value = gapStr
             warningState.value = if (gap < 0) 2 else if (hourLeft < 1) 1 else 0
-            delay(1100L)
+            delay(1000L)
         }
     }
     Column(
