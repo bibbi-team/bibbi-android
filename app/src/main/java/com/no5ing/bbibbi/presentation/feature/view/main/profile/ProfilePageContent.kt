@@ -36,28 +36,28 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.feature.view_model.post.FamilyPostsViewModel
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.toLocalizedDate
+import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProfilePageContent(
-    memberId: String,
-    familyPostsViewModel: FamilyPostsViewModel = hiltViewModel(),
     onTapContent: (Post) -> Unit = {},
+    postItemsState: StateFlow<PagingData<Post>>,
 ) {
-    LaunchedEffect(Unit) {
-        familyPostsViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
-    }
-    val postItems = familyPostsViewModel.uiState.collectAsLazyPagingItems()
+    val postItems = postItemsState.collectAsLazyPagingItems()
     val pullRefreshStyle = rememberPullRefreshState(
         refreshing = postItems.loadState.refresh is LoadState.Loading,
         onRefresh = {
