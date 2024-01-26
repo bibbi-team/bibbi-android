@@ -44,6 +44,8 @@ import okhttp3.RequestBody
 import okio.BufferedSink
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -316,3 +318,13 @@ fun String.toCodePointList() = codePoints().toList().map { String(Character.toCh
 fun String.codePointLength() = codePoints().count()
 
 fun randomBoolean() = (0..1).random() == 1
+
+fun gapUntilNext(): Long {
+    val current = LocalDateTime.now()
+    if (current.hour < 12)
+        return -1
+    val tomorrow = LocalDateTime
+        .of(current.year, current.month, current.dayOfMonth, 0, 0, 0)
+        .plusDays(1)
+    return current.until(tomorrow, ChronoUnit.SECONDS)
+}
