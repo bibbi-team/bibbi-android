@@ -174,4 +174,5 @@
 
     <string name="unsaved_post_dialog_title">저장되지 않은 게시물</string>
     <string name="unsaved_post_dialog_message">저장되지 않은 게시물이 있어요.\n게시물 작성 화면으로 돌아갈까요?</string>
+    <string name="post_upload_sample_text">여덟자로입력해요</string>
 </resources>
