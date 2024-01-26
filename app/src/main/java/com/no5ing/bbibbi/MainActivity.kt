@@ -37,7 +37,7 @@ import com.no5ing.bbibbi.di.NetworkModule
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.feature.MainPage
 import com.no5ing.bbibbi.presentation.navigation.NavDestinationListener
-import com.no5ing.bbibbi.presentation.feature.view_controller.LandingAlreadyFamilyExistsDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.AlreadyFamilyExistsPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
@@ -106,7 +106,7 @@ class MainActivity : ComponentActivity() {
                         } else {
                             //님머함?
                             runOnUiThread {
-                                localNavController?.navigate(LandingAlreadyFamilyExistsDestination)
+                                localNavController?.navigate(AlreadyFamilyExistsPageController)
                             }
                         }
                     }

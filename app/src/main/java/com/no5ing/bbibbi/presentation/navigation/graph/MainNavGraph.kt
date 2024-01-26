@@ -13,21 +13,21 @@ import com.no5ing.bbibbi.presentation.navigation.animation.fullHorizontalSlideOu
 import com.no5ing.bbibbi.presentation.navigation.animation.fullHorizontalSlideOutToRight
 import com.no5ing.bbibbi.presentation.navigation.animation.fullSlideInVertically
 import com.no5ing.bbibbi.presentation.navigation.animation.fullSlideOutVertically
-import com.no5ing.bbibbi.presentation.feature.view_controller.ChangeNicknameDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.CreateRealEmojiDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.MainCalendarDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.MainCalendarDetailDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.MainFamilyDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.MainHomeDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.MainProfileDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ChangeNickNamePageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.CreateRealEmojiPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarDetailPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyListPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.HomePageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ProfilePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.mainPageRoute
-import com.no5ing.bbibbi.presentation.feature.view_controller.PostReUploadDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.PostUploadDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.PostViewDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.QuitDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.SettingDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.WebViewDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostReUploadPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostUploadPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostViewPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.QuitPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.SettingHomePageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.WebViewPageController
 
 @OptIn(ExperimentalAnimationApi::class)
 @Stable
@@ -35,28 +35,28 @@ fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
 ) {
     navigation(
-        startDestination = MainHomeDestination.route,
+        startDestination = HomePageController.route,
         route = mainPageRoute,
     ) {
         composable(
             controller = navController,
-            destination = MainHomeDestination,
+            destination = HomePageController,
             exitTransition = {
                 val destination = targetState.destination.route ?: ""
-                if (destination == MainFamilyDestination.route) fullHorizontalSlideOutToRight()
-                else if (destination.startsWith(MainProfileDestination.route)) fadeOut()
+                if (destination == FamilyListPageController.route) fullHorizontalSlideOutToRight()
+                else if (destination.startsWith(ProfilePageController.route)) fadeOut()
                 else fullHorizontalSlideOutToLeft()
             },
             popEnterTransition = {
                 val initial = initialState.destination.route ?: ""
-                if (initial == MainFamilyDestination.route) fullHorizontalSlideInToLeft()
-                else if (initial.startsWith(MainProfileDestination.route)) fadeIn()
+                if (initial == FamilyListPageController.route) fullHorizontalSlideInToLeft()
+                else if (initial.startsWith(ProfilePageController.route)) fadeIn()
                 else fullHorizontalSlideInToRight()
             }
         )
         composable(
             controller = navController,
-            destination = MainProfileDestination,
+            destination = ProfilePageController,
             enterTransition = {
                 fullSlideInVertically()
             },
@@ -66,7 +66,7 @@ fun NavGraphBuilder.mainGraph(
         )
         composable(
             controller = navController,
-            destination = MainFamilyDestination,
+            destination = FamilyListPageController,
             enterTransition = {
                 fullHorizontalSlideInToRight()
             },
@@ -76,7 +76,7 @@ fun NavGraphBuilder.mainGraph(
         )
         composable(
             controller = navController,
-            destination = MainCalendarDestination,
+            destination = CalendarPageController,
             enterTransition = {
                 fullHorizontalSlideInToLeft()
             },
@@ -86,7 +86,7 @@ fun NavGraphBuilder.mainGraph(
         )
         composable(
             controller = navController,
-            destination = MainCalendarDetailDestination,
+            destination = CalendarDetailPageController,
             enterTransition = {
                 fullHorizontalSlideInToLeft()
             },
@@ -96,7 +96,7 @@ fun NavGraphBuilder.mainGraph(
         )
         composable(
             controller = navController,
-            destination = PostViewDestination,
+            destination = PostViewPageController,
             enterTransition = {
                 fullHorizontalSlideInToLeft()
             },
@@ -106,19 +106,19 @@ fun NavGraphBuilder.mainGraph(
         )
         composable(
             controller = navController,
-            destination = PostUploadDestination
+            destination = PostUploadPageController
         )
         composable(
             controller = navController,
-            destination = PostReUploadDestination
+            destination = PostReUploadPageController
         )
         composable(
             controller = navController,
-            destination = CreateRealEmojiDestination
+            destination = CreateRealEmojiPageController
         )
         composable(
             controller = navController,
-            destination = SettingDestination,
+            destination = SettingHomePageController,
             enterTransition = {
                 fullHorizontalSlideInToLeft()
             },
@@ -128,11 +128,11 @@ fun NavGraphBuilder.mainGraph(
         )
         composable(
             controller = navController,
-            destination = ChangeNicknameDestination,
+            destination = ChangeNickNamePageController,
         )
         composable(
             controller = navController,
-            destination = WebViewDestination,
+            destination = WebViewPageController,
             enterTransition = {
                 fullHorizontalSlideInToLeft()
             },
@@ -142,7 +142,7 @@ fun NavGraphBuilder.mainGraph(
         )
         composable(
             controller = navController,
-            destination = QuitDestination,
+            destination = QuitPageController,
         )
     }
 }

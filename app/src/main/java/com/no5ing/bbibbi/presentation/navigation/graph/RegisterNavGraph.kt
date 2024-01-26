@@ -8,53 +8,53 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.registerPageRoute
-import com.no5ing.bbibbi.presentation.feature.view_controller.RegisterDayOfBirthDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.RegisterNicknameDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.RegisterProfileImageDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.register.RegisterDayOfBirthPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.register.RegisterNicknamePageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.register.RegisterProfileImagePageController
 
 @Stable
 fun NavGraphBuilder.registerGraph(
     navController: NavHostController,
 ) {
     navigation(
-        startDestination = RegisterNicknameDestination.route,
+        startDestination = RegisterNicknamePageController.route,
         route = registerPageRoute,
     ) {
         composable(
             controller = navController,
-            destination = RegisterNicknameDestination,
+            destination = RegisterNicknamePageController,
             exitTransition = {
                 val destination = targetState.destination.route ?: ""
                 when {
-                    destination.startsWith(RegisterDayOfBirthDestination.route) -> slideOutHorizontally { -it }
+                    destination.startsWith(RegisterDayOfBirthPageController.route) -> slideOutHorizontally { -it }
                     else -> null
                 }
             },
         )
         composable(
             controller = navController,
-            destination = RegisterDayOfBirthDestination,
+            destination = RegisterDayOfBirthPageController,
             enterTransition = {
                 when (initialState.destination.route) {
-                    RegisterNicknameDestination.route -> slideInHorizontally { it }
+                    RegisterNicknamePageController.route -> slideInHorizontally { it }
                     else -> null
                 }
             },
             exitTransition = {
                 val destination = targetState.destination.route ?: ""
                 when {
-                    destination.startsWith(RegisterProfileImageDestination.route) -> slideOutHorizontally { -it }
+                    destination.startsWith(RegisterProfileImagePageController.route) -> slideOutHorizontally { -it }
                     else -> null
                 }
             }
         )
         composable(
             controller = navController,
-            destination = RegisterProfileImageDestination,
+            destination = RegisterProfileImagePageController,
             enterTransition = {
                 val initial = initialState.destination.route ?: ""
                 when {
-                    initial.startsWith(RegisterDayOfBirthDestination.route) -> slideInHorizontally { it }
+                    initial.startsWith(RegisterDayOfBirthPageController.route) -> slideInHorizontally { it }
                     else -> null
                 }
             },

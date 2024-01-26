@@ -4,11 +4,11 @@ import androidx.compose.runtime.Stable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
-import com.no5ing.bbibbi.presentation.feature.view_controller.LandingAlreadyFamilyExistsDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.LandingJoinFamilyDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.LandingJoinFamilyWithLinkDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.LandingLoginDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.LandingOnBoardingDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.AlreadyFamilyExistsPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.JoinFamilyPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.JoinFamilyWithLinkPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.LoginPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.OnBoardingPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.landingPageRoute
 
@@ -17,28 +17,28 @@ fun NavGraphBuilder.landingGraph(
     navController: NavHostController,
 ) {
     navigation(
-        startDestination = LandingLoginDestination.route,
+        startDestination = LoginPageController.route,
         route = landingPageRoute,
     ) {
         composable(
             controller = navController,
-            destination = LandingLoginDestination,
+            destination = LoginPageController,
         )
         composable(
             controller = navController,
-            destination = LandingOnBoardingDestination,
+            destination = OnBoardingPageController,
         )
         composable(
             controller = navController,
-            destination = LandingAlreadyFamilyExistsDestination,
+            destination = AlreadyFamilyExistsPageController,
         )
         composable(
             controller = navController,
-            destination = LandingJoinFamilyDestination,
+            destination = JoinFamilyPageController,
         )
         composable(
             controller = navController,
-            destination = LandingJoinFamilyWithLinkDestination,
+            destination = JoinFamilyWithLinkPageController,
         )
     }
 }

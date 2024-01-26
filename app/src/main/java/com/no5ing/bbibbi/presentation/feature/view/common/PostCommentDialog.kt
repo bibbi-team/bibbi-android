@@ -64,7 +64,7 @@ import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.component.DraggableCardComplex
 import com.no5ing.bbibbi.presentation.component.ModalBottomSheet
 import com.no5ing.bbibbi.presentation.component.rememberModalBottomSheetState
-import com.no5ing.bbibbi.presentation.feature.view_controller.MainProfileDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ProfilePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarWarning
@@ -265,7 +265,7 @@ fun PostCommentDialog(
                                     comment = item,
                                     onTapProfile = { member ->
                                         navController.navigate(
-                                            destination = MainProfileDestination,
+                                            destination = ProfilePageController,
                                             path = member.memberId
                                         )
                                     },

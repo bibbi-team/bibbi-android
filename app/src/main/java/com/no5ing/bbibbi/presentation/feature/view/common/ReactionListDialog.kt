@@ -60,7 +60,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.component.button.CTAButton
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
-import com.no5ing.bbibbi.presentation.feature.view_controller.MainProfileDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ProfilePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
@@ -242,7 +242,7 @@ fun ReactionListDialog(
                                                 size = 52.dp,
                                                 onTap = {
                                                     navController.navigate(
-                                                        destination = MainProfileDestination,
+                                                        destination = ProfilePageController,
                                                         path = currentMember.memberId
                                                     )
                                                 }
