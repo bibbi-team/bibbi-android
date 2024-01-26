@@ -32,8 +32,8 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.feature.state.main.family.FamilyPageInvitationState
 import com.no5ing.bbibbi.presentation.feature.state.main.family.rememberFamilyPageInvitationState
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
-import com.no5ing.bbibbi.presentation.feature.viewmodel.family.FamilyInviteLinkViewModel
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.feature.view_model.family.FamilyInviteLinkViewModel
 import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSessionState
 

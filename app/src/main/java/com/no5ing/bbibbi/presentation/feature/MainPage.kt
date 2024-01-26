@@ -14,15 +14,15 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.no5ing.bbibbi.presentation.ui.navigation.animation.defaultFadeIn
-import com.no5ing.bbibbi.presentation.ui.navigation.animation.defaultFadeOut
+import com.no5ing.bbibbi.presentation.navigation.animation.defaultFadeIn
+import com.no5ing.bbibbi.presentation.navigation.animation.defaultFadeOut
 import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.component.CustomSnackBarHost
-import com.no5ing.bbibbi.presentation.ui.navigation.graph.landingGraph
-import com.no5ing.bbibbi.presentation.ui.navigation.graph.mainGraph
-import com.no5ing.bbibbi.presentation.ui.navigation.graph.registerGraph
+import com.no5ing.bbibbi.presentation.navigation.graph.landingGraph
+import com.no5ing.bbibbi.presentation.navigation.graph.mainGraph
+import com.no5ing.bbibbi.presentation.navigation.graph.registerGraph
 
 @Composable
 fun MainPage(

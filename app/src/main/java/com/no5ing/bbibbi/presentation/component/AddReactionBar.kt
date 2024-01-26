@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.emojiList
 import com.no5ing.bbibbi.util.getDisabledEmojiResource

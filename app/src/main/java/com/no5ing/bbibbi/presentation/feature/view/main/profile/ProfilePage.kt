@@ -28,9 +28,9 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
-import com.no5ing.bbibbi.presentation.feature.viewmodel.members.ChangeProfileImageViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.members.FamilyMemberViewModel
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.feature.view_model.members.ChangeProfileImageViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.members.FamilyMemberViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 
 @Composable

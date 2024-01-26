@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import kotlinx.coroutines.launch
 
 @Composable

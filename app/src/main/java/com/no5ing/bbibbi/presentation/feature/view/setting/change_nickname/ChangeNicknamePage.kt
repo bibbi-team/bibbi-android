@@ -46,9 +46,9 @@ import com.no5ing.bbibbi.presentation.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarSuccess
 import com.no5ing.bbibbi.presentation.component.snackBarWarning
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
-import com.no5ing.bbibbi.presentation.feature.viewmodel.members.ChangeNicknameViewModel
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
+import com.no5ing.bbibbi.presentation.feature.view_model.members.ChangeNicknameViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage

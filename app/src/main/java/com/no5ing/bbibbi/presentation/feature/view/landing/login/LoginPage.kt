@@ -43,9 +43,9 @@ import com.no5ing.bbibbi.presentation.feature.state.landing.login.LoginStatus
 import com.no5ing.bbibbi.presentation.feature.state.landing.login.LoginSucceedResult
 import com.no5ing.bbibbi.presentation.feature.state.landing.login.rememberLoginPageState
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.component.BackToExitHandler
-import com.no5ing.bbibbi.presentation.feature.viewmodel.auth.LoginWithCredentialsViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.auth.LoginWithCredentialsViewModel
 import com.no5ing.bbibbi.util.googleSignInIntent
 import com.no5ing.bbibbi.util.kakaoSignIn
 import timber.log.Timber

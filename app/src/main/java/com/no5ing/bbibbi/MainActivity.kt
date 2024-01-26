@@ -36,11 +36,11 @@ import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenReque
 import com.no5ing.bbibbi.di.NetworkModule
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.feature.MainPage
-import com.no5ing.bbibbi.presentation.ui.navigation.NavDestinationListener
+import com.no5ing.bbibbi.presentation.navigation.NavDestinationListener
 import com.no5ing.bbibbi.presentation.feature.view_controller.LandingAlreadyFamilyExistsDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigate
-import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.BbibbiTheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalDeepLinkState
 import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalNavigateControllerState

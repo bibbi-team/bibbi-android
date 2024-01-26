@@ -52,7 +52,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.component.button.CameraCaptureButton
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.ClosableTopBar
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.getCameraProvider
 import com.no5ing.bbibbi.util.takePhotoWithImage
 import kotlinx.coroutines.launch

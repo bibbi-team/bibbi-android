@@ -43,9 +43,9 @@ import com.no5ing.bbibbi.presentation.feature.view.dialog.AlbumCameraSelectDialo
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarInfo
 import com.no5ing.bbibbi.presentation.component.snackBarWarning
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
-import com.no5ing.bbibbi.presentation.feature.viewmodel.members.ChangeProfileImageViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.members.FamilyMemberViewModel
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.feature.view_model.members.ChangeProfileImageViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.members.FamilyMemberViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.getErrorMessage

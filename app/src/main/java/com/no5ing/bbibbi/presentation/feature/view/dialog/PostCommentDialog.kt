@@ -68,12 +68,12 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.MainProfileDestina
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarWarning
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.feature.uistate.post.PostCommentUiState
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.CreatePostCommentViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.DeletePostCommentViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.PostCommentViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.CreatePostCommentViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.DeletePostCommentViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.PostCommentViewModel
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState

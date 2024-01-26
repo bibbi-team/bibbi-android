@@ -30,14 +30,14 @@ import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.feature.view.dialog.PostCommentDialog
 import com.no5ing.bbibbi.presentation.feature.view.dialog.ReactionListDialog
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.feature.uistate.post.PostReactionUiState
 import com.no5ing.bbibbi.presentation.feature.uistate.post.RealEmojiPostReactionUiState
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.AddPostReactionViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.AddRealEmojiViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.PostReactionBarViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.RemovePostReactionViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.RemoveRealEmojiViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.AddPostReactionViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.AddRealEmojiViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.PostReactionBarViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.RemovePostReactionViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.RemoveRealEmojiViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 
 @OptIn(ExperimentalLayoutApi::class)

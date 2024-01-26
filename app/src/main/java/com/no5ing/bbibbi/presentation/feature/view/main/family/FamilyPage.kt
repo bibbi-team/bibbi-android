@@ -42,10 +42,10 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
-import com.no5ing.bbibbi.presentation.feature.viewmodel.auth.RetrieveMeViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.members.FamilyMembersViewModel
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
+import com.no5ing.bbibbi.presentation.feature.view_model.auth.RetrieveMeViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 
 @OptIn(ExperimentalMaterialApi::class)

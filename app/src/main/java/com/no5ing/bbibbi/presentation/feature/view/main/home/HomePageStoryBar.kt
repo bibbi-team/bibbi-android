@@ -35,8 +35,8 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.feature.state.main.home.HomePageStoryBarState
 import com.no5ing.bbibbi.presentation.feature.state.main.home.rememberHomePageStoryBarState
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.LocalSessionState
 
 @Composable

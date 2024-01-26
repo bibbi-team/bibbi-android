@@ -30,11 +30,11 @@ import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.AddReactionBar
 import com.no5ing.bbibbi.presentation.component.MiniTextBubbleBox
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.AddPostReactionViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.AddRealEmojiViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.MemberRealEmojiListViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.PostReactionBarViewModel
-import com.no5ing.bbibbi.presentation.feature.viewmodel.post.RemovePostReactionViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.AddPostReactionViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.AddRealEmojiViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.MemberRealEmojiListViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.PostReactionBarViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.RemovePostReactionViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.asyncImagePainter
 

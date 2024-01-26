@@ -62,8 +62,8 @@ import com.no5ing.bbibbi.presentation.component.button.CTAButton
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.feature.view_controller.MainProfileDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigate
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
-import com.no5ing.bbibbi.presentation.ui.theme.bbibbiTypo
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.feature.uistate.post.PostReactionUiState
 import com.no5ing.bbibbi.presentation.feature.uistate.post.RealEmojiPostReactionUiState
 import com.no5ing.bbibbi.util.CustomDialogPosition
