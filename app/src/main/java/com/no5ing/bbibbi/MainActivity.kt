@@ -46,6 +46,7 @@ import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
+import com.no5ing.bbibbi.util.MixpanelWrapper
 import com.no5ing.bbibbi.util.forceRestart
 import com.no5ing.bbibbi.util.getInstallReferrerClient
 import com.no5ing.bbibbi.util.getLinkIdFromUrl
@@ -199,11 +200,13 @@ class MainActivity : ComponentActivity() {
             val sessionState by sessionModule.sessionState.collectAsState()
             val deepLinkState by deepLinkStateFlow.collectAsState()
             val mixPanelState = remember {
-                MixpanelAPI.getInstance(
-                    this@MainActivity,
-                    BuildConfig.mixPanelToken,
-                    true
-                )
+                MixpanelWrapper().apply {
+                    mixpanelAPI = MixpanelAPI.getInstance(
+                        this@MainActivity,
+                        BuildConfig.mixPanelToken,
+                        true
+                    )
+                }
             }
             DisposableEffect(navController) {
                 localNavController = navController
@@ -258,14 +261,14 @@ class MainActivity : ComponentActivity() {
                                         LaunchedEffect(sessionState) {
                                             Timber.d("[MainActivity] Session State Changed to $sessionState")
                                             if (sessionState.isLoggedIn()) {
-                                                mixPanelState.identify(sessionState.memberId)
-                                                mixPanelState.registerSuperPropertiesMap(mapOf(
+                                                mixPanelState.mixpanelAPI.identify(sessionState.memberId)
+                                                mixPanelState.mixpanelAPI.registerSuperPropertiesMap(mapOf(
                                                     "memberId" to sessionState.memberId,
                                                     "appKey" to BuildConfig.appKey,
                                                 ))
                                                 localDataStorage.setAuthTokens(sessionState.apiToken)
                                             } else {
-                                                mixPanelState.reset()
+                                                mixPanelState.mixpanelAPI.reset()
                                                 localDataStorage.logOut()
                                             }
                                         }

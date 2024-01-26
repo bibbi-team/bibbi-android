@@ -1,79 +1,64 @@
 package com.no5ing.bbibbi.presentation.feature.view.main.family
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.no5ing.bbibbi.R
+import androidx.paging.PagingData
+import com.no5ing.bbibbi.data.model.APIResponse
+import com.no5ing.bbibbi.data.model.link.DeepLink
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
-import com.no5ing.bbibbi.presentation.component.CircleProfileImage
-import com.no5ing.bbibbi.presentation.component.DisposableTopBar
-import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
-import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.presentation.feature.view_model.auth.RetrieveMeViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.family.FamilyInviteLinkViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.members.FamilyMembersViewModel
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalSessionState
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun FamilyPage(
     familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),
     retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
+    familyInviteLinkViewModel: FamilyInviteLinkViewModel = hiltViewModel(),
     onDispose: () -> Unit,
     onTapSetting: () -> Unit,
     onTapFamily: (Member) -> Unit,
     onTapShare: (String) -> Unit,
 ) {
     val meId = LocalSessionState.current.memberId
-    val members = familyMembersViewModel.uiState.collectAsLazyPagingItems()
-    val meState by retrieveMeViewModel.uiState.collectAsState()
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = members.loadState.refresh is LoadState.Loading,
-        onRefresh = {
-            members.refresh()
+    val familyId = LocalSessionState.current.familyId
+    val meState = retrieveMeViewModel.uiState.collectAsState()
+    val inviteLinkState = familyInviteLinkViewModel.uiState.collectAsState()
+
+    LaunchedEffect(inviteLinkState) {
+        if (inviteLinkState.value.isIdle()) {
+            familyInviteLinkViewModel.invoke(Arguments(arguments = mapOf("familyId" to familyId)))
         }
-    )
+    }
+
     LaunchedEffect(meState) {
-        if (meState.isIdle()) {
+        if (meState.value.isIdle()) {
             retrieveMeViewModel.invoke(Arguments())
         }
     }
-    LaunchedEffect(members) {
-        if (members.itemCount == 0) {
+    LaunchedEffect(Unit) {
+        if (familyMembersViewModel.isInitialize()) {
             familyMembersViewModel.invoke(Arguments())
         }
     }
@@ -82,176 +67,57 @@ fun FamilyPage(
             .fillMaxSize()
     ) {
         Column {
-            DisposableTopBar(
+            FamilyPageTopBar(
+                onTapSetting = onTapSetting,
                 onDispose = onDispose,
-                title = stringResource(id = R.string.family_title),
-                rightButton = {
-                    Box(
-                        modifier = Modifier
-                            .size(52.dp)
-                            .clickable { onTapSetting() },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.setting_icon),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(24.dp),
-                            tint = MaterialTheme.bbibbiScheme.icon
-                        )
-                    }
-                }
             )
-            Box(
+            FamilyPageInviteButton(
                 modifier = Modifier.padding(
                     horizontal = 18.dp,
                     vertical = 24.dp,
-                )
-            ) {
-                FamilyPageInviteButton(
-                    onTapShare = onTapShare
-                )
-            }
+                ),
+                onTapShare = onTapShare,
+                uiState = inviteLinkState,
+            )
             Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp)
-                    .padding(top = 24.dp, bottom = 16.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.family_your_family),
-                        style = MaterialTheme.bbibbiTypo.headOne.copy(
-                            fontWeight = FontWeight.SemiBold,
-                        ),
-                        color = MaterialTheme.bbibbiScheme.textPrimary,
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = members.itemCount.toString(),
-                        style = MaterialTheme.bbibbiTypo.bodyOneRegular,
-                        color = MaterialTheme.bbibbiScheme.icon,
-                    )
-                }
-            }
-            Box(
-                modifier = Modifier
-                    .pullRefresh(pullRefreshState)
-                    .fillMaxWidth()
-            ) {
-                LazyColumn {
-                    if (meState.isReady()) {
-                        item {
-                            val item = meState.data
-                            MemberItem(
-                                member = item,
-                                isMe = true,
-                                modifier = Modifier.clickable {
-                                    onTapFamily(item)
-                                },
-                                onTap = {
-                                    onTapFamily(item)
-                                }
-                            )
-                        }
-                    }
-                    items(
-                        count = members.itemCount,
-                        key = { members[it]!!.memberId }
-                    ) {
-                        val item = members[it] ?: throw RuntimeException()
-                        if (item.memberId != meId) {
-                            MemberItem(
-                                member = item,
-                                isMe = false,
-                                modifier = Modifier.clickable {
-                                    onTapFamily(item)
-                                },
-                                onTap = {
-                                    onTapFamily(item)
-                                }
-                            )
-                        }
-                    }
-                }
-                PullRefreshIndicator(
-                    members.loadState.refresh is LoadState.Loading,
-                    pullRefreshState,
-                    Modifier.align(Alignment.TopCenter),
-                    backgroundColor = MaterialTheme.bbibbiScheme.backgroundSecondary,
-                    contentColor = MaterialTheme.bbibbiScheme.iconSelected,
-                )
-            }
-
-
+            FamilyPageMemberList(
+                meId = meId,
+                meState = meState,
+                membersState = familyMembersViewModel.uiState,
+                onTapProfile = onTapFamily,
+            )
         }
     }
 }
 
+
+@Preview(
+    showBackground = true,
+    name = "FamilyPagePreview",
+    showSystemUi = true
+)
 @Composable
-fun MemberItem(
-    modifier: Modifier,
-    member: Member,
-    isMe: Boolean,
-    onTap: () -> Unit,
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 14.dp, horizontal = 20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Row {
-            Box(
-                contentAlignment = Alignment.TopEnd,
-            ) {
-                CircleProfileImage(
-                    member = member,
-                    size = 52.dp,
-                    onTap = onTap,
-                )
-                if (member.isBirthdayToday) {
-                    Box {
-                        Image(
-                            painter = painterResource(id = R.drawable.birthday_badge),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(20.dp)
-                                .align(Alignment.TopEnd)
-                                .offset(x = (5).dp, y = -(5).dp),
-                        )
-                    }
-
-                }
-            }
-
-            Spacer(modifier = Modifier.width(12.dp))
-            Column(
-                modifier = Modifier.height(52.dp),
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Text(
-                    text = member.name,
-                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
-                    color = MaterialTheme.bbibbiScheme.textPrimary,
-                )
-                if (isMe)
-                    Text(
-                        text = stringResource(id = R.string.family_me),
-                        style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
-                        color = MaterialTheme.bbibbiScheme.icon,
-                    )
-            }
+fun FamilyPagePreview() {
+    BBiBBiPreviewSurface {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            FamilyPageTopBar()
+            FamilyPageInviteButton(
+                modifier = Modifier.padding(
+                    horizontal = 18.dp,
+                    vertical = 24.dp,
+                ),
+                uiState = remember {
+                    mutableStateOf(APIResponse.success(DeepLink.mock()))
+                },
+            )
+            Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+            FamilyPageMemberList(
+                meId = Member.unknown().memberId,
+                meState = remember { mutableStateOf(APIResponse.success(Member.unknown())) },
+                membersState = MutableStateFlow(PagingData.empty()),
+            )
         }
-        Icon(
-            painter = painterResource(id = R.drawable.arrow_right_bold),
-            contentDescription = null,
-            tint = MaterialTheme.bbibbiScheme.icon,
-            modifier = Modifier.size(width = 7.dp, height = 12.dp),
-        )
-
     }
 }

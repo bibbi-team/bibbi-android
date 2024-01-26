@@ -20,4 +20,4 @@ val LocalDeepLinkState =
     compositionLocalOf<String?> { error("No DeepLinkState provided") }
 
 val LocalMixpanelProvider =
-    staticCompositionLocalOf<MixpanelAPI> { error("No MixpanelProvider provided") }
+    staticCompositionLocalOf<MixpanelWrapper> { error("No MixpanelProvider provided") }

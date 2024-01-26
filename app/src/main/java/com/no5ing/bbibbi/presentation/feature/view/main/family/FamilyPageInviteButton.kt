@@ -17,8 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,34 +26,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
-import com.no5ing.bbibbi.data.repository.Arguments
-import com.no5ing.bbibbi.presentation.feature.state.main.family.FamilyPageInvitationState
-import com.no5ing.bbibbi.presentation.feature.state.main.family.rememberFamilyPageInvitationState
+import com.no5ing.bbibbi.data.model.APIResponse
+import com.no5ing.bbibbi.data.model.link.DeepLink
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
-import com.no5ing.bbibbi.presentation.feature.view_model.family.FamilyInviteLinkViewModel
 import com.no5ing.bbibbi.util.LocalMixpanelProvider
-import com.no5ing.bbibbi.util.LocalSessionState
 
 @Composable
 fun FamilyPageInviteButton(
-    familyInviteLinkViewModel: FamilyInviteLinkViewModel = hiltViewModel(),
-    familyPageInvitationState: FamilyPageInvitationState = rememberFamilyPageInvitationState(
-        uiState = familyInviteLinkViewModel.uiState.collectAsState()
-    ),
-    onTapShare: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    uiState: State<APIResponse<DeepLink>>,
+    onTapShare: (String) -> Unit = {},
 ) {
     val mixPanel = LocalMixpanelProvider.current
-    val familyId = LocalSessionState.current.familyId
-    val uiState by familyPageInvitationState.uiState
-    LaunchedEffect(uiState) {
-        if (uiState.isIdle()) {
-            familyInviteLinkViewModel.invoke(Arguments(arguments = mapOf("familyId" to familyId)))
-        }
-    }
+    val uiStateValue by uiState
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(
                 color = MaterialTheme.bbibbiScheme.backgroundSecondary,
@@ -65,9 +52,9 @@ fun FamilyPageInviteButton(
                 horizontal = 20.dp,
             )
             .clickable {
-                if (uiState.isReady()) {
+                if (uiStateValue.isReady()) {
                     mixPanel.track("Click_ShareLink_Family")
-                    onTapShare(uiState.data.url)
+                    onTapShare(uiStateValue.data.url)
                 }
             }
     ) {
@@ -94,7 +81,7 @@ fun FamilyPageInviteButton(
                         fontSize = 18.sp,
                     )
                     Text(
-                        text = if (uiState.isReady()) uiState.data.url else "Loading...",
+                        text = if (uiStateValue.isReady()) uiStateValue.data.url else "Loading...",
                         color = MaterialTheme.bbibbiScheme.textSecondary,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Normal
