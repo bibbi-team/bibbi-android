@@ -11,6 +11,7 @@ import com.no5ing.bbibbi.presentation.ui.navigation.destination.CreateRealEmojiD
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.postPageRoute
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.NavigationDestination.Companion.postViewPageRoute
+import com.no5ing.bbibbi.presentation.ui.navigation.destination.PostReUploadDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.PostUploadDestination
 import com.no5ing.bbibbi.presentation.ui.navigation.destination.PostViewDestination
 
@@ -36,6 +37,10 @@ fun NavGraphBuilder.postGraph(
         composable(
             controller = navController,
             destination = PostUploadDestination
+        )
+        composable(
+            controller = navController,
+            destination = PostReUploadDestination
         )
         composable(
             controller = navController,

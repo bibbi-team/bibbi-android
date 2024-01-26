@@ -1,7 +1,10 @@
 package com.no5ing.bbibbi.presentation.ui.navigation.destination
 
 import android.net.Uri
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.presentation.ui.feature.post.create_real_emoji.CreateRealEmojiPage
 import com.no5ing.bbibbi.presentation.ui.feature.post.upload.PostUploadPage
@@ -42,6 +45,22 @@ object PostUploadDestination : NavigationDestination(
             .observeAsState()
         PostUploadPage(
             imageUrl = imageCaptureState,
+            onDispose = {
+                navController.popBackStack()
+            },
+        )
+    }
+)
+
+object PostReUploadDestination : NavigationDestination(
+    route = postReUploadRoute,
+    arguments = listOf(navArgument("imageUrl") {}),
+    content = { navController, backStackEntry ->
+        val imageCaptureState = backStackEntry.arguments?.getString("imageUrl")
+        val uriState = remember { mutableStateOf( Uri.parse(imageCaptureState) ) }
+        PostUploadPage(
+            imageUrl = uriState,
+            isUnsaveMode = true,
             onDispose = {
                 navController.popBackStack()
             },

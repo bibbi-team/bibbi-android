@@ -53,6 +53,7 @@ abstract class NavigationDestination(
         internal const val postPageRoute = "post"
         internal const val postViewPageRoute = "post/view"
         internal const val postUploadRoute = "post/upload"
+        internal const val postReUploadRoute = "post/reupload"
         internal const val postCreateRealEmojiRoute = "post/create-real-emoji"
 
         internal const val settingPageRoute = "setting"

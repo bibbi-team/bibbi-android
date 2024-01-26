@@ -171,4 +171,7 @@
     <string name="comment_dialog_comment_deleted">댓글이 삭제되었습니다</string>
     <string name="comment_dialog_no_comments_title">아직 댓글이 없습니다</string>
     <string name="comment_dialog_no_comments_description">댓글을 남겨보세요.</string>
+
+    <string name="unsaved_post_dialog_title">저장되지 않은 게시물</string>
+    <string name="unsaved_post_dialog_message">저장되지 않은 게시물이 있어요.\n게시물 작성 화면으로 돌아갈까요?</string>
 </resources>

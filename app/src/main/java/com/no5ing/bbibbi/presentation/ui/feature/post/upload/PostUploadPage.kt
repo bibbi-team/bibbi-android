@@ -81,6 +81,7 @@ const val defaultText = "여덟자로입력해요"
 @Composable
 fun PostUploadPage(
     onDispose: () -> Unit,
+    isUnsaveMode: Boolean = false,
     imageUrl: State<Uri?>,
     imageText: MutableState<String> = remember {
         mutableStateOf("")
@@ -90,6 +91,10 @@ fun PostUploadPage(
     },
     createPostViewModel: CreatePostViewModel = hiltViewModel(),
 ) {
+    val onDisposeWithSave = {
+        createPostViewModel.clearTemporaryUri()
+        onDispose()
+    }
     val textBoxFocus = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
@@ -102,13 +107,16 @@ fun PostUploadPage(
     LaunchedEffect(Unit) {
         if (imageUrl.value == null) {
             onDispose()
+        } else {
+            if(!isUnsaveMode)
+                createPostViewModel.saveTemporaryUri(imageUrl.value!!)
         }
     }
     val uploadResult = createPostViewModel.uiState.collectAsState()
     val snackErrorMessage = getErrorMessage(errorCode = uploadResult.value.errorCode)
     LaunchedEffect(uploadResult.value) {
         if (uploadResult.value.isReady()) {
-            onDispose()
+            onDisposeWithSave()
         } else if (uploadResult.value.isFailed()) {
             snackBarHost.showSnackBarWithDismiss(
                 message = snackErrorMessage,
@@ -128,7 +136,7 @@ fun PostUploadPage(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     DisposableTopBar(
-                        onDispose = onDispose,
+                        onDispose = { onDisposeWithSave() },
                         title = stringResource(id = R.string.upload_post),
                     )
                     Spacer(modifier = Modifier.height(48.dp))
@@ -146,7 +154,7 @@ fun PostUploadPage(
                                         .aspectRatio(1.0f)
                                         .fillMaxWidth()
                                         .clip(RoundedCornerShape(48.dp))
-                                        .background(MaterialTheme.bbibbiScheme.white),
+                                        .background(MaterialTheme.bbibbiScheme.backgroundHover),
                                     painter = rememberAsyncImagePainter(model = imageUrl.value),
                                     contentDescription = null,
                                 )

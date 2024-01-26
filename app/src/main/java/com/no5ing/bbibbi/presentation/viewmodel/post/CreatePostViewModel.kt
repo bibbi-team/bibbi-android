@@ -2,6 +2,7 @@ package com.no5ing.bbibbi.presentation.viewmodel.post
 
 import android.content.Context
 import android.net.Uri
+import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostRequest
@@ -25,9 +26,18 @@ import javax.inject.Inject
 class CreatePostViewModel @Inject constructor(
     private val restAPI: RestAPI,
     private val client: OkHttpClient,
+    private val localDataStorage: LocalDataStorage,
 ) : BaseViewModel<APIResponse<Post>>() {
     override fun initState(): APIResponse<Post> {
         return APIResponse.loading()
+    }
+
+    fun saveTemporaryUri(uri: Uri) {
+        localDataStorage.setTemporaryUri(uri.toString())
+    }
+
+    fun clearTemporaryUri() {
+        localDataStorage.clearTemporaryUri()
     }
 
     override fun invoke(arguments: Arguments) {

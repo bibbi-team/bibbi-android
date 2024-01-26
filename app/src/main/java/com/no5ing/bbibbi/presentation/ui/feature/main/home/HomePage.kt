@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.ui.feature.main.home
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,10 +11,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
@@ -24,6 +29,7 @@ import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageContentSta
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageState
 import com.no5ing.bbibbi.presentation.state.main.home.rememberHomePageStoryBarState
 import com.no5ing.bbibbi.presentation.ui.common.component.BBiBBiSurface
+import com.no5ing.bbibbi.presentation.ui.feature.dialog.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.ui.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.ui.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.ui.util.BackToExitHandler
@@ -56,14 +62,31 @@ fun HomePage(
     onTapContent: (Post) -> Unit = {},
     onTapUpload: () -> Unit = {},
     onTapInvite: () -> Unit = {},
+    onUnsavedPost: (Uri) -> Unit = {},
 ) {
     val memberId = LocalSessionState.current.memberId
     val meUploadedState = isMeUploadedTodayViewModel.uiState.collectAsState()
     //val familyMembersState = familyMembersViewModel.uiState.collectAsState()
 
+    val unsavedDialogUri = remember { mutableStateOf<Uri?>(null) }
+    val unsavedDialogEnabled = remember { mutableStateOf(false) }
+    CustomAlertDialog(
+        enabledState = unsavedDialogEnabled,
+        title = stringResource(id = R.string.unsaved_post_dialog_title),
+        description = stringResource(id = R.string.unsaved_post_dialog_message),
+        confirmRequest = {
+            unsavedDialogEnabled.value = false
+            onUnsavedPost(unsavedDialogUri.value!!)
+        }
+    )
     BackToExitHandler()
     LaunchedEffect(Unit) {
         isMeUploadedTodayViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
+        val tempUri = retrieveMeViewModel.getAndDeleteTemporaryUri()
+        if(tempUri != null) {
+            unsavedDialogUri.value = tempUri
+            unsavedDialogEnabled.value = true
+        }
     }
 
 

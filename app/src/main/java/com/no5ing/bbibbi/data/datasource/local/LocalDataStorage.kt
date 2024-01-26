@@ -40,6 +40,7 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         const val REGISTRATION_TOKEN_KEY = "registration_token"
         const val LANDING_SEEN_KEY = "landing_seen"
         const val REAL_EMOJI_KEY = "real_emoji"
+        const val TEMPORARY_POST_URI = "temporary_post_uri"
     }
 
     fun logOut() {
@@ -96,5 +97,23 @@ class LocalDataStorage @Inject constructor(val context: Context) {
                 Gson().fromJson(it, Array<MemberRealEmoji>::class.java).toList()
             }.getOrNull()
         } ?: emptyList()
+    }
+
+    fun setTemporaryUri(uri: String) {
+        val editor = preferences.edit()
+        editor.putString(TEMPORARY_POST_URI, uri)
+        editor.apply()
+        editor.commit()
+    }
+
+    fun clearTemporaryUri(){
+        val editor = preferences.edit()
+        editor.remove(TEMPORARY_POST_URI)
+        editor.apply()
+        editor.commit()
+    }
+
+    fun getTemporaryUri(): String? {
+        return preferences.getString(TEMPORARY_POST_URI, null)
     }
 }

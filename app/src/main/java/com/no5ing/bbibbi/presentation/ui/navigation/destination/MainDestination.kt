@@ -43,8 +43,13 @@ object MainHomeDestination : NavigationDestination(
             },
             onTapInvite = {
                 navController.navigate(MainFamilyDestination)
+            },
+            onUnsavedPost = {
+                navController.navigate(
+                    PostReUploadDestination,
+                    params = listOf("imageUrl" to it.toString())
+                )
             }
-
         )
     },
 )
