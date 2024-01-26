@@ -22,7 +22,6 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestinat
 import com.no5ing.bbibbi.presentation.component.CustomSnackBarHost
 import com.no5ing.bbibbi.presentation.navigation.graph.landingGraph
 import com.no5ing.bbibbi.presentation.navigation.graph.mainGraph
-import com.no5ing.bbibbi.presentation.navigation.graph.registerGraph
 
 @Composable
 fun MainPage(
@@ -70,9 +69,6 @@ fun MainPage(
                     }
                 )
                 landingGraph(
-                    navController = navController,
-                )
-                registerGraph(
                     navController = navController,
                 )
                 mainGraph(

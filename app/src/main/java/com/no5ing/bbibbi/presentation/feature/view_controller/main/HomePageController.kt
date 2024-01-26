@@ -45,6 +45,6 @@ object HomePageController : NavigationDestination(
     }
 
     fun NavHostController.goHomePage() {
-        navigate(HomePageController)
+        navigate(route = mainPageRoute)
     }
 }

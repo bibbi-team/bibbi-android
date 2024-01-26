@@ -37,6 +37,6 @@ object LoginPageController : NavigationDestination(
     }
 
     fun NavHostController.goLoginPage() {
-        navigate(LoginPageController)
+        navigate(route = landingPageRoute)
     }
 }

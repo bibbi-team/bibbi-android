@@ -29,7 +29,6 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.main.QuitPageContr
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.SettingHomePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.WebViewPageController
 
-@OptIn(ExperimentalAnimationApi::class)
 @Stable
 fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
