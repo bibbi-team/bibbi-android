@@ -166,10 +166,18 @@ fun AddReactionDialog(
                             modifier = Modifier
                                 //.clip(RoundedCornerShape(48.dp))
                                // .background(color = MaterialTheme.bbibbiScheme.button)
-                                .padding(vertical = 20.dp, horizontal = 16.dp)
+                                .padding(vertical = 10.dp, horizontal = 16.dp)
                                 .padding(bottom = 50.dp)
                         ) {
-                            Column {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ) {
+                                Box(modifier = Modifier
+                                    .size(width = 32.dp, height = 4.dp)
+                                    .clip(RoundedCornerShape(2.dp))
+                                    .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
+                                )
+                                Spacer(modifier = Modifier.height(24.dp))
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     verticalAlignment = Alignment.CenterVertically,
@@ -252,6 +260,7 @@ fun AddReactionDialog(
                                             },
                                     )
                                 }
+                                Spacer(modifier = Modifier.height(14.dp))
                             }
 
 
