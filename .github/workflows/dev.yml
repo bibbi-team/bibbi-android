@@ -30,11 +30,16 @@ jobs:
         run: |
           echo "$PLAYSTORE_SA" > play_keyfile.json && \
           echo "$GCP_FASTLANE_SA" > gcp_keyfile.json && \
-          echo "$GENERIC_APP_SECRETS" > secrets.properties
+          echo "$GENERIC_APP_SECRETS" > secrets.properties && \
+          echo "$GOOGLE_SERVICES_JSON" > app/google-services.json && \
+          echo "$APP_SIGNING_SECRET" > ./keystore.b64 && \
+          base64 -d -i ./keystore.b64 > ./bbibbi_android
         env:
           PLAYSTORE_SA: ${{ secrets.PLAYSTORE_SA }}
           GCP_FASTLANE_SA: ${{ secrets.GCP_FASTLANE_SA }}
           GENERIC_APP_SECRETS: ${{ secrets.GENERIC_APP_SECRETS }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+          APP_SIGNING_SECRET: ${{ secrets.APP_SIGNING_SECRET }}
 
       - name: Fastlane 배포하기
         run: bundle exec fastlane deploy_dev
