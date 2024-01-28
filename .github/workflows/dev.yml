@@ -45,6 +45,6 @@ jobs:
         run: bundle exec fastlane deploy_dev
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-          SLACK_URL: ${{ secrets.SLACK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SERVICE_CREDENTIAL_FILE_PATH: gcp_keyfile.json
           GOOGLE_CREDENTIAL_FILE_PATH: play_keyfile.json
