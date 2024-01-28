@@ -37,7 +37,7 @@ jobs:
           GENERIC_APP_SECRETS: ${{ secrets.GENERIC_APP_SECRETS }}
 
       - name: Fastlane 배포하기
-        run: fastlane deploy_dev
+        run: bundle exec fastlane deploy_dev
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           SLACK_URL: ${{ secrets.SLACK_URL }}
