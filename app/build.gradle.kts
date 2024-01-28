@@ -31,7 +31,6 @@ val secretProperties = Properties().apply {
 val majorVersion = 1
 val minorVersion = 1
 val patchVersion = 0
-val buildVersion = 8
 
 android {
     namespace = "com.no5ing.bbibbi"
@@ -50,8 +49,8 @@ android {
         applicationId = "com.no5ing.bbibbi"
         minSdk = 26
         targetSdk = 34
-        versionCode = majorVersion * 10000 + minorVersion * 1000 + patchVersion * 100 + buildVersion
-        versionName = "$majorVersion.$minorVersion.$patchVersion"
+        versionCode = 11011
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -68,7 +67,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
         create("benchmark") {
             initWith(buildTypes.getByName("release"))

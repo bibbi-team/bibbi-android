@@ -1,19 +1,5 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
 default_platform(:android)
+$slack_url = ENV["SLACK_URL"]
 
 platform :android do
   desc "Runs all the tests"
@@ -21,22 +7,104 @@ platform :android do
     gradle(task: "test")
   end
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "assembleRelease")
-    firebase_app_distribution(
-        app: "1:486421607977:android:c10f22a8ae404fcf5b4e38",
-        groups: "qa",
-        release_notes: "Text of release notes"
+  desc "Deploy Development Build to Firebase App Distribution"
+  lane :deploy_dev do
+    latest_release = firebase_app_distribution_get_latest_release(
+      app: ENV["FIREBASE_APP_ID"],
+      service_credentials_file: ENV["SERVICE_CREDENTIAL_FILE_PATH"]
     )
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
+    increment_version_code({ version_code: latest_release[:buildVersion].to_i + 1, gradle_file_path: "app/build.gradle.kts" })
+    gradle(task: "bundleRelease")
+    firebase_app_distribution(
+        app: ENV["FIREBASE_APP_ID"],
+        groups: "qa",
+        release_notes: "Text of release notes",
+        debug: true,
+        android_artifact_type: "AAB",
+        service_credentials_file: ENV["SERVICE_CREDENTIAL_FILE_PATH"]
+    )
+    version_name = get_version_name(
+      gradle_file_path: "./app/build.gradle.kts",
+      ext_constant_name: "versionName"
+    )
+    version_code = get_version_code(
+      gradle_file_path: "./app/build.gradle.kts",
+      ext_constant_name: "versionCode"
+    )
+    build_success("Dev 버전", version_name, version_code)
+    rescue => exception
+      build_fail("Dev 버전", version_name, version_code, exception)
   end
 
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+  desc "Deploy Internal Test Version to Google Play"
+  lane :deploy_internal_test do
+    latest_release = google_play_track_version_codes(track: 'internal')
+    increment_version_code({ version_code: latest_release[0].to_i + 1, gradle_file_path: "app/build.gradle.kts" })
+    gradle(task: "bundleRelease")
+    upload_to_play_store(
+      track: 'internal',
+      skip_upload_apk: true,
+      skip_upload_images: true,
+      skip_upload_metadata: true
+    )
+    version_name = get_version_name(
+      gradle_file_path: "./app/build.gradle.kts",
+      ext_constant_name: "versionName"
+    )
+    version_code = get_version_code(
+      gradle_file_path: "./app/build.gradle.kts",
+      ext_constant_name: "versionCode"
+    )
+    build_success("내부 테스트", version_name, version_code)
+    rescue => exception
+      build_fail("내부 테스트", version_name, version_code, exception)
+  end
+
+  desc "Deploy Production Version to Google Play"
+  lane :deploy_production do
+    latest_release = google_play_track_version_codes(track: 'production')
+    increment_version_code({ version_code: latest_release[0].to_i + 1, gradle_file_path: "app/build.gradle.kts" })
+    gradle(task: "bundleRelease")
+    upload_to_play_store(
+      track: 'production',
+      skip_upload_apk: true,
+      sync_image_upload: true
+    )
+    version_name = get_version_name(
+      gradle_file_path: "./app/build.gradle.kts",
+      ext_constant_name: "versionName"
+    )
+    version_code = get_version_code(
+      gradle_file_path: "./app/build.gradle.kts",
+      ext_constant_name: "versionCode"
+    )
+    build_success("프로덕션", version_name, version_code)
+    rescue => exception
+      build_fail("프로덕션", version_name, version_code, exception)
+  end
+
+  def build_success(title, versionName, versionCode)
+    slack(
+      message: "삐삐(#{title}) AOS 배포 성공",
+      success: true,
+      slack_url: $slack_url,
+      payload: {
+        "빌드 날짜" => Time.new.to_s,
+        "배포 버전" => "#{versionName}(#{versionCode})"
+      }
+    )
+  end
+
+  def build_fail(title, versionName, versionCode, exception)
+    slack(
+      message: "삐삐(#{title}) AOS 배포 실패",
+      success: false,
+      slack_url: $slack_url,
+      payload: {
+        "빌드 날짜" => Time.new.to_s,
+        "배포 버전" => "#{versionName}(#{versionCode})",
+        "에러" => exception,
+       }
+     )
   end
 end
