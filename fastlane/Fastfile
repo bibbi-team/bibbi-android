@@ -88,7 +88,7 @@ platform :android do
       success: true,
       slack_url: ENV["SLACK_WEBHOOK_URL"],
       payload: {
-        "빌드 날짜" => Time.new.to_s,
+        "빌드 날짜" => Time.now.getlocal('+09:00').to_s,
         "배포 버전" => "#{versionName}(#{versionCode})"
       }
     )
@@ -100,7 +100,7 @@ platform :android do
       success: false,
       slack_url: ENV["SLACK_WEBHOOK_URL"],
       payload: {
-        "빌드 날짜" => Time.new.to_s,
+        "빌드 날짜" => Time.now.getlocal('+09:00').to_s,
         "배포 버전" => "#{versionName}(#{versionCode})",
         "에러" => exception,
        }
