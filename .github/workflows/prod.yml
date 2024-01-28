@@ -1,17 +1,13 @@
-name: DEV 브랜치 배포하기
+name: 프로덕션 빌드
 on:
-  push:
+  pull_request:
     branches:
-      - dev
-    paths:
-      - 'app/**'
-      - 'widget/**'
-      - 'fastlane/**'
-      - '.github/workflows/dev.yaml'
+      - main
+    types: [ closed ]
 jobs:
-  deploy-dev:
+  production-build:
     runs-on: macos-latest
-    environment: development
+    environment: production
     steps:
       - name: 브랜치 가져오기
         uses: actions/checkout@v2
@@ -47,9 +43,26 @@ jobs:
           APP_SIGNING_SECRET: ${{ secrets.APP_SIGNING_SECRET }}
 
       - name: Fastlane 배포하기
-        run: bundle exec fastlane deploy_dev
+        run: bundle exec fastlane deploy_production
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SERVICE_CREDENTIAL_FILE_PATH: gcp_keyfile.json
           GOOGLE_CREDENTIAL_FILE_PATH: play_keyfile.json
+
+      - name: 브랜치명 추출하기
+        id: branch-name
+        uses: tj-actions/branch-names@v4.9
+
+      - name: 버전 정보 추출
+        run: echo "TAG=$(echo '${{ steps.branch-name.outputs.current_branch }}' | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')" >> $GITHUB_ENV
+        id: extract_version_name
+
+      - name: Release 생성
+        if: github.event.pull_request.merged == true
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.TAG }}
+          release_name: ${{ env.TAG }}

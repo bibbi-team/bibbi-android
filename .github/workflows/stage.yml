@@ -1,17 +1,17 @@
-name: DEV 브랜치 배포하기
+name: Release 브랜치 배포하기
 on:
   push:
     branches:
-      - dev
+      - release/**
     paths:
       - 'app/**'
       - 'widget/**'
       - 'fastlane/**'
-      - '.github/workflows/dev.yaml'
+      - '.github/workflows/stage.yaml'
 jobs:
-  deploy-dev:
+  deploy-stage:
     runs-on: macos-latest
-    environment: development
+    environment: internal-test
     steps:
       - name: 브랜치 가져오기
         uses: actions/checkout@v2
@@ -47,7 +47,7 @@ jobs:
           APP_SIGNING_SECRET: ${{ secrets.APP_SIGNING_SECRET }}
 
       - name: Fastlane 배포하기
-        run: bundle exec fastlane deploy_dev
+        run: bundle exec fastlane deploy_internal_test
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
