@@ -26,7 +26,7 @@ platform :android do
         app: ENV["FIREBASE_APP_ID"],
         groups: "qa",
         release_notes: "Text of release notes",
-        debug: true,
+        debug: false,
         android_artifact_type: "AAB",
         service_credentials_file: ENV["SERVICE_CREDENTIAL_FILE_PATH"]
     )
