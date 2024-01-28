@@ -1,0 +1,36 @@
+name: DEV 브랜치 배포하기
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  create-tag:
+    runs-on: macos-latest
+    environment: development
+    steps:
+      - name: 브랜치 가져오기
+        uses: actions/checkout@v2
+
+      - name: Ruby 설정하기
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+
+      - name: Fastlane 설정하기
+        run: brew install fastlane
+
+      - name: 시크릿 파일 생성하기
+        run: |
+          echo "$PLAYSTORE_SA" > play_keyfile.json
+          echo "$GCP_FASTLANE_SA" > gcp_keyfile.json
+        env:
+          PLAYSTORE_SA: ${{ secrets.PLAYSTORE_SA }}
+          GCP_FASTLANE_SA: ${{ secrets.GCP_FASTLANE_SA }}
+
+      - name: Fastlane 배포하기
+        run: fastlane deploy_dev
+        env:
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          SLACK_URL: ${{ secrets.SLACK_URL }}
+          SERVICE_CREDENTIAL_FILE_PATH: gcp_keyfile.json
+          GOOGLE_CREDENTIAL_FILE_PATH: play_keyfile.json

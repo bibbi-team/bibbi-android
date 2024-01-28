@@ -35,3 +35,4 @@ google-services.json
 .DS_Store
 secrets.properties
 play_keyfile.json
+.env
