@@ -86,7 +86,7 @@ platform :android do
     slack(
       message: "삐삐(#{title}) AOS 배포 성공",
       success: true,
-      slack_url: ENV["SLACK_URL"],
+      slack_url: ENV["SLACK_WEBHOOK_URL"],
       payload: {
         "빌드 날짜" => Time.new.to_s,
         "배포 버전" => "#{versionName}(#{versionCode})"
@@ -98,7 +98,7 @@ platform :android do
     slack(
       message: "삐삐(#{title}) AOS 배포 실패",
       success: false,
-      slack_url: ENV["SLACK_URL"],
+      slack_url: ENV["SLACK_WEBHOOK_URL"],
       payload: {
         "빌드 날짜" => Time.new.to_s,
         "배포 버전" => "#{versionName}(#{versionCode})",
