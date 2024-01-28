@@ -31,9 +31,6 @@ platform :android do
       gradle_file_path: "./app/build.gradle.kts",
       ext_constant_name: "versionCode"
     )
-    build_success("Dev 버전", version_name, version_code)
-    rescue => exception
-      build_fail("Dev 버전", version_name, version_code, exception)
   end
 
   desc "Deploy Internal Test Version to Google Play"
