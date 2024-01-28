@@ -16,6 +16,7 @@ data class Member(
     val imageUrl: String?,
     val familyId: String?,
     val dayOfBirth: String,
+    val familyJoinAt: String?,
 ) : Parcelable, BaseModel() {
     @IgnoredOnParcel
     val isBirthdayToday: Boolean = LocalDate
@@ -36,7 +37,8 @@ data class Member(
             _name = "DeletedMember",
             imageUrl = null,
             familyId = null,
-            dayOfBirth = "2001-12-30"
+            dayOfBirth = "2001-12-30",
+            familyJoinAt = null,
         )
     }
 }

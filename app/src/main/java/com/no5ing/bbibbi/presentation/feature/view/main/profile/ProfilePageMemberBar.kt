@@ -29,6 +29,8 @@ import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
+import com.no5ing.bbibbi.util.toLocalizedDate
 
 @Composable
 fun ProfilePageMemberBar(
@@ -105,9 +107,17 @@ fun ProfilePageMemberBar(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(20.dp))
+            if (viewerMemberId == memberState.value.data.memberId) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "${toLocalizedDate(memberState.value.data.familyJoinAt ?: "2000-01-01")} 가입",
+                    style = MaterialTheme.bbibbiTypo.caption,
+                    color = MaterialTheme.bbibbiScheme.icon,
+                )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
             Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(24 .dp))
         }
     }
 }

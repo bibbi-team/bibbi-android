@@ -36,6 +36,13 @@ fun toLocalizedDate(time: ZonedDateTime): String {
     return yearDateFormatter.format(time)
 }
 
+fun toLocalizedDate(date: String): String {
+    val localDate = LocalDate.parse(date)
+    if (localDate.year == ZonedDateTime.now().year)
+        return dateFormatter.format(localDate)
+    return yearDateFormatter.format(localDate)
+}
+
 fun todayAsString() = LocalDate.now().toString()
 
 fun getZonedDateTimeString() = ZonedDateTime.now().toString()
