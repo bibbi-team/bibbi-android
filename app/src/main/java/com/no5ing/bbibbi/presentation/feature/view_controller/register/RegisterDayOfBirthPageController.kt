@@ -20,7 +20,10 @@ object RegisterDayOfBirthPageController : NavigationDestination(
             nickName = nickName,
             onNextPage = {
                 navController.goRegisterProfileImagePage(nickName, it)
-            }
+            },
+            onDispose = {
+                navController.popBackStack()
+            },
         )
     }
 

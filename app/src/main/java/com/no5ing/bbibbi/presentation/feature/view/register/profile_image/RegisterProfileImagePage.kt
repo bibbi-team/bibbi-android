@@ -46,6 +46,7 @@ import com.no5ing.bbibbi.presentation.feature.state.register.profile_image.Regis
 import com.no5ing.bbibbi.presentation.feature.state.register.profile_image.rememberRegisterProfileImagePageState
 import com.no5ing.bbibbi.presentation.component.button.CTAButton
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
+import com.no5ing.bbibbi.presentation.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.feature.view.common.AlbumCameraSelectDialog
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarWarning
@@ -63,6 +64,7 @@ fun RegisterProfileImagePage(
     state: RegisterProfileImagePageState = rememberRegisterProfileImagePageState(),
     onNextPage: () -> Unit,
     onTapCamera: () -> Unit,
+    onDispose: () -> Unit,
     registerMemberViewModel: RegisterMemberViewModel = hiltViewModel(),
 ) {
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
@@ -123,7 +125,7 @@ fun RegisterProfileImagePage(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Spacer(modifier = Modifier)
+            DisposableTopBar(onDispose = onDispose, title = "")
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {

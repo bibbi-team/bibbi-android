@@ -49,7 +49,10 @@ object RegisterProfileImagePageController : NavigationDestination(
                 navController.navigate(
                     destination = CameraViewPageController,
                 )
-            }
+            },
+            onDispose = {
+                navController.popBackStack()
+            },
         )
     }
 

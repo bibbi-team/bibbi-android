@@ -41,12 +41,14 @@ import com.no5ing.bbibbi.presentation.feature.state.register.day_of_birth.Regist
 import com.no5ing.bbibbi.presentation.feature.state.register.day_of_birth.rememberRegisterDayOfBirthPageState
 import com.no5ing.bbibbi.presentation.component.button.CTAButton
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
+import com.no5ing.bbibbi.presentation.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import java.time.YearMonth
 
 @Composable
 fun RegisterDayOfBirthPage(
+    onDispose: () -> Unit,
     nickName: String,
     onNextPage: (String) -> Unit,
     state: RegisterDayOfBirthPageState = rememberRegisterDayOfBirthPageState()
@@ -67,7 +69,7 @@ fun RegisterDayOfBirthPage(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Spacer(modifier = Modifier)
+            DisposableTopBar(onDispose = onDispose, title = "")
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {

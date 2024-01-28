@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.IntOffset
 
 inline fun <reified T> tweenSpec() = tween<T>()
 fun springSpec() = spring(
-    stiffness = Spring.StiffnessLow,
+    stiffness = Spring.StiffnessMedium,
     visibilityThreshold = IntOffset.VisibilityThreshold
 )
 
