@@ -21,11 +21,13 @@ jobs:
 
       - name: 시크릿 파일 생성하기
         run: |
-          echo "$PLAYSTORE_SA" > play_keyfile.json
-          echo "$GCP_FASTLANE_SA" > gcp_keyfile.json
+          echo "$PLAYSTORE_SA" > play_keyfile.json && \
+          echo "$GCP_FASTLANE_SA" > gcp_keyfile.json && \
+          echo "$GENERIC_APP_SECRETS" > secrets.properties
         env:
           PLAYSTORE_SA: ${{ secrets.PLAYSTORE_SA }}
           GCP_FASTLANE_SA: ${{ secrets.GCP_FASTLANE_SA }}
+          GENERIC_APP_SECRETS: ${{ secrets.GENERIC_APP_SECRETS }}
 
       - name: Fastlane 배포하기
         run: fastlane deploy_dev
