@@ -39,6 +39,7 @@ import com.google.accompanist.permissions.PermissionStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okio.BufferedSink
@@ -294,23 +295,28 @@ fun getLinkIdFromUrl(url: String): String {
     return url.split("/").last()
 }
 
-suspend fun getInstallReferrerClient(context: Context) = suspendCoroutine {
+suspend fun getInstallReferrerClient(context: Context) = suspendCancellableCoroutine {
     val referrerClient = InstallReferrerClient.newBuilder(context).build()
     referrerClient.startConnection(object : InstallReferrerStateListener {
         override fun onInstallReferrerSetupFinished(responseCode: Int) {
             when (responseCode) {
                 InstallReferrerClient.InstallReferrerResponse.OK -> {
                     // Connection established.
-                    it.resume(referrerClient)
+                    if(it.isActive)
+                        it.resume(referrerClient)
                 }
 
                 else -> {
-                    it.resume(null)
+                    if(it.isActive)
+                        it.resume(null)
                 }
             }
         }
 
-        override fun onInstallReferrerServiceDisconnected() {}
+        override fun onInstallReferrerServiceDisconnected() {
+            if(it.isActive)
+                it.resume(null)
+        }
     })
 }
 
