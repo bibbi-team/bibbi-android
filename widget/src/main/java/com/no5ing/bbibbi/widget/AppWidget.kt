@@ -293,10 +293,11 @@ class AppWidget : GlanceAppWidget() {
             Column(
                 modifier = GlanceModifier.fillMaxSize()
             ) {
+                val currentHour = getCurrentHour()
                 val imageResource = if (!isSmallSize)
-                    if (randomBoolean()) R.drawable.widget_large else R.drawable.widget_large_green
+                    if (currentHour < 9) R.drawable.widget_large else R.drawable.widget_large_green
                 else
-                    if (randomBoolean()) R.drawable.widget_small else R.drawable.widget_small_green
+                    if (currentHour < 9) R.drawable.widget_small else R.drawable.widget_small_green
                 Image(
                     provider = AndroidResourceImageProvider(imageResource),
                     contentDescription = null,

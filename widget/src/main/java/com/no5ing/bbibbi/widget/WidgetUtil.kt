@@ -11,7 +11,8 @@ import kotlin.streams.toList
 
 fun String.toCodePointList() = codePoints().toList().map { String(Character.toChars(it)) }
 fun String.codePointLength() = codePoints().count()
-fun randomBoolean() = (0..1).random() == 1
+
+fun getCurrentHour() = System.currentTimeMillis() / 1000 / 60 / 60 % 24
 
 fun getAuthTokenFromContext(context: Context): String? {
     val preferences = EncryptedSharedPreferences.create(
