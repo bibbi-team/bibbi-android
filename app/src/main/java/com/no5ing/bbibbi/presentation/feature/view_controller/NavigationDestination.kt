@@ -115,9 +115,16 @@ abstract class NavigationDestination(
                 routeWithPath
             else
                 "${routeWithPath}?${params.joinToString("&") { "${it.first}=${URLEncoder.encode(it.second)}" }}"
+            navigateUnsafeDeepLink(targetRoute)
+        }
+
+        @SuppressLint("RestrictedApi")
+        fun NavHostController.navigateUnsafeDeepLink(
+            deepLink: String,
+        ) {
             val node = NavDeepLinkRequest
                 .Builder
-                .fromUri(NavDestination.createRoute(targetRoute).toUri()).build()
+                .fromUri(NavDestination.createRoute(deepLink).toUri()).build()
             graph.matchDeepLink(node)?.let { deepLinkMatch ->
                 val priorStack = currentBackStack.value.firstOrNull {
                     deepLinkMatch.hasMatchingArgs(it.arguments)
@@ -134,11 +141,10 @@ abstract class NavigationDestination(
             }
 
             navigate(
-                targetRoute,
+                deepLink,
             ) {
                 restoreState = true
             }
         }
-
     }
 }

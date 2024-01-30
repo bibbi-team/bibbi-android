@@ -24,6 +24,8 @@ import androidx.glance.GlanceModifier
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalSize
+import androidx.glance.action.ActionParameters
+import androidx.glance.action.actionParametersOf
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.CircularProgressIndicator
@@ -57,6 +59,7 @@ import androidx.work.WorkManager
 import kotlinx.coroutines.coroutineScope
 import java.time.Duration
 
+const val WIDGET_DEEPLINK_KEY = "WIDGET_DEEPLINK"
 private const val TAG = "WIDGET"
 class AppWidget : GlanceAppWidget() {
     companion object {
@@ -73,6 +76,10 @@ class AppWidget : GlanceAppWidget() {
         val userNameKey = stringPreferencesKey("nickName")
         val profileImageKey = stringPreferencesKey("profileImgUrl")
         val postContentKey = stringPreferencesKey("postContent")
+        val postIdKey = stringPreferencesKey("postId")
+        val deepLinkKey = ActionParameters.Key<String>(
+            WIDGET_DEEPLINK_KEY
+        )
     }
 
     override val sizeMode: SizeMode = SizeMode.Exact
@@ -87,7 +94,6 @@ class AppWidget : GlanceAppWidget() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         coroutineScope {
             Log.d(TAG, "Start Widget Schedule")
@@ -120,11 +126,20 @@ class AppWidget : GlanceAppWidget() {
             modifier = GlanceModifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
         ) {
+            val postId = currentState(postIdKey)
             Box(
                 modifier = GlanceModifier
                     .size(width = aspectSize, height = aspectSize)
                     .background(Color(0xFF262626))
-                    .clickable(actionStartActivity(ComponentName("com.no5ing.bbibbi", "com.no5ing.bbibbi.MainActivity")))
+                    .clickable(
+                        actionStartActivity(
+                            ComponentName("com.no5ing.bbibbi", "com.no5ing.bbibbi.MainActivity"),
+                            if(postId != null)
+                                actionParametersOf(deepLinkKey to "post/view/$postId")
+                            else
+                                actionParametersOf()
+                        )
+                    )
             ) {
                 when (result) {
                     WIDGET_SUCCESS -> {

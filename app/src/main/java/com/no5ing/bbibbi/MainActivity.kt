@@ -38,6 +38,7 @@ import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.feature.MainPage
 import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigate
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigateUnsafeDeepLink
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.AlreadyFamilyExistsPageController
 import com.no5ing.bbibbi.presentation.navigation.NavDestinationListener
 import com.no5ing.bbibbi.presentation.theme.BbibbiTheme
@@ -51,6 +52,7 @@ import com.no5ing.bbibbi.util.MixpanelWrapper
 import com.no5ing.bbibbi.util.forceRestart
 import com.no5ing.bbibbi.util.getInstallReferrerClient
 import com.no5ing.bbibbi.util.getLinkIdFromUrl
+import com.no5ing.bbibbi.widget.WIDGET_DEEPLINK_KEY
 import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,6 +77,7 @@ class MainActivity : ComponentActivity() {
     private var localNavController: NavHostController? = null
 
     private val deepLinkStateFlow = MutableStateFlow<String?>(null)
+    private val pendingDeepLinkDestination = MutableStateFlow<String?>(null)
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -94,6 +97,9 @@ class MainActivity : ComponentActivity() {
         if (linkId != null) {
             handleDeepLinkId(linkId)
         }
+
+        val widgetExtraData = intent?.extras?.getString(WIDGET_DEEPLINK_KEY) ?: return
+        pendingDeepLinkDestination.value = widgetExtraData
     }
 
     private fun handleDeepLinkId(linkId: String) {
@@ -196,6 +202,7 @@ class MainActivity : ComponentActivity() {
             val snackBarHostState = remember { SnackbarHostState() }
             val sessionState by sessionModule.sessionState.collectAsState()
             val deepLinkState by deepLinkStateFlow.collectAsState()
+            val pendingDeepLinkState by pendingDeepLinkDestination.collectAsState()
             val mixPanelState = remember {
                 MixpanelWrapper().apply {
                     mixpanelAPI = MixpanelAPI.getInstance(
@@ -281,11 +288,24 @@ class MainActivity : ComponentActivity() {
                                         CompositionLocalProvider(
                                             LocalSessionState provides sessionState
                                         ) {
+                                            val isAlreadyLoggedIn = sessionState.isLoggedIn()
+                                                    && sessionState.hasFamily()
+                                            LaunchedEffect(
+                                                isAlreadyLoggedIn,
+                                                pendingDeepLinkState
+                                            ) {
+                                                if (isAlreadyLoggedIn && pendingDeepLinkState != null) {
+                                                    val deepLinkUrl = pendingDeepLinkState!!
+                                                    pendingDeepLinkDestination.value = null
+                                                    navController.navigateUnsafeDeepLink(
+                                                        deepLinkUrl
+                                                    )
+                                                }
+                                            }
                                             MainPage(
                                                 snackBarHostState = snackBarHostState,
                                                 navController = navController,
-                                                isAlreadyLoggedIn = sessionState.isLoggedIn()
-                                                        && sessionState.hasFamily(),
+                                                isAlreadyLoggedIn = isAlreadyLoggedIn,
                                             )
                                         }
                                     }

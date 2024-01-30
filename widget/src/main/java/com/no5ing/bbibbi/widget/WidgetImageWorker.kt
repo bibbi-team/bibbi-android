@@ -56,6 +56,7 @@ class WidgetImageWorker(
                             prefs[AppWidget.resultKey] = AppWidget.WIDGET_SUCCESS
                             prefs[AppWidget.imageKey] = loadImage(newWidgetToken.get("postImageUrl").asString, force)
                             prefs[AppWidget.postContentKey] = newWidgetToken.get("postContent").asString
+                            prefs[AppWidget.postIdKey] = newWidgetToken.get("postId").asString
                             newWidgetToken?.get("profileImageUrl")?.asString?.let { loadImage(it, force) }?.apply {
                                 prefs[AppWidget.profileImageKey] = this
                             } ?: Unit.apply {

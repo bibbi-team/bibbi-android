@@ -11,6 +11,7 @@ import com.no5ing.bbibbi.presentation.feature.view.main.profile.ProfilePage
 import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewPageController.goCameraViewPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.ChangeNickNamePageController.goChangeNickNamePage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostViewPageController.goPostViewPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.SettingHomePageController.goSettingHomePage
 import timber.log.Timber
 
@@ -36,7 +37,7 @@ object ProfilePageController : NavigationDestination(
                 navController.goSettingHomePage()
             },
             onTapPost = {
-                navController.goProfilePage(it.postId)
+                navController.goPostViewPage(it.postId)
             },
             onTapChangeNickname = {
                 navController.goChangeNickNamePage()
