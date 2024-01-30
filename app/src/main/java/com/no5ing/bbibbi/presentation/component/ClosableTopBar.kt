@@ -32,7 +32,7 @@ fun ClosableTopBar(
     ) {
         Image(
             painter = painterResource(R.drawable.close_button),
-            contentDescription = null, // 필수 param
+            contentDescription = "Exit Button", // 필수 param
             modifier = Modifier
                 .size(52.dp)
                 .clickable { onDispose() }

@@ -29,16 +29,13 @@ fun DisposableTopBar(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth()
-            .semantics {
-                contentDescription = "Go Back Button"
-            },
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
             painter = painterResource(R.drawable.return_button),
-            contentDescription = null, // 필수 param
+            contentDescription = "Go Back Button", // 필수 param
             modifier = Modifier
                 .size(52.dp)
                 .clickable { onDispose() }
