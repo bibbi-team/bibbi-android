@@ -44,6 +44,7 @@ import androidx.glance.layout.ContentScale
 import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
+import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.layout.width
@@ -264,20 +265,18 @@ class AppWidget : GlanceAppWidget() {
                                 Box(
                                     modifier = GlanceModifier
                                         .cornerRadius(if (isSmallSize) 5.dp else 10.dp)
-                                        .padding(
-                                            vertical = if (isSmallSize) 4.dp else 8.dp,
-                                            horizontal = if (isSmallSize) 3.dp else 6.dp
-                                        )
+                                        .width(if(isSmallSize) 16.dp else 28.dp)
+                                        .height(if(isSmallSize) 25.dp else 41.dp)
                                         .background(Color.Black.copy(alpha = 0.3f)),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
-                                        text = character.toString(),
+                                        text = character,
                                         style = TextStyle(
                                             color = ColorProvider(Color.White),
                                             fontWeight = FontWeight.Bold,
                                             fontSize = if (isSmallSize) 12.sp else 18.sp,
-                                        )
+                                        ),
                                     )
                                 }
                                 if (index != lastIndex) {
