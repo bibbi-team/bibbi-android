@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,6 +30,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -48,6 +51,7 @@ import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarFire
+import com.no5ing.bbibbi.presentation.component.snackBarWarning
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.presentation.feature.view.main.calendar.MainCalendarDay
 import com.no5ing.bbibbi.presentation.feature.view.main.post_view.PostViewContent
@@ -70,6 +74,8 @@ import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import io.github.boguszpawlowski.composecalendar.week.Week
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDate
@@ -136,6 +142,10 @@ fun CalendarDetailPage(
         )
     }
 
+    val overScrollPagerState = rememberPagerState(pageCount = {3}, initialPage = 1)
+    var overScrollEnabled by remember {
+        mutableStateOf(true)
+    }
     val currentSelection = currentCalendarState.selectionState.selection.first()
     LaunchedEffect(uiState.value[currentSelection], currentSelection) {
         val uiValue = uiState.value[currentSelection] ?: return@LaunchedEffect
@@ -161,6 +171,7 @@ fun CalendarDetailPage(
 
     val currentPostState by familyPostsViewModel.uiState.collectAsState()
 
+
     val pagerState = key(currentPostState) {
         if (currentPostState.isReady()) {
             val index =
@@ -181,6 +192,8 @@ fun CalendarDetailPage(
 
     LaunchedEffect(currentPostState, pagerState.currentPage) {
         if (currentPostState.isReady()) {
+            if(overScrollPagerState.currentPage != 1)
+                overScrollPagerState.scrollToPage(1)
             if (currentPostState.data.size <= pagerState.currentPage) {
                 return@LaunchedEffect
             }
@@ -192,6 +205,31 @@ fun CalendarDetailPage(
                     ),
                 )
             )
+        }
+    }
+
+    LaunchedEffect(overScrollPagerState) {
+        snapshotFlow { overScrollPagerState.currentPage }.distinctUntilChanged().collect { nextPage ->
+            if(nextPage == 1) {
+                overScrollEnabled = true
+                return@collect
+            }
+            val currSelection = currentCalendarState.selectionState.selection[0]
+            val currentWeeks = uiState.value.keys
+            val nextDay = if(nextPage == 0) currentWeeks.filter { it.isBefore(currSelection) }.maxWithOrNull(LocalDate::compareTo)
+            else currentWeeks.filter { it.isAfter(currSelection) }.minWithOrNull(LocalDate::compareTo)
+            if(nextDay != null) {
+                currentCalendarState.selectionState.selection = listOf(nextDay)
+                currentCalendarState.weekState.currentWeek = Week(nextDay.weekDates())
+            } else {
+                snackBarState.showSnackBarWithDismiss(
+                    resources.getString(R.string.no_more_calendar_items),
+                    snackBarWarning
+                )
+                overScrollEnabled = false
+                delay(250L)
+                overScrollPagerState.scrollToPage(1)
+            }
         }
     }
 
@@ -251,27 +289,41 @@ fun CalendarDetailPage(
                     )
                     if (currentPostState.isReady()) {
                         HorizontalPager(
-                            state = pagerState,
-                            userScrollEnabled = scrollEnabled.value,
-                        ) { index ->
-                            val item = currentPostState.data.getOrNull(index)
-                            Column(
-                                modifier = Modifier
-                            ) {
-                                Spacer(modifier = Modifier.height(12.dp))
-                                if (item != null) {
-                                    CalendarDetailBody(
-                                        onTapProfile = onTapProfile,
-                                        onTapRealEmojiCreate = onTapRealEmojiCreate,
-                                        item = item,
-                                        familyPostReactionBarViewModel = familyPostReactionBarViewModel,
-                                        removePostReactionViewModel = removePostReactionViewModel,
-                                        addPostReactionViewModel = addPostReactionViewModel,
-                                    )
+                            state = overScrollPagerState,
+                            userScrollEnabled = overScrollEnabled,
+                        ) {
+                            if(it == 1) {
+                                CompositionLocalProvider(
+                                    LocalOverscrollConfiguration provides null
+                                ) {
+                                    HorizontalPager(
+                                        state = pagerState,
+                                        userScrollEnabled = scrollEnabled.value,
+                                    ) { index ->
+                                        val item = currentPostState.data.getOrNull(index)
+                                        Column(
+                                            modifier = Modifier
+                                        ) {
+                                            Spacer(modifier = Modifier.height(12.dp))
+                                            if (item != null) {
+                                                CalendarDetailBody(
+                                                    onTapProfile = onTapProfile,
+                                                    onTapRealEmojiCreate = onTapRealEmojiCreate,
+                                                    item = item,
+                                                    familyPostReactionBarViewModel = familyPostReactionBarViewModel,
+                                                    removePostReactionViewModel = removePostReactionViewModel,
+                                                    addPostReactionViewModel = addPostReactionViewModel,
+                                                )
 
+                                            }
+                                        }
+                                    }
                                 }
+
                             }
+
                         }
+
                     }
                 }
                 Box(
