@@ -24,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
@@ -36,6 +37,7 @@ import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenReque
 import com.no5ing.bbibbi.di.NetworkModule
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.feature.MainPage
+import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.navigation.NavDestinationListener
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.AlreadyFamilyExistsPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigate
@@ -217,19 +219,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            LaunchedEffect(updateState.value) {
-                if (updateState.value) {
-                    openRequireUpdateDialog()
-                }
-            }
-
-            LaunchedEffect(tokenInvalidState.value) {
-                if (tokenInvalidState.value) {
-                    NetworkModule.requireTokenInvalidRestart.value = false
-                    openRequireLoginDialog()
-                }
-            }
-
             LaunchedEffect(isInitialBootstrap, isReady) {
                 if (isInitialBootstrap && isReady) {
                     isInitialBootstrap = false
@@ -246,6 +235,26 @@ class MainActivity : ComponentActivity() {
 
                         CompositionLocalProvider(value = LocalDeepLinkState provides deepLinkState) {
                             BbibbiTheme {
+                                CustomAlertDialog(
+                                    enabledState = updateState,
+                                    title = stringResource(id = R.string.app_update_dialog_title),
+                                    description = stringResource(id = R.string.app_update_dialog_message),
+                                    confirmMessage = stringResource(id = R.string.app_update_dialog_positive),
+                                    confirmRequest = this::openMarketAndShutdown,
+                                    dismissRequest = this::openMarketAndShutdown,
+                                    cancelRequest = this::openMarketAndShutdown,
+                                    hasCancel = false,
+                                )
+                                CustomAlertDialog(
+                                    enabledState = tokenInvalidState,
+                                    title = stringResource(id = R.string.token_invalid_dialog_title),
+                                    description = stringResource(id = R.string.token_invalid_dialog_message),
+                                    confirmMessage = stringResource(id = R.string.token_invalid_dialog_positive),
+                                    confirmRequest = this::resetAuthenticationState,
+                                    dismissRequest = this::resetAuthenticationState,
+                                    cancelRequest = this::resetAuthenticationState,
+                                    hasCancel = false,
+                                )
                                 Surface(
                                     modifier = Modifier
                                         .fillMaxSize()
@@ -292,34 +301,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun openRequireUpdateDialog() {
-        AlertDialog
-            .Builder(this)
-            .setTitle(this.getString(R.string.app_update_dialog_title))
-            .setMessage(this.getString(R.string.app_update_dialog_message))
-            .setPositiveButton(this.getString(R.string.app_update_dialog_positive)) { _, _ ->
-                openMarketAndShutdown()
-            }
-            .setOnCancelListener {
-                openMarketAndShutdown()
-            }
-            .create()
-            .show()
-    }
-
-    private fun openRequireLoginDialog() {
-        AlertDialog
-            .Builder(this)
-            .setTitle(this.getString(R.string.token_invalid_dialog_title))
-            .setMessage(this.getString(R.string.token_invalid_dialog_message))
-            .setPositiveButton(this.getString(R.string.token_invalid_dialog_positive)) { _, _ ->
-                forceRestart()
-            }
-            .setOnCancelListener {
-                forceRestart()
-            }
-            .create()
-            .show()
+    private fun resetAuthenticationState() {
+        NetworkModule.requireTokenInvalidRestart.value = false
+        forceRestart()
     }
 
     private fun openMarketAndShutdown() {

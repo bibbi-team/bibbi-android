@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,14 +45,17 @@ import kotlin.math.max
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomAlertDialog(
-    enabledState: MutableState<Boolean> = remember { mutableStateOf(false) },
+    enabledState: State<Boolean> = remember { mutableStateOf(false) },
     title: String,
     description: String,
     confirmRequest: () -> Unit = {},
-    dismissRequest: () -> Unit = { enabledState.value = false },
-    cancelRequest: () -> Unit = { enabledState.value = false },
+    dismissRequest: () -> Unit = {
+        if(enabledState is MutableState) enabledState.value = false },
+    cancelRequest: () -> Unit = {
+        if(enabledState is MutableState) enabledState.value = false },
     confirmMessage: String = stringResource(id = R.string.dialog_confirm),
     cancelMessage: String = stringResource(id = R.string.dialog_cancel),
+    hasCancel: Boolean = true,
 ) {
     if (enabledState.value) {
         AlertDialog(
@@ -65,19 +69,21 @@ fun CustomAlertDialog(
                         mainAxisSpacing = ButtonsMainAxisSpacing,
                         crossAxisSpacing = ButtonsCrossAxisSpacing
                     ) {
-                        Button(
-                            onClick = dismissRequest,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.bbibbiScheme.button
-                            ),
-                            shape = RoundedCornerShape(10.dp),
-                            modifier = Modifier.size(width = 126.dp, height = 44.dp)
-                        ) {
-                            Text(
-                                cancelMessage,
-                                style = MaterialTheme.bbibbiTypo.bodyOneBold,
-                                color = Color(0xffFFFFFF)
-                            )
+                        if(hasCancel) {
+                            Button(
+                                onClick = dismissRequest,
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.bbibbiScheme.button
+                                ),
+                                shape = RoundedCornerShape(10.dp),
+                                modifier = Modifier.size(width = 126.dp, height = 44.dp)
+                            ) {
+                                Text(
+                                    cancelMessage,
+                                    style = MaterialTheme.bbibbiTypo.bodyOneBold,
+                                    color = Color(0xffFFFFFF)
+                                )
+                            }
                         }
                         Button(
                             onClick = confirmRequest,
