@@ -15,6 +15,11 @@ fun Resources.getErrorMessage(errorCode: String?): String {
         "CM0002" -> getString(R.string.server_invalid_input)
         "PO0001" -> getString(R.string.server_not_uploadable_time)
         "PO0002" -> getString(R.string.server_already_uploaded)
-        else -> getString(R.string.server_unknown_error)
+        "AU0002" -> getString(R.string.server_no_permission)
+        "MB0001" -> getString(R.string.server_member_not_found)
+        "FM0002" -> getString(R.string.server_already_in_family)
+        "FM0001" -> getString(R.string.server_family_not_found)
+        "DL0001" -> getString(R.string.server_link_not_valid)
+        else -> getString(R.string.server_unknown_error, errorCode ?: "UN0001")
     }
 }
