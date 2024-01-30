@@ -183,4 +183,5 @@
     <string name="unsaved_post_dialog_message">저장되지 않은 게시물이 있어요.\n게시물 작성 화면으로 돌아갈까요?</string>
     <string name="post_upload_sample_text">여덟자로입력해요</string>
     <string name="build_number_info">빌드번호 %1$s</string>
+    <string name="share_link_payload">링크로 입장한 뒤 초대코드를 입력하세요.\n\n%1$s\n초대코드 : %2$s</string>
 </resources>
