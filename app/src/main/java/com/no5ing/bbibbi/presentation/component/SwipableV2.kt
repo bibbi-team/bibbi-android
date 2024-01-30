@@ -220,7 +220,6 @@ internal class SwipeableV2State<T>(
     ) {
         val targetOffset = anchors[targetValue]
         if (targetOffset != null) {
-            Timber.d("A")
             try {
                 swipe {
                     animationTarget = targetValue

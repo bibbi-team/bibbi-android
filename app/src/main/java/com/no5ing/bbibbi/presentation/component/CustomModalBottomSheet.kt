@@ -282,7 +282,6 @@ private fun Modifier.modalBottomSheetSwipeable(
             }
 
             SheetValue.Expanded -> if (sheetSize.height != 0) {
-                Timber.d("Calculat")
                 max(0f, screenHeight - sheetSize.height)
             } else null
         }

@@ -22,7 +22,7 @@ import javax.inject.Singleton
 class GetCommentsRepository @Inject constructor(
     private val memberCacheProvider: MemberCacheProvider,
 ) : BaseRepository<PagingData<PostCommentUiState>>() {
-    private lateinit var pagingSource: GetCommentsPageSource
+    lateinit var pagingSource: GetCommentsPageSource
     override fun fetch(arguments: Arguments): Flow<PagingData<PostCommentUiState>> {
         return Pager(
             config = PagingConfig(

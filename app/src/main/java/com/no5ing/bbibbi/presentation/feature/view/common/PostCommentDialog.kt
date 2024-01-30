@@ -120,6 +120,8 @@ fun PostCommentDialog(
                         )
                     )
                 )
+            } else {
+                commentViewModel.refresh()
             }
         }
 

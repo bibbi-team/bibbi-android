@@ -22,6 +22,10 @@ class PostCommentViewModel @Inject constructor(
         return PagingData.empty()
     }
 
+    fun refresh() {
+        getCommentsRepository.pagingSource.invalidate()
+    }
+
     override fun invoke(arguments: Arguments) {
         withMutexScope(Dispatchers.IO) {
             getCommentsRepository
