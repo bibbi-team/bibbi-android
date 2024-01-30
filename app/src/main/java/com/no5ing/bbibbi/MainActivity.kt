@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -33,12 +34,26 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI
 import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenRequest
+import com.no5ing.bbibbi.data.model.auth.AuthResult
 import com.no5ing.bbibbi.di.NetworkModule
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.feature.MainPage
+import com.no5ing.bbibbi.presentation.feature.uistate.common.SessionState
 import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.cameraViewRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.landingAlreadyFamilyExistsRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.landingJoinFamilyRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.landingJoinFamilyWithLinkRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.landingOnBoardingRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.mainCalendarPageRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.mainFamilyPageRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.mainHomePageRoute
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigateUnsafeDeepLink
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.registerDayOfBirthRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.registerNickNameRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.registerProfileImageRoute
+import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.settingHomePageRoute
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.AlreadyFamilyExistsPageController
 import com.no5ing.bbibbi.presentation.navigation.NavDestinationListener
 import com.no5ing.bbibbi.presentation.theme.BbibbiTheme
@@ -57,6 +72,7 @@ import com.skydoves.sandwich.suspendOnFailure
 import com.skydoves.sandwich.suspendOnSuccess
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -176,6 +192,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if(intent?.extras?.getString("MACRO_TEST") == "true") {
+            setContent {
+                createTestScope()
+            }
+            return
+        }
 
         var keepSplash by mutableStateOf(true)
         // var isAlreadyLoggedIn by mutableStateOf(false)
@@ -328,5 +351,84 @@ class MainActivity : ComponentActivity() {
         intent.data = Uri.parse("market://details?id=com.no5ing.bbibbi")
         this.startActivity(intent)
         Runtime.getRuntime().exit(0)
+    }
+
+    @Composable
+    fun createTestScope() {
+        val navController = rememberNavController()
+        val snackBarHostState = remember { SnackbarHostState() }
+        val sessionState = remember { SessionState(isLoggedIn = true,
+            _memberId="TEST",
+            _familyId = "FAM",
+            _apiToken = AuthResult(
+            accessToken = "",
+            refreshToken = "",
+            isTemporaryToken = false))
+        }
+        val deepLinkState by remember{ mutableStateOf<String?>(null) }
+        val mixPanelState = remember {
+            MixpanelWrapper().apply {
+                mixpanelAPI = MixpanelAPI.getInstance(
+                    this@MainActivity,
+                    BuildConfig.mixPanelToken,
+                    true
+                )
+            }
+        }
+        LaunchedEffect(navController) {
+            delay(500L)
+            navController.navigate(registerNickNameRoute)
+            delay(500L)
+            navController.navigate("$registerDayOfBirthRoute?nickName=TEST")
+            delay(500L)
+            navController.navigate("$registerProfileImageRoute?nickName=TEST&dayOfBirth=2001-12-30")
+            delay(500L)
+            navController.navigate(landingOnBoardingRoute)
+            delay(500L)
+            navController.navigate(landingJoinFamilyRoute)
+            delay(500L)
+            navController.navigate(landingJoinFamilyWithLinkRoute)
+            delay(500L)
+            navController.navigate(landingAlreadyFamilyExistsRoute)
+            delay(500L)
+            navController.navigate(mainHomePageRoute)
+            delay(500L)
+            navController.navigate(mainFamilyPageRoute)
+            delay(500L)
+            navController.navigate(mainCalendarPageRoute)
+            delay(500L)
+            navController.navigate(settingHomePageRoute)
+        }
+        CompositionLocalProvider(
+            LocalSnackbarHostState provides snackBarHostState
+        ) {
+            CompositionLocalProvider(
+                LocalNavigateControllerState provides navController
+            ) {
+                CompositionLocalProvider(LocalMixpanelProvider provides mixPanelState) {
+                    CompositionLocalProvider(value = LocalDeepLinkState provides deepLinkState) {
+                        BbibbiTheme {
+                            Surface(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
+                                    .statusBarsPadding(),
+                                color = MaterialTheme.bbibbiScheme.backgroundPrimary
+                            ) {
+                                    CompositionLocalProvider(
+                                        LocalSessionState provides sessionState
+                                    ) {
+                                        MainPage(
+                                            snackBarHostState = snackBarHostState,
+                                            navController = navController,
+                                            isAlreadyLoggedIn = true,
+                                        )
+                                    }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
