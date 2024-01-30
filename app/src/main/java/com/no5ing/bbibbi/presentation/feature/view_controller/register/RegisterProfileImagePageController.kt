@@ -8,7 +8,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.presentation.feature.state.register.profile_image.rememberRegisterProfileImagePageState
-import com.no5ing.bbibbi.presentation.feature.view.register.profile_image.RegisterProfileImagePage
+import com.no5ing.bbibbi.presentation.feature.view.landing.profile_image.RegisterProfileImagePage
 import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.LoginPageController
@@ -39,7 +39,7 @@ object RegisterProfileImagePageController : NavigationDestination(
                 ?: throw RuntimeException(),
             onNextPage = {
                 navController.popBackStack(
-                    route = LoginPageController.route,
+                    route = route,
                     inclusive = true
                 )
                 navController.goLoginPage()

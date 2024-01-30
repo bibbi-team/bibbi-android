@@ -139,6 +139,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
     implementation("com.github.skydoves:sandwich-retrofit:2.0.5")
     implementation("com.github.skydoves:sandwich-retrofit-serialization:2.0.5")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
 
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")

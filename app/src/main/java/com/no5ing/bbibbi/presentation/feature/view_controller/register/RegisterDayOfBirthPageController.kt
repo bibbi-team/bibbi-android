@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
-import com.no5ing.bbibbi.presentation.feature.view.register.day_of_birth.RegisterDayOfBirthPage
+import com.no5ing.bbibbi.presentation.feature.view.landing.day_of_birth.RegisterDayOfBirthPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.register.RegisterProfileImagePageController.goRegisterProfileImagePage
 

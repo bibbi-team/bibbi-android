@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.register.profile_image
+package com.no5ing.bbibbi.presentation.feature.view.landing.profile_image
 
 
 import androidx.activity.compose.rememberLauncherForActivityResult

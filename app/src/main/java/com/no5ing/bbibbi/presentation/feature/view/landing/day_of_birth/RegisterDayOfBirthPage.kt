@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.register.day_of_birth
+package com.no5ing.bbibbi.presentation.feature.view.landing.day_of_birth
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -213,6 +213,7 @@ fun DigitizedNumberInput(
     onDone: () -> Unit,
 ) {
     Row(
+        modifier = Modifier.clickable { focusRequester.requestFocus() },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         BasicTextField(
@@ -259,7 +260,7 @@ fun DigitizedNumberInput(
             }
         )
         Text(
-            modifier = Modifier.clickable { focusRequester.requestFocus() },
+            modifier = Modifier,
             text = digitName,
             style = MaterialTheme.bbibbiTypo.title,
             color = if (value == 0)

@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view.register.nickname
+package com.no5ing.bbibbi.presentation.feature.view.landing.nickname
 
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
