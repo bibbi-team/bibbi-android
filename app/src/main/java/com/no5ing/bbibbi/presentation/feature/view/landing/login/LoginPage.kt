@@ -4,6 +4,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -38,6 +39,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.BackToExitHandler
 import com.no5ing.bbibbi.presentation.feature.state.landing.login.LoginPageState
@@ -136,144 +138,44 @@ fun LoginPage(
             .padding(bottom = 10.dp)
             .systemBarsPadding()
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1.0f)
-                    .padding(vertical = 36.dp),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Column {
-                    Spacer(modifier = Modifier.height(30.dp))
-                    Icon(
-                        painter = painterResource(id = R.drawable.login_logo),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        tint = MaterialTheme.bbibbiScheme.white
-                    )
-                }
-                Image(
-                    painter = painterResource(id = R.drawable.login_backgroup),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    contentScale = ContentScale.FillWidth,
+        LoginPageContent(
+            isLoggingIn = loginPageState.isLoggingIn.value,
+            onTapKakao = {
+                loginPageState.isLoggingIn.value = true
+                kakaoSignIn(
+                    context = context,
+                    onSuccess = onKakaoSuccess,
+                    onFailed = onKakaoFailed
                 )
+            },
+            onTapGoogle = {
+                loginPageState.isLoggingIn.value = true
+                startForResult.launch(googleSignInIntent(context))
             }
+        )
+    }
+}
+
+@androidx.compose.ui.tooling.preview.Preview(
+    showBackground = true,
+    name = "LoginPagePreview",
+    showSystemUi = true
+)
+@Composable
+fun LoginPagePreview() {
+    BBiBBiPreviewSurface {
+        Box {
             Column(
-                verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .padding(horizontal = 10.dp)
+                    .padding(bottom = 10.dp)
+                    .systemBarsPadding(),
             ) {
-                KakaoLoginButton(
-                    isLoggingIn = loginPageState.isLoggingIn.value,
-                    onClick = {
-                        loginPageState.isLoggingIn.value = true
-                        kakaoSignIn(
-                            context = context,
-                            onSuccess = onKakaoSuccess,
-                            onFailed = onKakaoFailed
-                        )
-                        //  loginViewModel.invoke(Arguments())
-                    }
-                )
-                GoogleLoginButton(
-                    isLoggingIn = loginPageState.isLoggingIn.value,
-                    onClick = {
-                        loginPageState.isLoggingIn.value = true
-                        startForResult.launch(googleSignInIntent(context))
-                    }
+                LoginPageContent(
+                    isLoggingIn = false,
                 )
             }
-
         }
-    }
-}
-
-@Composable
-fun KakaoLoginButton(
-    isLoggingIn: Boolean,
-    onClick: () -> Unit,
-) {
-    val alphaValue = if (isLoggingIn) 0.5f else 1.0f
-    Button(
-        colors = ButtonDefaults.buttonColors(
-            containerColor =
-            MaterialTheme.bbibbiScheme.kakaoYellow.copy(alpha = alphaValue)
-        ),
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        contentPadding = PaddingValues(vertical = 14.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.kakao_icon),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(19.dp),
-                tint = Color.Black.copy(alpha = alphaValue)
-            )
-            Text(
-                text = stringResource(id = R.string.login_with_kakao),
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp,
-                color = MaterialTheme.bbibbiScheme.backgroundPrimary.copy(alpha = alphaValue),
-            )
-        }
-
-    }
-}
-
-@Composable
-fun GoogleLoginButton(
-    isLoggingIn: Boolean,
-    onClick: () -> Unit,
-) {
-    val alphaValue = if (isLoggingIn) 0.5f else 1.0f
-    Button(
-        colors = ButtonDefaults
-            .buttonColors(
-                containerColor = MaterialTheme.bbibbiScheme.white.copy(
-                    alpha = alphaValue
-                )
-            ),
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        contentPadding = PaddingValues(vertical = 14.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = painterResource(id = com.google.firebase.messaging.R.drawable.googleg_standard_color_18),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(18.dp),
-                alpha = alphaValue,
-            )
-            Text(
-                text = stringResource(id = R.string.login_with_google),
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp,
-                color = MaterialTheme.bbibbiScheme.backgroundPrimary.copy(
-                    alpha = alphaValue
-                ),
-            )
-        }
-
     }
 }
