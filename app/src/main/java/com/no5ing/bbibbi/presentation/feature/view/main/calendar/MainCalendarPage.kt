@@ -35,11 +35,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
+import com.no5ing.bbibbi.data.model.family.FamilySummary
 import com.no5ing.bbibbi.data.model.post.CalendarBanner
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.feature.view_model.post.CalendarMonthViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.GetFamilySummaryViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.MonthlyStatisticsViewModel
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
@@ -67,6 +69,7 @@ fun MainCalendarPage(
     onDispose: () -> Unit = {},
     onTapDay: (LocalDate) -> Unit = {},
     calendarMonthViewModel: CalendarMonthViewModel = hiltViewModel(),
+    calendarMonthStatViewModel: GetFamilySummaryViewModel = hiltViewModel(),
     monthlyStatisticsViewModel: MonthlyStatisticsViewModel = hiltViewModel(),
 ) {
     val (width, height) = getScreenSize()
@@ -93,6 +96,11 @@ fun MainCalendarPage(
                 arguments = mapOf("yearMonth" to currentCalendarState.monthState.currentMonth.toString()),
             )
         )
+        calendarMonthStatViewModel.invoke(
+            Arguments(
+                arguments = mapOf("yearMonth" to currentCalendarState.monthState.currentMonth.toString()),
+            )
+        )
     }
 
     BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
@@ -107,6 +115,7 @@ fun MainCalendarPage(
             MainCalendarYearMonthBar(
                 yearMonthState = currentCalendarState.monthState.currentMonth,
                 statisticsState = monthlyStatisticsViewModel.uiState,
+                summaryState = calendarMonthStatViewModel.uiState,
             )
             if (statState.isReady()) {
                 Box(
@@ -238,8 +247,10 @@ private fun resolveBannerImageByName(bannerName: String): Int {
 fun MainCalendarYearMonthBar(
     yearMonthState: YearMonth,
     statisticsState: StateFlow<APIResponse<CalendarBanner>>,
+    summaryState: StateFlow<APIResponse<FamilySummary>>,
 ) {
     val statistics by statisticsState.collectAsState()
+    val summary by summaryState.collectAsState()
     val balloonColor = MaterialTheme.bbibbiScheme.button
     val balloonText = stringResource(id = R.string.calendar_everyday_info)
     val builder = rememberBalloonBuilder {
@@ -305,7 +316,7 @@ fun MainCalendarYearMonthBar(
             Text(
                 text = stringResource(
                     id = R.string.calendar_history_cnt,
-                    statistics.data.allFamilyMembersUploadedDays
+                    if(summary.isReady()) summary.data.totalImageCnt else 0
                 ),
                 color = MaterialTheme.bbibbiScheme.textPrimary,
                 style = MaterialTheme.bbibbiTypo.bodyOneRegular,

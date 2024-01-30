@@ -53,11 +53,6 @@ interface RestAPI {
     interface FamilyApi {
         @POST("v1/families")
         suspend fun createFamily(): ApiResponse<Family>
-
-        @GET("v1/families/{familyId}/summary")
-        suspend fun getFamilySummary(
-            @Path("familyId") familyId: String,
-        ): ApiResponse<FamilySummary>
     }
 
     /**
@@ -216,6 +211,11 @@ interface RestAPI {
         suspend fun getCalendarBanner(
             @Query("yearMonth") yearMonth: String,
         ): ApiResponse<CalendarBanner>
+
+        @GET("v1/calendar/summary")
+        suspend fun getFamilySummary(
+            @Query("yearMonth") yearMonth: String,
+        ): ApiResponse<FamilySummary>
 
         @GET("v1/posts/{postId}/comments")
         suspend fun getPostComments(
