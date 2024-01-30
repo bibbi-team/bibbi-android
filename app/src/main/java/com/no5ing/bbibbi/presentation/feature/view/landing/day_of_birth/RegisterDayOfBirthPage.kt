@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
+import com.no5ing.bbibbi.presentation.component.DigitizedNumberInput
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.component.button.CTAButton
 import com.no5ing.bbibbi.presentation.feature.state.register.day_of_birth.RegisterDayOfBirthPageState
@@ -57,6 +58,9 @@ fun RegisterDayOfBirthPage(
     val monthFocus = remember { FocusRequester() }
     val dayFocus = remember { FocusRequester() }
     val localFocusManager = LocalFocusManager.current
+    LaunchedEffect(Unit) {
+        yearFocus.requestFocus()
+    }
     BBiBBiSurface(
         modifier = Modifier
             .fillMaxSize()
@@ -196,79 +200,5 @@ fun RegisterDayOfBirthPage(
             }
 
         }
-    }
-    LaunchedEffect(Unit) {
-        yearFocus.requestFocus()
-    }
-}
-
-@Composable
-fun DigitizedNumberInput(
-    baseDigit: Int = 4,
-    digitName: String,
-    value: Int,
-    onValueChange: (String) -> Unit,
-    isInvalidInput: Boolean,
-    focusRequester: FocusRequester = remember { FocusRequester() },
-    onDone: () -> Unit,
-) {
-    Row(
-        modifier = Modifier.clickable { focusRequester.requestFocus() },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        BasicTextField(
-            value = if (value != 0) value.toString() else "",
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done,
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = { onDone() },
-            ),
-            onValueChange = onValueChange,
-            modifier = Modifier
-                .width(IntrinsicSize.Min)
-                .focusRequester(focusRequester),
-            textStyle = MaterialTheme.bbibbiTypo.title.copy(
-                color = if (isInvalidInput)
-                    MaterialTheme.bbibbiScheme.warningRed
-                else
-                    MaterialTheme.bbibbiScheme.textPrimary
-            ),
-            cursorBrush = Brush.verticalGradient(
-                0.00f to MaterialTheme.bbibbiScheme.button,
-                1.00f to MaterialTheme.bbibbiScheme.button,
-            ),
-            decorationBox = {
-                Row {
-                    Box {
-                        it()
-                        if (value == 0) {
-                            Box(modifier = Modifier.align(Alignment.Center)) {
-                                Text(
-                                    text = "0".repeat(baseDigit),
-                                    textAlign = TextAlign.Center,
-                                    style = MaterialTheme.bbibbiTypo.title,
-                                    color = MaterialTheme.bbibbiScheme.button
-                                )
-                            }
-
-                        }
-                    }
-                }
-
-            }
-        )
-        Text(
-            modifier = Modifier,
-            text = digitName,
-            style = MaterialTheme.bbibbiTypo.title,
-            color = if (value == 0)
-                MaterialTheme.bbibbiScheme.button
-            else if (isInvalidInput)
-                MaterialTheme.bbibbiScheme.warningRed
-            else
-                MaterialTheme.bbibbiScheme.textPrimary
-        )
     }
 }
