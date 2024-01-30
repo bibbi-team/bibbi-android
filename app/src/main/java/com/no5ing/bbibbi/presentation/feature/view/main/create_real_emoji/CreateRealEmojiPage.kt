@@ -64,6 +64,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.ClosableTopBar
 import com.no5ing.bbibbi.presentation.component.button.CameraCaptureButton
@@ -213,194 +214,103 @@ fun CreateRealEmojiPage(
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ClosableTopBar(
+            CreateRealEmojiTopBar(
                 onDispose = onDispose,
-                title = stringResource(id = R.string.real_emoji_upload_title),
             )
             Spacer(modifier = Modifier.height(48.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(32.dp)
-                            .background(MaterialTheme.bbibbiScheme.gray600, CircleShape)
-                    )
-                    Image(
-                        painter = getEmojiResource(emojiName = selectedEmoji),
-                        contentDescription = null,
-                        modifier = Modifier.size(26.dp),
-                        contentScale = ContentScale.FillBounds,
-                    )
-                }
-
-                Text(
-                    text = stringResource(id = R.string.real_emoji_follow_emoji),
-                    color = MaterialTheme.bbibbiScheme.emojiYellow,
-                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
-                )
-
-            }
+            CreateRealEmojiSelectionBar(
+                selectedEmoji = selectedEmoji,
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            Box {
-                AndroidView(
-                    { previewView },
-                    modifier = Modifier
-                        .aspectRatio(1.0f)
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(48.dp)),
-                )
-                Canvas(
-                    modifier = Modifier
-                        .aspectRatio(1.0f)
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(48.dp))
-                ) {
-                    val circlePath = Path().apply {
-                        addOval(Rect(center, size.minDimension / 2))
-                    }
-                    clipPath(circlePath, clipOp = ClipOp.Difference) {
-                        drawRect(SolidColor(Color.Black.copy(alpha = 0.3f)))
-                    }
+            CreateRealEmojiPreviewBox(
+                viewFactory = { previewView },
+                onTapZoom = {
+                    isZoomed = !isZoomed
                 }
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1.0f)
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp),
-                    contentAlignment = Alignment.BottomCenter
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.zoom_button),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(43.dp)
-                            .clickable {
-                                isZoomed = !isZoomed
-                            }
-                    )
-
-                }
-            }
+            )
             Spacer(modifier = Modifier.height(36.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.toggle_flash_button),
-                    contentDescription = null, // 필수 param
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable {
-                            torchState.value = !torchState.value
-                            cameraState.value?.cameraControl?.enableTorch(torchState.value)
-                        }
-                )
-                CameraCaptureButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            isCapturing = true
-                            val image = captureState.value.takePhotoWithImage(
-                                context,
-                                requiredFlip = cameraDirection.value == CameraSelector.DEFAULT_FRONT_CAMERA
-                            )
-                            isCapturing = false
-                            updateMemberPostRealEmojiViewModel.invoke(
-                                Arguments(
-                                    arguments = mapOf(
-                                        "emojiType" to selectedEmoji,
-                                        "image" to image,
-                                        "prevEmojiKey" to emojiMap[selectedEmoji]?.realEmojiId,
-                                    )
+            CreateRealEmojiCameraBar(
+                isCapturing = isCapturing || !uploadState.isIdle(),
+                onClickTorch = {
+                    torchState.value = !torchState.value
+                    cameraState.value?.cameraControl?.enableTorch(torchState.value)
+                },
+                onClickCapture = {
+                    coroutineScope.launch {
+                        isCapturing = true
+                        val image = captureState.value.takePhotoWithImage(
+                            context,
+                            requiredFlip = cameraDirection.value == CameraSelector.DEFAULT_FRONT_CAMERA
+                        )
+                        isCapturing = false
+                        updateMemberPostRealEmojiViewModel.invoke(
+                            Arguments(
+                                arguments = mapOf(
+                                    "emojiType" to selectedEmoji,
+                                    "image" to image,
+                                    "prevEmojiKey" to emojiMap[selectedEmoji]?.realEmojiId,
                                 )
                             )
-                        }
-                    },
-                    isCapturing = isCapturing || !uploadState.isIdle(),
-                )
-                Image(
-                    painter = painterResource(R.drawable.rorate_button),
-                    contentDescription = null, // 필수 param
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable {
-                            cameraDirection.value = run {
-                                if (cameraDirection.value == CameraSelector.DEFAULT_BACK_CAMERA) {
-                                    CameraSelector.DEFAULT_FRONT_CAMERA
-                                } else {
-                                    CameraSelector.DEFAULT_BACK_CAMERA
-                                }
-                            }
-
-                        }
-                )
-            }
-            Spacer(modifier = Modifier.height(36.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
-                modifier = Modifier
-                    .background(
-                        color = MaterialTheme.bbibbiScheme.button,
-                        shape = RoundedCornerShape(1000.dp)
-                    )
-                    .padding(vertical = 10.dp, horizontal = 24.dp)
-            ) {
-                emojiList.forEach { emojiType ->
-                    if (emojiMap.containsKey(emojiType)) {
-                        val realEmoji = emojiMap[emojiType]!!
-                        Box(
-                            modifier = Modifier.clickable {
-                                selectedEmoji = emojiType
-                            },
-                            contentAlignment = Alignment.BottomEnd,
-                        ) {
-                            Box {
-                                AsyncImage(
-                                    model = asyncImagePainter(source = realEmoji.imageUrl),
-                                    contentDescription = null, // 필수 param
-                                    modifier = Modifier
-                                        .size(42.dp)
-                                        .clip(CircleShape),
-                                )
-                            }
-                            Box(
-                                modifier = Modifier.offset(x = 4.dp, y = 4.dp)
-                            ) {
-                                Image(
-                                    painter = getRealEmojiResource(emojiName = emojiType),
-                                    contentDescription = null, // 필수 param
-                                    modifier = Modifier
-                                        .size(20.dp),
-                                )
-                            }
-                        }
-                    } else {
-                        Image(
-                            painter = if (selectedEmoji == emojiType) getEmojiResource(emojiName = emojiType)
-                            else getDisabledEmojiResource(emojiName = emojiType),
-                            contentDescription = null, // 필수 param
-                            modifier = Modifier
-                                .size(42.dp)
-                                .clip(
-                                    CircleShape
-                                )
-                                .clickable {
-                                    selectedEmoji = emojiType
-                                }
                         )
                     }
+                },
+                onClickRotate = {
+                    cameraDirection.value = run {
+                        if (cameraDirection.value == CameraSelector.DEFAULT_BACK_CAMERA) {
+                            CameraSelector.DEFAULT_FRONT_CAMERA
+                        } else {
+                            CameraSelector.DEFAULT_BACK_CAMERA
+                        }
+                    }
                 }
-            }
+            )
+            Spacer(modifier = Modifier.height(36.dp))
+            CreateRealEmojiBar(
+                emojiMap = emojiMap,
+                selectedEmoji = selectedEmoji,
+                onTapEmoji = {
+                    selectedEmoji = it
+                },
+            )
         }
 
     }
 
 }
 
+@androidx.compose.ui.tooling.preview.Preview(
+    showBackground = true,
+    name = "CreateRealEmojiPagePreview",
+    showSystemUi = true
+)
+@Composable
+fun CreateRealEmojiPagePreview() {
+    val context = LocalContext.current
+    BBiBBiPreviewSurface {
+        Box {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CreateRealEmojiTopBar()
+                Spacer(modifier = Modifier.height(48.dp))
+                CreateRealEmojiSelectionBar(
+                    selectedEmoji = emojiList.first(),
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                CreateRealEmojiPreviewBox(
+                    viewFactory = { PreviewView(context) },
+                )
+                Spacer(modifier = Modifier.height(36.dp))
+                CreateRealEmojiCameraBar(
+                    isCapturing = false,
+                )
+                Spacer(modifier = Modifier.height(36.dp))
+                CreateRealEmojiBar(
+                    emojiMap = emptyMap(),
+                    selectedEmoji = emojiList.first(),
+                )
+            }
+        }
+    }
+}
