@@ -74,7 +74,6 @@ import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import io.github.boguszpawlowski.composecalendar.week.Week
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -142,7 +141,7 @@ fun CalendarDetailPage(
         )
     }
 
-    val overScrollPagerState = rememberPagerState(pageCount = {3}, initialPage = 1)
+    val overScrollPagerState = rememberPagerState(pageCount = { 3 }, initialPage = 1)
     var overScrollEnabled by remember {
         mutableStateOf(true)
     }
@@ -192,7 +191,7 @@ fun CalendarDetailPage(
 
     LaunchedEffect(currentPostState, pagerState.currentPage) {
         if (currentPostState.isReady()) {
-            if(overScrollPagerState.currentPage != 1)
+            if (overScrollPagerState.currentPage != 1)
                 overScrollPagerState.scrollToPage(1)
             if (currentPostState.data.size <= pagerState.currentPage) {
                 return@LaunchedEffect
@@ -209,28 +208,31 @@ fun CalendarDetailPage(
     }
 
     LaunchedEffect(overScrollPagerState) {
-        snapshotFlow { overScrollPagerState.currentPage }.distinctUntilChanged().collect { nextPage ->
-            if(nextPage == 1) {
-                overScrollEnabled = true
-                return@collect
+        snapshotFlow { overScrollPagerState.currentPage }.distinctUntilChanged()
+            .collect { nextPage ->
+                if (nextPage == 1) {
+                    overScrollEnabled = true
+                    return@collect
+                }
+                val currSelection = currentCalendarState.selectionState.selection[0]
+                val currentWeeks = uiState.value.keys
+                val nextDay = if (nextPage == 0) currentWeeks.filter { it.isBefore(currSelection) }
+                    .maxWithOrNull(LocalDate::compareTo)
+                else currentWeeks.filter { it.isAfter(currSelection) }
+                    .minWithOrNull(LocalDate::compareTo)
+                if (nextDay != null) {
+                    currentCalendarState.selectionState.selection = listOf(nextDay)
+                    currentCalendarState.weekState.currentWeek = Week(nextDay.weekDates())
+                } else {
+                    snackBarState.showSnackBarWithDismiss(
+                        resources.getString(R.string.no_more_calendar_items),
+                        snackBarWarning
+                    )
+                    overScrollEnabled = false
+                    delay(250L)
+                    overScrollPagerState.scrollToPage(1)
+                }
             }
-            val currSelection = currentCalendarState.selectionState.selection[0]
-            val currentWeeks = uiState.value.keys
-            val nextDay = if(nextPage == 0) currentWeeks.filter { it.isBefore(currSelection) }.maxWithOrNull(LocalDate::compareTo)
-            else currentWeeks.filter { it.isAfter(currSelection) }.minWithOrNull(LocalDate::compareTo)
-            if(nextDay != null) {
-                currentCalendarState.selectionState.selection = listOf(nextDay)
-                currentCalendarState.weekState.currentWeek = Week(nextDay.weekDates())
-            } else {
-                snackBarState.showSnackBarWithDismiss(
-                    resources.getString(R.string.no_more_calendar_items),
-                    snackBarWarning
-                )
-                overScrollEnabled = false
-                delay(250L)
-                overScrollPagerState.scrollToPage(1)
-            }
-        }
     }
 
     val yearStr = stringResource(id = R.string.year)
@@ -292,7 +294,7 @@ fun CalendarDetailPage(
                             state = overScrollPagerState,
                             userScrollEnabled = overScrollEnabled,
                         ) {
-                            if(it == 1) {
+                            if (it == 1) {
                                 CompositionLocalProvider(
                                     LocalOverscrollConfiguration provides null
                                 ) {

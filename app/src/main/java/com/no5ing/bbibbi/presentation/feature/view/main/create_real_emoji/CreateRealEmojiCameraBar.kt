@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.presentation.feature.view.main.create_real_emoji
 
-import androidx.camera.core.CameraSelector
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,10 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
-import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.button.CameraCaptureButton
-import com.no5ing.bbibbi.util.takePhotoWithImage
-import kotlinx.coroutines.launch
 
 @Composable
 fun CreateRealEmojiCameraBar(
@@ -24,7 +20,7 @@ fun CreateRealEmojiCameraBar(
     onClickTorch: () -> Unit = {},
     onClickCapture: () -> Unit = {},
     onClickRotate: () -> Unit = {},
-){
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround,

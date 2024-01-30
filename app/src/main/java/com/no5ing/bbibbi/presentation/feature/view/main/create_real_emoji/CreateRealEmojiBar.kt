@@ -31,7 +31,7 @@ fun CreateRealEmojiBar(
     selectedEmoji: String,
     emojiMap: Map<String, MemberRealEmoji>,
     onTapEmoji: (String) -> Unit = {},
-){
+) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
         modifier = Modifier

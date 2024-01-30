@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -45,7 +44,7 @@ fun SettingHomePageContent(
         mutableIntStateOf(0)
     }
     LaunchedEffect(versionState) {
-        if(versionState != 0 && versionState % 6 == 0) {
+        if (versionState != 0 && versionState % 6 == 0) {
             onVersionLongTap()
         }
     }
