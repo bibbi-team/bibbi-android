@@ -15,14 +15,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 
-
 @HiltAndroidApp
 class BBiBBiApplication : Application(), ImageLoaderFactory {
     @OptIn(ExperimentalCoroutinesApi::class)
     val dispatcher = Dispatchers.IO.limitedParallelism(4)
+
     override fun onCreate() {
         super.onCreate()
-        Timber.plant(Timber.DebugTree())
+        if(BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+
         FirebaseApp.initializeApp(this)
         Firebase.appCheck.installAppCheckProviderFactory(
             PlayIntegrityAppCheckProviderFactory.getInstance(),
