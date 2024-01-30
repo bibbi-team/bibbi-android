@@ -13,9 +13,9 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.landing.LoginPageC
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.OnBoardingPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.composable
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.landingPageRoute
-import com.no5ing.bbibbi.presentation.feature.view_controller.register.RegisterDayOfBirthPageController
-import com.no5ing.bbibbi.presentation.feature.view_controller.register.RegisterNicknamePageController
-import com.no5ing.bbibbi.presentation.feature.view_controller.register.RegisterProfileImagePageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.RegisterDayOfBirthPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.RegisterNicknamePageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.RegisterProfileImagePageController
 
 @Stable
 fun NavGraphBuilder.landingGraph(

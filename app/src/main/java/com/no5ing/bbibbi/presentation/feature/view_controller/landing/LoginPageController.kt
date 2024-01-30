@@ -7,8 +7,7 @@ import com.no5ing.bbibbi.presentation.feature.state.landing.login.LoginSucceedRe
 import com.no5ing.bbibbi.presentation.feature.view.landing.login.LoginPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.OnBoardingPageController.goOnBoardingPage
-import com.no5ing.bbibbi.presentation.feature.view_controller.register.RegisterNicknamePageController
-import com.no5ing.bbibbi.presentation.feature.view_controller.register.RegisterNicknamePageController.goRegisterNicknamePage
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.RegisterNicknamePageController.goRegisterNicknamePage
 
 object LoginPageController : NavigationDestination(
     route = landingLoginPageRoute,

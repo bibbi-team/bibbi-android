@@ -1,4 +1,4 @@
-package com.no5ing.bbibbi.presentation.feature.view_controller.register
+package com.no5ing.bbibbi.presentation.feature.view_controller.landing
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
@@ -11,9 +11,7 @@ import com.no5ing.bbibbi.presentation.feature.state.register.profile_image.remem
 import com.no5ing.bbibbi.presentation.feature.view.landing.profile_image.RegisterProfileImagePage
 import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
-import com.no5ing.bbibbi.presentation.feature.view_controller.landing.LoginPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.LoginPageController.goLoginPage
-import com.no5ing.bbibbi.presentation.feature.view_controller.landing.OnBoardingPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.OnBoardingPageController.goOnBoardingPage
 
 
