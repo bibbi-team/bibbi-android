@@ -145,17 +145,21 @@ fun SettingHomePage(
             Spacer(modifier = Modifier.height(32.dp))
             SettingHomePageContent(
                 appVersionState = appVersionState,
+                onVersionLongTap = {
+                    snackBarHost.showSnackBarWithDismiss(
+                        resources.getString(R.string.build_number_info, BuildConfig.VERSION_CODE),
+                        snackBarInfo
+                    )
+                },
                 onTapMarketOpen = {
                     context.openMarket()
                 },
                 onTapNotificationSetting = {
                     if (notificationPermission.status.isGranted) {
-                        coroutineScope.launch {
-                            snackBarHost.showSnackBarWithDismiss(
-                                resources.getString(R.string.snack_bar_alreday_accepted),
-                                snackBarInfo
-                            )
-                        }
+                        snackBarHost.showSnackBarWithDismiss(
+                            resources.getString(R.string.snack_bar_alreday_accepted),
+                            snackBarInfo
+                        )
                     } else {
                         val settingsIntent =
                             Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)

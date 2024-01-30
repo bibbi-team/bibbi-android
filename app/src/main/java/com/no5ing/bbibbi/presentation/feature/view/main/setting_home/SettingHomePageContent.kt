@@ -11,6 +11,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -26,6 +32,7 @@ import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 @Composable
 fun SettingHomePageContent(
     appVersionState: APIResponse<AppVersion>,
+    onVersionLongTap: () -> Unit = {},
     onTapMarketOpen: () -> Unit = {},
     onTapNotificationSetting: () -> Unit = {},
     onPrivacy: () -> Unit = {},
@@ -34,6 +41,14 @@ fun SettingHomePageContent(
     onQuit: () -> Unit = {},
     onLogout: () -> Unit = {},
 ) {
+    var versionState by remember {
+        mutableIntStateOf(0)
+    }
+    LaunchedEffect(versionState) {
+        if(versionState != 0 && versionState % 6 == 0) {
+            onVersionLongTap()
+        }
+    }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -58,6 +73,7 @@ fun SettingHomePageContent(
                 BuildConfig.VERSION_NAME
             ),
             onClick = {
+                versionState++
                 if (appVersionState.isReady() && !appVersionState.data.latest) {
                     onTapMarketOpen()
                 }
