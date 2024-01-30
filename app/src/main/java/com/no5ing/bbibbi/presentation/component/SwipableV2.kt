@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.util.InternalMutatorMutex
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.coroutineScope
-import timber.log.Timber
 import kotlin.math.abs
 
 @Stable

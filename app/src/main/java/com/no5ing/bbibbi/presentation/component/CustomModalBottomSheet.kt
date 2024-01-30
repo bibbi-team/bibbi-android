@@ -68,7 +68,6 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.no5ing.bbibbi.util.pxToDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.UUID
 import kotlin.math.max
 import kotlin.math.roundToInt
