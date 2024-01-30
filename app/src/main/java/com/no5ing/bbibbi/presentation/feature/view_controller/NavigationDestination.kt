@@ -42,7 +42,6 @@ abstract class NavigationDestination(
         internal const val landingJoinFamilyRoute = "landing/join-family"
         internal const val landingJoinFamilyWithLinkRoute = "landing/join-family-with-link"
         internal const val landingAlreadyFamilyExistsRoute = "landing/already-family-exists"
-
         internal const val registerPageRoute = "register"
         internal const val registerNickNameRoute = "register/nickname"
         internal const val registerDayOfBirthRoute = "register/day-of-birth"
@@ -54,13 +53,11 @@ abstract class NavigationDestination(
         internal const val mainCalendarPageRoute = "main/calendar"
         internal const val mainCalendarDetailPageRoute = "main/calendar/detail"
         internal const val mainProfilePageRoute = "main/profile"
-
         internal const val postPageRoute = "post"
         internal const val postViewPageRoute = "post/view"
         internal const val postUploadRoute = "post/upload"
         internal const val postReUploadRoute = "post/reupload"
         internal const val postCreateRealEmojiRoute = "post/create-real-emoji"
-
         internal const val settingPageRoute = "setting"
         internal const val settingHomePageRoute = "setting/home"
         internal const val settingNickNameRoute = "setting/nickname"
