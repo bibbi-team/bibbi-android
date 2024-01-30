@@ -28,9 +28,11 @@ fun DisposableTopBar(
     rightButton: @Composable (() -> Unit) = { Spacer(modifier = Modifier.size(52.dp)) }
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().semantics {
-            contentDescription = "Go Back Button"
-        },
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics {
+                contentDescription = "Go Back Button"
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {

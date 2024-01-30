@@ -26,11 +26,11 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.no5ing.bbibbi.R
-import com.no5ing.bbibbi.presentation.feature.state.landing.onboarding.OnBoardingPageState
-import com.no5ing.bbibbi.presentation.feature.state.landing.onboarding.rememberOnBoardingPageState
-import com.no5ing.bbibbi.presentation.component.button.CTAButton
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.MeatBall
+import com.no5ing.bbibbi.presentation.component.button.CTAButton
+import com.no5ing.bbibbi.presentation.feature.state.landing.onboarding.OnBoardingPageState
+import com.no5ing.bbibbi.presentation.feature.state.landing.onboarding.rememberOnBoardingPageState
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSessionState
@@ -109,7 +109,7 @@ fun OnBoardingPage(
                         .padding(vertical = 12.dp),
                     contentPadding = PaddingValues(vertical = 18.dp),
                     onClick = {
-                        if(onBoardingPageState.pagerState.currentPage >= 2) {
+                        if (onBoardingPageState.pagerState.currentPage >= 2) {
                             if (!perm.status.isGranted) {
                                 perm.launchPermissionRequest()
                             } else {

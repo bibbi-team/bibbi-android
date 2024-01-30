@@ -5,7 +5,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.feature.uistate.common.SessionState
 import com.no5ing.bbibbi.presentation.theme.BbibbiTheme
@@ -24,7 +23,7 @@ fun BBiBBiPreviewSurface(
             color = MaterialTheme.bbibbiScheme.backgroundPrimary,
             modifier = modifier,
         ) {
-            CompositionLocalProvider(LocalMixpanelProvider provides MixpanelWrapper() ) {
+            CompositionLocalProvider(LocalMixpanelProvider provides MixpanelWrapper()) {
 
                 CompositionLocalProvider(
                     LocalSessionState provides SessionState(

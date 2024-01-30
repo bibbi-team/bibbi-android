@@ -50,9 +50,11 @@ fun CustomAlertDialog(
     description: String,
     confirmRequest: () -> Unit = {},
     dismissRequest: () -> Unit = {
-        if(enabledState is MutableState) enabledState.value = false },
+        if (enabledState is MutableState) enabledState.value = false
+    },
     cancelRequest: () -> Unit = {
-        if(enabledState is MutableState) enabledState.value = false },
+        if (enabledState is MutableState) enabledState.value = false
+    },
     confirmMessage: String = stringResource(id = R.string.dialog_confirm),
     cancelMessage: String = stringResource(id = R.string.dialog_cancel),
     hasCancel: Boolean = true,
@@ -69,7 +71,7 @@ fun CustomAlertDialog(
                         mainAxisSpacing = ButtonsMainAxisSpacing,
                         crossAxisSpacing = ButtonsCrossAxisSpacing
                     ) {
-                        if(hasCancel) {
+                        if (hasCancel) {
                             Button(
                                 onClick = dismissRequest,
                                 colors = ButtonDefaults.buttonColors(

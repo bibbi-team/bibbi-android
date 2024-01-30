@@ -39,7 +39,7 @@ class ChangeProfileImageViewModel @Inject constructor(
             setState(loading())
             val imageUriValue = Uri.parse(imageUri)
             val file = fileFromContentUri(context, imageUriValue).let {
-                if(it.extension.isEmpty()) File(imageUriValue.path!!) else it
+                if (it.extension.isEmpty()) File(imageUriValue.path!!) else it
             }
             Timber.d("file: $file ${file.name} ${file.absolutePath} ${file.extension}")
             restAPI.getMemberApi().getUploadImageRequest(

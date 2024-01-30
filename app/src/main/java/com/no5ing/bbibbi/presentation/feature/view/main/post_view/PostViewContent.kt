@@ -1,9 +1,6 @@
 package com.no5ing.bbibbi.presentation.feature.view.main.post_view
 
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
-import com.no5ing.bbibbi.presentation.component.AddReactionBar
 import com.no5ing.bbibbi.presentation.component.MiniTextBubbleBox
 import com.no5ing.bbibbi.presentation.feature.view.common.AddReactionDialog
 import com.no5ing.bbibbi.presentation.feature.view_model.post.AddPostReactionViewModel

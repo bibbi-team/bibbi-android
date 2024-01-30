@@ -23,7 +23,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.logging.HttpLoggingInterceptor
 import okio.Timeout
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
@@ -147,7 +146,7 @@ object NetworkModule {
 //            HttpLoggingInterceptor { message -> Timber.d("%s", message) }
 //        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return client
-           // .addInterceptor(httpLoggingInterceptor)
+            // .addInterceptor(httpLoggingInterceptor)
             .connectTimeout(timeout_connect, TimeUnit.SECONDS)
             .readTimeout(timeout_read, TimeUnit.SECONDS)
             .writeTimeout(timeout_write, TimeUnit.SECONDS)

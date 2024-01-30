@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -38,9 +37,9 @@ import com.no5ing.bbibbi.di.NetworkModule
 import com.no5ing.bbibbi.di.SessionModule
 import com.no5ing.bbibbi.presentation.feature.MainPage
 import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
-import com.no5ing.bbibbi.presentation.navigation.NavDestinationListener
-import com.no5ing.bbibbi.presentation.feature.view_controller.landing.AlreadyFamilyExistsPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigate
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.AlreadyFamilyExistsPageController
+import com.no5ing.bbibbi.presentation.navigation.NavDestinationListener
 import com.no5ing.bbibbi.presentation.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.LocalDeepLinkState
@@ -120,11 +119,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private suspend fun initializeDefault() {
-        handleFirstInstall()
-        initializeSession()
-    }
-
     private suspend fun initializeSession() {
         if (localDataStorage.getAuthTokens() != null) {
             val fcm = FirebaseMessaging.getInstance().token.await()
@@ -183,7 +177,8 @@ class MainActivity : ComponentActivity() {
         var isInitialBootstrap by mutableStateOf(true)
 
         lifecycleScope.launch(Dispatchers.IO) {
-            initializeDefault()
+            handleFirstInstall()
+            initializeSession()
             keepSplash = false
             isReady = true
         }
@@ -271,10 +266,12 @@ class MainActivity : ComponentActivity() {
                                             Timber.d("[MainActivity] Session State Changed to $sessionState")
                                             if (sessionState.isLoggedIn()) {
                                                 mixPanelState.mixpanelAPI.identify(sessionState.memberId)
-                                                mixPanelState.mixpanelAPI.registerSuperPropertiesMap(mapOf(
-                                                    "memberId" to sessionState.memberId,
-                                                    "appKey" to BuildConfig.appKey,
-                                                ))
+                                                mixPanelState.mixpanelAPI.registerSuperPropertiesMap(
+                                                    mapOf(
+                                                        "memberId" to sessionState.memberId,
+                                                        "appKey" to BuildConfig.appKey,
+                                                    )
+                                                )
                                                 localDataStorage.setAuthTokens(sessionState.apiToken)
                                             } else {
                                                 mixPanelState.mixpanelAPI.reset()

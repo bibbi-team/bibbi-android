@@ -117,7 +117,7 @@ fun ProfilePageMemberBar(
             }
             Spacer(modifier = Modifier.height(24.dp))
             Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
-            Spacer(modifier = Modifier.height(24 .dp))
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

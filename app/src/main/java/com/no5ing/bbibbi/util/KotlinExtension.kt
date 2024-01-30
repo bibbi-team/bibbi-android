@@ -302,19 +302,19 @@ suspend fun getInstallReferrerClient(context: Context) = suspendCancellableCorou
             when (responseCode) {
                 InstallReferrerClient.InstallReferrerResponse.OK -> {
                     // Connection established.
-                    if(it.isActive)
+                    if (it.isActive)
                         it.resume(referrerClient)
                 }
 
                 else -> {
-                    if(it.isActive)
+                    if (it.isActive)
                         it.resume(null)
                 }
             }
         }
 
         override fun onInstallReferrerServiceDisconnected() {
-            if(it.isActive)
+            if (it.isActive)
                 it.resume(null)
         }
     })

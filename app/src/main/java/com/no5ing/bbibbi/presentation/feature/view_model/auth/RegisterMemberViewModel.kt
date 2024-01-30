@@ -44,7 +44,7 @@ class RegisterMemberViewModel @Inject constructor(
             val uploadedImageUrl = if (imageUri != null) {
                 val imageUriValue = Uri.parse(imageUri)
                 val file = fileFromContentUri(context, imageUriValue).let {
-                    if(it.extension.isEmpty()) File(imageUriValue.path!!) else it
+                    if (it.extension.isEmpty()) File(imageUriValue.path!!) else it
                 }
                 var uploadedUrl: String? = null
                 restAPI.getMemberApi().getUploadImageRequest(

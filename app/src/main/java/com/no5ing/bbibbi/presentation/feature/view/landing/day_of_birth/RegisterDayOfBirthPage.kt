@@ -37,11 +37,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
-import com.no5ing.bbibbi.presentation.feature.state.register.day_of_birth.RegisterDayOfBirthPageState
-import com.no5ing.bbibbi.presentation.feature.state.register.day_of_birth.rememberRegisterDayOfBirthPageState
-import com.no5ing.bbibbi.presentation.component.button.CTAButton
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
+import com.no5ing.bbibbi.presentation.component.button.CTAButton
+import com.no5ing.bbibbi.presentation.feature.state.register.day_of_birth.RegisterDayOfBirthPageState
+import com.no5ing.bbibbi.presentation.feature.state.register.day_of_birth.rememberRegisterDayOfBirthPageState
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import java.time.YearMonth

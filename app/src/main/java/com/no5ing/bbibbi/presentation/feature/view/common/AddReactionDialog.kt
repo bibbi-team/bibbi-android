@@ -15,10 +15,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
@@ -57,7 +55,6 @@ import androidx.compose.ui.window.DialogWindowProvider
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
-import com.no5ing.bbibbi.presentation.component.OuterClickListener
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.CustomDialogPosition
 import com.no5ing.bbibbi.util.LocalNavigateControllerState
@@ -117,7 +114,7 @@ fun AddReactionDialog(
                         coroutineScope.launch {
                             swipeableState.animateTo(1)
                         }
-                      //  showAnimate = false
+                        //  showAnimate = false
                     }
             ) {
                 LaunchedEffect(Unit) {
@@ -165,17 +162,18 @@ fun AddReactionDialog(
                         Box(
                             modifier = Modifier
                                 //.clip(RoundedCornerShape(48.dp))
-                               // .background(color = MaterialTheme.bbibbiScheme.button)
+                                // .background(color = MaterialTheme.bbibbiScheme.button)
                                 .padding(vertical = 10.dp, horizontal = 16.dp)
                                 .padding(bottom = 50.dp)
                         ) {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
-                                Box(modifier = Modifier
-                                    .size(width = 32.dp, height = 4.dp)
-                                    .clip(RoundedCornerShape(2.dp))
-                                    .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
+                                Box(
+                                    modifier = Modifier
+                                        .size(width = 32.dp, height = 4.dp)
+                                        .clip(RoundedCornerShape(2.dp))
+                                        .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
                                 )
                                 Spacer(modifier = Modifier.height(24.dp))
                                 Row(

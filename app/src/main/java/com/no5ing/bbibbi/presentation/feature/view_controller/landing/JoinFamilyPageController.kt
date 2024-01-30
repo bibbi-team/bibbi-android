@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import com.no5ing.bbibbi.presentation.feature.view.landing.join_family.JoinFamilyPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.JoinFamilyWithLinkPageController.goJoinFamilyWithLinkPage
-import com.no5ing.bbibbi.presentation.feature.view_controller.main.HomePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.HomePageController.goHomePage
 
 object JoinFamilyPageController : NavigationDestination(
