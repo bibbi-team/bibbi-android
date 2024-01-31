@@ -229,7 +229,7 @@ private fun resolveBannerImageByName(bannerName: String): Int {
             R.drawable.calendar_99
         }
 
-        "ALONE_WALING" -> {
+        "ALONE_WALING", "ALONE_WALKING" -> {
             R.drawable.calendar_66
         }
 
