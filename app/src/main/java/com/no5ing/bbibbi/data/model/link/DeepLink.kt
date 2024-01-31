@@ -10,4 +10,13 @@ data class DeepLink(
     val url: String,
     val type: String,
     val details: Map<String, String>
-) : Parcelable, BaseModel()
+) : Parcelable, BaseModel() {
+    companion object {
+        fun mock() = DeepLink(
+            linkId = "linkId",
+            url = "https://no5ing.kr/o/sdo3032k3f",
+            type = "type",
+            details = mapOf("key" to "value")
+        )
+    }
+}

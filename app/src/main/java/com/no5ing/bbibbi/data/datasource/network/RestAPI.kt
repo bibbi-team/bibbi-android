@@ -1,16 +1,23 @@
 package com.no5ing.bbibbi.data.datasource.network
 
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenRequest
+import com.no5ing.bbibbi.data.datasource.network.request.member.AddPostRealEmojiRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeNameRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeProfileImageRequest
+import com.no5ing.bbibbi.data.datasource.network.request.member.CreateMemberRealEmojiRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.JoinFamilyRequest
+import com.no5ing.bbibbi.data.datasource.network.request.member.QuitMemberRequest
+import com.no5ing.bbibbi.data.datasource.network.request.member.UpdateMemberRealEmojiRequest
+import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostCommentRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostReactionRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.DeletePostReactionRequest
+import com.no5ing.bbibbi.data.datasource.network.request.post.UpdatePostCommentRequest
 import com.no5ing.bbibbi.data.datasource.network.response.ArrayResponse
 import com.no5ing.bbibbi.data.datasource.network.response.DefaultResponse
 import com.no5ing.bbibbi.data.datasource.network.response.Pagination
+import com.no5ing.bbibbi.data.model.auth.AppVersion
 import com.no5ing.bbibbi.data.model.auth.AuthResult
 import com.no5ing.bbibbi.data.model.auth.RefreshAuthRequest
 import com.no5ing.bbibbi.data.model.auth.RegisterRequest
@@ -20,10 +27,15 @@ import com.no5ing.bbibbi.data.model.family.FamilySummary
 import com.no5ing.bbibbi.data.model.link.DeepLink
 import com.no5ing.bbibbi.data.model.member.ImageUploadLink
 import com.no5ing.bbibbi.data.model.member.Member
+import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
+import com.no5ing.bbibbi.data.model.member.MemberRealEmojiList
+import com.no5ing.bbibbi.data.model.post.CalendarBanner
 import com.no5ing.bbibbi.data.model.post.CalendarElement
 import com.no5ing.bbibbi.data.model.post.Post
+import com.no5ing.bbibbi.data.model.post.PostComment
 import com.no5ing.bbibbi.data.model.post.PostReaction
 import com.no5ing.bbibbi.data.model.post.PostReactionSummary
+import com.no5ing.bbibbi.data.model.post.PostRealEmoji
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -41,11 +53,6 @@ interface RestAPI {
     interface FamilyApi {
         @POST("v1/families")
         suspend fun createFamily(): ApiResponse<Family>
-
-        @GET("v1/families/{familyId}/summary")
-        suspend fun getFamilySummary(
-            @Path("familyId") familyId: String,
-        ): ApiResponse<FamilySummary>
     }
 
     /**
@@ -63,10 +70,11 @@ interface RestAPI {
             @Path("memberId") memberId: String
         ): ApiResponse<Member>
 
-        @DELETE("v1/members/{memberId}")
+        @HTTP(method = "DELETE", path = "v1/members/{memberId}", hasBody = true)
         suspend fun quitMember(
-            @Path("memberId") memberId: String
-        ): ApiResponse<Member>
+            @Path("memberId") memberId: String,
+            @Body body: QuitMemberRequest,
+        ): ApiResponse<DefaultResponse>
 
         @POST("v1/members/image-upload-request")
         suspend fun getUploadImageRequest(
@@ -106,6 +114,36 @@ interface RestAPI {
         suspend fun joinFamilyWithToken(
             @Body body: JoinFamilyRequest,
         ): ApiResponse<Family>
+
+        @POST("v1/me/quit-family")
+        suspend fun quitFamily(): ApiResponse<DefaultResponse>
+
+        @GET("v1/me/app-version")
+        suspend fun getAppVersion(): ApiResponse<AppVersion>
+
+        @POST("v1/members/{memberId}/real-emoji/image-upload-request")
+        suspend fun getRealEmojiImageRequest(
+            @Path("memberId") memberId: String,
+            @Body body: ImageUploadRequest,
+        ): ApiResponse<ImageUploadLink>
+
+        @GET("v1/members/{memberId}/real-emoji")
+        suspend fun getRealEmojiList(
+            @Path("memberId") memberId: String,
+        ): ApiResponse<MemberRealEmojiList<MemberRealEmoji>>
+
+        @POST("v1/members/{memberId}/real-emoji")
+        suspend fun createMemberRealEmoji(
+            @Path("memberId") memberId: String,
+            @Body body: CreateMemberRealEmojiRequest,
+        ): ApiResponse<MemberRealEmoji>
+
+        @PUT("v1/members/{memberId}/real-emoji/{realEmojiId}")
+        suspend fun updateMemberRealEmoji(
+            @Path("memberId") memberId: String,
+            @Path("realEmojiId") realEmojiId: String,
+            @Body body: UpdateMemberRealEmojiRequest,
+        ): ApiResponse<MemberRealEmoji>
     }
 
     /**
@@ -168,6 +206,61 @@ interface RestAPI {
             @Query("yearMonth") yearMonth: String,
             @Query("week") week: Int,
         ): ApiResponse<ArrayResponse<CalendarElement>>
+
+        @GET("v1/calendar/banner")
+        suspend fun getCalendarBanner(
+            @Query("yearMonth") yearMonth: String,
+        ): ApiResponse<CalendarBanner>
+
+        @GET("v1/calendar/summary")
+        suspend fun getFamilySummary(
+            @Query("yearMonth") yearMonth: String,
+        ): ApiResponse<FamilySummary>
+
+        @GET("v1/posts/{postId}/comments")
+        suspend fun getPostComments(
+            @Path("postId") postId: String,
+            @Query("page") page: Int?,
+            @Query("size") size: Int?,
+            @Query("sort") sort: String? = "DESC",
+        ): ApiResponse<Pagination<PostComment>>
+
+        @DELETE("v1/posts/{postId}/comments/{commentId}")
+        suspend fun deletePostComment(
+            @Path("postId") postId: String,
+            @Path("commentId") commentId: String,
+        ): ApiResponse<DefaultResponse>
+
+        @POST("v1/posts/{postId}/comments")
+        suspend fun createPostComment(
+            @Path("postId") postId: String,
+            @Body body: CreatePostCommentRequest,
+        ): ApiResponse<PostComment>
+
+        @PUT("v1/posts/{postId}/comments/{commentId}")
+        suspend fun updatePostComment(
+            @Path("postId") postId: String,
+            @Path("commentId") commentId: String,
+            @Body body: UpdatePostCommentRequest,
+        ): ApiResponse<PostComment>
+
+        @GET("v1/posts/{postId}/real-emoji")
+        suspend fun getPostRealEmojiList(
+            @Path("postId") postId: String,
+        ): ApiResponse<ArrayResponse<PostRealEmoji>>
+
+        @POST("v1/posts/{postId}/real-emoji")
+        suspend fun addPostRealEmojiToPost(
+            @Path("postId") postId: String,
+            @Body body: AddPostRealEmojiRequest,
+        ): ApiResponse<PostRealEmoji>
+
+        @DELETE("v1/posts/{postId}/real-emoji/{postRealEmojiId}")
+        suspend fun deletePostRealEmojiFromPost(
+            @Path("postId") postId: String,
+            @Path("postRealEmojiId") postRealEmojiId: String,
+        ): ApiResponse<DefaultResponse>
+
     }
 
     /**

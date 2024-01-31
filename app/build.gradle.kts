@@ -11,6 +11,15 @@ plugins {
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
 secrets {
     propertiesFileName = "secrets.properties"
 }
@@ -20,9 +29,8 @@ val secretProperties = Properties().apply {
 }
 
 val majorVersion = 1
-val minorVersion = 0
-val patchVersion = 1
-val buildVersion = 1
+val minorVersion = 1
+val patchVersion = 0
 
 android {
     namespace = "com.no5ing.bbibbi"
@@ -41,8 +49,8 @@ android {
         applicationId = "com.no5ing.bbibbi"
         minSdk = 26
         targetSdk = 34
-        versionCode = majorVersion * 10000 + minorVersion * 1000 + patchVersion * 100 + buildVersion
-        versionName = "$majorVersion.$minorVersion.$patchVersion"
+        versionCode = 11011
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -50,15 +58,22 @@ android {
         }
     }
 
-
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.getByName("release")
+        }
+        create("benchmark") {
+            initWith(buildTypes.getByName("release"))
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -66,7 +81,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     buildFeatures {
         compose = true
@@ -83,8 +98,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":widget"))
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
     implementation("androidx.compose.ui:ui")
@@ -99,10 +115,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
-
+    implementation("com.airbnb.android:lottie-compose:6.3.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.31.1-alpha")
     implementation("androidx.camera:camera-camera2:1.4.0-alpha03")
     implementation("androidx.camera:camera-lifecycle:1.4.0-alpha03")
     implementation ("androidx.camera:camera-view:1.4.0-alpha03")
@@ -112,15 +127,19 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0-alpha01")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
     implementation("androidx.compose.material:material:1.5.4")
-
+    implementation("com.mixpanel.android:mixpanel-android:7.4.0")
     implementation("com.google.dagger:hilt-android:2.49")
     kapt("com.google.dagger:hilt-android-compiler:2.49")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-jackson:2.9.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0")
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
     implementation("com.github.skydoves:sandwich-retrofit:2.0.5")
     implementation("com.github.skydoves:sandwich-retrofit-serialization:2.0.5")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
 
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
@@ -139,4 +158,5 @@ dependencies {
     implementation("androidx.glance:glance-appwidget:1.0.0")
     implementation("androidx.glance:glance-material3:1.0.0")
     implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.profileinstaller:profileinstaller:1.3.1")
 }

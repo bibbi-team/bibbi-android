@@ -6,7 +6,5 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FamilySummary(
-    val totalParticipateCnt: Int,
     val totalImageCnt: Int,
-    val myImageCnt: Int,
 ) : Parcelable, BaseModel()

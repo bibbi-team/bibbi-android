@@ -2,8 +2,8 @@
 <resources>
 
     <style name="Theme.App.First" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#242427</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/splash</item>
+        <item name="windowSplashScreenBackground">#F5F378</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.Bbibbi</item>
     </style>
 </resources>

@@ -7,6 +7,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class AuthResult(
     val accessToken: String,
-    val refreshToken: String,
+    val refreshToken: String?,
     val isTemporaryToken: Boolean,
 ) : Parcelable, BaseModel()

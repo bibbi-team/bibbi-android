@@ -10,7 +10,7 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.data.repository.BasePageSource
 import com.no5ing.bbibbi.data.repository.BaseRepository
-import com.no5ing.bbibbi.presentation.uistate.family.MainFeedUiState
+import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.util.parallelMap
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.mapSuccess
@@ -23,7 +23,7 @@ import javax.inject.Singleton
 class GetFeedsRepository @Inject constructor(
     private val memberCacheProvider: MemberCacheProvider,
 ) : BaseRepository<PagingData<MainFeedUiState>>() {
-    private lateinit var pagingSource: GetFeedPageSource
+    lateinit var pagingSource: GetFeedPageSource
     override fun fetch(arguments: Arguments): Flow<PagingData<MainFeedUiState>> {
         return Pager(
             config = PagingConfig(

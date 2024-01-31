@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000159">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: google_play_track_version_codes" time="1.845912">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: increment_version_code" time="0.004377">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: bundleRelease" time="14.918439">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: upload_to_play_store" time="71.075684">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: get_version_name" time="0.001322">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: get_version_code" time="0.000334">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: slack" time="0.709829">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

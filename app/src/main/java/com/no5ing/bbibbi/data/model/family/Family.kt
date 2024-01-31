@@ -7,6 +7,6 @@ import java.time.ZonedDateTime
 
 @Parcelize
 data class Family(
-    val familyID: String,
+    val familyId: String,
     val createdAt: ZonedDateTime,
 ) : Parcelable, BaseModel()

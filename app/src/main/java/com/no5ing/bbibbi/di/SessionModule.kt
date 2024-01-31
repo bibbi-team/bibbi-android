@@ -3,7 +3,7 @@ package com.no5ing.bbibbi.di
 import android.content.Context
 import com.no5ing.bbibbi.data.model.auth.AuthResult
 import com.no5ing.bbibbi.data.model.member.Member
-import com.no5ing.bbibbi.presentation.uistate.common.SessionState
+import com.no5ing.bbibbi.presentation.feature.uistate.common.SessionState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber

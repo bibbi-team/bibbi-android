@@ -5,7 +5,11 @@
     <string name="home_upload">업로드</string>
     <string name="home_graphic">그래픽</string>
     <string name="home_one_image_per_day">하루에 한 번 사진을 올릴 수 있어요</string>
-    <string name="home_image_on_duration">매일 12시부터 24시까지 사진을 업로드할 수 있어요</string>
+    <string name="home_not_camera_time">카메라 사용 시간이 아니에요</string>
+    <string name="home_already_uploaded_today">오늘의 생존신고는 완료되었어요</string>
+
+    <string name="home_everyone_uploaded">우리 가족 모두가 사진을 올린 날</string>
+    <string name="home_image_on_duration">매일 12-24시에 사진 한 장을 올려요</string>
     <string name="home_time_not_much">시간이 얼마 남지 않았어요!</string>
     <string name="home_time_over">내일 낮 12시부터 사진을 올릴 수 있어요!</string>
 
@@ -20,20 +24,32 @@
     <string name="register_dob_description">가족들이 생일을 챙겨줄 수 있어요</string>
     <string name="register_dob_correct_date">올바른 날짜를 입력해주세요</string>
 
-    <string name="register_profile_image_description">마지막이에요.\n%1$s님의 프로필을 선택해보세요</string>
+    <string name="register_profile_image_description">마지막이에요. %1$s님의\n프로필을 선택해보세요</string>
 
     <string name="camera_title">카메라</string>
     <string name="upload_post">사진 올리기</string>
     <string name="upload_image">사진 업로드</string>
     <string name="setting_and_privacy">설정 및 개인정보</string>
 
+    <string name="real_emoji_upload_title">리얼 이모지</string>
+    <string name="real_emoji_follow_emoji">표정을 따라해보세요</string>
+
     <string name="setting_account_and_permission">계정 및 권한</string>
-    <string name="setting_version_info">버전 정보</string>
+    <string name="setting_version_info">%1$s 버전</string>
+    <string name="setting_version_info_querying">버전 정보 조회중...</string>
+    <string name="setting_version_info_latest">최신 버전입니다</string>
+    <string name="setting_version_info_require_update">최신 버전으로 업데이트 해주세요</string>
     <string name="setting_notification_setting">알림 설정</string>
-    <string name="setting_terms_of_service">약관 및 정책</string>
+    <string name="setting_privacy">개인정보처리방침</string>
+    <string name="setting_terms">이용 약관</string>
     <string name="setting_login">로그인</string>
-    <string name="setting_logout">로그아웃</string>
+    <string name="setting_logout">로그 아웃</string>
+    <string name="setting_group_quit">그룹 탈퇴</string>
     <string name="setting_leave">회원 탈퇴</string>
+
+    <string name="comment_dialog_delete">삭제</string>
+    <string name="comment_dialog_text_field_hint">댓글 달기...</string>
+    <string name="comment_dialog_text_field_enter">등록</string>
 
     <string name="profile_title">활동</string>
 
@@ -44,22 +60,25 @@
     <string name="onboarding_first_title">매일 낮 12시, 알림을 받으면\n가족에게 사진을 보내세요</string>
     <string name="onboarding_second_title">홈 화면 위젯으로\n가족의 일상을 한 눈에 확인해요</string>
     <string name="onboarding_third_title">하루에 오직 두번 오는 알림,\n놓치지 않으려면 꼭 허용하세요!</string>
-    <string name="onboarding_next">알림 허용하고 시작하기</string>
+    <string name="onboarding_next">알림 허용하고 그룹 생성하기</string>
     <string name="onboarding_next_join">알림 허용하고 입장하기</string>
     <string name="family_me">Me</string>
 
+    <string name="create_new_room_dialog_title">새 그룹방으로 입장</string>
+    <string name="create_new_room_dialog_description">초대 받은 그룹이 없어\n새 그룹방으로 입장할래요</string>
+
     <string name="join_family_title">%1$s님, 가족 중 첫번째로\n방을 생성해보세요</string>
     <string name="join_family_description">하나의 그룹에만 소속될 수 있어요</string>
-    <string name="join_family_create_group">그룹 생성하기</string>
+    <string name="join_family_create_group">새 그룹방으로 입장하기</string>
     <string name="join_family_link_bar_title">이미 초대링크를 받았다면</string>
     <string name="join_family_link_bar_subtitle">그룹 입장하기</string>
 
-    <string name="join_family_with_link_title">초대받은 링크를 입력해주세요</string>
+    <string name="join_family_with_link_title">초대받은 링크에서\n초대 코드를 확인할 수 있어요.</string>
     <string name="join_family_with_link_enter_group">그룹 입장하기</string>
-    <string name="join_family_with_link_sample_text">https://no5ing.kr/o/</string>
-    <string name="join_family_with_link_not_valid">유효하지 않은 링크에요</string>
+    <string name="join_family_with_link_sample_text">여기에 코드 입력</string>
+    <string name="join_family_with_link_not_valid">유효하지 않은 코드에요</string>
 
-    <string name="time_now">방금 전</string>
+    <string name="time_now">지금</string>
     <string name="time_minutes">분 전</string>
     <string name="time_hours">시간 전</string>
     <string name="time_days">일 전</string>
@@ -68,17 +87,28 @@
 
     <string name="snack_bar_word_limit">%1$d자까지 입력 가능해요</string>
     <string name="snack_bar_no_space">띄어쓰기는 할 수 없어요</string>
-    <string name="snack_bar_saved">앨범에 저장되었어요</string>
+    <string name="snack_bar_saved">사진이 저장되었어요</string>
     <string name="snack_bar_alreday_accepted">이미 권한을 허용했어요</string>
 
     <string name="server_already_uploaded">이미 오늘 게시물을 업로드했어요</string>
+    <string name="server_no_permission">그 작업을 할 권한이 없어요</string>
     <string name="server_not_uploadable_time">업로드할 수 없는 시간이에요</string>
-    <string name="server_unknown_error">알 수 없는 오류가 발생했어요</string>
+    <string name="server_unknown_error">알 수 없는 오류가 발생했어요 (%1$s)</string>
     <string name="server_invalid_input">입력값이 올바르지 않아요</string>
+    <string name="server_member_not_found">사용자 정보를 찾을 수 없어요</string>
+    <string name="server_post_not_found">게시물을 찾을 수 없어요</string>
+    <string name="server_already_in_family">이미 가족에 속해있어요</string>
+    <string name="server_family_not_found">가족을 찾을 수 없어요</string>
+    <string name="server_link_not_valid">유효하지 않은 링크에요</string>
+
     <string name="calendar">추억 캘린더</string>
     <string name="year">년</string>
     <string name="month">월</string>
-    <string name="calendar_everyday_info">모두 참여한 날에는\n스마일 이모지가 추가돼요</string>
+    <string name="calendar_history_cnt">%1$d개의 추억</string>
+    <string name="calendar_everyday_info">모두가 참여한 날과 업로드한 사진 수로\n이 달의 친밀도를 측정합니다</string>
+    <string name="calendar_banner_subtitle">모두 참여한 날 %1$d일</string>
+    <string name="calendar_banner_title_top">상위</string>
+    <string name="calendar_banner_title_percent">%</string>
     <string name="back_to_exit_message">종료하려면 한번 더 눌러주세요</string>
     <string name="change_nickname">닉네임 변경</string>
     <string name="change_nickname_description">닉네임을 변경해주세요</string>
@@ -91,13 +121,17 @@
     <string name="dialog_confirm">확인</string>
     <string name="dialog_cancel">취소</string>
 
-    <string name="dialog_logout_title">로그아웃</string>
+    <string name="dialog_logout_title">로그 아웃</string>
     <string name="dialog_logout_message">로그아웃 하시겠어요?</string>
     <string name="dialog_logout_confirm">로그아웃</string>
 
-    <string name="dialog_quit_title">회원탈퇴</string>
-    <string name="dialog_quit_message">회원탈퇴 하시겠어요?</string>
-    <string name="dialog_quit_confirm">회원탈퇴</string>
+    <string name="dialog_quit_title">회원 탈퇴</string>
+    <string name="dialog_quit_message">회원을 탈퇴해도 나의 활동 내역은\n유지됩니다. 정말 탈퇴하시겠습니까?</string>
+    <string name="dialog_quit_confirm">탈퇴</string>
+
+    <string name="dialog_quit_group_title">그룹 탈퇴</string>
+    <string name="dialog_quit_group_message">그룹을 탈퇴해도 나의 활동 내역은\n유지되니 참고해주세요.</string>
+    <string name="dialog_quit_group_confirm">확인</string>
 
     <string name="dialog_image_upload_title">이미지 업로드</string>
     <string name="dialog_image_upload_message">업로드할 이미지를 어디에서 가져올까요?</string>
@@ -112,11 +146,11 @@
     <string name="profile_image_not_exists">아직 업로드한 사진이 없어요</string>
 
     <string name="app_update_dialog_title">앱 업데이트</string>
-    <string name="app_update_dialog_message">새로운 버전이 있어요. PlayStore로 이동합니다</string>
+    <string name="app_update_dialog_message">새로운 버전이 있어요!\n플레이스토어로 이동합니다</string>
     <string name="app_update_dialog_positive">업데이트</string>
 
-    <string name="token_invalid_dialog_title">토큰 만료됨</string>
-    <string name="token_invalid_dialog_message">토큰이 만료되었어요. 로그인 화면으로 이동합니다.</string>
+    <string name="token_invalid_dialog_title">로그인 만료됨</string>
+    <string name="token_invalid_dialog_message">토큰이 만료되었어요\n로그인 화면으로 이동합니다.</string>
     <string name="token_invalid_dialog_positive">확인</string>
 
     <string name="already_family_exists_title">이미 가입된 그룹이 있어요</string>
@@ -124,12 +158,30 @@
     <string name="already_family_exists_confirm">확인</string>
 
     <string name="no_more_calendar_items">더 이상 게시물이 없어요</string>
+    <string name="snack_bar_everyone_uploaded_day">우리 가족 모두가 사진을 올린 날</string>
 
-    <string name="widget_name">삐삐</string>
+    <string name="yellow_widget_name">삐삐</string>
     <string name="widget_description">가족들이 생존신고 한 사진을 빠르게 확인할 수 있어요.</string>
 
-    <string name="register_day_of_birth_description">안녕하세요 %1$s님, 생일이 언제신가요?</string>
+    <string name="register_day_of_birth_description">안녕하세요 %1$s님,\n생일이 언제신가요?</string>
     <string name="register_day_of_birth_year">년</string>
     <string name="register_day_of_birth_month">월</string>
     <string name="register_day_of_birth_day">일</string>
+
+    <string name="quit_title">회원 탈퇴</string>
+    <string name="quit_button">탈퇴하기</string>
+    <string name="quit_heading_one">삐삐 서비스와 헤어지게 되어 아쉬워요..</string>
+    <string name="quit_heading_two">탈퇴 사유를 알려주세요\n삐삐 서비스를 개선하는데\n많은 도움이 됩니다!</string>
+    <string name="quit_minimum_one">최소 1개 이상 선택해주세요.</string>
+    <string name="comment_count">%1$d개</string>
+    <string name="comment_dialog_title">댓글</string>
+    <string name="comment_dialog_comment_deleted">댓글이 삭제되었습니다</string>
+    <string name="comment_dialog_no_comments_title">아직 댓글이 없습니다</string>
+    <string name="comment_dialog_no_comments_description">댓글을 남겨보세요.</string>
+
+    <string name="unsaved_post_dialog_title">저장되지 않은 게시물</string>
+    <string name="unsaved_post_dialog_message">저장되지 않은 게시물이 있어요.\n게시물 작성 화면으로 돌아갈까요?</string>
+    <string name="post_upload_sample_text">여덟자로입력해요</string>
+    <string name="build_number_info">빌드번호 %1$s</string>
+    <string name="share_link_payload">링크로 입장한 뒤 초대코드를 입력하세요.\n\n%1$s\n초대코드 : %2$s</string>
 </resources>

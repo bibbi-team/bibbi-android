@@ -36,6 +36,13 @@ fun toLocalizedDate(time: ZonedDateTime): String {
     return yearDateFormatter.format(time)
 }
 
+fun toLocalizedDate(date: String): String {
+    val localDate = LocalDate.parse(date)
+    if (localDate.year == ZonedDateTime.now().year)
+        return dateFormatter.format(localDate)
+    return yearDateFormatter.format(localDate)
+}
+
 fun todayAsString() = LocalDate.now().toString()
 
 fun getZonedDateTimeString() = ZonedDateTime.now().toString()
@@ -59,3 +66,8 @@ internal fun Collection<LocalDate>.fillUpTo(date: LocalDate) =
     (0..date.toEpochDay() - first().toEpochDay()).map {
         first().plusDays(it)
     }
+
+fun LocalDate.isBirthdayNow(): Boolean {
+    val now = LocalDate.now()
+    return this.monthValue == now.monthValue && this.dayOfMonth == now.dayOfMonth
+}
