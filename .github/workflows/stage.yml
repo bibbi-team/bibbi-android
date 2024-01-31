@@ -6,7 +6,7 @@ on:
     paths:
       - 'app/**'
       - 'widget/**'
-      - 'fastlane/**'
+      - 'fastlane/*'
       - '.github/workflows/stage.yaml'
 jobs:
   deploy-stage:
