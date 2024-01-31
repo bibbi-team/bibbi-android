@@ -37,8 +37,10 @@ platform :android do
 
   desc "Deploy Internal Test Version to Google Play"
   lane :deploy_internal_test do
-    latest_release = google_play_track_version_codes(track: 'internal')
-    increment_version_code({ version_code: latest_release[0].to_i + 1, gradle_file_path: "app/build.gradle.kts" })
+    iR = google_play_track_version_codes(track: 'internal')
+    pR = google_play_track_version_codes(track: 'production')
+    latest_release = [iR[0].to_i, pR[0].to_i].max
+    increment_version_code({ version_code: latest_release + 1, gradle_file_path: "app/build.gradle.kts" })
     version_name = get_version_name(
       gradle_file_path: "./app/build.gradle.kts",
       ext_constant_name: "versionName"
@@ -61,8 +63,10 @@ platform :android do
 
   desc "Deploy Production Version to Google Play"
   lane :deploy_production do
-    latest_release = google_play_track_version_codes(track: 'production')
-    increment_version_code({ version_code: latest_release[0].to_i + 1, gradle_file_path: "app/build.gradle.kts" })
+    iR = google_play_track_version_codes(track: 'internal')
+    pR = google_play_track_version_codes(track: 'production')
+    latest_release = [iR[0].to_i, pR[0].to_i].max
+    increment_version_code({ version_code: latest_release + 1, gradle_file_path: "app/build.gradle.kts" })
     version_name = get_version_name(
       gradle_file_path: "./app/build.gradle.kts",
       ext_constant_name: "versionName"
