@@ -64,7 +64,7 @@ fun LoginPageContent(
         ) {
             KakaoLoginButton(
                 isLoggingIn = isLoggingIn,
-                onClick = onTapGoogle,
+                onClick = onTapKakao,
             )
             GoogleLoginButton(
                 isLoggingIn = isLoggingIn,
