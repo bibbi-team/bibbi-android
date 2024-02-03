@@ -46,6 +46,7 @@ fun PostViewContent(
     addRealEmojiViewModel: AddRealEmojiViewModel = hiltViewModel(),
     postRealEmojiListViewModel: MemberRealEmojiListViewModel = hiltViewModel(),
     addEmojiBarState: MutableState<Boolean> = remember { mutableStateOf(false) },
+    postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     val memberId = LocalSessionState.current.memberId
     val memberRealEmojiState by postRealEmojiListViewModel.uiState.collectAsState()
@@ -150,6 +151,7 @@ fun PostViewContent(
                             familyPostReactionBarViewModel = familyPostReactionBarViewModel,
                             removePostReactionViewModel = removePostReactionViewModel,
                             addPostReactionViewModel = addPostReactionViewModel,
+                            postCommentDialogState = postCommentDialogState,
                         )
                     }
 
