@@ -1,6 +1,8 @@
 package com.no5ing.bbibbi.presentation.feature.view_controller.main
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
@@ -12,9 +14,11 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.main.ProfilePageCo
 object PostViewPageController : NavigationDestination(
     route = postViewPageRoute,
     pathVariable = navArgument("postId") {},
+    arguments = listOf(navArgument("openComment") { defaultValue = false })
 ) {
     @Composable
     override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
+        val openComment = backStackEntry.arguments?.getBoolean("openComment") ?: false
         PostViewPage(
             postId = backStackEntry.arguments?.getString("postId") ?: "UNKNOWN",
             onDispose = {
@@ -25,7 +29,8 @@ object PostViewPageController : NavigationDestination(
             },
             onTapRealEmojiCreate = {
                 navController.goCreateRealEmojiPage(it)
-            }
+            },
+            postCommentDialogState = remember { mutableStateOf(openComment) }
         )
     }
 
