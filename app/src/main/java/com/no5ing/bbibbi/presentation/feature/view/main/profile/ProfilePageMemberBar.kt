@@ -38,6 +38,7 @@ fun ProfilePageMemberBar(
     memberState: State<APIResponse<Member>>,
     onTapChangeNickname: () -> Unit = {},
     onTapChangeProfileButton: () -> Unit = {},
+    onTapProfileImage: (String) -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -52,6 +53,11 @@ fun ProfilePageMemberBar(
                     CircleProfileImage(
                         member = memberState.value.data,
                         size = 90.dp,
+                        onTap = {
+                            if(memberState.value.data.hasProfileImage()) {
+                                onTapProfileImage(memberState.value.data.imageUrl!!)
+                            }
+                        }
                     )
                     if (memberState.value.data.isBirthdayToday) {
                         Image(

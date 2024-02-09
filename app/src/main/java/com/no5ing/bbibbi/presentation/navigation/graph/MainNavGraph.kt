@@ -14,6 +14,7 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.main.ChangeNickNam
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.CreateRealEmojiPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyListPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.HomePageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ImagePreviewPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostReUploadPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostUploadPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostViewPageController
@@ -113,6 +114,10 @@ fun NavGraphBuilder.mainGraph(
         composable(
             controller = navController,
             destination = CreateRealEmojiPageController
+        )
+        composable(
+            controller = navController,
+            destination = ImagePreviewPageController
         )
         composable(
             controller = navController,
