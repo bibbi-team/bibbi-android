@@ -8,9 +8,9 @@ import androidx.compose.runtime.remember
 
 @Stable
 data class RegisterDayOfBirthPageState(
-    val yearTextState: MutableState<Int>,
-    val monthTextState: MutableState<Int>,
-    val dayTextState: MutableState<Int>,
+    val yearTextState: MutableState<String>,
+    val monthTextState: MutableState<String>,
+    val dayTextState: MutableState<String>,
     val isInvalidYearState: MutableState<Boolean>,
     val isInvalidMonthState: MutableState<Boolean>,
     val isInvalidDayState: MutableState<Boolean>,
@@ -22,9 +22,9 @@ data class RegisterDayOfBirthPageState(
 
 @Composable
 fun rememberRegisterDayOfBirthPageState(
-    yearTextState: MutableState<Int> = remember { mutableStateOf(0) },
-    monthTextState: MutableState<Int> = remember { mutableStateOf(0) },
-    dayTextState: MutableState<Int> = remember { mutableStateOf(0) },
+    yearTextState: MutableState<String> = remember { mutableStateOf("") },
+    monthTextState: MutableState<String> = remember { mutableStateOf("") },
+    dayTextState: MutableState<String> = remember { mutableStateOf("") },
     isInvalidYearState: MutableState<Boolean> = remember { mutableStateOf(false) },
     isInvalidMonthState: MutableState<Boolean> = remember { mutableStateOf(false) },
     isInvalidDayState: MutableState<Boolean> = remember { mutableStateOf(false) }

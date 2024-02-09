@@ -27,7 +27,7 @@ import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 fun DigitizedNumberInput(
     baseDigit: Int = 4,
     digitName: String,
-    value: Int,
+    value: String,
     onValueChange: (String) -> Unit,
     isInvalidInput: Boolean,
     focusRequester: FocusRequester = remember { FocusRequester() },
@@ -38,7 +38,7 @@ fun DigitizedNumberInput(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         BasicTextField(
-            value = if (value != 0) value.toString() else "",
+            value = value.toString(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done,
@@ -64,7 +64,7 @@ fun DigitizedNumberInput(
                 Row {
                     Box {
                         it()
-                        if (value == 0) {
+                        if (value.isEmpty()) {
                             Box(modifier = Modifier.align(Alignment.Center)) {
                                 Text(
                                     text = "0".repeat(baseDigit),
@@ -84,7 +84,7 @@ fun DigitizedNumberInput(
             modifier = Modifier,
             text = digitName,
             style = MaterialTheme.bbibbiTypo.title,
-            color = if (value == 0)
+            color = if (value.isEmpty())
                 MaterialTheme.bbibbiScheme.button
             else if (isInvalidInput)
                 MaterialTheme.bbibbiScheme.warningRed

@@ -34,7 +34,7 @@
     <string name="real_emoji_upload_title">리얼 이모지</string>
     <string name="real_emoji_follow_emoji">표정을 따라해보세요</string>
 
-    <string name="setting_account_and_permission">계정 및 권한</string>
+    <string name="setting_account_and_permission">설정 및 권한</string>
     <string name="setting_version_info">%1$s 버전</string>
     <string name="setting_version_info_querying">버전 정보 조회중...</string>
     <string name="setting_version_info_latest">최신 버전입니다</string>
@@ -42,7 +42,7 @@
     <string name="setting_notification_setting">알림 설정</string>
     <string name="setting_privacy">개인정보처리방침</string>
     <string name="setting_terms">이용 약관</string>
-    <string name="setting_login">로그인</string>
+    <string name="setting_login">계정</string>
     <string name="setting_logout">로그 아웃</string>
     <string name="setting_group_quit">그룹 탈퇴</string>
     <string name="setting_leave">회원 탈퇴</string>
@@ -64,14 +64,14 @@
     <string name="onboarding_next_join">알림 허용하고 입장하기</string>
     <string name="family_me">Me</string>
 
-    <string name="create_new_room_dialog_title">새 그룹방으로 입장</string>
-    <string name="create_new_room_dialog_description">초대 받은 그룹이 없어\n새 그룹방으로 입장할래요</string>
+    <string name="create_new_room_dialog_title">새 가족 방 만들기</string>
+    <string name="create_new_room_dialog_description">초대 받은 가족이 없어\n새 가족 방으로 입장할래요</string>
 
-    <string name="join_family_title">%1$s님, 가족 중 첫번째로\n방을 생성해보세요</string>
-    <string name="join_family_description">하나의 그룹에만 소속될 수 있어요</string>
-    <string name="join_family_create_group">새 그룹방으로 입장하기</string>
+    <string name="join_family_title">%1$s님, 하나의 가족에만\n소속될 수 있어요</string>
+    <string name="join_family_without_group">초대 받은 가족이 없다면</string>
+    <string name="join_family_create_group">새 가족 방 만들기</string>
     <string name="join_family_link_bar_title">이미 초대링크를 받았다면</string>
-    <string name="join_family_link_bar_subtitle">그룹 입장하기</string>
+    <string name="join_family_link_bar_subtitle">링크로  입장하기</string>
 
     <string name="join_family_with_link_title">초대받은 링크에서\n초대 코드를 확인할 수 있어요.</string>
     <string name="join_family_with_link_enter_group">그룹 입장하기</string>

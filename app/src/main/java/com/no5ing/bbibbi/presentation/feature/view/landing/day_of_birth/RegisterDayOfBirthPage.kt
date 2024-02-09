@@ -89,53 +89,53 @@ fun RegisterDayOfBirthPage(
                         onValueChange = {
                             val number = it.toIntOrNull()
                             if (number == null) {
-                                state.yearTextState.value = 0
+                                state.yearTextState.value = ""
                                 return@DigitizedNumberInput
                             }
                             if (number < 0 || number > 9999) return@DigitizedNumberInput
                             state.isInvalidYearState.value =
                                 number > YearMonth.now().year || number < 1900 //TODO
-                            if (it.length == 4 && state.yearTextState.value / 100 > 0) monthFocus.requestFocus()
-                            state.yearTextState.value = number
+                            if (it.length == 4 && (state.yearTextState.value.toIntOrNull() ?: 0) / 100 > 0) monthFocus.requestFocus()
+                            state.yearTextState.value = it
                         },
                         isInvalidInput = state.isInvalidInput(),
                         onDone = { monthFocus.requestFocus() }
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     DigitizedNumberInput(
-                        baseDigit = 1,
+                        baseDigit = 2,
                         digitName = stringResource(id = R.string.register_day_of_birth_month),
                         value = state.monthTextState.value,
                         focusRequester = monthFocus,
                         onValueChange = {
                             val number = it.toIntOrNull()
                             if (number == null) {
-                                state.monthTextState.value = 0
+                                state.monthTextState.value = ""
                                 return@DigitizedNumberInput
                             }
                             if (number < 0 || number > 99) return@DigitizedNumberInput
                             state.isInvalidMonthState.value = number > 12
-                            if (it.length == 2 && state.monthTextState.value < 10) dayFocus.requestFocus()
-                            state.monthTextState.value = number
+                            if (it.length == 2 && (state.monthTextState.value.toIntOrNull() ?: 0) < 10) dayFocus.requestFocus()
+                            state.monthTextState.value = it
                         },
                         isInvalidInput = state.isInvalidInput(),
                         onDone = { dayFocus.requestFocus() }
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     DigitizedNumberInput(
-                        baseDigit = 1,
+                        baseDigit = 2,
                         digitName = stringResource(id = R.string.register_day_of_birth_day),
                         value = state.dayTextState.value,
                         focusRequester = dayFocus,
                         onValueChange = {
                             val number = it.toIntOrNull()
                             if (number == null) {
-                                state.dayTextState.value = 0
+                                state.dayTextState.value = ""
                                 return@DigitizedNumberInput
                             }
                             if (number < 0 || number > 99) return@DigitizedNumberInput
                             state.isInvalidDayState.value = number > 31
-                            state.dayTextState.value = number
+                            state.dayTextState.value = it
                         },
                         isInvalidInput = state.isInvalidInput(),
                         onDone = { localFocusManager.clearFocus() }
@@ -177,15 +177,15 @@ fun RegisterDayOfBirthPage(
                         .padding(vertical = 12.dp),
                     contentPadding = PaddingValues(vertical = 18.dp),
                     onClick = {
-                        val yearStr = String.format("%04d", state.yearTextState.value)
-                        val monthStr = String.format("%02d", state.monthTextState.value)
-                        val dayStr = String.format("%02d", state.dayTextState.value)
+                        val yearStr = String.format("%04d", state.yearTextState.value.toInt())
+                        val monthStr = String.format("%02d", state.monthTextState.value.toInt())
+                        val dayStr = String.format("%02d", state.dayTextState.value.toInt())
                         onNextPage(
                             "${yearStr}-${monthStr}-${dayStr}"
                         )
                     },
-                    isActive = !state.isInvalidInput() && state.dayTextState.value != 0
-                            && state.monthTextState.value != 0 && state.yearTextState.value != 0,
+                    isActive = !state.isInvalidInput() && state.dayTextState.value.isNotEmpty()
+                            && state.monthTextState.value.isNotEmpty() && state.yearTextState.value.isNotEmpty(),
                 )
             }
 
