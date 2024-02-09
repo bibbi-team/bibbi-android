@@ -111,6 +111,7 @@ dependencies {
     implementation("androidx.browser:browser:1.7.0")
     implementation("androidx.camera:camera-core:1.4.0-alpha04")
     implementation("androidx.camera:camera-lifecycle:1.4.0-alpha04")
+    implementation("androidx.camera:camera-camera2:1.4.0-alpha04")
     implementation("androidx.compose.animation:animation-core:1.6.1")
     implementation("androidx.compose.animation:animation:1.6.1")
     implementation("androidx.compose.foundation:foundation-layout:1.6.1")
