@@ -19,6 +19,7 @@ import com.no5ing.bbibbi.presentation.component.button.CTAButton
 
 @Composable
 fun PostUploadPageUploadBar(
+    isIdle: Boolean,
     onClickUpload: () -> Unit = {},
     onClickSave: () -> Unit = {},
 ) {
@@ -33,7 +34,8 @@ fun PostUploadPageUploadBar(
         CTAButton(
             text = stringResource(id = R.string.upload_image),
             contentPadding = PaddingValues(horizontal = 60.dp, vertical = 15.dp),
-            onClick = onClickUpload
+            onClick = onClickUpload,
+            isActive = isIdle,
         )
         Image(
             painter = painterResource(R.drawable.save_button),

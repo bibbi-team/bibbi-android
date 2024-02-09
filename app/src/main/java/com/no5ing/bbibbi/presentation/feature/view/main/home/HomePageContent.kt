@@ -105,7 +105,8 @@ fun HomePageContent(
                     imageUrl = item.post.imageUrl,
                     writerName = item.writer.name,
                     time = gapBetweenNow(time = item.post.createdAt),
-                    onTap = { onTapContent(item.post) }
+                    onTap = { onTapContent(item.post) },
+                    postContent = item.post.content,
                 )
             }
         } else {

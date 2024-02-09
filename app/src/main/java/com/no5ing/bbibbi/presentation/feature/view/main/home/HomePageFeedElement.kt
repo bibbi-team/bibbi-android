@@ -2,6 +2,7 @@ package com.no5ing.bbibbi.presentation.feature.view.main.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.no5ing.bbibbi.presentation.component.MicroTextBubbleBox
+import com.no5ing.bbibbi.presentation.component.MiniTextBubbleBox
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.asyncImagePainter
@@ -30,6 +33,7 @@ fun HomePageFeedElement(
     modifier: Modifier,
     imageUrl: String,
     writerName: String,
+    postContent: String,
     time: String,
     onTap: () -> Unit = {},
 ) {
@@ -39,15 +43,23 @@ fun HomePageFeedElement(
             .clickable { onTap() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AsyncImage(
-            model = asyncImagePainter(source = imageUrl),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1.0f)
-                .clip(RoundedCornerShape(24.dp))
-        )
+        Box {
+            AsyncImage(
+                model = asyncImagePainter(source = imageUrl),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1.0f)
+                    .clip(RoundedCornerShape(24.dp))
+            )
+            MicroTextBubbleBox(
+                text = postContent,
+                alignment = Alignment.BottomCenter,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+        }
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
