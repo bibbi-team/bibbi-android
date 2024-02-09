@@ -29,7 +29,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -63,6 +65,7 @@ fun CreateRealEmojiPage(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val snackBarHost = LocalSnackbarHostState.current
+    val haptic = LocalHapticFeedback.current
 
     val uploadState by updateMemberPostRealEmojiViewModel.uiState.collectAsState()
     val emojiMap by memberRealEmojiListViewModel.uiState.collectAsState()
@@ -202,6 +205,8 @@ fun CreateRealEmojiPage(
                     cameraState.value?.cameraControl?.enableTorch(torchState.value)
                 },
                 onClickCapture = {
+                    if(isCapturing) return@CreateRealEmojiCameraBar
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     coroutineScope.launch {
                         isCapturing = true
                         val image = captureState.value.takePhotoWithImage(

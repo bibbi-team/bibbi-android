@@ -34,7 +34,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -97,6 +99,7 @@ fun CalendarDetailPage(
     val snackBarState = LocalSnackbarHostState.current
     val uiState = calendarWeekViewModel.uiState.collectAsState()
     val memberId = LocalSessionState.current.memberId
+    val haptic = LocalHapticFeedback.current
 
     val scrollEnabled = remember {
         mutableStateOf(true)
@@ -278,6 +281,7 @@ fun CalendarDetailPage(
                                 state = dayState,
                                 monthState = uiState.value,
                                 onClick = {
+                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                     dayState.selectionState.onDateSelected(it)
                                 },
                                 modifier = Modifier

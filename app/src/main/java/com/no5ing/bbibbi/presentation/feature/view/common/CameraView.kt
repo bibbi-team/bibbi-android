@@ -39,7 +39,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -65,6 +67,7 @@ fun CameraView(
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val haptic = LocalHapticFeedback.current
 
     val coroutineScope = rememberCoroutineScope()
     val torchState = remember { mutableStateOf(false) }
@@ -207,6 +210,8 @@ fun CameraView(
                 )
                 CameraCaptureButton(
                     onClick = {
+                        if(isCapturing) return@CameraCaptureButton
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         coroutineScope.launch {
                             isCapturing = true
                             val uri = captureState.value.takePhotoWithImage(

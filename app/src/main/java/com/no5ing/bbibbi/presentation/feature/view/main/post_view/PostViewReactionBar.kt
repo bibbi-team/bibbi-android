@@ -20,6 +20,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -54,6 +56,7 @@ fun PostViewReactionBar(
     onTapAddEmojiButton: () -> Unit,
     postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
+    val haptic = LocalHapticFeedback.current
     val memberId = LocalSessionState.current.memberId
     val uiState = familyPostReactionBarViewModel.uiState.collectAsState()
     val selectedEmoji = remember { mutableStateOf<PostReactionUiState>(PostReactionUiState.mock()) }
@@ -80,6 +83,7 @@ fun PostViewReactionBar(
                     PostCommentBoxIcon(
                         commentCount = post.commentCount,
                         onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             postCommentDialogState.value = true
                         }
                     )
@@ -102,7 +106,10 @@ fun PostViewReactionBar(
                                     .background(color = MaterialTheme.bbibbiScheme.button)
                             }
                             .size(width = 53.dp, height = 36.dp)
-                            .clickable { onTapAddEmojiButton() },
+                            .clickable {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                onTapAddEmojiButton()
+                            },
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
@@ -139,6 +146,7 @@ fun PostViewReactionBar(
                                             )
                                         )
                                     } else {
+                                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                         addRealEmojiViewModel.invoke(
                                             Arguments(
                                                 resourceId = post.postId,
@@ -151,6 +159,7 @@ fun PostViewReactionBar(
 
                                 },
                                 onLongTap = {
+                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                     selectedEmoji.value = emojiMetadata
                                     reactionDialogState.value = true
                                 }
@@ -171,6 +180,7 @@ fun PostViewReactionBar(
                                             )
                                         )
                                     } else {
+                                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                         addPostReactionViewModel.invoke(
                                             Arguments(
                                                 resourceId = post.postId,
@@ -186,6 +196,7 @@ fun PostViewReactionBar(
                                     )
                                 },
                                 onLongTap = {
+                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                     selectedEmoji.value = item.second.first()
                                     reactionDialogState.value = true
                                 }

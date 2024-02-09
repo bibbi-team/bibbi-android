@@ -25,7 +25,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -83,6 +85,7 @@ fun MainCalendarPage(
     }
     val uiState = calendarMonthViewModel.uiState.collectAsState()
     val statState by monthlyStatisticsViewModel.uiState.collectAsState()
+    val haptic = LocalHapticFeedback.current
 
     LaunchedEffect(currentCalendarState.monthState.currentMonth) {
         Timber.d("[MainCalendarPage] Changed month!")
@@ -213,6 +216,7 @@ fun MainCalendarPage(
                         monthState = uiState.value,
                         onClick = { date ->
                             if (uiState.value.containsKey(date)) {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                 onTapDay(date)
                             }
                         },
