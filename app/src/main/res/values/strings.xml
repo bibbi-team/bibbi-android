@@ -186,4 +186,7 @@
     <string name="post_upload_text_description">텍스트 입력하기</string>
     <string name="build_number_info">빌드번호 %1$s</string>
     <string name="share_link_payload">링크로 입장한 뒤 초대코드를 입력하세요.\n\n%1$s\n초대코드 : %2$s</string>
+
+    <string name="try_widget_title">위젯 추가하셨나요?</string>
+    <string name="try_widget_description">홈 화면에서 위젯으로\n가족의 소식을 한눈에 파악할 수 있어요</string>
 </resources>

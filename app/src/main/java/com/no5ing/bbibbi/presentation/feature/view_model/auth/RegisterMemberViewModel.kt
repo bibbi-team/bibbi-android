@@ -2,6 +2,7 @@ package com.no5ing.bbibbi.presentation.feature.view_model.auth
 
 import android.content.Context
 import android.net.Uri
+import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
 import com.no5ing.bbibbi.data.model.APIResponse
@@ -29,6 +30,7 @@ class RegisterMemberViewModel @Inject constructor(
     private val restAPI: RestAPI,
     private val client: OkHttpClient,
     private val sessionModule: SessionModule,
+    private val localDataStorage: LocalDataStorage,
     private val context: Context,
 ) : BaseViewModel<APIResponse<Member>>() {
     override fun initState(): APIResponse<Member> {
@@ -76,6 +78,7 @@ class RegisterMemberViewModel @Inject constructor(
                         member = data,
                     )
                 }
+                localDataStorage.setWidgetPopupPeriod()
                 setState(res.wrapToAPIResponse())
             }.onError {
                 setState(errorOfOther(this))

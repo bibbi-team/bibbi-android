@@ -145,6 +145,7 @@ internal fun AlertDialogContent(
     iconContentColor: Color,
     titleContentColor: Color,
     textContentColor: Color,
+    textPadding: PaddingValues = TextPadding,
 ) {
     Surface(
         modifier = modifier,
@@ -195,7 +196,7 @@ internal fun AlertDialogContent(
                         Box(
                             Modifier
                                 .weight(weight = 1f, fill = false)
-                                .padding(TextPadding)
+                                .padding(textPadding)
                                 .align(Alignment.CenterHorizontally)
                         ) {
                             text()
@@ -306,11 +307,11 @@ internal val DialogMaxWidth = 560.dp
 
 // Paddings for each of the dialog's parts.
 private val DialogPadding = PaddingValues(all = 24.dp)
-private val IconPadding = PaddingValues(bottom = 16.dp)
-private val TitlePadding = PaddingValues(bottom = 16.dp)
-private val TextPadding = PaddingValues(bottom = 24.dp)
-private val ButtonsMainAxisSpacing = 8.dp
-private val ButtonsCrossAxisSpacing = 12.dp
+internal val IconPadding = PaddingValues(bottom = 16.dp)
+internal val TitlePadding = PaddingValues(bottom = 16.dp)
+internal val TextPadding = PaddingValues(bottom = 24.dp)
+internal val ButtonsMainAxisSpacing = 8.dp
+internal val ButtonsCrossAxisSpacing = 12.dp
 
 
 @Composable

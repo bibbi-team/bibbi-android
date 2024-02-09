@@ -66,6 +66,11 @@ fun HomePage(
             onUnsavedPost(unsavedDialogUri.value!!)
         }
     )
+
+    if (isMeUploadedTodayViewModel.shouldDisplayWidgetPopup) {
+        isMeUploadedTodayViewModel.shouldDisplayWidgetPopup = false
+        TryWidgetPopup()
+    }
     BackToExitHandler()
     LaunchedEffect(Unit) {
         isMeUploadedTodayViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
