@@ -87,7 +87,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onAppStartIntent(intent: Intent?) {
-        val appLinkAction: String? = intent?.action
         Timber.d("onAppStartIntent: $intent")
         val appLinkData: Uri? = intent?.data
         val linkId = appLinkData?.let {

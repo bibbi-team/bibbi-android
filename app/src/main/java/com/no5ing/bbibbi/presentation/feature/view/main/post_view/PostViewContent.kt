@@ -101,9 +101,6 @@ fun PostViewContent(
                 addEmojiBarState.value = false
             }
         },
-        onDispose = {
-            addEmojiBarState.value = false
-        },
         onTapRealEmojiCreate = onTapRealEmojiCreate,
     )
     Column(

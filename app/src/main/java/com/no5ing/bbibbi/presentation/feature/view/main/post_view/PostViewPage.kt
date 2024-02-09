@@ -56,7 +56,6 @@ import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.toLocalizedDate
-import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

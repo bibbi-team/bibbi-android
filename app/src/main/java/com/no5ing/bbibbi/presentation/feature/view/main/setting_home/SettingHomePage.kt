@@ -15,7 +15,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -67,7 +66,6 @@ fun SettingHomePage(
     val appVersionState by retrieveAppVersionViewModel.uiState.collectAsState()
     val resources = localResources()
     val snackBarHost = LocalSnackbarHostState.current
-    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(logOutState.value) {
         when (logOutState.value) {
             OperationStatus.SUCCESS -> onLogOutCompleted()

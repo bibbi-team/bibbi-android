@@ -72,7 +72,7 @@ fun MainCalendarPage(
     calendarMonthStatViewModel: GetFamilySummaryViewModel = hiltViewModel(),
     monthlyStatisticsViewModel: MonthlyStatisticsViewModel = hiltViewModel(),
 ) {
-    val (width, height) = getScreenSize()
+    val (width) = getScreenSize()
     val currentCalendarState: CalendarState<EmptySelectionState> = remember {
         CalendarState(
             selectionState = EmptySelectionState,
@@ -316,7 +316,7 @@ fun MainCalendarYearMonthBar(
             Text(
                 text = stringResource(
                     id = R.string.calendar_history_cnt,
-                    if(summary.isReady()) summary.data.totalImageCnt else 0
+                    if (summary.isReady()) summary.data.totalImageCnt else 0
                 ),
                 color = MaterialTheme.bbibbiScheme.textPrimary,
                 style = MaterialTheme.bbibbiTypo.bodyOneRegular,
