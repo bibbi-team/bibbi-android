@@ -101,6 +101,7 @@ class MainActivity : ComponentActivity() {
         }
         deepLink?.let {
             pendingDeepLinkDestination.value = it
+            return
         }
 
         val widgetExtraData = newIntent?.extras?.getString(WIDGET_DEEPLINK_KEY) ?: return

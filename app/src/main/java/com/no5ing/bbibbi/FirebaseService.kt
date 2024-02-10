@@ -20,14 +20,17 @@ class FirebaseService : FirebaseMessagingService() {
         Timber.d("[FirebaseService] onMessageReceived data: ${remoteMessage.data}")
         remoteMessage.notification?.apply {
             val intent = Intent(this@FirebaseService, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    .or(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    .or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 remoteMessage.data.forEach { (t, u) ->
                     Timber.d("Extra data: $t, $u")
                     putExtra(t, u)
                 }
             }
             val pendingIntent = PendingIntent
-                .getActivity(this@FirebaseService, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+                .getActivity(this@FirebaseService, 0, intent, PendingIntent.FLAG_IMMUTABLE
+                    .or(PendingIntent.FLAG_CANCEL_CURRENT))
             val builder = NotificationCompat
                 .Builder(this@FirebaseService, channel_id)
                 .setSmallIcon(R.drawable.notification_icon)
