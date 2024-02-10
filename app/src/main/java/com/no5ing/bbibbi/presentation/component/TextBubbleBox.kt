@@ -27,7 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.toCodePointList
@@ -110,6 +112,43 @@ fun BoxScope.MiniTextBubbleBox(
                         text = character.toString(),
                         color = MaterialTheme.bbibbiScheme.white,
                         style = MaterialTheme.bbibbiTypo.headTwoBold,
+                    )
+                }
+            }
+
+        }
+    }
+}
+
+@Composable
+fun BoxScope.MicroTextBubbleBox(
+    text: String,
+    modifier: Modifier = Modifier,
+    alignment: Alignment = Alignment.Center
+) {
+    Box(
+        modifier = modifier.align(alignment)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(1.2.dp)
+        ) {
+            val wordList = text.codePoints().toList().map { String(Character.toChars(it)) }
+            wordList.forEach { character ->
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(Color.Black.copy(alpha = 0.3f))
+                        .size(width = 17.7.dp, height = 26.1.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = character.toString(),
+                        color = MaterialTheme.bbibbiScheme.white,
+                        style = TextStyle(
+                            fontSize = 11.3.sp,
+                            lineHeight = 15.8.sp,
+                            fontWeight = FontWeight.SemiBold,
+                        )
                     )
                 }
             }

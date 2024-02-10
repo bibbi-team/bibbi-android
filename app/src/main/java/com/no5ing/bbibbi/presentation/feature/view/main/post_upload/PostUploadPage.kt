@@ -90,6 +90,7 @@ fun PostUploadPage(
                 message = snackErrorMessage,
                 actionLabel = snackBarWarning
             )
+            createPostViewModel.resetState()
         }
     }
     BBiBBiSurface(
@@ -117,6 +118,7 @@ fun PostUploadPage(
                     )
                     Spacer(modifier = Modifier.height(48.dp))
                     PostUploadPageUploadBar(
+                        isIdle = uploadResult.value.isIdle(),
                         onClickUpload = {
                             mixPanel.track("Click_UploadPhoto")
                             createPostViewModel.invoke(
@@ -226,7 +228,9 @@ fun PostUploadPagePreview() {
                     }
                 )
                 Spacer(modifier = Modifier.height(48.dp))
-                PostUploadPageUploadBar()
+                PostUploadPageUploadBar(
+                    isIdle = true
+                )
             }
             AnimatedVisibility(
                 isActive,

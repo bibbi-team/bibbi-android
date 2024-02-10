@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -71,6 +72,7 @@ fun PostViewPage(
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
+    postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     LaunchedEffect(Unit) {
         familyPostViewModel.invoke(Arguments(resourceId = postId))
@@ -91,6 +93,18 @@ fun PostViewPage(
     }
     LaunchedEffect(postState) {
         if (postState.isReady()) {
+            val currentPost = postState.data.post
+            familyPostsViewModel.invoke(
+                Arguments(
+                    arguments = mapOf(
+                        "date" to currentPost.createdAt.toLocalDate().toString(),
+                    )
+                )
+            )
+        }
+    }
+    LaunchedEffect(postState, postCommentDialogState.value) {
+        if (!postCommentDialogState.value && postState.isReady()) {
             val currentPost = postState.data.post
             familyPostsViewModel.invoke(
                 Arguments(
@@ -161,6 +175,7 @@ fun PostViewPage(
                                     removePostReactionViewModel = removePostReactionViewModel,
                                     addPostReactionViewModel = addPostReactionViewModel,
                                     postData = postData,
+                                    postCommentDialogState = postCommentDialogState,
                                 )
                             }
                         } else {
@@ -172,6 +187,7 @@ fun PostViewPage(
                                 removePostReactionViewModel = removePostReactionViewModel,
                                 addPostReactionViewModel = addPostReactionViewModel,
                                 postData = postState.data,
+                                postCommentDialogState = postCommentDialogState,
                             )
                         }
 
@@ -191,6 +207,7 @@ fun PostViewBody(
     familyPostReactionBarViewModel: PostReactionBarViewModel,
     removePostReactionViewModel: RemovePostReactionViewModel,
     addPostReactionViewModel: AddPostReactionViewModel,
+    postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     Column {
         PostViewTopBar(
@@ -208,6 +225,7 @@ fun PostViewBody(
             removePostReactionViewModel = removePostReactionViewModel,
             addPostReactionViewModel = addPostReactionViewModel,
             onTapRealEmojiCreate = onTapRealEmojiCreate,
+            postCommentDialogState = postCommentDialogState,
         )
     }
 }

@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.di
 
-import android.content.Context
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -78,10 +77,9 @@ object NetworkModule {
     @Singleton
     fun provideAuthenticator(
         sessionModule: SessionModule,
-        context: Context,
     ): Authenticator {
         val authenticatorClient = createOkHttpClient(null, null)
-        return Authenticator { route, response ->
+        return Authenticator { _, response ->
             if (response.code == 401) {
                 Timber.d("[NetworkModule] Refresh tokens with Authenticator")
                 val currentSession = sessionModule.sessionState.value

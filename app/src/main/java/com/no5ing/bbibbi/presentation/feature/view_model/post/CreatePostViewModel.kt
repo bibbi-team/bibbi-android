@@ -6,6 +6,7 @@ import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.request.member.ImageUploadRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostRequest
 import com.no5ing.bbibbi.data.model.APIResponse
+import com.no5ing.bbibbi.data.model.APIResponse.Companion.loading
 import com.no5ing.bbibbi.data.model.APIResponse.Companion.wrapToAPIResponse
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
@@ -27,7 +28,7 @@ class CreatePostViewModel @Inject constructor(
     private val localDataStorage: LocalDataStorage,
 ) : BaseViewModel<APIResponse<Post>>() {
     override fun initState(): APIResponse<Post> {
-        return APIResponse.loading()
+        return APIResponse.idle()
     }
 
     fun saveTemporaryUri(uri: Uri) {
@@ -42,6 +43,7 @@ class CreatePostViewModel @Inject constructor(
         val imageUri = arguments.get("imageUri") ?: throw RuntimeException()
         val content = arguments.get("content") ?: throw RuntimeException()
         withMutexScope(Dispatchers.IO) {
+            setState(loading())
             Timber.d("imageUri: $imageUri")
 
             val file = File(Uri.parse(imageUri).path!!)

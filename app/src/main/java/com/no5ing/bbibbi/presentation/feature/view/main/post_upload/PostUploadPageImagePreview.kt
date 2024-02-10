@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.no5ing.bbibbi.R
@@ -61,18 +63,40 @@ fun PostUploadPageImagePreview(
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 16.dp)
+                .padding(bottom = 20.dp)
                 .clickable {
                     onTapImageTextButton()
                 }
         ) {
             if (imageText.isEmpty()) {
-                Image(
+                Box(
                     modifier = Modifier
-                        .size(height = 41.dp, width = 36.dp),
-                    painter = painterResource(id = R.drawable.textbox_icon),
-                    contentDescription = null,
-                )
+                        .background(
+                            color = Color.Black.copy(alpha = 0.3f),
+                            RoundedCornerShape(10.dp)
+                        )
+                        .padding(horizontal = 10.dp, vertical = 8.dp)
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(
+                            5.dp,
+                            Alignment.CenterHorizontally
+                        ),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.write_icon),
+                            contentDescription = null,
+                            tint = MaterialTheme.bbibbiScheme.textPrimary,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Text(
+                            text = stringResource(id = R.string.post_upload_text_description),
+                            color = MaterialTheme.bbibbiScheme.textPrimary,
+                            style = MaterialTheme.bbibbiTypo.headTwoBold,
+                        )
+                    }
+                }
             } else {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(2.dp)

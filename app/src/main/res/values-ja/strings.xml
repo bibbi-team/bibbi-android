@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ビープ</string>
+
+    <string name="home_upload">アップロード</string>
+    <string name="home_graphic">グラフィック</string>
+    <string name="home_one_image_per_day">1日に1枚の写真をアップロードできます</string>
+    <string name="home_not_camera_time">カメラの使用時間ではありません</string>
+    <string name="home_already_uploaded_today">今日のチェックインは完了しました</string>
+
+    <string name="home_everyone_uploaded">家族全員が写真をアップロードした日</string>
+    <string name="home_image_on_duration">毎日12時から24時までに1枚の写真をアップロードします</string>
+    <string name="home_time_not_much">残り時間があまりありません！</string>
+    <string name="home_time_over">明日の12時から写真をアップロードできます！</string>
+
+    <string name="register_continue">続ける</string>
+    <string name="register_complete">完了</string>
+
+    <string name="register_nickname_enter_nickname">ニックネームを入力してください</string>
+    <string name="register_nickname_sample_text">キムパパ</string>
+    <string name="register_nickname_description">家族によく呼ばれる名前を入力してください</string>
+    <string name="register_nickname_word_below_n">%1$d文字以内で入力してください</string>
+
+    <string name="register_dob_description">家族があなたの誕生日を祝うことができます</string>
+    <string name="register_dob_correct_date">正しい日付を入力してください</string>
+
+    <string name="register_profile_image_description">これが最後のステップです。%1$sさんのプロフィールを選択してください</string>
+
+    <string name="camera_title">カメラ</string>
+    <string name="upload_post">写真を投稿</string>
+    <string name="upload_image">写真をアップロード</string>
+    <string name="setting_and_privacy">設定とプライバシー</string>
+
+    <string name="real_emoji_upload_title">リアル絵文字</string>
+    <string name="real_emoji_follow_emoji">表情を真似てみてください</string>
+
+    <string name="setting_account_and_permission">設定と権限</string>
+    <string name="setting_version_info">バージョン %1$s</string>
+    <string name="setting_version_info_querying">バージョン情報を照会中...</string>
+    <string name="setting_version_info_latest">最新の状態です</string>
+    <string name="setting_version_info_require_update">最新バージョンに更新してください</string>
+    <string name="setting_notification_setting">通知設定</string>
+    <string name="setting_privacy">プライバシーポリシー</string>
+    <string name="setting_terms">利用規約</string>
+    <string name="setting_login">アカウント</string>
+    <string name="setting_logout">ログアウト</string>
+    <string name="setting_group_quit">家族から脱退</string>
+    <string name="setting_leave">会員脱退</string>
+
+    <string name="comment_dialog_delete">削除</string>
+    <string name="comment_dialog_text_field_hint">コメントを投稿...</string>
+    <string name="comment_dialog_text_field_enter">投稿</string>
+
+    <string name="profile_title">活動</string>
+
+    <string name="family_title">家族</string>
+    <string name="family_copy_link">ビープに家族を招待</string>
+    <string name="family_your_family">あなたの家族</string>
+
+    <string name="onboarding_first_title">毎日12時に通知を受け取り、家族に写真を送信してください</string>
+    <string name="onboarding_second_title">ホームスクリーンのウィジェットで家族の日常を一目で確認できます</string>
+    <string name="onboarding_third_title">1日に2回しか来ない通知を逃さないように、必ず許可してください！</string>
+    <string name="onboarding_next">通知を許可して家族ルームを作成</string>
+    <string name="onboarding_next_join">通知を許可して入室</string>
+    <string name="family_me">私</string>
+
+    <string name="create_new_room_dialog_title">新しい家族ルームを作成</string>
+    <string name="create_new_room_dialog_description">招待された家族がいないので、新しい家族ルームに入りますか？</string>
+
+    <string name="join_family_title">%1$sさん、1つの家族にのみ所属できます</string>
+    <string name="join_family_without_group">招待された家族がいない場合</string>
+    <string name="join_family_create_group">新しい家族ルームを作成</string>
+    <string name="join_family_link_bar_title">すでに招待リンクを受け取っている場合</string>
+    <string name="join_family_link_bar_subtitle">リンクで入室</string>
+
+    <string name="join_family_with_link_title">招待リンクで招待コードを確認できます。</string>
+    <string name="join_family_with_link_enter_group">家族ルームに入室</string>
+    <string name="join_family_with_link_sample_text">ここにコードを入力</string>
+    <string name="join_family_with_link_not_valid">コードが無効です</string>
+
+    <string name="time_now">今</string>
+    <string name="time_minutes">分前</string>
+    <string name="time_hours">時間前</string>
+    <string name="time_days">日前</string>
+    <string name="time_months">ヶ月前</string>
+    <string name="time_years">年前</string>
+
+    <string name="snack_bar_word_limit">%1$d文字まで入力できます</string>
+    <string name="snack_bar_no_space">スペースは使用できません</string>
+    <string name="snack_bar_saved">写真が保存されました</string>
+    <string name="snack_bar_alreday_accepted">既に許可されています</string>
+
+    <string name="server_already_uploaded">すでに今日の投稿をアップロードしました</string>
+    <string name="server_no_permission">その操作を行う権限がありません</string>
+    <string name="server_not_uploadable_time">アップロードできる時間ではありません</string>
+    <string name="server_unknown_error">不明なエラーが発生しました（%1$s）</string>
+    <string name="server_invalid_input">入力が無効です</string>
+    <string name="server_member_not_found">ユーザー情報が見つかりません</string>
+    <string name="server_post_not_found">投稿が見つかりません</string>
+    <string name="server_already_in_family">すでに家族に所属しています</string>
+    <string name="server_family_not_found">家族が見つかりません</string>
+    <string name="server_link_not_valid">リンクが無効です</string>
+
+    <string name="calendar">思い出カレンダー</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="calendar_history_cnt">%1$dの思い出</string>
+    <string name="calendar_everyday_info">全員が参加した日とアップロードされた写真の数で、その月の親密度を測ります</string>
+    <string name="calendar_banner_subtitle">全員が参加した日 %1$d日</string>
+    <string name="calendar_banner_title_top">トップ</string>
+    <string name="calendar_banner_title_percent">%</string>
+    <string name="back_to_exit_message">もう一度押して終了</string>
+    <string name="change_nickname">ニックネームを変更</string>
+    <string name="change_nickname_description">ニックネームを変更してください</string>
+    <string name="change_nickname_complete">完了</string>
+    <string name="change_nickname_completed">ニックネームの変更に成功しました！</string>
+
+    <string name="login_with_kakao">カカオでログイン</string>
+    <string name="login_with_google">Googleでログイン</string>
+
+    <string name="dialog_confirm">確認</string>
+    <string name="dialog_cancel">キャンセル</string>
+
+    <string name="dialog_logout_title">ログアウト</string>
+    <string name="dialog_logout_message">ログアウトしますか？</string>
+    <string name="dialog_logout_confirm">ログアウト</string>
+
+    <string name="dialog_quit_title">会員脱退</string>
+    <string name="dialog_quit_message">会員を脱退しても、あなたの活動履歴は維持されます。本当に脱退しますか？</string>
+    <string name="dialog_quit_confirm">脱退</string>
+
+    <string name="dialog_quit_group_title">家族から脱退</string>
+    <string name="dialog_quit_group_message">家族を脱退しても、あなたの活動履歴は維持されるので、ご注意ください。</string>
+    <string name="dialog_quit_group_confirm">確認</string>
+
+    <string name="dialog_image_upload_title">画像アップロード</string>
+    <string name="dialog_image_upload_message">アップロードする画像をどこから取得しますか？</string>
+    <string name="dialog_image_upload_camera">カメラ</string>
+    <string name="dialog_image_upload_album">アルバム</string>
+
+    <string name="profile_image_changed_successfully">プロフィール写真を正常に変更しました</string>
+    <string name="home_empty_family_title">家族を招待</string>
+    <string name="home_empty_family_description">おっと、まだ誰もいませんね！</string>
+    <string name="close">閉じる</string>
+    <string name="emoji_reaction_total">%1$d人が反応しました</string>
+    <string name="profile_image_not_exists">まだアップロードされた写真がありません</string>
+
+    <string name="app_update_dialog_title">アプリ更新</string>
+    <string name="app_update_dialog_message">新しいバージョンが利用可能です！Playストアに移動します</string>
+    <string name="app_update_dialog_positive">更新</string>
+
+    <string name="token_invalid_dialog_title">ログインの有効期限が切れました</string>
+    <string name="token_invalid_dialog_message">トークンが期限切れです。ログイン画面に移動します。</string>
+    <string name="token_invalid_dialog_positive">確認</string>
+
+    <string name="already_family_exists_title">すでに家族に加入しています</string>
+    <string name="already_family_exists_subtitle">1つの家族にのみ所属できます</string>
+    <string name="already_family_exists_confirm">ホームに戻る</string>
+    <string name="already_family_exists_exit_family_and_join">家族を脱退して招待リンクで入室</string>
+
+    <string name="no_more_calendar_items">これ以上の投稿はありません</string>
+    <string name="snack_bar_everyone_uploaded_day">家族全員が写真をアップロードした日</string>
+
+    <string name="yellow_widget_name">ビープ</string>
+    <string name="widget_description">家族がチェックインした写真をすぐに確認できます。</string>
+
+    <string name="register_day_of_birth_description">こんにちは、%1$sさん、お誕生日はいつですか？</string>
+    <string name="register_day_of_birth_year">年</string>
+    <string name="register_day_of_birth_month">月</string>
+    <string name="register_day_of_birth_day">日</string>
+
+    <string name="quit_title">会員脱退</string>
+    <string name="quit_button">脱退する</string>
+    <string name="quit_heading_one">ビープサービスとのお別れが残念です。</string>
+    <string name="quit_heading_two">脱退理由を教えてください\nビープサービスの改善に多大な助けになります！</string>
+    <string name="quit_minimum_one">最低1つ以上選択してください。</string>
+    <string name="comment_count">%1$dコメント</string>
+    <string name="comment_dialog_title">コメント</string>
+    <string name="comment_dialog_comment_deleted">コメントが削除されました</string>
+    <string name="comment_dialog_no_comments_title">まだコメントはありません</string>
+    <string name="comment_dialog_no_comments_description">コメントを残してください。</string>
+
+    <string name="unsaved_post_dialog_title">保存されていない投稿</string>
+    <string name="unsaved_post_dialog_message">保存されていない投稿があります。\n投稿作成画面に戻りますか？</string>
+    <string name="post_upload_sample_text">8文字で入力してください</string>
+    <string name="post_upload_text_description">テキストを入力</string>
+    <string name="build_number_info">ビルド番号 %1$s</string>
+    <string name="share_link_payload">リンクに入った後、招待コードを入力してください。\n\n%1$s\n招待コード：%2$s</string>
+
+    <string name="try_widget_title">ウィジェットを追加しましたか？</string>
+    <string name="try_widget_description">ホーム画面のウィジェットで\n家族のニュースをすぐに把握できます</string>
+    <string name="register_at">%1$s に登録済み</string>
+</resources>

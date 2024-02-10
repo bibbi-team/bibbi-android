@@ -77,9 +77,6 @@ fun CreateRealEmojiBar(
                     contentDescription = null, // 필수 param
                     modifier = Modifier
                         .size(42.dp)
-                        .clip(
-                            CircleShape
-                        )
                         .clickable {
                             onTapEmoji(emojiType)
                         }

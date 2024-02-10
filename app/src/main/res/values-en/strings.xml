@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BiBBi</string>
+
+    <string name="home_upload">Upload</string>
+    <string name="home_graphic">Graphic</string>
+    <string name="home_one_image_per_day">You can upload one picture a day</string>
+    <string name="home_not_camera_time">It\'s not time to use the camera</string>
+    <string name="home_already_uploaded_today">Today\'s check-in is complete</string>
+
+    <string name="home_everyone_uploaded">A day when all our family uploaded photos</string>
+    <string name="home_image_on_duration">Upload one picture every day from 12 to 24h</string>
+    <string name="home_time_not_much">There\'s not much time left!</string>
+    <string name="home_time_over">You can upload photos from 12pm tomorrow!</string>
+
+    <string name="register_continue">Continue</string>
+    <string name="register_complete">Complete</string>
+
+    <string name="register_nickname_enter_nickname">Please enter a nickname</string>
+    <string name="register_nickname_sample_text">Dad Kim</string>
+    <string name="register_nickname_description">Please enter the name you are mainly called by your family</string>
+    <string name="register_nickname_word_below_n">Please enter within %1$d characters</string>
+
+    <string name="register_dob_description">Your family can celebrate your birthday</string>
+    <string name="register_dob_correct_date">Please enter the correct date</string>
+
+    <string name="register_profile_image_description">This is the last step. Choose your profile, %1$s</string>
+
+    <string name="camera_title">Camera</string>
+    <string name="upload_post">Post a picture</string>
+    <string name="upload_image">Upload Picture</string>
+    <string name="setting_and_privacy">Settings and Privacy</string>
+
+    <string name="real_emoji_upload_title">Real Emoji</string>
+    <string name="real_emoji_follow_emoji">Follow the expression</string>
+
+    <string name="setting_account_and_permission">Settings and Permissions</string>
+    <string name="setting_version_info">Version %1$s</string>
+    <string name="setting_version_info_querying">Querying version info...</string>
+    <string name="setting_version_info_latest">You are up to date</string>
+    <string name="setting_version_info_require_update">Please update to the latest version</string>
+    <string name="setting_notification_setting">Notification Settings</string>
+    <string name="setting_privacy">Privacy Policy</string>
+    <string name="setting_terms">Terms of Use</string>
+    <string name="setting_login">Account</string>
+    <string name="setting_logout">Log Out</string>
+    <string name="setting_group_quit">Leave Family</string>
+    <string name="setting_leave">Withdraw Membership</string>
+
+    <string name="comment_dialog_delete">Delete</string>
+    <string name="comment_dialog_text_field_hint">Post a comment...</string>
+    <string name="comment_dialog_text_field_enter">Post</string>
+
+    <string name="profile_title">Activity</string>
+
+    <string name="family_title">Family</string>
+    <string name="family_copy_link">Invite family to BiBBi</string>
+    <string name="family_your_family">Your Family</string>
+
+    <string name="onboarding_first_title">At 12pm every day, receive a notification and send a photo to your family</string>
+    <string name="onboarding_second_title">Check your family\'s daily life at a glance with the home screen widget</string>
+    <string name="onboarding_third_title">Don\'t miss the notifications that come only twice a day, make sure to allow them!</string>
+    <string name="onboarding_next">Allow notifications and create a family room</string>
+    <string name="onboarding_next_join">Allow notifications and enter</string>
+    <string name="family_me">Me</string>
+
+    <string name="create_new_room_dialog_title">Create a new family room</string>
+    <string name="create_new_room_dialog_description">There\'s no invited family, would you like to enter a new family room?</string>
+
+    <string name="join_family_title">%1$s, you can only belong to one family</string>
+    <string name="join_family_without_group">If you don\'t have an invited family</string>
+    <string name="join_family_create_group">Create a new family room</string>
+    <string name="join_family_link_bar_title">If you\'ve already received an invite link</string>
+    <string name="join_family_link_bar_subtitle">Enter with a link</string>
+
+    <string name="join_family_with_link_title">You can find the invite code in the invited link.</string>
+    <string name="join_family_with_link_enter_group">Enter family room</string>
+    <string name="join_family_with_link_sample_text">Enter code here</string>
+    <string name="join_family_with_link_not_valid">The code is not valid</string>
+
+    <string name="time_now">Now</string>
+    <string name="time_minutes">minutes ago</string>
+    <string name="time_hours">hours ago</string>
+    <string name="time_days">days ago</string>
+    <string name="time_months">months ago</string>
+    <string name="time_years">years ago</string>
+
+    <string name="snack_bar_word_limit">You can enter up to %1$d characters</string>
+    <string name="snack_bar_no_space">You can\'t use spaces</string>
+    <string name="snack_bar_saved">The photo has been saved</string>
+    <string name="snack_bar_alreday_accepted">You have already granted permission</string>
+
+    <string name="server_already_uploaded">You\'ve already uploaded today\'s post</string>
+    <string name="server_no_permission">You don\'t have permission to do that</string>
+    <string name="server_not_uploadable_time">It\'s not time to upload</string>
+    <string name="server_unknown_error">An unknown error occurred (%1$s)</string>
+    <string name="server_invalid_input">The input is invalid</string>
+    <string name="server_member_not_found">User information not found</string>
+    <string name="server_post_not_found">Post not found</string>
+    <string name="server_already_in_family">You are already in a family</string>
+    <string name="server_family_not_found">Family not found</string>
+    <string name="server_link_not_valid">The link is not valid</string>
+
+    <string name="calendar">Memory Calendar</string>
+    <string name="year"></string>
+    <string name="month"></string>
+    <string name="calendar_history_cnt">%1$d memories</string>
+    <string name="calendar_everyday_info">Measure the intimacy of this month by the days everyone participated and the number of photos uploaded</string>
+    <string name="calendar_banner_subtitle">%1$d days of everyone\'s participation</string>
+    <string name="calendar_banner_title_top">Top</string>
+    <string name="calendar_banner_title_percent">%</string>
+    <string name="back_to_exit_message">Press again to exit</string>
+    <string name="change_nickname">Change Nickname</string>
+    <string name="change_nickname_description">Please change your nickname</string>
+    <string name="change_nickname_complete">Complete</string>
+    <string name="change_nickname_completed">Nickname change was successful!</string>
+
+    <string name="login_with_kakao">Login with Kakao</string>
+    <string name="login_with_google">Login with Google</string>
+
+    <string name="dialog_confirm">Confirm</string>
+    <string name="dialog_cancel">Cancel</string>
+
+    <string name="dialog_logout_title">Log Out</string>
+    <string name="dialog_logout_message">Do you want to log out?</string>
+    <string name="dialog_logout_confirm">Log Out</string>
+
+    <string name="dialog_quit_title">Withdraw Membership</string>
+    <string name="dialog_quit_message">Even if you withdraw from membership, your activity history will be maintained. Are you sure you want to withdraw?</string>
+    <string name="dialog_quit_confirm">Withdraw</string>
+
+    <string name="dialog_quit_group_title">Leave Family</string>
+    <string name="dialog_quit_group_message">Leaving the family will keep your activity history, so please note.</string>
+    <string name="dialog_quit_group_confirm">Confirm</string>
+
+    <string name="dialog_image_upload_title">Image Upload</string>
+    <string name="dialog_image_upload_message">Where would you like to get the image to upload from?</string>
+    <string name="dialog_image_upload_camera">Camera</string>
+    <string name="dialog_image_upload_album">Album</string>
+
+    <string name="profile_image_changed_successfully">Successfully changed the profile picture</string>
+    <string name="home_empty_family_title">Invite Family</string>
+    <string name="home_empty_family_description">Oh no, there\'s no one here yet!</string>
+    <string name="close">Close</string>
+    <string name="emoji_reaction_total">%1$d people reacted</string>
+    <string name="profile_image_not_exists">No photos uploaded yet</string>
+
+    <string name="app_update_dialog_title">App Update</string>
+    <string name="app_update_dialog_message">There\'s a new version available! Moving to Play Store</string>
+    <string name="app_update_dialog_positive">Update</string>
+
+    <string name="token_invalid_dialog_title">Login Expired</string>
+    <string name="token_invalid_dialog_message">The token has expired. Moving to login screen.</string>
+    <string name="token_invalid_dialog_positive">Confirm</string>
+
+    <string name="already_family_exists_title">You are already in a family</string>
+    <string name="already_family_exists_subtitle">You can only belong to one family</string>
+    <string name="already_family_exists_confirm">Go back home</string>
+    <string name="already_family_exists_exit_family_and_join">Leave family and enter with invite link</string>
+
+    <string name="no_more_calendar_items">No more posts</string>
+    <string name="snack_bar_everyone_uploaded_day">A day when all our family uploaded photos</string>
+
+    <string name="yellow_widget_name">BiBBi</string>
+    <string name="widget_description">Quickly check the photos your family checked in with.</string>
+
+    <string name="register_day_of_birth_description">Hello, %1$s, when is your birthday?</string>
+    <string name="register_day_of_birth_year">Year</string>
+    <string name="register_day_of_birth_month">Month</string>
+    <string name="register_day_of_birth_day">Day</string>
+
+    <string name="quit_title">Withdraw Membership</string>
+    <string name="quit_button">Withdraw</string>
+    <string name="quit_heading_one">We are sorry to see you leave the BiBBi service..</string>
+    <string name="quit_heading_two">Please tell us the reason for withdrawal\nIt helps a lot in improving BiBBi service!</string>
+    <string name="quit_minimum_one">Please select at least one.</string>
+    <string name="comment_count">%1$d comments</string>
+    <string name="comment_dialog_title">Comments</string>
+    <string name="comment_dialog_comment_deleted">The comment has been deleted</string>
+    <string name="comment_dialog_no_comments_title">There are no comments yet</string>
+    <string name="comment_dialog_no_comments_description">Leave a comment.</string>
+
+    <string name="unsaved_post_dialog_title">Unsaved Post</string>
+    <string name="unsaved_post_dialog_message">There is an unsaved post.\nWould you like to go back to the post creation screen?</string>
+    <string name="post_upload_sample_text">Enter in eight characters</string>
+    <string name="post_upload_text_description">Enter text</string>
+    <string name="build_number_info">Build number %1$s</string>
+    <string name="share_link_payload">Enter the invite code after entering through the link.\n\n%1$s\nInvite Code: %2$s</string>
+
+    <string name="try_widget_title">Have you added the widget?</string>
+    <string name="try_widget_description">With the widget on the home screen\nYou can quickly grasp the news of the family</string>
+    <string name="register_at">Registered At %1$s</string>
+</resources>

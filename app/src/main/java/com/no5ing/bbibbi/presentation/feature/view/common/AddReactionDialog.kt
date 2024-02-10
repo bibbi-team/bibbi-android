@@ -13,15 +13,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
@@ -57,7 +54,6 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.CustomDialogPosition
-import com.no5ing.bbibbi.util.LocalNavigateControllerState
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.customDialogModifier
 import com.no5ing.bbibbi.util.emojiList
@@ -73,13 +69,11 @@ fun AddReactionDialog(
     onTapEmoji: (String) -> Unit,
     onTapRealEmoji: (MemberRealEmoji) -> Unit,
     onTapRealEmojiCreate: (String) -> Unit,
-    onDispose: () -> Unit,
     realEmojiMap: Map<String, MemberRealEmoji>,
     isEnabled: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     if (isEnabled.value) {
         val coroutineScope = rememberCoroutineScope()
-        val navController = LocalNavigateControllerState.current
         var showAnimate by remember {
             mutableStateOf(false)
         }
@@ -91,7 +85,6 @@ fun AddReactionDialog(
                 isEnabled.value = false
             }
         }
-        val parentBarPadding = WindowInsets.systemBars.asPaddingValues()
         Dialog(
             onDismissRequest = { showAnimate = false },
             properties = DialogProperties(

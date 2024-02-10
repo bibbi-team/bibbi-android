@@ -39,6 +39,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.post.Post
+import com.no5ing.bbibbi.presentation.component.MicroTextBubbleBox
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.asyncImagePainter
@@ -95,7 +96,8 @@ fun ProfilePageContent(
                         emojiCnt = item.emojiCount,
                         commentCnt = item.commentCount,
                         time = toLocalizedDate(time = item.createdAt),
-                        onTap = { onTapContent(item) }
+                        onTap = { onTapContent(item) },
+                        postContent = item.content,
                     )
                 }
             }
@@ -114,6 +116,7 @@ fun ProfilePageContent(
 @Composable
 fun ProfilePageContentItem(
     imageUrl: String,
+    postContent: String,
     emojiCnt: Int,
     commentCnt: Int,
     time: String,
@@ -125,15 +128,22 @@ fun ProfilePageContentItem(
             .clickable { onTap() },
         horizontalAlignment = Alignment.Start,
     ) {
-        AsyncImage(
-            model = asyncImagePainter(source = imageUrl),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1.0f)
-                .clip(RoundedCornerShape(24.dp))
-        )
+        Box {
+            AsyncImage(
+                model = asyncImagePainter(source = imageUrl),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1.0f)
+                    .clip(RoundedCornerShape(24.dp))
+            )
+            MicroTextBubbleBox(
+                text = postContent,
+                alignment = Alignment.BottomCenter,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+        }
         Column(
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 20.dp),
             horizontalAlignment = Alignment.Start

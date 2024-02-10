@@ -144,7 +144,7 @@ class AppWidget : GlanceAppWidget() {
             ) {
                 when (result) {
                     WIDGET_SUCCESS -> {
-                        ImagePreviewBox(size, isSmallSize)
+                        ImagePreviewBox(isSmallSize)
                     }
 
                     WIDGET_LOADING, null -> {
@@ -175,7 +175,7 @@ class AppWidget : GlanceAppWidget() {
     }
 
     @Composable
-    fun ImagePreviewBox(size: DpSize, isSmallSize: Boolean) {
+    fun ImagePreviewBox(isSmallSize: Boolean) {
         val postImagePath = currentState(imageKey)!!
         val profileImagePath = currentState(profileImageKey)
         val postContent = currentState(postContentKey)!!

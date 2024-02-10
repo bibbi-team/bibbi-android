@@ -46,6 +46,7 @@ fun ProfilePage(
     onTapPost: (Post) -> Unit = {},
     onTapChangeNickname: () -> Unit = {},
     onTapCamera: () -> Unit = {},
+    onTapProfileImage: (String) -> Unit = {},
     changeableUriState: MutableState<Uri?> = remember { mutableStateOf(null) },
     familyMemberViewModel: FamilyMemberViewModel = hiltViewModel(),
     profileImageChangeViewModel: ChangeProfileImageViewModel = hiltViewModel(),
@@ -137,6 +138,7 @@ fun ProfilePage(
                 viewerMemberId = viewerMemberId,
                 onTapChangeNickname = onTapChangeNickname,
                 memberState = memberState,
+                onTapProfileImage = onTapProfileImage,
                 onTapChangeProfileButton = {
                     albumCameraSelectState.value = true
                 }

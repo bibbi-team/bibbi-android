@@ -21,7 +21,9 @@ class DeepLinkActivity : ComponentActivity() {
 
         val mainIntent = intent
         mainIntent.setClass(this, MainActivity::class.java)
-        mainIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+        mainIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            .or(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            .or(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(mainIntent)
         finish()
 

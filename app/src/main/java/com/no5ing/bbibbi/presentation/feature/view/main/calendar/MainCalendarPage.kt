@@ -25,7 +25,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +47,7 @@ import com.no5ing.bbibbi.presentation.feature.view_model.post.GetFamilySummaryVi
 import com.no5ing.bbibbi.presentation.feature.view_model.post.MonthlyStatisticsViewModel
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
+import com.no5ing.bbibbi.util.formatYearMonth
 import com.no5ing.bbibbi.util.getScreenSize
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
@@ -72,7 +75,7 @@ fun MainCalendarPage(
     calendarMonthStatViewModel: GetFamilySummaryViewModel = hiltViewModel(),
     monthlyStatisticsViewModel: MonthlyStatisticsViewModel = hiltViewModel(),
 ) {
-    val (width, height) = getScreenSize()
+    val (width) = getScreenSize()
     val currentCalendarState: CalendarState<EmptySelectionState> = remember {
         CalendarState(
             selectionState = EmptySelectionState,
@@ -83,6 +86,7 @@ fun MainCalendarPage(
     }
     val uiState = calendarMonthViewModel.uiState.collectAsState()
     val statState by monthlyStatisticsViewModel.uiState.collectAsState()
+    val haptic = LocalHapticFeedback.current
 
     LaunchedEffect(currentCalendarState.monthState.currentMonth) {
         Timber.d("[MainCalendarPage] Changed month!")
@@ -213,6 +217,7 @@ fun MainCalendarPage(
                         monthState = uiState.value,
                         onClick = { date ->
                             if (uiState.value.containsKey(date)) {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                 onTapDay(date)
                             }
                         },
@@ -269,8 +274,6 @@ fun MainCalendarYearMonthBar(
         setBalloonAnimation(BalloonAnimation.ELASTIC)
     }
 
-    val yearStr = stringResource(id = R.string.year)
-    val monthStr = stringResource(id = R.string.month)
     Row(
         modifier = Modifier
             .padding(start = 20.dp, top = 24.dp, end = 20.dp, bottom = 16.dp)
@@ -283,7 +286,7 @@ fun MainCalendarYearMonthBar(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "${yearMonthState.year}${yearStr} ${yearMonthState.month.value}${monthStr}",
+                text = formatYearMonth(yearMonthState.year, yearMonthState.month.value),
                 fontWeight = FontWeight.SemiBold,
                 style = MaterialTheme.bbibbiTypo.headOne.copy(
                     fontWeight = FontWeight.SemiBold
@@ -316,7 +319,7 @@ fun MainCalendarYearMonthBar(
             Text(
                 text = stringResource(
                     id = R.string.calendar_history_cnt,
-                    if(summary.isReady()) summary.data.totalImageCnt else 0
+                    if (summary.isReady()) summary.data.totalImageCnt else 0
                 ),
                 color = MaterialTheme.bbibbiScheme.textPrimary,
                 style = MaterialTheme.bbibbiTypo.bodyOneRegular,

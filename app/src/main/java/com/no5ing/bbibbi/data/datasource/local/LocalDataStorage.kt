@@ -37,10 +37,10 @@ class LocalDataStorage @Inject constructor(val context: Context) {
 
     companion object {
         const val AUTH_RESULT_KEY = "auth_result_key"
-        const val REGISTRATION_TOKEN_KEY = "registration_token"
         const val LANDING_SEEN_KEY = "landing_seen"
         const val REAL_EMOJI_KEY = "real_emoji"
         const val TEMPORARY_POST_URI = "temporary_post_uri"
+        const val WIDGET_POPUP_PERIOD_KEY = "widget_popup_period"
     }
 
     fun logOut() {
@@ -115,5 +115,29 @@ class LocalDataStorage @Inject constructor(val context: Context) {
 
     fun getTemporaryUri(): String? {
         return preferences.getString(TEMPORARY_POST_URI, null)
+    }
+
+    fun setWidgetPopupPeriod() {
+        val editor = preferences.edit()
+        editor.putLong(WIDGET_POPUP_PERIOD_KEY, System.currentTimeMillis())
+        editor.apply()
+        editor.commit()
+    }
+
+    fun getAndRemoveWidgetPopupPeriod(): Boolean {
+        val period = preferences.getLong(WIDGET_POPUP_PERIOD_KEY, 0)
+        if (period == 0L) {
+            return false
+        }
+        val now = System.currentTimeMillis()
+        val diff = now - period
+        if (diff > 1000 * 60 * 60 * 24 * 3) {
+            val editor = preferences.edit()
+            editor.remove(WIDGET_POPUP_PERIOD_KEY)
+            editor.apply()
+            editor.commit()
+            return true
+        }
+        return false
     }
 }

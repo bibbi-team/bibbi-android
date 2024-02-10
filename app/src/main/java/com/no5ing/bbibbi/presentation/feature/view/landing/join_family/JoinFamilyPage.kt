@@ -2,10 +2,11 @@ package com.no5ing.bbibbi.presentation.feature.view.landing.join_family
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -106,19 +107,20 @@ fun JoinFamilyPage(
                 color = MaterialTheme.bbibbiScheme.iconSelected,
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(id = R.string.join_family_description),
-                style = MaterialTheme.bbibbiTypo.bodyOneRegular,
-                color = MaterialTheme.bbibbiScheme.textSecondary,
-                modifier = Modifier.padding(horizontal = 20.dp)
-            )
+            Spacer(modifier = Modifier.height(24.dp))
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+            ) {
+                JoinFamilyPageLinkBar(
+                    onTap = onTapJoinWithLink,
+                )
+            }
             Spacer(modifier = Modifier.height(24.dp))
             Box(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
                     .fillMaxWidth()
-                    .aspectRatio(1.0f)
                     .background(
                         MaterialTheme.bbibbiScheme.backgroundSecondary,
                         shape = RoundedCornerShape(16.dp)
@@ -134,33 +136,46 @@ fun JoinFamilyPage(
                     },
                 contentAlignment = Alignment.Center
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 13.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.plus_icon),
-                        contentDescription = null,
-                        tint = MaterialTheme.bbibbiScheme.textSecondary,
-                        modifier = Modifier
-                            .size(45.dp)
-                    )
-                    Spacer(modifier = Modifier.size(20.dp))
-                    Text(
-                        text = stringResource(id = R.string.join_family_create_group),
-                        style = MaterialTheme.bbibbiTypo.headTwoRegular,
-                        color = MaterialTheme.bbibbiScheme.textPrimary,
-                    )
+                    Box(
+                        Modifier.size(50.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.plus_icon),
+                            contentDescription = null,
+                            tint = MaterialTheme.bbibbiScheme.textSecondary,
+                            modifier = Modifier
+                                .size(25.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(13.dp))
+                    Column(
+                        verticalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.padding(vertical = 9.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.join_family_without_group),
+                            style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
+                            color = MaterialTheme.bbibbiScheme.textSecondary,
+                        )
+                        Spacer(modifier = Modifier.height(3.dp))
+                        Text(
+                            text = stringResource(id = R.string.join_family_create_group),
+                            style = MaterialTheme.bbibbiTypo.headTwoBold,
+                            color = MaterialTheme.bbibbiScheme.textPrimary,
+                        )
+                    }
                 }
             }
-            Spacer(modifier = Modifier.height(24.dp))
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp)
-            ) {
-                JoinFamilyPageLinkBar(
-                    onTap = onTapJoinWithLink,
-                )
-            }
+
+
         }
     }
 }

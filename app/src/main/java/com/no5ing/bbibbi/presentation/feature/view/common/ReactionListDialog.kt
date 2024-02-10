@@ -8,7 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -178,45 +177,59 @@ fun ReactionListDialog(
                             Box(
                                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp),
                             ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.Start,
-                                    verticalAlignment = Alignment.CenterVertically,
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     if (selectedEmoji is RealEmojiPostReactionUiState) {
                                         Box(
-                                            contentAlignment = Alignment.BottomEnd,
+                                            modifier = Modifier
+                                                .size(64.dp)
+                                                .background(
+                                                    MaterialTheme.bbibbiScheme.gray600,
+                                                    CircleShape
+                                                ),
+                                            contentAlignment = Alignment.Center,
                                         ) {
-                                            Box {
-                                                AsyncImage(
-                                                    model = asyncImagePainter(selectedEmoji.imageUrl),
-                                                    contentDescription = null, // 필수 param
-                                                    modifier = Modifier
-                                                        .size(42.dp)
-                                                        .clip(CircleShape),
-                                                )
-                                            }
+                                            AsyncImage(
+                                                model = asyncImagePainter(selectedEmoji.imageUrl),
+                                                contentDescription = null, // 필수 param
+                                                modifier = Modifier
+                                                    .size(56.dp)
+                                                    .clip(CircleShape),
+                                            )
                                             Box(
-                                                modifier = Modifier.offset(x = 4.dp, y = 4.dp)
+                                                modifier = Modifier
+                                                    .align(Alignment.BottomEnd)
+                                                    .offset(x = 4.dp, y = 4.dp)
                                             ) {
                                                 Image(
                                                     painter = getRealEmojiResource(emojiName = selectedEmoji.emojiType),
                                                     contentDescription = null, // 필수 param
                                                     modifier = Modifier
-                                                        .size(20.dp),
+                                                        .size(30.dp),
                                                 )
                                             }
                                         }
                                     } else {
-                                        Image(
-                                            painter = getEmojiResource(emojiName = selectedEmoji.emojiType),
-                                            contentDescription = null, // 필수 param
+                                        Box(
                                             modifier = Modifier
-                                                .size(width = 42.dp, height = 42.dp)
-                                        )
+                                                .size(64.dp)
+                                                .background(
+                                                    MaterialTheme.bbibbiScheme.gray600,
+                                                    CircleShape
+                                                ),
+                                            contentAlignment = Alignment.Center,
+                                        ) {
+                                            Image(
+                                                painter = getEmojiResource(emojiName = selectedEmoji.emojiType),
+                                                contentDescription = null, // 필수 param
+                                                modifier = Modifier
+                                                    .size(56.dp)
+                                            )
+                                        }
                                     }
-
-                                    Spacer(modifier = Modifier.width(20.dp))
+                                    Spacer(modifier = Modifier.height(16.dp))
                                     Text(
                                         text = totalCntMessage,
                                         color = MaterialTheme.bbibbiScheme.white,
@@ -239,7 +252,7 @@ fun ReactionListDialog(
                                         ) {
                                             CircleProfileImage(
                                                 member = currentMember,
-                                                size = 52.dp,
+                                                size = 44.dp,
                                                 onTap = {
                                                     navController.navigate(
                                                         destination = ProfilePageController,

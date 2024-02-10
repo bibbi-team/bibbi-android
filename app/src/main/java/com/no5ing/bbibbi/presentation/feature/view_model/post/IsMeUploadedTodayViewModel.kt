@@ -16,6 +16,7 @@ class IsMeUploadedTodayViewModel @Inject constructor(
     private val restAPI: RestAPI,
     private val localDataStorage: LocalDataStorage,
 ) : BaseViewModel<APIResponse<Boolean>>() {
+    var shouldDisplayWidgetPopup = localDataStorage.getAndRemoveWidgetPopupPeriod()
     override fun initState(): APIResponse<Boolean> {
         return APIResponse.loading()
     }

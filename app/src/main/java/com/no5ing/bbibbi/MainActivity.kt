@@ -79,17 +79,19 @@ class MainActivity : ComponentActivity() {
     private val deepLinkStateFlow = MutableStateFlow<String?>(null)
     private val pendingDeepLinkDestination = MutableStateFlow<String?>(null)
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
+    override fun onNewIntent(newIntent: Intent?) {
+        super.onNewIntent(newIntent)
         //HANDLE FOREGROUND INTENT (already app is active)
-        Timber.d("onNewIntent: $intent")
-        onAppStartIntent(intent)
+        intent = newIntent
+        Timber.d("onNewIntent: $newIntent")
+        onAppStartIntent(newIntent)
     }
 
-    private fun onAppStartIntent(intent: Intent?) {
-        val appLinkAction: String? = intent?.action
-        Timber.d("onAppStartIntent: $intent")
-        val appLinkData: Uri? = intent?.data
+    private fun onAppStartIntent(newIntent: Intent?) {
+        Timber.d("onAppStartIntent: $newIntent")
+        val appLinkData: Uri? = newIntent?.data
+        val deepLink = newIntent?.extras?.getString("aosDeepLink")
+        Timber.d("DeepLink: $deepLink")
         val linkId = appLinkData?.let {
             deepLinkStateFlow.value = it.toString()
             getLinkIdFromUrl(it.toString())
@@ -97,8 +99,12 @@ class MainActivity : ComponentActivity() {
         if (linkId != null) {
             handleDeepLinkId(linkId)
         }
+        deepLink?.let {
+            pendingDeepLinkDestination.value = it
+            return
+        }
 
-        val widgetExtraData = intent?.extras?.getString(WIDGET_DEEPLINK_KEY) ?: return
+        val widgetExtraData = newIntent?.extras?.getString(WIDGET_DEEPLINK_KEY) ?: return
         pendingDeepLinkDestination.value = widgetExtraData
     }
 

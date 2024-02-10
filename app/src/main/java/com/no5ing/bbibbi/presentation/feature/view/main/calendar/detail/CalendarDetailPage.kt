@@ -34,8 +34,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -65,6 +66,7 @@ import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.asyncImagePainter
+import com.no5ing.bbibbi.util.formatYearMonth
 import com.no5ing.bbibbi.util.localResources
 import com.no5ing.bbibbi.util.weekDates
 import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
@@ -97,6 +99,7 @@ fun CalendarDetailPage(
     val snackBarState = LocalSnackbarHostState.current
     val uiState = calendarWeekViewModel.uiState.collectAsState()
     val memberId = LocalSessionState.current.memberId
+    val haptic = LocalHapticFeedback.current
 
     val scrollEnabled = remember {
         mutableStateOf(true)
@@ -235,8 +238,6 @@ fun CalendarDetailPage(
             }
     }
 
-    val yearStr = stringResource(id = R.string.year)
-    val monthStr = stringResource(id = R.string.month)
     val currentYearMonth = currentCalendarState.weekState.currentWeek.yearMonth
 
     BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
@@ -268,7 +269,10 @@ fun CalendarDetailPage(
                 ) {
                     DisposableTopBar(
                         onDispose = onDispose,
-                        title = "${currentYearMonth.year}${yearStr} ${currentYearMonth.month.value}${monthStr}",
+                        title = formatYearMonth(
+                            currentYearMonth.year,
+                            currentYearMonth.month.value
+                        ),
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     SelectableWeekCalendar(
@@ -278,6 +282,7 @@ fun CalendarDetailPage(
                                 state = dayState,
                                 monthState = uiState.value,
                                 onClick = {
+                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                     dayState.selectionState.onDateSelected(it)
                                 },
                                 modifier = Modifier
