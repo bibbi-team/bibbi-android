@@ -28,9 +28,6 @@ val secretProperties = Properties().apply {
     load(secretFile.inputStream())
 }
 
-val majorVersion = 1
-val minorVersion = 1
-val patchVersion = 1
 
 android {
     namespace = "com.no5ing.bbibbi"
@@ -50,7 +47,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 11011
-        versionName = "1.1.0"
+        versionName = "1.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
