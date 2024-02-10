@@ -189,4 +189,5 @@
 
     <string name="try_widget_title">위젯 추가하셨나요?</string>
     <string name="try_widget_description">홈 화면에서 위젯으로\n가족의 소식을 한눈에 파악할 수 있어요</string>
+    <string name="register_at">%1$s 가입</string>
 </resources>

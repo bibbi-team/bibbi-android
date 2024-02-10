@@ -20,6 +20,7 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -116,7 +117,7 @@ fun ProfilePageMemberBar(
             if (viewerMemberId == memberState.value.data.memberId) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "${toLocalizedDate(memberState.value.data.familyJoinAt ?: "2000-01-01")} 가입",
+                    text = stringResource(id = R.string.register_at, toLocalizedDate(memberState.value.data.familyJoinAt ?: "2000-01-01")),
                     style = MaterialTheme.bbibbiTypo.caption,
                     color = MaterialTheme.bbibbiScheme.icon,
                 )

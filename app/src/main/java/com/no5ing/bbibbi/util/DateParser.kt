@@ -3,11 +3,14 @@ package com.no5ing.bbibbi.util
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.no5ing.bbibbi.R
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.time.temporal.WeekFields
 import java.util.Locale
 
@@ -28,8 +31,34 @@ fun gapBetweenNow(time: Instant): String {
 @Composable
 fun gapBetweenNow(time: ZonedDateTime) = gapBetweenNow(time.toInstant())
 
-private val yearDateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
-private val dateFormatter = DateTimeFormatter.ofPattern("MM월 dd일")
+private fun getYearMonthPattern(): String {
+    return when(Locale.getDefault()) {
+        Locale.KOREA -> "yyyy년 MM월"
+        Locale.ENGLISH -> "yyyy, MMMM"
+        else -> "yyyy/MM"
+    }
+}
+
+private fun getYearDatePattern(): String {
+    return when(Locale.getDefault()) {
+        Locale.KOREA -> "yyyy년 MM월 dd일"
+        Locale.ENGLISH -> "yyyy, MMMM dd"
+        else -> "yyyy/MM/dd"
+    }
+}
+
+private fun getDatePattern(): String {
+    return when(Locale.getDefault()) {
+        Locale.KOREA -> "MM월 dd일"
+        Locale.ENGLISH -> "MMMM dd"
+        else -> "MM/dd"
+    }
+}
+
+private val yearMonthFormatter = DateTimeFormatter.ofPattern(getYearMonthPattern())
+private val yearDateFormatter = DateTimeFormatter.ofPattern(getYearDatePattern())
+private val dateFormatter = DateTimeFormatter.ofPattern(getDatePattern())
+
 fun toLocalizedDate(time: ZonedDateTime): String {
     if (time.year == ZonedDateTime.now().year)
         return dateFormatter.format(time)
@@ -71,3 +100,5 @@ fun LocalDate.isBirthdayNow(): Boolean {
     val now = LocalDate.now()
     return this.monthValue == now.monthValue && this.dayOfMonth == now.dayOfMonth
 }
+
+fun formatYearMonth(year: Int, month: Int): String = YearMonth.of(year, month).format(yearMonthFormatter)

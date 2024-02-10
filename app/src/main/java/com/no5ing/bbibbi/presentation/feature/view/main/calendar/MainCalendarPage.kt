@@ -47,6 +47,7 @@ import com.no5ing.bbibbi.presentation.feature.view_model.post.GetFamilySummaryVi
 import com.no5ing.bbibbi.presentation.feature.view_model.post.MonthlyStatisticsViewModel
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
+import com.no5ing.bbibbi.util.formatYearMonth
 import com.no5ing.bbibbi.util.getScreenSize
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
@@ -273,8 +274,6 @@ fun MainCalendarYearMonthBar(
         setBalloonAnimation(BalloonAnimation.ELASTIC)
     }
 
-    val yearStr = stringResource(id = R.string.year)
-    val monthStr = stringResource(id = R.string.month)
     Row(
         modifier = Modifier
             .padding(start = 20.dp, top = 24.dp, end = 20.dp, bottom = 16.dp)
@@ -287,7 +286,7 @@ fun MainCalendarYearMonthBar(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "${yearMonthState.year}${yearStr} ${yearMonthState.month.value}${monthStr}",
+                text = formatYearMonth(yearMonthState.year, yearMonthState.month.value),
                 fontWeight = FontWeight.SemiBold,
                 style = MaterialTheme.bbibbiTypo.headOne.copy(
                     fontWeight = FontWeight.SemiBold
