@@ -21,6 +21,10 @@ class FirebaseService : FirebaseMessagingService() {
         remoteMessage.notification?.apply {
             val intent = Intent(this@FirebaseService, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                remoteMessage.data.forEach { (t, u) ->
+                    Timber.d("Extra data: $t, $u")
+                    putExtra(t, u)
+                }
             }
             val pendingIntent = PendingIntent
                 .getActivity(this@FirebaseService, 0, intent, PendingIntent.FLAG_IMMUTABLE)
