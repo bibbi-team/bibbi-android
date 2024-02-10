@@ -210,7 +210,7 @@ fun CameraView(
                 )
                 CameraCaptureButton(
                     onClick = {
-                        if(isCapturing) return@CameraCaptureButton
+                        if (isCapturing) return@CameraCaptureButton
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         coroutineScope.launch {
                             isCapturing = true

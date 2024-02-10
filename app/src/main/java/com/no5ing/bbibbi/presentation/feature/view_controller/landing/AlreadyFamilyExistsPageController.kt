@@ -12,7 +12,6 @@ import com.no5ing.bbibbi.presentation.feature.view.landing.already_family_exists
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.JoinFamilyWithLinkPageController.goJoinFamilyWithLinkPage
 import com.no5ing.bbibbi.presentation.feature.view_model.family.QuitFamilyViewModel
-import timber.log.Timber
 
 
 object AlreadyFamilyExistsPageController : NavigationDestination(
@@ -33,7 +32,7 @@ object AlreadyFamilyExistsPageController : NavigationDestination(
                 navController.popBackStack()
             },
             onTapQuitAndJoin = {
-                if(familyQuitState.isIdle()) {
+                if (familyQuitState.isIdle()) {
                     familyQuitViewModel.invoke(Arguments())
                 }
             }

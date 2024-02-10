@@ -3,14 +3,11 @@ package com.no5ing.bbibbi.util
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.no5ing.bbibbi.R
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.time.temporal.WeekFields
 import java.util.Locale
 
@@ -32,7 +29,7 @@ fun gapBetweenNow(time: Instant): String {
 fun gapBetweenNow(time: ZonedDateTime) = gapBetweenNow(time.toInstant())
 
 private fun getYearMonthPattern(): String {
-    return when(Locale.getDefault()) {
+    return when (Locale.getDefault()) {
         Locale.KOREA -> "yyyy년 MM월"
         Locale.ENGLISH -> "yyyy, MMMM"
         else -> "yyyy/MM"
@@ -40,7 +37,7 @@ private fun getYearMonthPattern(): String {
 }
 
 private fun getYearDatePattern(): String {
-    return when(Locale.getDefault()) {
+    return when (Locale.getDefault()) {
         Locale.KOREA -> "yyyy년 MM월 dd일"
         Locale.ENGLISH -> "yyyy, MMMM dd"
         else -> "yyyy/MM/dd"
@@ -48,7 +45,7 @@ private fun getYearDatePattern(): String {
 }
 
 private fun getDatePattern(): String {
-    return when(Locale.getDefault()) {
+    return when (Locale.getDefault()) {
         Locale.KOREA -> "MM월 dd일"
         Locale.ENGLISH -> "MMMM dd"
         else -> "MM/dd"
@@ -101,4 +98,5 @@ fun LocalDate.isBirthdayNow(): Boolean {
     return this.monthValue == now.monthValue && this.dayOfMonth == now.dayOfMonth
 }
 
-fun formatYearMonth(year: Int, month: Int): String = YearMonth.of(year, month).format(yearMonthFormatter)
+fun formatYearMonth(year: Int, month: Int): String =
+    YearMonth.of(year, month).format(yearMonthFormatter)

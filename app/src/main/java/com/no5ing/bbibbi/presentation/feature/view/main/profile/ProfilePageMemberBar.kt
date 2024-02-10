@@ -55,7 +55,7 @@ fun ProfilePageMemberBar(
                         member = memberState.value.data,
                         size = 90.dp,
                         onTap = {
-                            if(memberState.value.data.hasProfileImage()) {
+                            if (memberState.value.data.hasProfileImage()) {
                                 onTapProfileImage(memberState.value.data.imageUrl!!)
                             }
                         }
@@ -117,7 +117,10 @@ fun ProfilePageMemberBar(
             if (viewerMemberId == memberState.value.data.memberId) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = stringResource(id = R.string.register_at, toLocalizedDate(memberState.value.data.familyJoinAt ?: "2000-01-01")),
+                    text = stringResource(
+                        id = R.string.register_at,
+                        toLocalizedDate(memberState.value.data.familyJoinAt ?: "2000-01-01")
+                    ),
                     style = MaterialTheme.bbibbiTypo.caption,
                     color = MaterialTheme.bbibbiScheme.icon,
                 )

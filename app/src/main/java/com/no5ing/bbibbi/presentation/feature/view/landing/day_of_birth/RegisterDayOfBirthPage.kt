@@ -95,7 +95,9 @@ fun RegisterDayOfBirthPage(
                             if (number < 0 || number > 9999) return@DigitizedNumberInput
                             state.isInvalidYearState.value =
                                 number > YearMonth.now().year || number < 1900 //TODO
-                            if (it.length == 4 && (state.yearTextState.value.toIntOrNull() ?: 0) / 100 > 0) monthFocus.requestFocus()
+                            if (it.length == 4 && (state.yearTextState.value.toIntOrNull()
+                                    ?: 0) / 100 > 0
+                            ) monthFocus.requestFocus()
                             state.yearTextState.value = it
                         },
                         isInvalidInput = state.isInvalidInput(),
@@ -115,7 +117,9 @@ fun RegisterDayOfBirthPage(
                             }
                             if (number < 0 || number > 99) return@DigitizedNumberInput
                             state.isInvalidMonthState.value = number > 12
-                            if (it.length == 2 && (state.monthTextState.value.toIntOrNull() ?: 0) < 10) dayFocus.requestFocus()
+                            if (it.length == 2 && (state.monthTextState.value.toIntOrNull()
+                                    ?: 0) < 10
+                            ) dayFocus.requestFocus()
                             state.monthTextState.value = it
                         },
                         isInvalidInput = state.isInvalidInput(),

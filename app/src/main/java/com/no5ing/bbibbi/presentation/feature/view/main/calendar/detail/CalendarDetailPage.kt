@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -270,7 +269,10 @@ fun CalendarDetailPage(
                 ) {
                     DisposableTopBar(
                         onDispose = onDispose,
-                        title = formatYearMonth(currentYearMonth.year, currentYearMonth.month.value),
+                        title = formatYearMonth(
+                            currentYearMonth.year,
+                            currentYearMonth.month.value
+                        ),
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     SelectableWeekCalendar(

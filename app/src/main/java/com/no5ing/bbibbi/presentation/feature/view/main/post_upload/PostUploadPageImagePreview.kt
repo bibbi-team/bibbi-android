@@ -78,7 +78,10 @@ fun PostUploadPageImagePreview(
                         .padding(horizontal = 10.dp, vertical = 8.dp)
                 ) {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterHorizontally),
+                        horizontalArrangement = Arrangement.spacedBy(
+                            5.dp,
+                            Alignment.CenterHorizontally
+                        ),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(

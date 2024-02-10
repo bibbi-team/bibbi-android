@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.presentation.component.MicroTextBubbleBox
-import com.no5ing.bbibbi.presentation.component.MiniTextBubbleBox
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.asyncImagePainter

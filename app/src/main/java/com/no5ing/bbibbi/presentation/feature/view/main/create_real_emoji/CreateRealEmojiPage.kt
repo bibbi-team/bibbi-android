@@ -205,7 +205,7 @@ fun CreateRealEmojiPage(
                     cameraState.value?.cameraControl?.enableTorch(torchState.value)
                 },
                 onClickCapture = {
-                    if(isCapturing) return@CreateRealEmojiCameraBar
+                    if (isCapturing) return@CreateRealEmojiCameraBar
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     coroutineScope.launch {
                         isCapturing = true
