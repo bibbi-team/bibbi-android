@@ -43,7 +43,6 @@ fun HomePage(
     retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
     isMeUploadedTodayViewModel: IsMeUploadedTodayViewModel = hiltViewModel(),
     familyPostsViewModel: MainPostFeedViewModel = hiltViewModel(),
-    familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),
     familyPostTopViewModel: DailyFamilyTopViewModel = hiltViewModel(),
     onTapLeft: () -> Unit = {},
     onTapRight: () -> Unit = {},
@@ -81,7 +80,7 @@ fun HomePage(
         }
 
         if (familyPostsViewModel.isInitialize()) {
-            familyMembersViewModel.invoke(Arguments())
+           // familyMembersViewModel.invoke(Arguments())
             retrieveMeViewModel.invoke(Arguments())
             familyPostTopViewModel.invoke(Arguments())// TODO
             familyPostsViewModel.invoke(
@@ -114,7 +113,6 @@ fun HomePage(
                 )
                 HomePageContent(
                     contentState = familyPostsViewModel.uiState,
-                    familyListState = familyMembersViewModel.uiState,
                     postTopState = familyPostTopViewModel.uiState,
                     meState = retrieveMeViewModel.uiState,
                     onTapContent = onTapContent,
@@ -152,8 +150,7 @@ fun HomePagePreview() {
                 HomePageTopBar()
                 HomePageContent(
                     contentState = MutableStateFlow(PagingData.empty()),
-                    familyListState = MutableStateFlow(PagingData.empty()),
-                    postTopState = MutableStateFlow(emptyMap()),
+                    postTopState = MutableStateFlow(APIResponse.idle()),
                     meState = MutableStateFlow(APIResponse.success(Member.unknown()))
                 )
             }
