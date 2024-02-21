@@ -23,7 +23,7 @@ import javax.inject.Singleton
 class GetFeedsRepository @Inject constructor(
     private val memberCacheProvider: MemberCacheProvider,
 ) : BaseRepository<PagingData<MainFeedUiState>>() {
-    lateinit var pagingSource: GetFeedPageSource
+    private lateinit var pagingSource: GetFeedPageSource
     override fun fetch(arguments: Arguments): Flow<PagingData<MainFeedUiState>> {
         return Pager(
             config = PagingConfig(
@@ -37,10 +37,14 @@ class GetFeedsRepository @Inject constructor(
         }.flow
     }
 
-    override fun closeResources() {
-        super.closeResources()
+    fun invalidateSource() {
         if (::pagingSource.isInitialized)
             pagingSource.invalidate()
+    }
+
+    override fun closeResources() {
+        super.closeResources()
+        this.invalidateSource()
     }
 }
 
