@@ -145,7 +145,13 @@ fun PostViewPage(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     AsyncImage(
-                        model = asyncImagePainter(source = postState.data.post.imageUrl),
+                        model = asyncImagePainter(
+                            source =
+                                if(postState.isReady())
+                                    if (siblingPostState.isReady()) siblingPostState.data[pagerState.currentPage].post.imageUrl
+                                    else postState.data.post.imageUrl
+                                else null
+                        ),
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
