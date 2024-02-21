@@ -238,6 +238,6 @@ fun JoinFamilyWithLinkPage(
 }
 
 private fun isValidUrl(input: String): Boolean {
-    val linkPrefix = "https://no5ing.kr/o/"
-    return input.startsWith(linkPrefix)
+    return input.startsWith("https://no5ing.kr/o/")
+            || input.startsWith("https://bibbi.app/o/")
 }
