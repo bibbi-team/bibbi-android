@@ -32,9 +32,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val timeout_read = 10L
-    private const val timeout_connect = 10L
-    private const val timeout_write = 10L
+    private const val timeout_read = 20L
+    private const val timeout_connect = 20L
+    private const val timeout_write = 20L
 
     val requireUpdateState = MutableStateFlow(false)
     val requireTokenInvalidRestart = MutableStateFlow(false)
@@ -144,7 +144,6 @@ object NetworkModule {
 //            HttpLoggingInterceptor { message -> Timber.d("%s", message) }
 //        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return client
-            // .addInterceptor(httpLoggingInterceptor)
             .connectTimeout(timeout_connect, TimeUnit.SECONDS)
             .readTimeout(timeout_read, TimeUnit.SECONDS)
             .writeTimeout(timeout_write, TimeUnit.SECONDS)
