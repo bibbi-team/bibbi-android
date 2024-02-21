@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -77,7 +77,10 @@ fun FamilyPage(
                 onTapShare = onTapShare,
                 uiState = inviteLinkState,
             )
-            Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = MaterialTheme.bbibbiScheme.backgroundSecondary
+            )
             FamilyPageMemberList(
                 meId = meId,
                 meState = meState,
@@ -110,7 +113,10 @@ fun FamilyPagePreview() {
                     mutableStateOf(APIResponse.success(DeepLink.mock()))
                 },
             )
-            Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = MaterialTheme.bbibbiScheme.backgroundSecondary
+            )
             FamilyPageMemberList(
                 meId = Member.unknown().memberId,
                 meState = remember { mutableStateOf(APIResponse.success(Member.unknown())) },

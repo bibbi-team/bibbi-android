@@ -28,7 +28,6 @@ import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.BackToExitHandler
 import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.feature.view_model.auth.RetrieveMeViewModel
-import com.no5ing.bbibbi.presentation.feature.view_model.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.DailyFamilyTopViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.IsMeUploadedTodayViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.MainPostFeedViewModel
@@ -80,7 +79,7 @@ fun HomePage(
         }
 
         if (familyPostsViewModel.isInitialize()) {
-           // familyMembersViewModel.invoke(Arguments())
+            // familyMembersViewModel.invoke(Arguments())
             retrieveMeViewModel.invoke(Arguments())
             familyPostTopViewModel.invoke(Arguments())// TODO
             familyPostsViewModel.invoke(

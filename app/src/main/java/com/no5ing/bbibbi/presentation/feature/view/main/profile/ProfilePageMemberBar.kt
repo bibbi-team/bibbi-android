@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -126,7 +126,10 @@ fun ProfilePageMemberBar(
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
-            Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.backgroundSecondary)
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = MaterialTheme.bbibbiScheme.backgroundSecondary
+            )
             Spacer(modifier = Modifier.height(24.dp))
         }
     }

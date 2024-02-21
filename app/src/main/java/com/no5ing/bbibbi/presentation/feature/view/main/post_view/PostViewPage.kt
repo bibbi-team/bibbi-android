@@ -148,10 +148,10 @@ fun PostViewPage(
                     AsyncImage(
                         model = asyncImagePainter(
                             source =
-                                if(postState.isReady())
-                                    if (siblingPostState.isReady()) siblingPostState.data[pagerState.currentPage].post.imageUrl
-                                    else postState.data.post.imageUrl
-                                else null
+                            if (postState.isReady())
+                                if (siblingPostState.isReady()) siblingPostState.data[pagerState.currentPage].post.imageUrl
+                                else postState.data.post.imageUrl
+                            else null
                         ),
                         contentDescription = null,
                         modifier = Modifier

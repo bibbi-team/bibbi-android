@@ -29,8 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
@@ -61,7 +59,7 @@ fun HomePageStoryBar(
                 .padding(horizontal = 16.dp),
             onTap = onTapInvite,
         )
-    } else if(postTopState.isReady()) {
+    } else if (postTopState.isReady()) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -133,8 +131,8 @@ fun StoryBarIcon(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box {
-            val rankColor = if(isUploaded) getRankColor(rank = rank) else null
-            val rankBadge = if(isUploaded) getRankBadge(rank = rank) else null
+            val rankColor = if (isUploaded) getRankColor(rank = rank) else null
+            val rankBadge = if (isUploaded) getRankBadge(rank = rank) else null
             if (rankColor != null) {
                 Box(
                     modifier = Modifier

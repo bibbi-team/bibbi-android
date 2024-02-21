@@ -2,7 +2,6 @@ package com.no5ing.bbibbi.presentation.feature.view_model.post
 
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.APIResponse
-import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedStoryElementUiState
 import com.no5ing.bbibbi.presentation.feature.view_model.BaseViewModel
@@ -45,10 +44,12 @@ class DailyFamilyTopViewModel @Inject constructor(
                 ).suspendOnSuccess {
                     val response = members.await()
                     if (response.isSuccess) {
-                        val memberMap = (response.getOrNull()?.results?.associateBy { it.memberId } ?: emptyMap())
+                        val memberMap = (response.getOrNull()?.results?.associateBy { it.memberId }
+                            ?: emptyMap())
                             .toMutableMap()
                         data.results.forEachIndexed { index, post ->
-                            val currentMember = memberMap.remove(post.authorId) ?: return@forEachIndexed
+                            val currentMember =
+                                memberMap.remove(post.authorId) ?: return@forEachIndexed
                             newList.add(MainFeedStoryElementUiState(currentMember, true))
                         }
                         memberMap.forEach {

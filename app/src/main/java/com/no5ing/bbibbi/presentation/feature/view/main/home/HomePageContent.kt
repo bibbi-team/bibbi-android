@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,7 +49,7 @@ fun HomePageContent(
     onRefresh: () -> Unit = {},
 ) {
     val postItems = contentState.collectAsLazyPagingItems()
-   // val memberItems = familyListState.collectAsLazyPagingItems()
+    // val memberItems = familyListState.collectAsLazyPagingItems()
     var isRefreshing by remember { mutableStateOf(false) }
     LaunchedEffect(postItems.loadState.refresh) {
         if (isRefreshing &&
@@ -79,7 +79,7 @@ fun HomePageContent(
                     onTapInvite = onTapInvite,
                 )
                 Spacer(modifier = Modifier.height(24.dp))
-                Divider(
+                HorizontalDivider(
                     thickness = 1.dp,
                     color = MaterialTheme.bbibbiScheme.backgroundSecondary
                 )

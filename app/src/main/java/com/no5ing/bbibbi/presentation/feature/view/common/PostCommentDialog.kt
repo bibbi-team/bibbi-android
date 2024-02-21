@@ -25,8 +25,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -217,7 +217,10 @@ fun PostCommentDialog(
                             style = MaterialTheme.bbibbiTypo.bodyOneBold,
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Divider(thickness = 1.dp, color = MaterialTheme.bbibbiScheme.gray600)
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = MaterialTheme.bbibbiScheme.gray600
+                        )
                     }
                 }
             ) {
