@@ -82,7 +82,7 @@ fun PostViewPage(
     var isPagerReady by remember { mutableStateOf(false) }
     val postState by postViewPageState.uiState.collectAsState()
     val siblingPostState by familyPostsViewModel.uiState.collectAsState()
-    val pagerState = key(siblingPostState.isReady()) {
+    val pagerState = key(siblingPostState) {
         rememberPagerState(
             initialPage = if (siblingPostState.isReady()) siblingPostState.data
                 .indexOfFirst { it.post.postId == postId } else 0,
@@ -123,7 +123,8 @@ fun PostViewPage(
     LaunchedEffect(postState, pagerState.currentPage) {
         if (postState.isReady()) {
             val currentPost =
-                if (siblingPostState.isReady()) siblingPostState.data[pagerState.currentPage] else postState.data
+                (if (siblingPostState.isReady()) siblingPostState.data.getOrNull(pagerState.currentPage) else postState.data)
+                    ?: return@LaunchedEffect
             familyPostReactionBarViewModel.invoke(
                 Arguments(
                     arguments = mapOf(
