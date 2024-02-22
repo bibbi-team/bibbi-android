@@ -22,7 +22,7 @@ import javax.inject.Singleton
 class GetCommentsRepository @Inject constructor(
     private val memberCacheProvider: MemberCacheProvider,
 ) : BaseRepository<PagingData<PostCommentUiState>>() {
-    lateinit var pagingSource: GetCommentsPageSource
+    private lateinit var pagingSource: GetCommentsPageSource
     override fun fetch(arguments: Arguments): Flow<PagingData<PostCommentUiState>> {
         return Pager(
             config = PagingConfig(
@@ -36,10 +36,14 @@ class GetCommentsRepository @Inject constructor(
         }.flow
     }
 
-    override fun closeResources() {
-        super.closeResources()
+    fun invalidateSource() {
         if (::pagingSource.isInitialized)
             pagingSource.invalidate()
+    }
+
+    override fun closeResources() {
+        super.closeResources()
+        this.invalidateSource()
     }
 }
 

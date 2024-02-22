@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,6 +30,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
+import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedStoryElementUiState
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.gapBetweenNow
@@ -39,8 +40,8 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun HomePageContent(
     contentState: StateFlow<PagingData<MainFeedUiState>>,
-    familyListState: StateFlow<PagingData<Member>>,
-    postTopState: StateFlow<Map<String, Int>>,
+    //familyListState: StateFlow<PagingData<Member>>,
+    postTopState: StateFlow<APIResponse<List<MainFeedStoryElementUiState>>>,
     meState: StateFlow<APIResponse<Member>>,
     onTapContent: (Post) -> Unit = {},
     onTapProfile: (Member) -> Unit = {},
@@ -48,12 +49,11 @@ fun HomePageContent(
     onRefresh: () -> Unit = {},
 ) {
     val postItems = contentState.collectAsLazyPagingItems()
-    val memberItems = familyListState.collectAsLazyPagingItems()
+    // val memberItems = familyListState.collectAsLazyPagingItems()
     var isRefreshing by remember { mutableStateOf(false) }
-    LaunchedEffect(postItems.loadState.refresh, memberItems.loadState.refresh) {
+    LaunchedEffect(postItems.loadState.refresh) {
         if (isRefreshing &&
-            postItems.loadState.refresh is LoadState.NotLoading &&
-            memberItems.loadState.refresh is LoadState.NotLoading
+            postItems.loadState.refresh is LoadState.NotLoading
         ) {
             isRefreshing = false
         }
@@ -64,7 +64,6 @@ fun HomePageContent(
         onRefresh = {
             if (isRefreshing) return@HomePageFeedGrid
             isRefreshing = true
-            memberItems.refresh()
             postItems.refresh()
             onRefresh()
         }
@@ -76,12 +75,11 @@ fun HomePageContent(
                 HomePageStoryBar(
                     postTopStateFlow = postTopState,
                     meStateFlow = meState,
-                    familyListStateFlow = familyListState,
                     onTapProfile = onTapProfile,
                     onTapInvite = onTapInvite,
                 )
                 Spacer(modifier = Modifier.height(24.dp))
-                Divider(
+                HorizontalDivider(
                     thickness = 1.dp,
                     color = MaterialTheme.bbibbiScheme.backgroundSecondary
                 )

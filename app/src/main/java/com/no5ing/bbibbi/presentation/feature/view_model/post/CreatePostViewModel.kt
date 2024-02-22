@@ -59,7 +59,7 @@ class CreatePostViewModel @Inject constructor(
                     data.url
                 )
                 if (imageUploadResult == null) {
-                    //TODO: SOME KIND
+                    setState(APIResponse.unknownError())
                     return@suspendOnSuccess
                 }
                 val postResult = restAPI.getPostApi().createPost(

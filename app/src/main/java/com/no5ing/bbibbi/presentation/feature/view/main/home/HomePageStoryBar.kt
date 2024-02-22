@@ -29,12 +29,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
+import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedStoryElementUiState
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.LocalSessionState
@@ -42,18 +41,17 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomePageStoryBar(
-    postTopStateFlow: StateFlow<Map<String, Int>>,
+    postTopStateFlow: StateFlow<APIResponse<List<MainFeedStoryElementUiState>>>,
     meStateFlow: StateFlow<APIResponse<Member>>,
-    familyListStateFlow: StateFlow<PagingData<Member>>,
     onTapProfile: (Member) -> Unit = {},
     onTapInvite: () -> Unit = {},
 ) {
     val meId = LocalSessionState.current.memberId
     val postTopState by postTopStateFlow.collectAsState()
     val meState by meStateFlow.collectAsState()
-    val items = familyListStateFlow.collectAsLazyPagingItems()
+    //val items = familyListStateFlow.collectAsLazyPagingItems()
 
-    if (items.itemCount == 1) {
+    if (postTopState.isReady() && postTopState.data.size == 1) {
         HomePageNoFamilyBar(
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,7 +59,7 @@ fun HomePageStoryBar(
                 .padding(horizontal = 16.dp),
             onTap = onTapInvite,
         )
-    } else {
+    } else if (postTopState.isReady()) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -71,8 +69,9 @@ fun HomePageStoryBar(
                 Spacer(modifier = Modifier.width(20.dp))
             }
 
-            if (meState.isReady()) {
+            if (meState.isReady() && postTopState.isReady()) {
                 val item = meState.data
+                val meData = postTopState.data.indexOfFirst { it.member.memberId == meId }
                 item {
                     StoryBarIcon(
                         member = item,
@@ -80,28 +79,28 @@ fun HomePageStoryBar(
                             onTapProfile(item)
                         },
                         isMe = true,
-                        isUploaded = postTopState.containsKey(item.memberId),
-                        rank = postTopState[item.memberId] ?: -1,
+                        isUploaded = postTopState.data[meData].isUploadedToday,
+                        rank = meData,
                     )
                 }
             }
 
 
             items(
-                count = items.itemCount,
-                key = { items[it]!!.memberId }
+                count = postTopState.data.size,
+                key = { postTopState.data[it].member.memberId }
             ) { index ->
-                val item = items[index] ?: throw RuntimeException()
-                if (item.memberId != meId) {
+                val item = postTopState.data[index]
+                if (item.member.memberId != meId) {
                     Row {
                         Spacer(modifier = Modifier.width(12.dp))
                         StoryBarIcon(
-                            member = item,
+                            member = item.member,
                             onTap = {
-                                onTapProfile(item)
+                                onTapProfile(item.member)
                             },
-                            isUploaded = postTopState.containsKey(item.memberId),
-                            rank = postTopState[item.memberId] ?: -1,
+                            isUploaded = item.isUploadedToday,
+                            rank = index,
                         )
                     }
                 }
@@ -132,8 +131,8 @@ fun StoryBarIcon(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box {
-            val rankColor = getRankColor(rank = rank)
-            val rankBadge = getRankBadge(rank = rank)
+            val rankColor = if (isUploaded) getRankColor(rank = rank) else null
+            val rankBadge = if (isUploaded) getRankBadge(rank = rank) else null
             if (rankColor != null) {
                 Box(
                     modifier = Modifier

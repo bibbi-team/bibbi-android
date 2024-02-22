@@ -28,7 +28,6 @@ import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.BackToExitHandler
 import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.feature.view_model.auth.RetrieveMeViewModel
-import com.no5ing.bbibbi.presentation.feature.view_model.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.DailyFamilyTopViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.IsMeUploadedTodayViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.MainPostFeedViewModel
@@ -43,7 +42,6 @@ fun HomePage(
     retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
     isMeUploadedTodayViewModel: IsMeUploadedTodayViewModel = hiltViewModel(),
     familyPostsViewModel: MainPostFeedViewModel = hiltViewModel(),
-    familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),
     familyPostTopViewModel: DailyFamilyTopViewModel = hiltViewModel(),
     onTapLeft: () -> Unit = {},
     onTapRight: () -> Unit = {},
@@ -81,7 +79,7 @@ fun HomePage(
         }
 
         if (familyPostsViewModel.isInitialize()) {
-            familyMembersViewModel.invoke(Arguments())
+            // familyMembersViewModel.invoke(Arguments())
             retrieveMeViewModel.invoke(Arguments())
             familyPostTopViewModel.invoke(Arguments())// TODO
             familyPostsViewModel.invoke(
@@ -114,7 +112,6 @@ fun HomePage(
                 )
                 HomePageContent(
                     contentState = familyPostsViewModel.uiState,
-                    familyListState = familyMembersViewModel.uiState,
                     postTopState = familyPostTopViewModel.uiState,
                     meState = retrieveMeViewModel.uiState,
                     onTapContent = onTapContent,
@@ -152,8 +149,7 @@ fun HomePagePreview() {
                 HomePageTopBar()
                 HomePageContent(
                     contentState = MutableStateFlow(PagingData.empty()),
-                    familyListState = MutableStateFlow(PagingData.empty()),
-                    postTopState = MutableStateFlow(emptyMap()),
+                    postTopState = MutableStateFlow(APIResponse.idle()),
                     meState = MutableStateFlow(APIResponse.success(Member.unknown()))
                 )
             }

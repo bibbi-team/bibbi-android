@@ -29,8 +29,10 @@ class FirebaseService : FirebaseMessagingService() {
                 }
             }
             val pendingIntent = PendingIntent
-                .getActivity(this@FirebaseService, 0, intent, PendingIntent.FLAG_IMMUTABLE
-                    .or(PendingIntent.FLAG_CANCEL_CURRENT))
+                .getActivity(
+                    this@FirebaseService, 0, intent, PendingIntent.FLAG_IMMUTABLE
+                        .or(PendingIntent.FLAG_CANCEL_CURRENT)
+                )
             val builder = NotificationCompat
                 .Builder(this@FirebaseService, channel_id)
                 .setSmallIcon(R.drawable.notification_icon)
