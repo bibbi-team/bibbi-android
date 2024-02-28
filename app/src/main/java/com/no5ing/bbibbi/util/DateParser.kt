@@ -36,6 +36,15 @@ private fun getYearMonthPattern(): String {
     }
 }
 
+private fun getSameYearMonthPattern(): String {
+    return when (Locale.getDefault()) {
+        Locale.KOREA -> "MM월"
+        Locale.ENGLISH -> "yyyy, MMMM"
+        else -> "yyyy/MM"
+    }
+}
+
+
 private fun getYearDatePattern(): String {
     return when (Locale.getDefault()) {
         Locale.KOREA -> "yyyy년 MM월 dd일"
@@ -53,6 +62,7 @@ private fun getDatePattern(): String {
 }
 
 private val yearMonthFormatter = DateTimeFormatter.ofPattern(getYearMonthPattern())
+private val sameYearMonthFormatter = DateTimeFormatter.ofPattern(getSameYearMonthPattern())
 private val yearDateFormatter = DateTimeFormatter.ofPattern(getYearDatePattern())
 private val dateFormatter = DateTimeFormatter.ofPattern(getDatePattern())
 
@@ -98,5 +108,10 @@ fun LocalDate.isBirthdayNow(): Boolean {
     return this.monthValue == now.monthValue && this.dayOfMonth == now.dayOfMonth
 }
 
-fun formatYearMonth(year: Int, month: Int): String =
-    YearMonth.of(year, month).format(yearMonthFormatter)
+fun formatYearMonth(year: Int, month: Int): String {
+    val isSameYear = year == ZonedDateTime.now().year
+    val currentYearMonth = YearMonth.of(year, month)
+    return if(isSameYear)
+        currentYearMonth.format(sameYearMonthFormatter)
+        else currentYearMonth.format(yearMonthFormatter)
+}
