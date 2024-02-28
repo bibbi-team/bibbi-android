@@ -30,6 +30,20 @@ val secretProperties = Properties().apply {
     load(secretFile.inputStream())
 }
 
+sentry {
+    debug = false
+    org = "bibbi"
+    projectName = "android"
+    authToken = secretProperties["sentryAuthToken"]?.toString()
+    url = secretProperties["sentryUrl"]?.toString()
+
+    includeProguardMapping = true
+    autoUploadProguardMapping = true
+    autoInstallation {
+        enabled = false
+    }
+}
+
 
 android {
     namespace = "com.no5ing.bbibbi"
