@@ -52,11 +52,11 @@ fun HomePageFeedElement(
                     .aspectRatio(1.0f)
                     .clip(RoundedCornerShape(24.dp))
             )
-            MicroTextBubbleBox(
-                text = postContent,
-                alignment = Alignment.BottomCenter,
-                modifier = Modifier.padding(bottom = 10.dp)
-            )
+//            MicroTextBubbleBox(
+//                text = postContent,
+//                alignment = Alignment.BottomCenter,
+//                modifier = Modifier.padding(bottom = 10.dp)
+//            )
         }
 
         Row(

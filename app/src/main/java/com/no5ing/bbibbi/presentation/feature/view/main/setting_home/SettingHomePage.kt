@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -43,6 +44,7 @@ import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.emptyPermissionState
 import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.localResources
+import com.no5ing.bbibbi.util.openBrowser
 import com.no5ing.bbibbi.util.openMarket
 import timber.log.Timber
 
@@ -139,7 +141,7 @@ fun SettingHomePage(
             SettingHomePageTopBar(
                 onDispose = onDispose,
             )
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             SettingHomePageContent(
                 appVersionState = appVersionState,
                 onVersionLongTap = {
@@ -148,15 +150,19 @@ fun SettingHomePage(
                         snackBarInfo
                     )
                 },
+                onTapFormBanner = {
+                     context.openBrowser("https://docs.google.com/forms/d/e/1FAIpQLSeeIRAn45EBU4otZ5y2X4QPA9pCzU1Vw6IaDFF7czSrpgAeRg/viewform")
+                },
                 onTapMarketOpen = {
                     context.openMarket()
                 },
                 onTapNotificationSetting = {
                     if (notificationPermission.status.isGranted) {
-                        snackBarHost.showSnackBarWithDismiss(
-                            resources.getString(R.string.snack_bar_alreday_accepted),
-                            snackBarInfo
-                        )
+                        val settingsIntent: Intent =
+                            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                .putExtra(Settings.EXTRA_APP_PACKAGE, BuildConfig.APPLICATION_ID)
+                        context.startActivity(settingsIntent)
                     } else {
                         val settingsIntent =
                             Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)

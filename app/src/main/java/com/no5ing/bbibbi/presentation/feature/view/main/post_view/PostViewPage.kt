@@ -149,7 +149,7 @@ fun PostViewPage(
                         model = asyncImagePainter(
                             source =
                             if (postState.isReady())
-                                if (siblingPostState.isReady()) siblingPostState.data[pagerState.currentPage].post.imageUrl
+                                if (siblingPostState.isReady()) siblingPostState.data.getOrNull(pagerState.currentPage)?.post?.imageUrl
                                 else postState.data.post.imageUrl
                             else null
                         ),
@@ -173,7 +173,7 @@ fun PostViewPage(
                     if (postState.isReady()) {
                         if (isPagerReady) {
                             HorizontalPager(state = pagerState) { page ->
-                                val postData = siblingPostState.data[page]
+                                val postData = siblingPostState.data.getOrNull(page) ?: return@HorizontalPager
                                 PostViewBody(
                                     onDispose = onDispose,
                                     onTapProfile = onTapProfile,

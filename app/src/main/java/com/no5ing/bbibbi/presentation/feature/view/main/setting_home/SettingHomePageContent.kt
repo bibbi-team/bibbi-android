@@ -1,5 +1,7 @@
 package com.no5ing.bbibbi.presentation.feature.view.main.setting_home
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +36,7 @@ fun SettingHomePageContent(
     onVersionLongTap: () -> Unit = {},
     onTapMarketOpen: () -> Unit = {},
     onTapNotificationSetting: () -> Unit = {},
+    onTapFormBanner: () -> Unit = {},
     onPrivacy: () -> Unit = {},
     onTerm: () -> Unit = {},
     onGroupQuit: () -> Unit = {},
@@ -51,6 +54,14 @@ fun SettingHomePageContent(
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.form_banner),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onTapFormBanner() }
+        )
+        Spacer(modifier = Modifier.height(28.dp))
         Text(
             text = stringResource(id = R.string.setting_account_and_permission),
             modifier = Modifier

@@ -11,6 +11,7 @@ import com.google.firebase.appcheck.appCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
+import io.sentry.android.core.SentryAndroid
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
@@ -31,6 +32,16 @@ class BBiBBiApplication : Application(), ImageLoaderFactory {
             PlayIntegrityAppCheckProviderFactory.getInstance(),
         )
         KakaoSdk.init(this, BuildConfig.kakaoApiKey)
+        SentryAndroid.init(this) { options ->
+            options.dsn = BuildConfig.sentryDsn
+            options.isEnableUserInteractionTracing = true
+            options.isEnableUserInteractionBreadcrumbs = true
+            options.isAttachViewHierarchy = true
+            options.sampleRate = 1.0
+            options.tracesSampleRate = 0.6
+            options.isAttachScreenshot = true
+            options.environment = BuildConfig.BUILD_TYPE
+        }
     }
 
     override fun newImageLoader(): ImageLoader {

@@ -7,6 +7,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.core.net.toUri
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
@@ -15,6 +16,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import io.sentry.compose.SentryTraced
 import timber.log.Timber
 import java.net.URLEncoder
 
@@ -67,7 +69,7 @@ abstract class NavigationDestination(
         internal const val cameraViewRoute = "common/camera"
 
 
-        @OptIn(ExperimentalAnimationApi::class)
+        @OptIn(ExperimentalComposeUiApi::class)
         fun NavGraphBuilder.composable(
             controller: NavHostController,
             destination: NavigationDestination,
@@ -83,18 +85,9 @@ abstract class NavigationDestination(
             popEnterTransition = popEnterTransition,
             popExitTransition = popExitTransition,
         ) {
-            destination.Render(controller, it)
-        }
-
-        @OptIn(ExperimentalAnimationApi::class)
-        fun NavGraphBuilder.dialog(
-            controller: NavHostController,
-            destination: NavigationDestination,
-        ) = composable(
-            route = destination.routeWithQuery,
-            arguments = destination.arguments,
-        ) {
-            destination.Render(controller, it)
+            SentryTraced(tag = destination::class.java.simpleName) {
+                destination.Render(controller, it)
+            }
         }
 
         fun NavHostController.popAll() {
