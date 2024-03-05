@@ -43,6 +43,7 @@ import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.emptyPermissionState
 import com.no5ing.bbibbi.util.getErrorMessage
 import com.no5ing.bbibbi.util.localResources
+import com.no5ing.bbibbi.util.openBrowser
 import com.no5ing.bbibbi.util.openMarket
 import timber.log.Timber
 
@@ -139,7 +140,7 @@ fun SettingHomePage(
             SettingHomePageTopBar(
                 onDispose = onDispose,
             )
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             SettingHomePageContent(
                 appVersionState = appVersionState,
                 onVersionLongTap = {
@@ -147,6 +148,9 @@ fun SettingHomePage(
                         resources.getString(R.string.build_number_info, BuildConfig.VERSION_CODE),
                         snackBarInfo
                     )
+                },
+                onTapFormBanner = {
+                     context.openBrowser("https://docs.google.com/forms/d/e/1FAIpQLSeeIRAn45EBU4otZ5y2X4QPA9pCzU1Vw6IaDFF7czSrpgAeRg/viewform")
                 },
                 onTapMarketOpen = {
                     context.openMarket()
