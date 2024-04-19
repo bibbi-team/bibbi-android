@@ -191,4 +191,7 @@
     <string name="try_widget_title">ウィジェットを追加しましたか？</string>
     <string name="try_widget_description">ホーム画面のウィジェットで\n家族のニュースをすぐに把握できます</string>
     <string name="register_at">%1$s に登録済み</string>
+
+    <string name="post_type_survival">生存</string>
+    <string name="post_type_mission">ミッション</string>
 </resources>

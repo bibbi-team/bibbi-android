@@ -9,6 +9,7 @@ import com.no5ing.bbibbi.data.model.view.MainPageModel
 import com.no5ing.bbibbi.data.repository.Arguments
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,6 +18,7 @@ class MainPageViewModel @Inject constructor(
     private val localDataStorage: LocalDataStorage,
 ) : BaseViewModel<APIResponse<MainPageModel>>() {
     var shouldDisplayWidgetPopup = localDataStorage.getAndRemoveWidgetPopupPeriod()
+    val deferredPickMembersSet = MutableStateFlow(setOf<String>())
 
     fun getAndDeleteTemporaryUri(): Uri? {
         val uri = localDataStorage.getTemporaryUri()
@@ -24,6 +26,10 @@ class MainPageViewModel @Inject constructor(
             localDataStorage.clearTemporaryUri()
         }
         return uri?.let { Uri.parse(it) }
+    }
+
+    fun addPickMembersSet(memberId: String) {
+        deferredPickMembersSet.value = deferredPickMembersSet.value + memberId
     }
 
     override fun initState(): APIResponse<MainPageModel> {
@@ -34,6 +40,7 @@ class MainPageViewModel @Inject constructor(
         withMutexScope(Dispatchers.IO) {
             val mainResult = restAPI.getViewApi().getMainView()
             val apiResult = mainResult.wrapToAPIResponse()
+            deferredPickMembersSet.value = emptySet()
             setState(apiResult)
         }
     }

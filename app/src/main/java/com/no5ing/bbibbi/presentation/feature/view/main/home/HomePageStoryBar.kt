@@ -43,16 +43,16 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomePageStoryBar(
-//    postTopStateFlow: StateFlow<APIResponse<List<MainFeedStoryElementUiState>>>,
-//    meStateFlow: StateFlow<APIResponse<Member>>,
     mainPageState: StateFlow<APIResponse<MainPageModel>>,
+    deferredPickStateSet: StateFlow<Set<String>>,
     onTapProfile: (String) -> Unit = {},
+    onTapPick: (MainPageTopBarModel) -> Unit = {},
     onTapInvite: () -> Unit = {},
 ) {
     val meId = LocalSessionState.current.memberId
     val mainPageModel by mainPageState.collectAsState()
+    val deferredPickSet = deferredPickStateSet.collectAsState()
     val items = if (mainPageModel.isReady()) mainPageModel.data.topBarElements else emptyList()
-    //val items = familyListStateFlow.collectAsLazyPagingItems()
 
     if (items.size == 1) {
         HomePageNoFamilyBar(
@@ -72,23 +72,6 @@ fun HomePageStoryBar(
                 Spacer(modifier = Modifier.width(8.dp))
             }
 
-//            if (meState.isReady() && postTopState.isReady()) {
-//                val item = meState.data
-//                val meData = postTopState.data.indexOfFirst { it.member.memberId == meId }
-//                item {
-//                    StoryBarIcon(
-//                        member = item,
-//                        onTap = {
-//                            onTapProfile(item)
-//                        },
-//                        isMe = true,
-//                        isUploaded = postTopState.data[meData].isUploadedToday,
-//                        rank = meData,
-//                    )
-//                }
-//            }
-
-
             items(
                 count = items.size,
                 key = { items[it].memberId }
@@ -104,6 +87,10 @@ fun HomePageStoryBar(
                         isUploaded = item.displayRank != null,
                         rank = index,
                         isMe = item.memberId == meId,
+                        isInDeferredPickState = deferredPickSet.value.contains(item.memberId),
+                        onTapPick = {
+                            onTapPick(item)
+                        }
                     )
                 }
             }
@@ -119,7 +106,9 @@ fun HomePageStoryBar(
 @Composable
 fun StoryBarIcon(
     onTap: () -> Unit,
+    onTapPick: () -> Unit,
     member: MainPageTopBarModel,
+    isInDeferredPickState: Boolean = false,
     isMe: Boolean = false,
     isUploaded: Boolean,
     rank: Int,
@@ -182,6 +171,22 @@ fun StoryBarIcon(
                         modifier = Modifier
                             .height(24.dp)
                             .offset(x = 0.dp, y = 2.dp),
+                    )
+                }
+            }
+            if (member.shouldShowPickIcon && !isInDeferredPickState) {
+                Box(
+                    contentAlignment = Alignment.BottomEnd,
+                    modifier = Modifier
+                        .size(64.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.pick_icon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(32.dp)
+                            .clickable { onTapPick() }
+                            .offset(x = 6.dp, y = 4.dp),
                     )
                 }
             }

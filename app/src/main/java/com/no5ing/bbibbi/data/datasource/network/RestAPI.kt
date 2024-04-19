@@ -145,6 +145,11 @@ interface RestAPI {
             @Path("realEmojiId") realEmojiId: String,
             @Body body: UpdateMemberRealEmojiRequest,
         ): ApiResponse<MemberRealEmoji>
+
+        @POST("v1/members/{memberId}/pick")
+        suspend fun pickMember(
+            @Path("memberId") memberId: String,
+        ): ApiResponse<DefaultResponse>
     }
 
     /**

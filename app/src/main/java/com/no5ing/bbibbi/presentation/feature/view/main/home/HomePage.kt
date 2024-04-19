@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.post.PostType
+import com.no5ing.bbibbi.data.model.view.MainPageTopBarModel
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
@@ -28,7 +29,6 @@ import com.no5ing.bbibbi.presentation.component.BackToExitHandler
 import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.feature.view_model.MainPageViewModel
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
-import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.gapUntilNext
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -43,8 +43,8 @@ fun HomePage(
     onTapUpload: () -> Unit = {},
     onTapInvite: () -> Unit = {},
     onUnsavedPost: (Uri) -> Unit = {},
+    onTapPick: (MainPageTopBarModel) -> Unit = {},
 ) {
-    val memberId = LocalSessionState.current.memberId
     val mainPageState = mainPageViewModel.uiState.collectAsState()
     val unsavedDialogUri = remember { mutableStateOf<Uri?>(null) }
     val unsavedDialogEnabled = remember { mutableStateOf(false) }
@@ -64,30 +64,12 @@ fun HomePage(
     }
     BackToExitHandler()
     LaunchedEffect(Unit) {
-       // isMeUploadedTodayViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
         val tempUri = mainPageViewModel.getAndDeleteTemporaryUri()
         if (tempUri != null) {
             unsavedDialogUri.value = tempUri
             unsavedDialogEnabled.value = true
         }
         mainPageViewModel.invoke(Arguments())
-
-//        if (familyPostsViewModel.isInitialize()) {
-//            // familyMembersViewModel.invoke(Arguments())
-//            mainPageViewModel.invoke(Arguments())
-//          //  retrieveMeViewModel.invoke(Arguments())
-//            familyPostTopViewModel.invoke(Arguments())// TODO
-//            familyPostsViewModel.invoke(
-//                Arguments(
-//                    arguments = mapOf(
-//                        "date" to todayAsString(),
-//                    )
-//                )
-//            )
-//        } else {
-//            familyPostTopViewModel.invoke(Arguments())
-//            familyPostsViewModel.refresh()
-//        }
     }
 
     BBiBBiSurface(
@@ -111,9 +93,11 @@ fun HomePage(
                     onTapContent = onTapContent,
                     onTapProfile = onTapProfile,
                     onTapInvite = onTapInvite,
+                    onTapPick = onTapPick,
                     onRefresh = {
                         mainPageViewModel.invoke(Arguments())
-                    }
+                    },
+                    deferredPickStateSet = mainPageViewModel.deferredPickMembersSet
                 )
             }
             HomePageUploadButton(
@@ -142,6 +126,7 @@ fun HomePagePreview() {
                 HomePageTopBar()
                 HomePageContent(
                     mainPageState = MutableStateFlow(APIResponse.idle()),
+                    deferredPickStateSet = MutableStateFlow(emptySet())
                 )
             }
             HomePageUploadButton()

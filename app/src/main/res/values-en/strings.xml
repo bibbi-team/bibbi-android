@@ -191,4 +191,7 @@
     <string name="try_widget_title">Have you added the widget?</string>
     <string name="try_widget_description">With the widget on the home screen\nYou can quickly grasp the news of the family</string>
     <string name="register_at">Registered At %1$s</string>
+
+    <string name="post_type_survival">Survival</string>
+    <string name="post_type_mission">Mission</string>
 </resources>

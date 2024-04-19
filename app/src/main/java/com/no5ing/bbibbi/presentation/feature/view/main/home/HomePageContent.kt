@@ -36,6 +36,7 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.model.post.PostType
 import com.no5ing.bbibbi.data.model.view.MainPageModel
+import com.no5ing.bbibbi.data.model.view.MainPageTopBarModel
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedStoryElementUiState
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.presentation.feature.view.common.PostTypeSwitchButton
@@ -47,9 +48,11 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun HomePageContent(
     mainPageState: StateFlow<APIResponse<MainPageModel>>,
+    deferredPickStateSet: StateFlow<Set<String>>,
     postViewTypeState: MutableState<PostType> = remember { mutableStateOf(PostType.SURVIVAL) },
     onTapContent: (String) -> Unit = {},
     onTapProfile: (String) -> Unit = {},
+    onTapPick: (MainPageTopBarModel) -> Unit = {},
     onTapInvite: () -> Unit = {},
     onRefresh: () -> Unit = {},
 ) {
@@ -81,6 +84,8 @@ fun HomePageContent(
                     mainPageState = mainPageState,
                     onTapProfile = onTapProfile,
                     onTapInvite = onTapInvite,
+                    onTapPick = onTapPick,
+                    deferredPickStateSet = deferredPickStateSet,
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 HorizontalDivider(

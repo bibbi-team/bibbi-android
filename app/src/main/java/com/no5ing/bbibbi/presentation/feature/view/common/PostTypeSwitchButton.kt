@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -86,12 +87,16 @@ fun PostTypeSwitchButton(
                 .background(MaterialTheme.bbibbiScheme.iconSelected, RoundedCornerShape(40.dp))
         )
         Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 24.dp,
-                end = if(isLocked) 14.dp else 24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 24.dp,
+                    end = if (isLocked) 14.dp else 24.dp
+                ),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = "생존",
+                text = stringResource(id = R.string.post_type_survival),
                 style = MaterialTheme.bbibbiTypo.bodyTwoBold,
                 color = survivalButtonColor
             )
@@ -100,7 +105,7 @@ fun PostTypeSwitchButton(
                 horizontalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
-                    text = "미션",
+                    text = stringResource(id = R.string.post_type_mission),
                     style = MaterialTheme.bbibbiTypo.bodyTwoBold,
                     color = missionButtonColor,
                 )
