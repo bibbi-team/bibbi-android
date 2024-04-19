@@ -32,7 +32,6 @@ fun HomePageFeedElement(
     modifier: Modifier,
     imageUrl: String,
     writerName: String,
-    postContent: String,
     time: String,
     onTap: () -> Unit = {},
 ) {

@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
+import com.no5ing.bbibbi.data.model.view.MainPageModel
+import com.no5ing.bbibbi.data.model.view.MainPageTopBarModel
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedStoryElementUiState
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
@@ -41,17 +43,18 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomePageStoryBar(
-    postTopStateFlow: StateFlow<APIResponse<List<MainFeedStoryElementUiState>>>,
-    meStateFlow: StateFlow<APIResponse<Member>>,
-    onTapProfile: (Member) -> Unit = {},
+//    postTopStateFlow: StateFlow<APIResponse<List<MainFeedStoryElementUiState>>>,
+//    meStateFlow: StateFlow<APIResponse<Member>>,
+    mainPageState: StateFlow<APIResponse<MainPageModel>>,
+    onTapProfile: (String) -> Unit = {},
     onTapInvite: () -> Unit = {},
 ) {
     val meId = LocalSessionState.current.memberId
-    val postTopState by postTopStateFlow.collectAsState()
-    val meState by meStateFlow.collectAsState()
+    val mainPageModel by mainPageState.collectAsState()
+    val items = if (mainPageModel.isReady()) mainPageModel.data.topBarElements else emptyList()
     //val items = familyListStateFlow.collectAsLazyPagingItems()
 
-    if (postTopState.isReady() && postTopState.data.size == 1) {
+    if (items.size == 1) {
         HomePageNoFamilyBar(
             modifier = Modifier
                 .fillMaxWidth()
@@ -59,52 +62,50 @@ fun HomePageStoryBar(
                 .padding(horizontal = 16.dp),
             onTap = onTapInvite,
         )
-    } else if (postTopState.isReady()) {
+    } else if (items.size > 1) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 24.dp),
         ) {
             item {
-                Spacer(modifier = Modifier.width(20.dp))
+                Spacer(modifier = Modifier.width(8.dp))
             }
 
-            if (meState.isReady() && postTopState.isReady()) {
-                val item = meState.data
-                val meData = postTopState.data.indexOfFirst { it.member.memberId == meId }
-                item {
-                    StoryBarIcon(
-                        member = item,
-                        onTap = {
-                            onTapProfile(item)
-                        },
-                        isMe = true,
-                        isUploaded = postTopState.data[meData].isUploadedToday,
-                        rank = meData,
-                    )
-                }
-            }
+//            if (meState.isReady() && postTopState.isReady()) {
+//                val item = meState.data
+//                val meData = postTopState.data.indexOfFirst { it.member.memberId == meId }
+//                item {
+//                    StoryBarIcon(
+//                        member = item,
+//                        onTap = {
+//                            onTapProfile(item)
+//                        },
+//                        isMe = true,
+//                        isUploaded = postTopState.data[meData].isUploadedToday,
+//                        rank = meData,
+//                    )
+//                }
+//            }
 
 
             items(
-                count = postTopState.data.size,
-                key = { postTopState.data[it].member.memberId }
+                count = items.size,
+                key = { items[it].memberId }
             ) { index ->
-                val item = postTopState.data[index]
-                if (item.member.memberId != meId) {
-                    Row {
-                        Spacer(modifier = Modifier.width(12.dp))
-                        StoryBarIcon(
-                            member = item.member,
-                            onTap = {
-                                onTapProfile(item.member)
-                            },
-                            isUploaded = item.isUploadedToday,
-                            rank = index,
-                        )
-                    }
+                val item = items[index]
+                Row {
+                    Spacer(modifier = Modifier.width(12.dp))
+                    StoryBarIcon(
+                        member = item,
+                        onTap = {
+                            onTapProfile(item.memberId)
+                        },
+                        isUploaded = item.displayRank != null,
+                        rank = index,
+                        isMe = item.memberId == meId,
+                    )
                 }
-
             }
 
             item {
@@ -118,7 +119,7 @@ fun HomePageStoryBar(
 @Composable
 fun StoryBarIcon(
     onTap: () -> Unit,
-    member: Member,
+    member: MainPageTopBarModel,
     isMe: Boolean = false,
     isUploaded: Boolean,
     rank: Int,
@@ -146,7 +147,8 @@ fun StoryBarIcon(
                     .size(64.dp)
             ) {
                 CircleProfileImage(
-                    member = member,
+                    noImageLetter = member.noImageLetter,
+                    imageUrl = member.imageUrl,
                     size = if (rankColor == null) 64.dp else 62.dp,
                     onTap = onTap,
                     opacity = if (isUploaded) 1.0f else 0.4f
@@ -157,7 +159,7 @@ fun StoryBarIcon(
                 modifier = Modifier
                     .size(64.dp)
             ) {
-                if (member.isBirthdayToday) {
+                if (member.shouldShowBirthdayMark) {
                     Image(
                         painter = painterResource(id = R.drawable.birthday_badge),
                         contentDescription = null,
@@ -185,7 +187,7 @@ fun StoryBarIcon(
             }
         }
         Text(
-            text = if (isMe) stringResource(id = R.string.family_me) else member.name,
+            text = if (isMe) stringResource(id = R.string.family_me) else member.displayName,
             color = MaterialTheme.bbibbiScheme.textSecondary,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,

@@ -26,10 +26,10 @@ object HomePageController : NavigationDestination(
                 navController.goCalendarPage()
             },
             onTapProfile = {
-                navController.goProfilePage(it.memberId)
+                navController.goProfilePage(it)
             },
             onTapContent = {
-                navController.goPostViewPage(it.postId)
+                navController.goPostViewPage(it)
             },
             onTapUpload = {
                 navController.goPostUploadPage()

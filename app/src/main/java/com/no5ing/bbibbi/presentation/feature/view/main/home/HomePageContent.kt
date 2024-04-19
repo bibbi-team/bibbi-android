@@ -15,6 +15,9 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +34,8 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
+import com.no5ing.bbibbi.data.model.post.PostType
+import com.no5ing.bbibbi.data.model.view.MainPageModel
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedStoryElementUiState
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.presentation.feature.view.common.PostTypeSwitchButton
@@ -41,22 +46,21 @@ import kotlinx.coroutines.flow.StateFlow
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomePageContent(
-    contentState: StateFlow<PagingData<MainFeedUiState>>,
-    //familyListState: StateFlow<PagingData<Member>>,
-    postTopState: StateFlow<APIResponse<List<MainFeedStoryElementUiState>>>,
-    meState: StateFlow<APIResponse<Member>>,
-    onTapContent: (Post) -> Unit = {},
-    onTapProfile: (Member) -> Unit = {},
+    mainPageState: StateFlow<APIResponse<MainPageModel>>,
+    postViewTypeState: MutableState<PostType> = remember { mutableStateOf(PostType.SURVIVAL) },
+    onTapContent: (String) -> Unit = {},
+    onTapProfile: (String) -> Unit = {},
     onTapInvite: () -> Unit = {},
     onRefresh: () -> Unit = {},
 ) {
-    val postItems = contentState.collectAsLazyPagingItems()
-    // val memberItems = familyListState.collectAsLazyPagingItems()
-    var isRefreshing by remember { mutableStateOf(false) }
-    LaunchedEffect(postItems.loadState.refresh) {
-        if (isRefreshing &&
-            postItems.loadState.refresh is LoadState.NotLoading
-        ) {
+    val mainPageModel by mainPageState.collectAsState()
+    val postItems = if(mainPageModel.isReady())
+        if(postViewTypeState.value == PostType.MISSION) mainPageModel.data.missionFeeds
+        else mainPageModel.data.survivalFeeds
+    else emptyList()
+    var isRefreshing by remember { mutableStateOf(true) }
+    LaunchedEffect(mainPageModel) {
+        if (mainPageModel.isReady()) {
             isRefreshing = false
         }
     }
@@ -66,7 +70,6 @@ fun HomePageContent(
         onRefresh = {
             if (isRefreshing) return@HomePageFeedGrid
             isRefreshing = true
-            postItems.refresh()
             onRefresh()
         }
     ) {
@@ -75,8 +78,7 @@ fun HomePageContent(
             span = { GridItemSpan(2) }) {
             Column {
                 HomePageStoryBar(
-                    postTopStateFlow = postTopState,
-                    meStateFlow = meState,
+                    mainPageState = mainPageState,
                     onTapProfile = onTapProfile,
                     onTapInvite = onTapInvite,
                 )
@@ -91,29 +93,31 @@ fun HomePageContent(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    PostTypeSwitchButton()
+                    PostTypeSwitchButton(
+                        isLocked = mainPageModel.isReady() && !mainPageModel.data.isMissionUnlocked,
+                        state = postViewTypeState
+                    )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
         }
-        if (postItems.itemCount > 0) {
+        if (postItems.isNotEmpty()) {
             items(
-                count = postItems.itemCount,
+                count = postItems.size,
                 key = {
-                    postItems[it]!!.post.postId
+                    postItems[it].postId
                 }
             ) {
-                val item = postItems[it] ?: throw RuntimeException()
+                val item = postItems[it]
                 HomePageFeedElement(
                     modifier = Modifier.animateItemPlacement(
                         animationSpec = tween(300),
                     ),
-                    imageUrl = item.post.imageUrl,
-                    writerName = item.writer.name,
-                    time = gapBetweenNow(time = item.post.createdAt),
-                    onTap = { onTapContent(item.post) },
-                    postContent = item.post.content,
+                    imageUrl = item.imageUrl,
+                    writerName = item.authorName,
+                    time = gapBetweenNow(time = item.createdAt),
+                    onTap = { onTapContent(item.postId) },
                 )
             }
         } else {

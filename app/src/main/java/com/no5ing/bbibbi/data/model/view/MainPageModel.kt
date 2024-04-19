@@ -9,6 +9,7 @@ import java.time.ZonedDateTime
 data class MainPageModel(
     val topBarElements: List<MainPageTopBarModel>,
     val isMissionUnlocked: Boolean,
+    val isMeUploadedToday: Boolean,
     val survivalFeeds: List<MainPageFeedModel>,
     val missionFeeds: List<MainPageFeedModel>,
     val pickers: List<MainPagePickerModel>
