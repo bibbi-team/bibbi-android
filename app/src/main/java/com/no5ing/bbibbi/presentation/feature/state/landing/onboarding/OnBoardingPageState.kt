@@ -19,7 +19,7 @@ fun rememberOnBoardingPageState(
     currentPageState: MutableState<Int> = remember {
         mutableIntStateOf(0)
     },
-    pagerState: PagerState = rememberPagerState { 3 }
+    pagerState: PagerState = rememberPagerState { 4 }
 ): OnBoardingPageState = OnBoardingPageState(
     currentPageState = currentPageState,
     pagerState = pagerState,

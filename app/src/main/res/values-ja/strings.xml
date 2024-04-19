@@ -57,9 +57,10 @@
     <string name="family_copy_link">ビープに家族を招待</string>
     <string name="family_your_family">あなたの家族</string>
 
-    <string name="onboarding_first_title">毎日12時に通知を受け取り、家族に写真を送信してください</string>
+    <string name="onboarding_first_title">毎日10時に通知を受け取り、家族に写真を送信してください</string>
     <string name="onboarding_second_title">ホームスクリーンのウィジェットで家族の日常を一目で確認できます</string>
-    <string name="onboarding_third_title">1日に2回しか来ない通知を逃さないように、必ず許可してください！</string>
+    <string name="onboarding_third_title">家族の半分が生き残って報告すれば,\n新しいミッション写真を撮ることができますよ！</string>
+    <string name="onboarding_fourth_title">1日に2回しか来ない通知を逃さないように、必ず許可してください！</string>
     <string name="onboarding_next">通知を許可して家族ルームを作成</string>
     <string name="onboarding_next_join">通知を許可して入室</string>
     <string name="family_me">私</string>
