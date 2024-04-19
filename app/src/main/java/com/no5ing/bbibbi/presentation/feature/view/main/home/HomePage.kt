@@ -27,6 +27,7 @@ import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.BackToExitHandler
 import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
+import com.no5ing.bbibbi.presentation.feature.view_model.MainPageViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.auth.RetrieveMeViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.DailyFamilyTopViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.IsMeUploadedTodayViewModel
@@ -39,6 +40,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun HomePage(
+    mainPageViewModel: MainPageViewModel = hiltViewModel(),
     retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
     isMeUploadedTodayViewModel: IsMeUploadedTodayViewModel = hiltViewModel(),
     familyPostsViewModel: MainPostFeedViewModel = hiltViewModel(),

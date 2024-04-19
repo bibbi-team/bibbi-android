@@ -201,12 +201,19 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideRestViewApi(retrofit: Retrofit): RestAPI.ViewApi {
+        return retrofit.create(RestAPI.ViewApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideRestApi(
         familyApi: RestAPI.FamilyApi,
         memberApi: RestAPI.MemberApi,
         postApi: RestAPI.PostApi,
         authApi: RestAPI.AuthApi,
         linkApi: RestAPI.LinkApi,
+        viewApi: RestAPI.ViewApi,
     ): RestAPI {
         return object : RestAPI {
             override fun getFamilyApi(): RestAPI.FamilyApi {
@@ -227,6 +234,10 @@ object NetworkModule {
 
             override fun getLinkApi(): RestAPI.LinkApi {
                 return linkApi
+            }
+
+            override fun getViewApi(): RestAPI.ViewApi {
+                return viewApi
             }
         }
     }

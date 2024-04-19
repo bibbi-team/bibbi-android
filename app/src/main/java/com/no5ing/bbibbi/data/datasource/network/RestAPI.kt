@@ -36,6 +36,7 @@ import com.no5ing.bbibbi.data.model.post.PostComment
 import com.no5ing.bbibbi.data.model.post.PostReaction
 import com.no5ing.bbibbi.data.model.post.PostReactionSummary
 import com.no5ing.bbibbi.data.model.post.PostRealEmoji
+import com.no5ing.bbibbi.data.model.view.MainPageModel
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -300,6 +301,12 @@ interface RestAPI {
         ): ApiResponse<DeepLink>
     }
 
+    interface ViewApi {
+        @GET("v1/view/main")
+        suspend fun getMainView(): ApiResponse<MainPageModel>
+
+    }
+
     /**
      * API 모음
      */
@@ -308,4 +315,5 @@ interface RestAPI {
     fun getPostApi(): PostApi
     fun getAuthApi(): AuthApi
     fun getLinkApi(): LinkApi
+    fun getViewApi(): ViewApi
 }

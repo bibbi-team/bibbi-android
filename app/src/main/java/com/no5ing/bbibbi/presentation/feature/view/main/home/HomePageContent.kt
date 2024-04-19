@@ -5,6 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,7 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedStoryElementUiState
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
+import com.no5ing.bbibbi.presentation.feature.view.common.PostTypeSwitchButton
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.gapBetweenNow
 import kotlinx.coroutines.flow.StateFlow
@@ -85,6 +87,13 @@ fun HomePageContent(
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 UploadCountDownBar()
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    PostTypeSwitchButton()
+                }
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
         }
