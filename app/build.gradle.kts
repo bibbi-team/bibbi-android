@@ -9,8 +9,6 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("io.sentry.android.gradle") version "4.3.0"
-    id("io.sentry.kotlin.compiler.gradle") version "4.3.0"
 }
 
 java {
@@ -28,20 +26,6 @@ secrets {
 val secretFile = file("../secrets.properties")
 val secretProperties = Properties().apply {
     load(secretFile.inputStream())
-}
-
-sentry {
-    debug = false
-    org = "bibbi"
-    projectName = "android"
-    authToken = secretProperties["sentryAuthToken"]?.toString()
-    url = secretProperties["sentryUrl"]?.toString()
-
-    includeProguardMapping = true
-    autoUploadProguardMapping = true
-    autoInstallation {
-        enabled = false
-    }
 }
 
 
@@ -205,6 +189,4 @@ dependencies {
     kapt("com.google.dagger:dagger-compiler:2.49")
     kapt("com.google.dagger:hilt-android-compiler:2.49")
     testImplementation("junit:junit:4.13.2")
-    implementation("io.sentry:sentry-android:7.4.0")
-    implementation("io.sentry:sentry-compose-android:7.4.0")
 }
