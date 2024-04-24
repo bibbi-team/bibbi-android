@@ -312,7 +312,6 @@ fun MainCalendarYearMonthBar(
                         .size(20.dp)
                         .clickable { it.showAlignBottom() }
                 )
-
             }
         }
         if (statistics.isReady()) {

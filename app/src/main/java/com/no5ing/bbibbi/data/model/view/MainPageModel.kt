@@ -20,6 +20,7 @@ data class MainPageModel(
 @Parcelize
 data class NightMainPageModel(
     val topBarElements: List<MainPageTopBarModel>,
+    val familyMemberMonthlyRanking: MainPageMonthlyRankingModel,
 ) : Parcelable, BaseModel()
 
 @Parcelize
@@ -46,4 +47,23 @@ data class MainPageTopBarModel(
     val displayRank: Int?,
     val shouldShowBirthdayMark: Boolean,
     val shouldShowPickIcon: Boolean,
+) : Parcelable
+
+@Parcelize
+data class MainPageMonthlyRankingModel(
+    val month: Int,
+    val firstRanker: MainPageMonthlyRankerModel?,
+    val secondRanker: MainPageMonthlyRankerModel?,
+    val thirdRanker: MainPageMonthlyRankerModel?,
+) : Parcelable {
+    fun isAllRankersNull(): Boolean {
+        return firstRanker == null && secondRanker == null && thirdRanker == null
+    }
+}
+
+@Parcelize
+data class MainPageMonthlyRankerModel(
+    val profileImageUrl: String?,
+    val name: String,
+    val survivalCount: Int,
 ) : Parcelable

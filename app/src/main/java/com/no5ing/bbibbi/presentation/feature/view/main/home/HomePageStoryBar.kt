@@ -45,16 +45,17 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomePageStoryBar(
-    mainPageState: StateFlow<APIResponse<MainPageModel>>,
+    //mainPageState: StateFlow<APIResponse<MainPageModel>>,
+    items:  List<MainPageTopBarModel>,
     deferredPickStateSet: StateFlow<Set<String>>,
     onTapProfile: (String) -> Unit = {},
     onTapPick: (MainPageTopBarModel) -> Unit = {},
     onTapInvite: () -> Unit = {},
 ) {
     val meId = LocalSessionState.current.memberId
-    val mainPageModel by mainPageState.collectAsState()
+   // val mainPageModel by mainPageState.collectAsState()
     val deferredPickSet = deferredPickStateSet.collectAsState()
-    val items = if (mainPageModel.isReady()) mainPageModel.data.topBarElements else emptyList()
+   // val items = if (mainPageModel.isReady()) mainPageModel.data.topBarElements else emptyList()
 
     if (items.size == 1) {
         HomePageNoFamilyBar(
@@ -206,7 +207,7 @@ fun StoryBarIcon(
 }
 
 @Composable
-private fun getRankColor(rank: Int) = when (rank) {
+fun getRankColor(rank: Int) = when (rank) {
     0 -> MaterialTheme.bbibbiScheme.mainYellow
     1 -> Color(0xff7FEC93)
     2 -> Color(0xffFFC98D)

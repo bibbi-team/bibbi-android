@@ -18,6 +18,7 @@ import com.no5ing.bbibbi.presentation.feature.view.main.home.HomePage
 import com.no5ing.bbibbi.presentation.feature.view.main.home.TryPickPopup
 import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewPageController.goCameraViewPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarDetailPageController.goCalendarDetailPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarPageController.goCalendarPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyListPageController.goFamilyListPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostReUploadPageController.goPostReUploadPage
@@ -94,6 +95,9 @@ object HomePageController : NavigationDestination(
                 isPickDialogVisible = true
             },
             mainPageViewModel = mainPageViewModel,
+            onTapViewPost = { date ->
+                navController.goCalendarDetailPage(date)
+            }
         )
     }
 

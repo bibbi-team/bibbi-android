@@ -28,14 +28,17 @@ import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.BackToExitHandler
 import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
+import com.no5ing.bbibbi.presentation.feature.view_model.MainPageNightViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.MainPageViewModel
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.util.gapUntilNext
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDate
 
 @Composable
 fun HomePage(
     mainPageViewModel: MainPageViewModel = hiltViewModel(),
+    mainPageNightViewModel: MainPageNightViewModel = hiltViewModel(),
     postViewTypeState: MutableState<PostType> = remember { mutableStateOf(PostType.SURVIVAL) },
     onTapLeft: () -> Unit = {},
     onTapRight: () -> Unit = {},
@@ -44,12 +47,14 @@ fun HomePage(
     onTapUpload: () -> Unit = {},
     onTapInvite: () -> Unit = {},
     onUnsavedPost: (Uri) -> Unit = {},
+    onTapViewPost: (LocalDate) -> Unit = {},
     onTapPick: (MainPageTopBarModel) -> Unit = {},
 ) {
     val postViewType by postViewTypeState
     val mainPageState = mainPageViewModel.uiState.collectAsState()
     val unsavedDialogUri = remember { mutableStateOf<Uri?>(null) }
     val unsavedDialogEnabled = remember { mutableStateOf(false) }
+    val isDayTime = gapUntilNext() > 0
     CustomAlertDialog(
         enabledState = unsavedDialogEnabled,
         title = stringResource(id = R.string.unsaved_post_dialog_title),
@@ -71,7 +76,11 @@ fun HomePage(
             unsavedDialogUri.value = tempUri
             unsavedDialogEnabled.value = true
         }
-        mainPageViewModel.invoke(Arguments())
+        if(isDayTime) {
+            mainPageViewModel.invoke(Arguments())
+        } else {
+            mainPageNightViewModel.invoke(Arguments())
+        }
     }
 
     BBiBBiSurface(
@@ -89,18 +98,34 @@ fun HomePage(
                     onTapLeft = onTapLeft,
                     onTapRight = onTapRight
                 )
-                HomePageContent(
-                    mainPageState = mainPageViewModel.uiState,
-                    postViewTypeState = postViewTypeState,
-                    onTapContent = onTapContent,
-                    onTapProfile = onTapProfile,
-                    onTapInvite = onTapInvite,
-                    onTapPick = onTapPick,
-                    onRefresh = {
-                        mainPageViewModel.invoke(Arguments())
-                    },
-                    deferredPickStateSet = mainPageViewModel.deferredPickMembersSet
-                )
+                if (isDayTime) {
+                    HomePageContent(
+                        mainPageState = mainPageViewModel.uiState,
+                        postViewTypeState = postViewTypeState,
+                        onTapContent = onTapContent,
+                        onTapProfile = onTapProfile,
+                        onTapInvite = onTapInvite,
+                        onTapPick = onTapPick,
+                        onRefresh = {
+                            mainPageViewModel.invoke(Arguments())
+                        },
+                        deferredPickStateSet = mainPageViewModel.deferredPickMembersSet
+                    )
+                } else {
+                    NightHomePageContent(
+                        mainPageState = mainPageNightViewModel.uiState,
+                        postViewTypeState = postViewTypeState,
+                        onTapViewPost = onTapViewPost,
+                        onTapProfile = onTapProfile,
+                        onTapInvite = onTapInvite,
+                        onTapPick = onTapPick,
+                        onRefresh = {
+                            mainPageNightViewModel.invoke(Arguments())
+                        },
+                        deferredPickStateSet = mainPageViewModel.deferredPickMembersSet
+                    )
+                }
+
             }
             if (postViewType == PostType.SURVIVAL) {
                 HomePageSurvivalUploadButton(

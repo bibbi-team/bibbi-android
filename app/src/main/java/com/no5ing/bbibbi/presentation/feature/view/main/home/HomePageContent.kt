@@ -111,7 +111,7 @@ fun HomePageContent(
                 .verticalScroll(state = scrollState)
         ) {
             HomePageStoryBar(
-                mainPageState = mainPageState,
+                items = if (mainPageModel.isReady()) mainPageModel.data.topBarElements else emptyList(),
                 onTapProfile = onTapProfile,
                 onTapInvite = onTapInvite,
                 onTapPick = onTapPick,
