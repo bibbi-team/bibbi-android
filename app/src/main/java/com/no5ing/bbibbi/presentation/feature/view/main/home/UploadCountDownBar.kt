@@ -67,31 +67,6 @@ fun UploadCountDownBar(
             color = if (warningState.value == 1) MaterialTheme.bbibbiScheme.warningRed else MaterialTheme.bbibbiScheme.white,
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally)
-        ) {
-            Text(
-                text = if (warningState.value == 1) stringResource(id = R.string.home_time_not_much)
-                else stringResource(id = R.string.home_image_on_duration),
-                color = MaterialTheme.bbibbiScheme.textSecondary,
-                style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
-            )
 
-            if (warningState.value == 1) {
-                Image(
-                    painter = painterResource(id = R.drawable.fire_icon),
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-            } else {
-                Image(
-                    painter = painterResource(id = R.drawable.smile_icon),
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(24.dp))
     }
 }

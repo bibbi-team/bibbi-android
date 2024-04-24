@@ -37,6 +37,7 @@ import com.no5ing.bbibbi.data.model.post.PostReaction
 import com.no5ing.bbibbi.data.model.post.PostReactionSummary
 import com.no5ing.bbibbi.data.model.post.PostRealEmoji
 import com.no5ing.bbibbi.data.model.view.MainPageModel
+import com.no5ing.bbibbi.data.model.view.NightMainPageModel
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -307,9 +308,11 @@ interface RestAPI {
     }
 
     interface ViewApi {
-        @GET("v1/view/main")
+        @GET("v1/view/main/daytime-page")
         suspend fun getMainView(): ApiResponse<MainPageModel>
 
+        @GET("v1/view/main/nighttime-page")
+        suspend fun getNightMainView(): ApiResponse<NightMainPageModel>
     }
 
     /**

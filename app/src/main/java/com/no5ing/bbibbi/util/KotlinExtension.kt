@@ -327,7 +327,7 @@ fun randomBoolean() = (0..1).random() == 1
 
 fun gapUntilNext(): Long {
     val current = LocalDateTime.now()
-    if (current.hour < 12)
+    if (current.hour < 10)
         return -1
     val tomorrow = LocalDateTime
         .of(current.year, current.month, current.dayOfMonth, 0, 0, 0)

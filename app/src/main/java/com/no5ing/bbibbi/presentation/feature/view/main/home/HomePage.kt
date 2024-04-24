@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -45,6 +46,7 @@ fun HomePage(
     onUnsavedPost: (Uri) -> Unit = {},
     onTapPick: (MainPageTopBarModel) -> Unit = {},
 ) {
+    val postViewType by postViewTypeState
     val mainPageState = mainPageViewModel.uiState.collectAsState()
     val unsavedDialogUri = remember { mutableStateOf<Uri?>(null) }
     val unsavedDialogEnabled = remember { mutableStateOf(false) }
@@ -100,13 +102,25 @@ fun HomePage(
                     deferredPickStateSet = mainPageViewModel.deferredPickMembersSet
                 )
             }
-            HomePageUploadButton(
-                onTap = onTapUpload,
-                isLoading = !mainPageState.value.isReady(),
-                isUploadAbleTime = remember { gapUntilNext() > 0 },
-                isAlreadyUploaded = !mainPageState.value.isReady() ||
-                        mainPageState.value.data.isMeUploadedToday
-            )
+            if (postViewType == PostType.SURVIVAL) {
+                HomePageSurvivalUploadButton(
+                    onTap = onTapUpload,
+                    isLoading = !mainPageState.value.isReady(),
+                    isUploadAbleTime = remember { gapUntilNext() > 0 },
+                    isAlreadyUploaded = !mainPageState.value.isReady() ||
+                            mainPageState.value.data.isMeUploadedToday,
+                    pickers = if(mainPageState.value.isReady()) mainPageState.value.data.pickers
+                    else emptyList(),
+                )
+            } else {
+                HomePageMissionUploadButton(
+                    isLoading = mainPageState.value.isLoading(),
+                    isMeUploadedToday = mainPageState.value.isReady() && mainPageState.value.data.isMeUploadedToday,
+                    isMissionUnlocked = mainPageState.value.isReady() && mainPageState.value.data.isMissionUnlocked,
+                    isMeMissionUploaded = false,
+                )
+            }
+
         }
     }
 }
@@ -129,7 +143,7 @@ fun HomePagePreview() {
                     deferredPickStateSet = MutableStateFlow(emptySet())
                 )
             }
-            HomePageUploadButton()
+            HomePageSurvivalUploadButton()
         }
 
     }

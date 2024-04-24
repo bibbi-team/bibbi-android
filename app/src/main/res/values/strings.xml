@@ -9,9 +9,9 @@
     <string name="home_already_uploaded_today">오늘의 생존신고는 완료되었어요</string>
 
     <string name="home_everyone_uploaded">우리 가족 모두가 사진을 올린 날</string>
-    <string name="home_image_on_duration">매일 12-24시에 사진 한 장을 올려요</string>
+    <string name="home_image_on_duration">매일 10-24시에 사진 한 장을 올려요</string>
     <string name="home_time_not_much">시간이 얼마 남지 않았어요!</string>
-    <string name="home_time_over">내일 낮 12시부터 사진을 올릴 수 있어요!</string>
+    <string name="home_time_over">내일 낮 10시부터 사진을 올릴 수 있어요!</string>
 
     <string name="register_continue">계속</string>
     <string name="register_complete">완료</string>

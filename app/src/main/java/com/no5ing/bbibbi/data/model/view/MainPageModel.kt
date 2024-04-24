@@ -12,7 +12,14 @@ data class MainPageModel(
     val isMeUploadedToday: Boolean,
     val survivalFeeds: List<MainPageFeedModel>,
     val missionFeeds: List<MainPageFeedModel>,
-    val pickers: List<MainPagePickerModel>
+    val pickers: List<MainPagePickerModel>,
+    val leftUploadCountUntilMissionUnlock: Int,
+    val dailyMissionContent: String,
+) : Parcelable, BaseModel()
+
+@Parcelize
+data class NightMainPageModel(
+    val topBarElements: List<MainPageTopBarModel>,
 ) : Parcelable, BaseModel()
 
 @Parcelize
@@ -26,7 +33,7 @@ data class MainPageFeedModel(
 @Parcelize
 data class MainPagePickerModel(
     val memberId: String,
-    val imageUrl: String,
+    val imageUrl: String?,
     val displayName: String,
 ) : Parcelable
 
