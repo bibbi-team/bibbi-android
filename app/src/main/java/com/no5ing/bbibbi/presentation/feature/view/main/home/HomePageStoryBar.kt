@@ -39,6 +39,8 @@ import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedStoryElemen
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.LocalSessionState
+import com.no5ing.bbibbi.util.gapBetweenNow
+import com.no5ing.bbibbi.util.gapUntilNext
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -113,6 +115,7 @@ fun StoryBarIcon(
     isUploaded: Boolean,
     rank: Int,
 ) {
+    val canUpload = gapUntilNext() > 0
     Column(
         modifier = Modifier
             .width(64.dp)
@@ -174,7 +177,7 @@ fun StoryBarIcon(
                     )
                 }
             }
-            if (member.shouldShowPickIcon && !isInDeferredPickState) {
+            if (member.shouldShowPickIcon && !isInDeferredPickState && canUpload) {
                 Box(
                     contentAlignment = Alignment.BottomEnd,
                     modifier = Modifier

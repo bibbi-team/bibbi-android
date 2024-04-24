@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.feature.view.main.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,9 +21,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.component.MicroTextBubbleBox
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
@@ -33,6 +37,7 @@ fun HomePageFeedElement(
     imageUrl: String,
     writerName: String,
     time: String,
+    isMission: Boolean,
     onTap: () -> Unit = {},
 ) {
     Column(
@@ -41,7 +46,9 @@ fun HomePageFeedElement(
             .clickable { onTap() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box {
+        Box(
+            contentAlignment = Alignment.TopStart,
+        ) {
             AsyncImage(
                 model = asyncImagePainter(source = imageUrl),
                 contentDescription = null,
@@ -51,11 +58,17 @@ fun HomePageFeedElement(
                     .aspectRatio(1.0f)
                     .clip(RoundedCornerShape(24.dp))
             )
-//            MicroTextBubbleBox(
-//                text = postContent,
-//                alignment = Alignment.BottomCenter,
-//                modifier = Modifier.padding(bottom = 10.dp)
-//            )
+            if (isMission) {
+                Box(
+                    modifier = Modifier.padding(12.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.mission_diamond),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
         }
 
         Row(

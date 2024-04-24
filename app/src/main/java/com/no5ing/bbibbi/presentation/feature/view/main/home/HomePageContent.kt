@@ -206,10 +206,9 @@ fun SurvivalFeedTab(
                     writerName = item.authorName,
                     time = gapBetweenNow(time = item.createdAt),
                     onTap = { onTapContent(item.postId) },
+                    isMission = false,
                 )
             }
-
-
         }
     }
 }
@@ -246,6 +245,7 @@ fun MissionFeedTab(
                     writerName = item.authorName,
                     time = gapBetweenNow(time = item.createdAt),
                     onTap = { onTapContent(item.postId) },
+                    isMission = true,
                 )
             }
 

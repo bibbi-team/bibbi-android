@@ -49,7 +49,8 @@ class GetPostPagingSource @Inject constructor(
             date = null,
             memberId = arguments.get("memberId"),
             page = loadParams.key ?: 1,
-            size = loadParams.loadSize
+            size = loadParams.loadSize,
+            type = arguments.get("type"),
         )
     }
 

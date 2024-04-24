@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -197,7 +199,10 @@ fun WaitingMembersPop(
     Box(modifier = Modifier.padding(bottom = 30.dp)) {
         Box(
             modifier = Modifier
-                .background(MaterialTheme.bbibbiScheme.mainYellow, shape = RoundedCornerShape(6.dp))
+                .background(
+                    MaterialTheme.bbibbiScheme.mainYellow,
+                    shape = RoundedCornerShape(12.dp)
+                )
                 .padding(
                     vertical = 10.dp,
                     horizontal = 14.dp
@@ -207,11 +212,20 @@ fun WaitingMembersPop(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                pickers.take(3).forEach {
-                    MiniCircledIcon(
-                        noImageLetter = it.displayName.first().toString(),
-                        imageUrl = it.imageUrl,
-                    )
+                val pickersShattered = pickers.take(3)
+                Row {
+                    Box {
+                        pickersShattered.reversed().forEachIndexed { rawIdx, it ->
+                            MiniCircledIcon(
+                                noImageLetter = it.displayName.first().toString(),
+                                imageUrl = it.imageUrl,
+                                modifier = Modifier.offset(
+                                    x = 16.dp * (pickersShattered.size - 1 - rawIdx)
+                                )
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(16.dp.times(pickersShattered.size - 1)))
                 }
                 if(pickers.size == 1) {
                     Text(
@@ -267,27 +281,28 @@ fun MiniCircledIcon(
     modifier: Modifier = Modifier,
     noImageLetter: String,
     imageUrl: String?,
-    opacity: Float = 1.0f,
-    backgroundColor: Color = MaterialTheme.bbibbiScheme.backgroundSecondary,
     onTap: () -> Unit = {},
 ) {
-    Box {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(24.dp)
+                .background(MaterialTheme.bbibbiScheme.mainYellow, CircleShape)
+        ) {
+
+        }
         if (imageUrl != null) {
             AsyncImage(
                 model = asyncImagePainter(source = imageUrl),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = modifier
-                    .size(24.dp)
+                modifier = Modifier
+                    .size(20.dp)
                     .clip(CircleShape)
-                    .background(backgroundColor)
-                    .border(
-                        width = 2.dp,
-                        color = MaterialTheme.bbibbiScheme.mainYellow,
-                        shape = CircleShape
-                    )
                     .clickable { onTap() },
-                alpha = opacity,
             )
         } else {
             Box(
@@ -295,25 +310,20 @@ fun MiniCircledIcon(
                 contentAlignment = Alignment.Center,
             ) {
                 Box(
-                    modifier = modifier
-                        .size(24.dp)
+                    modifier = Modifier
+                        .size(20.dp)
                         .clip(CircleShape)
                         .background(
                             MaterialTheme.bbibbiScheme
-                                .backgroundHover
-                                .copy(alpha = opacity)
-                        )
-                        .border(
-                            width = 2.dp,
-                            color = MaterialTheme.bbibbiScheme.mainYellow,
-                            shape = CircleShape
+                                .backgroundHover,
+                            CircleShape
                         )
                 )
                 Box(modifier = Modifier.align(Alignment.Center)) {
                     Text(
                         text = noImageLetter,
                         fontSize = 8.sp,
-                        color = MaterialTheme.bbibbiScheme.white.copy(alpha = opacity),
+                        color = MaterialTheme.bbibbiScheme.white,
                         fontWeight = FontWeight.SemiBold,
                     )
                 }
