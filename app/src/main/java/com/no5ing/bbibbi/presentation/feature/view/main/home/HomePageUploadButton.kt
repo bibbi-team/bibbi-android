@@ -131,6 +131,7 @@ fun BoxScope.HomePageMissionUploadButton(
                 CameraCaptureButton(
                     onClick = onTap,
                     isCapturing = !(!isMeMissionUploaded && isMissionUnlocked && isMeUploadedToday),
+                    ignoreDisabledState = true,
                 )
             }
         }

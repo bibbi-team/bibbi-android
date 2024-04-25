@@ -15,6 +15,7 @@ fun CameraCaptureButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     isCapturing: Boolean,
+    ignoreDisabledState: Boolean = false,
 ) {
     val mixPanel = LocalMixpanelProvider.current
     Image(
@@ -24,7 +25,7 @@ fun CameraCaptureButton(
             .size(80.dp)
             .clickable {
                 mixPanel.track("Click_btn_camera")
-                if (!isCapturing) {
+                if (!isCapturing || ignoreDisabledState) {
                     onClick()
                 }
             },

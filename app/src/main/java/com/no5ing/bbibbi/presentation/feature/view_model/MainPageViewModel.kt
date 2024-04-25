@@ -10,6 +10,7 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +20,16 @@ class MainPageViewModel @Inject constructor(
 ) : BaseViewModel<APIResponse<MainPageModel>>() {
     var shouldDisplayWidgetPopup = localDataStorage.getAndRemoveWidgetPopupPeriod()
     val deferredPickMembersSet = MutableStateFlow(setOf<String>())
+
+    fun isMissionPopupShowable(): Boolean {
+        val today = LocalDate.now()
+        val lastSeen = localDataStorage.getLastWidgetPopupSeenDate()
+        if(lastSeen == null || lastSeen.isBefore(today)) {
+            localDataStorage.setLastWidgetPopupSeenDate(today)
+            return true
+        }
+        return false
+    }
 
     fun getAndDeleteTemporaryUri(): Uri? {
         val uri = localDataStorage.getTemporaryUri()

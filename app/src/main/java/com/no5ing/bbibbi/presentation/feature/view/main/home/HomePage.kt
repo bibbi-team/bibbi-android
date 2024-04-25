@@ -45,6 +45,7 @@ fun HomePage(
     onTapProfile: (String) -> Unit = {},
     onTapContent: (String) -> Unit = {},
     onTapUpload: () -> Unit = {},
+    onTapMissionUpload: () -> Unit = {},
     onTapInvite: () -> Unit = {},
     onUnsavedPost: (Uri) -> Unit = {},
     onTapViewPost: (LocalDate) -> Unit = {},
@@ -139,6 +140,7 @@ fun HomePage(
                 )
             } else {
                 HomePageMissionUploadButton(
+                    onTap = onTapMissionUpload,
                     isLoading = mainPageState.value.isLoading(),
                     isMeUploadedToday = mainPageState.value.isReady()
                             && mainPageState.value.data.isMeSurvivalUploadedToday,

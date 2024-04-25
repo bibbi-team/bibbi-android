@@ -34,6 +34,8 @@
     <string name="real_emoji_upload_title">리얼 이모지</string>
     <string name="real_emoji_follow_emoji">표정을 따라해보세요</string>
 
+    <string name="mission_camera_title">미션 카메라</string>
+
     <string name="setting_account_and_permission">설정 및 권한</string>
     <string name="setting_version_info">%1$s 버전</string>
     <string name="setting_version_info_querying">버전 정보 조회중...</string>

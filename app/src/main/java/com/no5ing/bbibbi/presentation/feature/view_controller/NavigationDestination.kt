@@ -65,6 +65,8 @@ abstract class NavigationDestination(
         internal const val settingWebViewPageRoute = "setting/webview"
         internal const val settingQuitPageRoute = "setting/quit"
         internal const val cameraViewRoute = "common/camera"
+        internal const val uploadMissionPageRoute = "main/upload-mission"
+        internal const val uploadMissionPreviewPageRoute = "main/upload-mission-preview"
 
 
         @OptIn(ExperimentalComposeUiApi::class)

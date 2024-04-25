@@ -29,6 +29,7 @@ import com.no5ing.bbibbi.data.model.member.ImageUploadLink
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import com.no5ing.bbibbi.data.model.member.MemberRealEmojiList
+import com.no5ing.bbibbi.data.model.mission.Mission
 import com.no5ing.bbibbi.data.model.post.CalendarBanner
 import com.no5ing.bbibbi.data.model.post.CalendarElement
 import com.no5ing.bbibbi.data.model.post.Post
@@ -175,6 +176,7 @@ interface RestAPI {
         @POST("v1/posts")
         suspend fun createPost(
             @Body body: CreatePostRequest,
+            @Query("type") type: String? = null,
         ): ApiResponse<Post>
 
         @POST("v1/posts/image-upload-request")
@@ -268,6 +270,9 @@ interface RestAPI {
             @Path("postId") postId: String,
             @Path("postRealEmojiId") postRealEmojiId: String,
         ): ApiResponse<DefaultResponse>
+
+        @GET("v1/missions/today")
+        suspend fun getDailyMission(): ApiResponse<Mission>
 
     }
 

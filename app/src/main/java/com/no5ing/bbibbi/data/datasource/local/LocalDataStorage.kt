@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.no5ing.bbibbi.data.model.auth.AuthResult
 import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import timber.log.Timber
+import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -41,6 +42,7 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         const val REAL_EMOJI_KEY = "real_emoji"
         const val TEMPORARY_POST_URI = "temporary_post_uri"
         const val WIDGET_POPUP_PERIOD_KEY = "widget_popup_period"
+        const val MISSION_WIDGET_PERIOD_KEY = "mission_widget_period"
     }
 
     fun logOut() {
@@ -139,5 +141,17 @@ class LocalDataStorage @Inject constructor(val context: Context) {
             return true
         }
         return false
+    }
+
+    fun getLastWidgetPopupSeenDate(): LocalDate? {
+        val date = preferences.getString(MISSION_WIDGET_PERIOD_KEY, null)
+        return date?.let(LocalDate::parse)
+    }
+
+    fun setLastWidgetPopupSeenDate(date: LocalDate) {
+        val editor = preferences.edit()
+        editor.putString(MISSION_WIDGET_PERIOD_KEY, date.toString())
+        editor.apply()
+        editor.commit()
     }
 }

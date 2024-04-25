@@ -67,7 +67,8 @@ class CreatePostViewModel @Inject constructor(
                         imageUrl = imageUploadResult,
                         content = content,
                         uploadTime = getZonedDateTimeString(),
-                    )
+                    ),
+                    type = arguments.get("type")
                 ).wrapToAPIResponse()
                 setState(postResult)
             }
