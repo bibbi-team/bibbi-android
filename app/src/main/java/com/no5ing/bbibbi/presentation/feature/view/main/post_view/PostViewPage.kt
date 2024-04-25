@@ -46,6 +46,7 @@ import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.feature.state.post.view.PostViewPageState
 import com.no5ing.bbibbi.presentation.feature.state.post.view.rememberPostViewPageState
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
+import com.no5ing.bbibbi.presentation.feature.view_model.mission.GetMissionByIdViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.FamilyPostViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.FamilySwipePostsViewModel
@@ -72,6 +73,7 @@ fun PostViewPage(
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
+    getMissionByIdViewModel: GetMissionByIdViewModel = hiltViewModel(),
     postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     LaunchedEffect(Unit) {
@@ -91,6 +93,7 @@ fun PostViewPage(
             }
         )
     }
+    val missionTextState by getMissionByIdViewModel.uiState.collectAsState()
     LaunchedEffect(postState) {
         if (postState.isReady()) {
             val currentPost = postState.data.post
@@ -133,6 +136,11 @@ fun PostViewPage(
                     )
                 )
             )
+            currentPost.post.missionId?.apply {
+                getMissionByIdViewModel.invoke(Arguments(resourceId = this))
+            } ?: Unit.apply {
+                getMissionByIdViewModel.resetState()
+            }
         }
     }
     BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
@@ -183,6 +191,7 @@ fun PostViewPage(
                                     addPostReactionViewModel = addPostReactionViewModel,
                                     postData = postData,
                                     postCommentDialogState = postCommentDialogState,
+                                    missionText = missionTextState?.content
                                 )
                             }
                         } else {
@@ -195,6 +204,7 @@ fun PostViewPage(
                                 addPostReactionViewModel = addPostReactionViewModel,
                                 postData = postState.data,
                                 postCommentDialogState = postCommentDialogState,
+                                missionText = missionTextState?.content
                             )
                         }
 
@@ -211,6 +221,7 @@ fun PostViewBody(
     onTapProfile: (Member) -> Unit,
     onTapRealEmojiCreate: (String) -> Unit,
     postData: MainFeedUiState,
+    missionText: String? = null,
     familyPostReactionBarViewModel: PostReactionBarViewModel,
     removePostReactionViewModel: RemovePostReactionViewModel,
     addPostReactionViewModel: AddPostReactionViewModel,
@@ -233,6 +244,7 @@ fun PostViewBody(
             addPostReactionViewModel = addPostReactionViewModel,
             onTapRealEmojiCreate = onTapRealEmojiCreate,
             postCommentDialogState = postCommentDialogState,
+            missionText = missionText,
         )
     }
 }

@@ -8,6 +8,6 @@ import java.time.LocalDate
 @Parcelize
 data class Mission(
     val id: String,
-    val date: LocalDate,
+    val date: LocalDate?,
     val content: String,
 ) : Parcelable, BaseModel()

@@ -274,6 +274,10 @@ interface RestAPI {
         @GET("v1/missions/today")
         suspend fun getDailyMission(): ApiResponse<Mission>
 
+        @GET("v1/missions/{missionId}")
+        suspend fun getMissionById(
+            @Path("missionId") missionId: String,
+        ): ApiResponse<Mission>
     }
 
     /**
