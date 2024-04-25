@@ -267,7 +267,7 @@ fun NightHomePageContent(
                                 text = "지난 날 생존신고 보기",
                                 modifier = Modifier.fillMaxWidth(),
                                 onClick = {
-                                          onTapViewPost(LocalDate.now())
+                                    ranking.mostRecentSurvivalPostDate?.apply(onTapViewPost)
                                 },
                             )
                         }

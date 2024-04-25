@@ -133,16 +133,18 @@ fun HomePage(
                     isLoading = !mainPageState.value.isReady(),
                     isUploadAbleTime = remember { gapUntilNext() > 0 },
                     isAlreadyUploaded = !mainPageState.value.isReady() ||
-                            mainPageState.value.data.isMeUploadedToday,
+                            mainPageState.value.data.isMeSurvivalUploadedToday,
                     pickers = if(mainPageState.value.isReady()) mainPageState.value.data.pickers
                     else emptyList(),
                 )
             } else {
                 HomePageMissionUploadButton(
                     isLoading = mainPageState.value.isLoading(),
-                    isMeUploadedToday = mainPageState.value.isReady() && mainPageState.value.data.isMeUploadedToday,
+                    isMeUploadedToday = mainPageState.value.isReady()
+                            && mainPageState.value.data.isMeSurvivalUploadedToday,
                     isMissionUnlocked = mainPageState.value.isReady() && mainPageState.value.data.isMissionUnlocked,
-                    isMeMissionUploaded = false,
+                    isMeMissionUploaded = mainPageState.value.isReady()
+                            && mainPageState.value.data.isMeMissionUploadedToday,
                 )
             }
 

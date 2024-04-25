@@ -3,13 +3,15 @@ package com.no5ing.bbibbi.data.model.view
 import android.os.Parcelable
 import com.no5ing.bbibbi.data.model.BaseModel
 import kotlinx.parcelize.Parcelize
+import java.time.LocalDate
 import java.time.ZonedDateTime
 
 @Parcelize
 data class MainPageModel(
     val topBarElements: List<MainPageTopBarModel>,
     val isMissionUnlocked: Boolean,
-    val isMeUploadedToday: Boolean,
+    val isMeSurvivalUploadedToday: Boolean,
+    val isMeMissionUploadedToday: Boolean,
     val survivalFeeds: List<MainPageFeedModel>,
     val missionFeeds: List<MainPageFeedModel>,
     val pickers: List<MainPagePickerModel>,
@@ -55,6 +57,7 @@ data class MainPageMonthlyRankingModel(
     val firstRanker: MainPageMonthlyRankerModel?,
     val secondRanker: MainPageMonthlyRankerModel?,
     val thirdRanker: MainPageMonthlyRankerModel?,
+    val mostRecentSurvivalPostDate: LocalDate?,
 ) : Parcelable {
     fun isAllRankersNull(): Boolean {
         return firstRanker == null && secondRanker == null && thirdRanker == null
