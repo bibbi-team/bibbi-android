@@ -56,6 +56,7 @@ import com.no5ing.bbibbi.presentation.component.snackBarWarning
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.presentation.feature.view.main.calendar.MainCalendarDay
 import com.no5ing.bbibbi.presentation.feature.view.main.post_view.PostViewContent
+import com.no5ing.bbibbi.presentation.feature.view_model.mission.GetMissionByIdViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.CalendarWeekViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.FamilySwipePostsViewModel
@@ -93,6 +94,7 @@ fun CalendarDetailPage(
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
     calendarWeekViewModel: CalendarWeekViewModel = hiltViewModel(),
     familyPostsViewModel: FamilySwipePostsViewModel = hiltViewModel(),
+    getMissionByIdViewModel: GetMissionByIdViewModel = hiltViewModel(),
 ) {
     // val postState = familyPostViewModel.uiState.collectAsState()
     val resources = localResources()
@@ -199,6 +201,11 @@ fun CalendarDetailPage(
             if (currentPostState.data.size <= pagerState.currentPage) {
                 return@LaunchedEffect
             }
+            currentPostState.data[pagerState.currentPage].post.missionId?.apply {
+                getMissionByIdViewModel.invoke(Arguments(resourceId = this))
+            } ?: Unit.apply {
+                getMissionByIdViewModel.resetState()
+            }
             familyPostReactionBarViewModel.invoke(
                 Arguments(
                     arguments = mapOf(
@@ -239,6 +246,7 @@ fun CalendarDetailPage(
     }
 
     val currentYearMonth = currentCalendarState.weekState.currentWeek.yearMonth
+    val mission by getMissionByIdViewModel.uiState.collectAsState()
 
     BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
         Box {
@@ -320,6 +328,7 @@ fun CalendarDetailPage(
                                                     familyPostReactionBarViewModel = familyPostReactionBarViewModel,
                                                     removePostReactionViewModel = removePostReactionViewModel,
                                                     addPostReactionViewModel = addPostReactionViewModel,
+                                                    missionText = mission?.content
                                                 )
 
                                             }
@@ -352,6 +361,7 @@ fun CalendarDetailPage(
 
 @Composable
 fun CalendarDetailBody(
+    missionText: String? = null,
     onTapProfile: (Member) -> Unit,
     onTapRealEmojiCreate: (String) -> Unit,
     item: MainFeedUiState,
@@ -372,6 +382,7 @@ fun CalendarDetailBody(
             removePostReactionViewModel = removePostReactionViewModel,
             addPostReactionViewModel = addPostReactionViewModel,
             onTapRealEmojiCreate = onTapRealEmojiCreate,
+            missionText = missionText,
         )
     }
 }
