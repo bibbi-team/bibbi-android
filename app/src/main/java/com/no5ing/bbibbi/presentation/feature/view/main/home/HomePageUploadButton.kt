@@ -116,13 +116,13 @@ fun BoxScope.HomePageMissionUploadButton(
                 UploadHelperPop(
                     text =
                     if (!isMeUploadedToday)
-                        "생존신고 후 미션 사진을 올릴 수 있어요"
+                        stringResource(id = R.string.home_mission_survival_not_uploadable)
                     else if (!isMissionUnlocked)
-                        "아직 미션 사진을 찍을 수 없어요"
+                        stringResource(id = R.string.home_mission_not_uploadable)
                     else if (isMeMissionUploaded)
-                        "오늘의 미션은 완료되었어요"
+                        stringResource(id = R.string.home_mission_completed)
                     else
-                        "미션 사진을 찍으러 가볼까요?"
+                        stringResource(id = R.string.home_mission_upload_ready)
                 )
                 CameraCaptureButton(
                     onClick = onTap,
@@ -226,13 +226,15 @@ fun WaitingMembersPop(
                 }
                 if (pickers.size == 1) {
                     Text(
-                        text = "${pickers.first().displayName}님이 기다리고 있어요",
+                        text = stringResource(id = R.string.home_someone_waiting_you,
+                            pickers.first().displayName),
                         style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                         color = MaterialTheme.bbibbiScheme.backgroundHover,
                     )
                 } else {
                     Text(
-                        text = "${pickers.first().displayName}님이 외 ${pickers.size - 1}명이 기다리고 있어요",
+                        text = stringResource(id = R.string.home_some_people_waiting_you,
+                            pickers.first().displayName, pickers.size - 1),
                         style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                         color = MaterialTheme.bbibbiScheme.backgroundHover,
                     )
