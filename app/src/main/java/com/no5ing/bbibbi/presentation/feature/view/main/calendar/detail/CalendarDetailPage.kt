@@ -95,7 +95,6 @@ fun CalendarDetailPage(
     calendarWeekViewModel: CalendarWeekViewModel = hiltViewModel(),
     familyPostsViewModel: FamilySwipePostsViewModel = hiltViewModel(),
 ) {
-    // val postState = familyPostViewModel.uiState.collectAsState()
     val resources = localResources()
     val snackBarState = LocalSnackbarHostState.current
     val uiState = calendarWeekViewModel.uiState.collectAsState()
