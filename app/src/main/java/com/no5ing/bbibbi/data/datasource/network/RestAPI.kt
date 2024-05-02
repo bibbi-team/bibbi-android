@@ -32,6 +32,7 @@ import com.no5ing.bbibbi.data.model.member.MemberRealEmojiList
 import com.no5ing.bbibbi.data.model.mission.Mission
 import com.no5ing.bbibbi.data.model.post.CalendarBanner
 import com.no5ing.bbibbi.data.model.post.CalendarElement
+import com.no5ing.bbibbi.data.model.post.DailyCalendarElement
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.model.post.PostComment
 import com.no5ing.bbibbi.data.model.post.PostReaction
@@ -48,6 +49,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.time.LocalDate
 
 interface RestAPI {
     /**
@@ -206,15 +208,9 @@ interface RestAPI {
             @Body body: CreatePostReactionRequest,
         ): ApiResponse<DefaultResponse>
 
-        @GET("v1/calendar?type=MONTHLY")
+        @GET("v1/calendar/monthly")
         suspend fun getMonthlyCalendar(
             @Query("yearMonth") yearMonth: String,
-        ): ApiResponse<ArrayResponse<CalendarElement>>
-
-        @GET("v1/calendar?type=WEEKLY")
-        suspend fun getWeeklyCalendar(
-            @Query("yearMonth") yearMonth: String,
-            @Query("week") week: Int,
         ): ApiResponse<ArrayResponse<CalendarElement>>
 
         @GET("v1/calendar/banner")
@@ -226,6 +222,11 @@ interface RestAPI {
         suspend fun getFamilySummary(
             @Query("yearMonth") yearMonth: String,
         ): ApiResponse<FamilySummary>
+
+        @GET("v1/calendar/daily")
+        suspend fun getDailyCalendar(
+            @Query("yearMonthDay") date: LocalDate,
+        ): ApiResponse<DailyCalendarElement>
 
         @GET("v1/posts/{postId}/comments")
         suspend fun getPostComments(

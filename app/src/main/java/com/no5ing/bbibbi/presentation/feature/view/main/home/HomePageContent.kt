@@ -257,8 +257,9 @@ fun MissionFeedTab(
 @Composable
 fun SurvivalTextDescription(warningState: MutableState<Int>) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally)
+        modifier = Modifier.fillMaxWidth().height(20.dp),
+        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = if (warningState.value == 1)
@@ -293,8 +294,9 @@ fun MissionTextDescription(
     remainingMemberCnt: Int,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally)
+        modifier = Modifier.fillMaxWidth().height(20.dp),
+        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         val missionWaitingText = buildAnnotatedString {
             append("가족 중 ")
