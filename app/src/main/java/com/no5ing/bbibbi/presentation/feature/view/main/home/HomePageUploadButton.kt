@@ -226,15 +226,19 @@ fun WaitingMembersPop(
                 }
                 if (pickers.size == 1) {
                     Text(
-                        text = stringResource(id = R.string.home_someone_waiting_you,
-                            pickers.first().displayName),
+                        text = stringResource(
+                            id = R.string.home_someone_waiting_you,
+                            pickers.first().displayName
+                        ),
                         style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                         color = MaterialTheme.bbibbiScheme.backgroundHover,
                     )
                 } else {
                     Text(
-                        text = stringResource(id = R.string.home_some_people_waiting_you,
-                            pickers.first().displayName, pickers.size - 1),
+                        text = stringResource(
+                            id = R.string.home_some_people_waiting_you,
+                            pickers.first().displayName, pickers.size - 1
+                        ),
                         style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                         color = MaterialTheme.bbibbiScheme.backgroundHover,
                     )

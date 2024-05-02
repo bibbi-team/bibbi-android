@@ -204,7 +204,10 @@ fun NightHomePageContent(
                             }
 
                             Text(
-                                text = stringResource(id = R.string.home_max_monthly_contributor_month, ranking.month),
+                                text = stringResource(
+                                    id = R.string.home_max_monthly_contributor_month,
+                                    ranking.month
+                                ),
                                 style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                                 color = MaterialTheme.bbibbiScheme.textSecondary,
                             )

@@ -75,7 +75,10 @@ object HomePageController : NavigationDestination(
         GenericPopup(
             enabledState = isPickDialogVisible,
             title = stringResource(id = R.string.home_check_survival),
-            description = stringResource(id = R.string.home_check_survival_description, tryPickDialogMember?.displayName ?: ""),
+            description = stringResource(
+                id = R.string.home_check_survival_description,
+                tryPickDialogMember?.displayName ?: ""
+            ),
             image = painterResource(id = R.drawable.mission_require_survival),
             confirmText = stringResource(id = R.string.home_check_survival_confirm),
             cancelText = stringResource(id = R.string.home_check_survival_cancel),
@@ -83,7 +86,10 @@ object HomePageController : NavigationDestination(
                 isPickDialogVisible = false
                 mainPageViewModel.addPickMembersSet(tryPickDialogMember?.memberId ?: "")
                 snackBarHost.showSnackBarWithDismiss(
-                    message = resources.getString(R.string.home_check_survival_snack, tryPickDialogMember?.displayName ?: ""),
+                    message = resources.getString(
+                        R.string.home_check_survival_snack,
+                        tryPickDialogMember?.displayName ?: ""
+                    ),
                     actionLabel = snackBarPick,
                 )
                 pickMemberViewModel.invoke(
