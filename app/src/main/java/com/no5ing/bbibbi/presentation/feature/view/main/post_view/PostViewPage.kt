@@ -73,7 +73,6 @@ fun PostViewPage(
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
     removePostReactionViewModel: RemovePostReactionViewModel = hiltViewModel(),
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
-    getMissionByIdViewModel: GetMissionByIdViewModel = hiltViewModel(),
     postCommentDialogState: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     LaunchedEffect(Unit) {
@@ -93,7 +92,6 @@ fun PostViewPage(
             }
         )
     }
-    val missionTextState by getMissionByIdViewModel.uiState.collectAsState()
     LaunchedEffect(postState) {
         if (postState.isReady()) {
             val currentPost = postState.data.post
@@ -125,22 +123,18 @@ fun PostViewPage(
     }
     LaunchedEffect(postState, pagerState.currentPage) {
         if (postState.isReady()) {
-            val currentPost =
-                (if (siblingPostState.isReady()) siblingPostState.data.getOrNull(pagerState.currentPage) else postState.data)
+            val currentPostId =
+                (if (siblingPostState.isReady()) siblingPostState.data.getOrNull(pagerState.currentPage)?.post?.postId
+                else postState.data.post.postId)
                     ?: return@LaunchedEffect
             familyPostReactionBarViewModel.invoke(
                 Arguments(
                     arguments = mapOf(
-                        "postId" to currentPost.post.postId,
+                        "postId" to currentPostId,
                         "memberId" to memberId
                     )
                 )
             )
-            currentPost.post.missionId?.apply {
-                getMissionByIdViewModel.invoke(Arguments(resourceId = this))
-            } ?: Unit.apply {
-                getMissionByIdViewModel.resetState()
-            }
         }
     }
     BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
@@ -157,7 +151,7 @@ fun PostViewPage(
                         model = asyncImagePainter(
                             source =
                             if (postState.isReady())
-                                if (siblingPostState.isReady()) siblingPostState.data.getOrNull(pagerState.currentPage)?.post?.imageUrl
+                                if (siblingPostState.isReady()) siblingPostState.data.getOrNull(pagerState.currentPage)?.post?.postImgUrl
                                 else postState.data.post.imageUrl
                             else null
                         ),
@@ -189,9 +183,9 @@ fun PostViewPage(
                                     familyPostReactionBarViewModel = familyPostReactionBarViewModel,
                                     removePostReactionViewModel = removePostReactionViewModel,
                                     addPostReactionViewModel = addPostReactionViewModel,
-                                    postData = postData,
+                                    postData = MainFeedUiState(postData.post.toPost(), postData.writer),
                                     postCommentDialogState = postCommentDialogState,
-                                    missionText = missionTextState?.content
+                                    missionText = postData.post.missionContent
                                 )
                             }
                         } else {
@@ -204,7 +198,7 @@ fun PostViewPage(
                                 addPostReactionViewModel = addPostReactionViewModel,
                                 postData = postState.data,
                                 postCommentDialogState = postCommentDialogState,
-                                missionText = missionTextState?.content
+                                missionText = null
                             )
                         }
 

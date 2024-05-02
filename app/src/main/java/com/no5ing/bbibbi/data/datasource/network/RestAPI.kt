@@ -226,7 +226,7 @@ interface RestAPI {
         @GET("v1/calendar/daily")
         suspend fun getDailyCalendar(
             @Query("yearMonthDay") date: LocalDate,
-        ): ApiResponse<DailyCalendarElement>
+        ): ApiResponse<ArrayResponse<DailyCalendarElement>>
 
         @GET("v1/posts/{postId}/comments")
         suspend fun getPostComments(

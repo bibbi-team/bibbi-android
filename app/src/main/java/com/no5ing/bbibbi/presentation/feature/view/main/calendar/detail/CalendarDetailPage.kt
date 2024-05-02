@@ -94,7 +94,6 @@ fun CalendarDetailPage(
     addPostReactionViewModel: AddPostReactionViewModel = hiltViewModel(),
     calendarWeekViewModel: CalendarWeekViewModel = hiltViewModel(),
     familyPostsViewModel: FamilySwipePostsViewModel = hiltViewModel(),
-    getMissionByIdViewModel: GetMissionByIdViewModel = hiltViewModel(),
 ) {
     // val postState = familyPostViewModel.uiState.collectAsState()
     val resources = localResources()
@@ -201,11 +200,6 @@ fun CalendarDetailPage(
             if (currentPostState.data.size <= pagerState.currentPage) {
                 return@LaunchedEffect
             }
-            currentPostState.data[pagerState.currentPage].post.missionId?.apply {
-                getMissionByIdViewModel.invoke(Arguments(resourceId = this))
-            } ?: Unit.apply {
-                getMissionByIdViewModel.resetState()
-            }
             familyPostReactionBarViewModel.invoke(
                 Arguments(
                     arguments = mapOf(
@@ -246,7 +240,6 @@ fun CalendarDetailPage(
     }
 
     val currentYearMonth = currentCalendarState.weekState.currentWeek.yearMonth
-    val mission by getMissionByIdViewModel.uiState.collectAsState()
 
     BBiBBiSurface(modifier = Modifier.fillMaxSize()) {
         Box {
@@ -260,7 +253,7 @@ fun CalendarDetailPage(
                         model = asyncImagePainter(
                             source = currentPostState.data.getOrNull(
                                 pagerState.currentPage
-                            )?.post?.imageUrl
+                            )?.post?.postImgUrl
                         ),
                         contentDescription = null,
                         modifier = Modifier
@@ -324,11 +317,11 @@ fun CalendarDetailPage(
                                                 CalendarDetailBody(
                                                     onTapProfile = onTapProfile,
                                                     onTapRealEmojiCreate = onTapRealEmojiCreate,
-                                                    item = item,
+                                                    item = MainFeedUiState(item.post.toPost(), item.writer),
                                                     familyPostReactionBarViewModel = familyPostReactionBarViewModel,
                                                     removePostReactionViewModel = removePostReactionViewModel,
                                                     addPostReactionViewModel = addPostReactionViewModel,
-                                                    missionText = mission?.content
+                                                    missionText = item.post.missionContent,
                                                 )
 
                                             }

@@ -19,4 +19,16 @@ data class DailyCalendarElement(
     val emojiCount: Int,
     val allFamilyMembersUploaded: Boolean,
     val createdAt: ZonedDateTime,
-) : Parcelable, BaseModel()
+) : Parcelable, BaseModel() {
+    fun toPost() = Post(
+        postId = postId,
+        authorId = authorId,
+        type = type,
+        missionId = null,
+        commentCount = commentCount,
+        emojiCount = emojiCount,
+        imageUrl = postImgUrl,
+        content = postContent,
+        createdAt = createdAt,
+    )
+}
