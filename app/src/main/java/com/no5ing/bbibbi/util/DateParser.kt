@@ -111,7 +111,7 @@ fun LocalDate.isBirthdayNow(): Boolean {
 fun formatYearMonth(year: Int, month: Int): String {
     val isSameYear = year == ZonedDateTime.now().year
     val currentYearMonth = YearMonth.of(year, month)
-    return if(isSameYear)
+    return if (isSameYear)
         currentYearMonth.format(sameYearMonthFormatter)
-        else currentYearMonth.format(yearMonthFormatter)
+    else currentYearMonth.format(yearMonthFormatter)
 }

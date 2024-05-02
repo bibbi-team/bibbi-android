@@ -72,7 +72,7 @@ fun HomePageContent(
 
     val survivalFeedItems = if (mainPageModel.isReady())
         mainPageModel.data.survivalFeeds
-        else emptyList()
+    else emptyList()
     val missionFeedItems = if (mainPageModel.isReady())
         mainPageModel.data.missionFeeds
     else emptyList()
@@ -124,14 +124,14 @@ fun HomePageContent(
             )
             Spacer(modifier = Modifier.height(24.dp))
             UploadCountDownBar(warningState = warningState)
-            if(postViewTypeState.value == PostType.SURVIVAL) {
+            if (postViewTypeState.value == PostType.SURVIVAL) {
                 SurvivalTextDescription(warningState = warningState)
             } else {
                 MissionTextDescription(
                     warningState = warningState,
                     isMissionUnlocked = mainPageModel.isReady() && mainPageModel.data.isMissionUnlocked,
-                    missionText = if(mainPageModel.isReady()) mainPageModel.data.dailyMissionContent else "",
-                    remainingMemberCnt = if(mainPageModel.isReady()) mainPageModel.data.leftUploadCountUntilMissionUnlock else 0
+                    missionText = if (mainPageModel.isReady()) mainPageModel.data.dailyMissionContent else "",
+                    remainingMemberCnt = if (mainPageModel.isReady()) mainPageModel.data.leftUploadCountUntilMissionUnlock else 0
                 )
             }
 
@@ -227,8 +227,10 @@ fun MissionFeedTab(
             verticalArrangement = Arrangement.Center,
         ) {
             Image(
-                painter = painterResource(if(isMissionUnlocked) R.drawable.bbibbi
-                else R.drawable.chest_bibbi),
+                painter = painterResource(
+                    if (isMissionUnlocked) R.drawable.bbibbi
+                    else R.drawable.chest_bibbi
+                ),
                 contentDescription = null, // 필수 param
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -257,7 +259,9 @@ fun MissionFeedTab(
 @Composable
 fun SurvivalTextDescription(warningState: MutableState<Int>) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(20.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -294,7 +298,9 @@ fun MissionTextDescription(
     remainingMemberCnt: Int,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(20.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -305,7 +311,7 @@ fun MissionTextDescription(
             }
             append("만 더 올리면 미션 열쇠를 받아요!")
         }
-        if(isMissionUnlocked) {
+        if (isMissionUnlocked) {
             Text(
                 text = missionText,
                 color = MaterialTheme.bbibbiScheme.textSecondary,

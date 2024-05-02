@@ -151,7 +151,7 @@ fun NightHomePageContent(
             UploadCountDownBar(warningState = warningState)
             SurvivalTextDescription(warningState = warningState)
             Spacer(modifier = Modifier.height(24.dp))
-            if(mainPageModel.isReady()) {
+            if (mainPageModel.isReady()) {
                 val ranking = mainPageModel.data.familyMemberMonthlyRanking
                 Box(
                     modifier = Modifier
@@ -161,7 +161,7 @@ fun NightHomePageContent(
                             MaterialTheme.bbibbiScheme.backgroundSecondary,
                             RoundedCornerShape(24.dp)
                         )
-                ){
+                ) {
                     Column(
                         modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -218,7 +218,7 @@ fun NightHomePageContent(
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
                             Box(
-                               Modifier.padding(top = 36.dp)
+                                Modifier.padding(top = 36.dp)
                             ) {
                                 RankIcon(
                                     model = ranking.secondRanker,
@@ -255,7 +255,7 @@ fun NightHomePageContent(
                             }
                         }
                         Spacer(modifier = Modifier.height(36.dp))
-                        if(ranking.isAllRankersNull()) {
+                        if (ranking.isAllRankersNull()) {
                             Text(
                                 text = "아직 활동한 가족이 없어요",
                                 style = MaterialTheme.bbibbiTypo.bodyOneBold,
@@ -295,7 +295,7 @@ fun RankIcon(
     rankImage: Painter,
     badgeHeight: Dp,
 ) {
-    if(model == null) {
+    if (model == null) {
         Column(
             verticalArrangement = Arrangement.spacedBy(9.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -312,10 +312,12 @@ fun RankIcon(
                         .background(MaterialTheme.bbibbiScheme.backgroundHover, CircleShape),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Text(text = "?", style = TextStyle(
-                        fontSize = 33.75.sp,
-                        fontWeight = FontWeight.SemiBold
-                    ), color = MaterialTheme.colorScheme.onSurface)
+                    Text(
+                        text = "?", style = TextStyle(
+                            fontSize = 33.75.sp,
+                            fontWeight = FontWeight.SemiBold
+                        ), color = MaterialTheme.colorScheme.onSurface
+                    )
                 }
                 Image(
                     painter = noRankImage,
@@ -369,13 +371,15 @@ fun CommonEmptyBlock() {
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(modifier = Modifier
-            .size(width = 53.dp, height = 16.dp)
-            .background(MaterialTheme.bbibbiScheme.gray600, RoundedCornerShape(4.dp))
+        Box(
+            modifier = Modifier
+                .size(width = 53.dp, height = 16.dp)
+                .background(MaterialTheme.bbibbiScheme.gray600, RoundedCornerShape(4.dp))
         )
-        Box(modifier = Modifier
-            .size(width = 29.dp, height = 12.dp)
-            .background(MaterialTheme.bbibbiScheme.button, RoundedCornerShape(4.dp))
+        Box(
+            modifier = Modifier
+                .size(width = 29.dp, height = 12.dp)
+                .background(MaterialTheme.bbibbiScheme.button, RoundedCornerShape(4.dp))
         )
     }
 }

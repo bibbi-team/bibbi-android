@@ -196,7 +196,7 @@ fun UploadMissionCamera(
             )
             Spacer(modifier = Modifier.height(48.dp))
             UploadMissionDisplayBar(
-                missionText = if(missionModel.isReady()) missionModel.data.content else ""
+                missionText = if (missionModel.isReady()) missionModel.data.content else ""
             )
             Spacer(modifier = Modifier.height(16.dp))
             UploadMissionPreviewBox(

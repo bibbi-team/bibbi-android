@@ -47,19 +47,20 @@ fun PostTypeSwitchButton(
 ) {
     val isSurvival = state.value == PostType.SURVIVAL
     val widthMax = 138.dp.dpToPx()
-    val buttonPosition: Dp by animateDpAsState(targetValue =
-        if(isSurvival) 0.dp else 69.dp, animationSpec = tween(
-        durationMillis = 130,
-        easing = LinearEasing,
-    ),
+    val buttonPosition: Dp by animateDpAsState(
+        targetValue =
+        if (isSurvival) 0.dp else 69.dp, animationSpec = tween(
+            durationMillis = 130,
+            easing = LinearEasing,
+        ),
         label = ""
     )
     val survivalButtonColor: Color by animateColorAsState(
-        targetValue =if(isSurvival) MaterialTheme.bbibbiScheme.backgroundPrimary else MaterialTheme.bbibbiScheme.gray500,
+        targetValue = if (isSurvival) MaterialTheme.bbibbiScheme.backgroundPrimary else MaterialTheme.bbibbiScheme.gray500,
         label = "",
     )
     val missionButtonColor: Color by animateColorAsState(
-        targetValue = if(isSurvival) MaterialTheme.bbibbiScheme.gray500 else MaterialTheme.bbibbiScheme.backgroundPrimary,
+        targetValue = if (isSurvival) MaterialTheme.bbibbiScheme.gray500 else MaterialTheme.bbibbiScheme.backgroundPrimary,
         label = "",
     )
     Box(
@@ -77,7 +78,7 @@ fun PostTypeSwitchButton(
                     Timber.d("offset: $offset")
                 }
             }
-            //.padding(vertical = 8.dp, horizontal = 12.dp)
+        //.padding(vertical = 8.dp, horizontal = 12.dp)
     ) {
         Box(
             modifier = Modifier

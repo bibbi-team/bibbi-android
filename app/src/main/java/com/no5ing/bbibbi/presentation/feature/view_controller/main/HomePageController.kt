@@ -56,14 +56,15 @@ object HomePageController : NavigationDestination(
             }
         }
         LaunchedEffect(postViewTypeState.value) {
-            if(postViewTypeState.value == PostType.MISSION) {
+            if (postViewTypeState.value == PostType.MISSION) {
                 //미션 피드 진입
                 val mainPageState = mainPageViewModel.uiState.value
-                if(mainPageState.isReady()
+                if (mainPageState.isReady()
                     && mainPageState.data.isMissionUnlocked
                     && mainPageState.data.isMeSurvivalUploadedToday
-                    && !mainPageState.data.isMeMissionUploadedToday) {
-                    if(mainPageViewModel.isMissionPopupShowable())
+                    && !mainPageState.data.isMeMissionUploadedToday
+                ) {
+                    if (mainPageViewModel.isMissionPopupShowable())
                         isTryMissionPictureDialogVisible = true
                 }
             }
@@ -75,7 +76,7 @@ object HomePageController : NavigationDestination(
                 isPickDialogVisible = false
                 mainPageViewModel.addPickMembersSet(tryPickDialogMember?.memberId ?: "")
                 snackBarHost.showSnackBarWithDismiss(
-                    message = "${tryPickDialogMember?.displayName?:""}님에게 생존신고 알림을 보냈어요",
+                    message = "${tryPickDialogMember?.displayName ?: ""}님에게 생존신고 알림을 보냈어요",
                     actionLabel = snackBarPick,
                 )
                 pickMemberViewModel.invoke(
@@ -155,14 +156,14 @@ object HomePageController : NavigationDestination(
                     && uiValue.data.isMissionUnlocked
                     && !uiValue.data.isMeSurvivalUploadedToday
                     && !uiValue.data.isMeMissionUploadedToday
-                    ) {
+                ) {
                     isRequireSurvivalDialogVisible = true
-                } else if(uiValue.isReady()
+                } else if (uiValue.isReady()
                     && !uiValue.data.isMeMissionUploadedToday
                     && uiValue.data.isMeSurvivalUploadedToday
                     && uiValue.data.isMissionUnlocked
                     && gapUntilNext() > 0
-                    ) {
+                ) {
                     //MISSION UPLOAD PAGE
                     navController.goMissionUploadPage()
                     navController.goMissionCameraPage()

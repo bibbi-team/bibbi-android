@@ -5,7 +5,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
@@ -40,13 +38,11 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.view.MainPagePickerModel
-import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.component.button.CameraCaptureButton
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
@@ -72,7 +68,7 @@ fun BoxScope.HomePageSurvivalUploadButton(
             exit = fadeOut(),
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                if(pickers.isNotEmpty() && isUploadAbleTime && !isAlreadyUploaded && !isLoading) {
+                if (pickers.isNotEmpty() && isUploadAbleTime && !isAlreadyUploaded && !isLoading) {
                     WaitingMembersPop(
                         pickers = pickers,
                     )
@@ -119,7 +115,7 @@ fun BoxScope.HomePageMissionUploadButton(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 UploadHelperPop(
                     text =
-                    if(!isMeUploadedToday)
+                    if (!isMeUploadedToday)
                         "생존신고 후 미션 사진을 올릴 수 있어요"
                     else if (!isMissionUnlocked)
                         "아직 미션 사진을 찍을 수 없어요"
@@ -228,7 +224,7 @@ fun WaitingMembersPop(
                     }
                     Spacer(modifier = Modifier.width(16.dp.times(pickersShattered.size - 1)))
                 }
-                if(pickers.size == 1) {
+                if (pickers.size == 1) {
                     Text(
                         text = "${pickers.first().displayName}님이 기다리고 있어요",
                         style = MaterialTheme.bbibbiTypo.bodyTwoRegular,

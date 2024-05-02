@@ -46,7 +46,6 @@ import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.feature.state.post.view.PostViewPageState
 import com.no5ing.bbibbi.presentation.feature.state.post.view.rememberPostViewPageState
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
-import com.no5ing.bbibbi.presentation.feature.view_model.mission.GetMissionByIdViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.FamilyPostViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.FamilySwipePostsViewModel
@@ -151,7 +150,9 @@ fun PostViewPage(
                         model = asyncImagePainter(
                             source =
                             if (postState.isReady())
-                                if (siblingPostState.isReady()) siblingPostState.data.getOrNull(pagerState.currentPage)?.post?.postImgUrl
+                                if (siblingPostState.isReady()) siblingPostState.data.getOrNull(
+                                    pagerState.currentPage
+                                )?.post?.postImgUrl
                                 else postState.data.post.imageUrl
                             else null
                         ),
@@ -175,7 +176,8 @@ fun PostViewPage(
                     if (postState.isReady()) {
                         if (isPagerReady) {
                             HorizontalPager(state = pagerState) { page ->
-                                val postData = siblingPostState.data.getOrNull(page) ?: return@HorizontalPager
+                                val postData =
+                                    siblingPostState.data.getOrNull(page) ?: return@HorizontalPager
                                 PostViewBody(
                                     onDispose = onDispose,
                                     onTapProfile = onTapProfile,
@@ -183,7 +185,10 @@ fun PostViewPage(
                                     familyPostReactionBarViewModel = familyPostReactionBarViewModel,
                                     removePostReactionViewModel = removePostReactionViewModel,
                                     addPostReactionViewModel = addPostReactionViewModel,
-                                    postData = MainFeedUiState(postData.post.toPost(), postData.writer),
+                                    postData = MainFeedUiState(
+                                        postData.post.toPost(),
+                                        postData.writer
+                                    ),
                                     postCommentDialogState = postCommentDialogState,
                                     missionText = postData.post.missionContent
                                 )
