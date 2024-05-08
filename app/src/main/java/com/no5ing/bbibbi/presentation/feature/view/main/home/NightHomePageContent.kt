@@ -257,7 +257,7 @@ fun NightHomePageContent(
                             }
                         }
                         Spacer(modifier = Modifier.height(36.dp))
-                        if (ranking.isAllRankersNull()) {
+                        if (ranking.isAllRankersNull() || ranking.mostRecentSurvivalPostDate == null) {
                             Text(
                                 text = stringResource(id = R.string.home_no_before_survival),
                                 style = MaterialTheme.bbibbiTypo.bodyOneBold,
@@ -269,7 +269,7 @@ fun NightHomePageContent(
                                 text = stringResource(id = R.string.home_see_before_survival),
                                 modifier = Modifier.fillMaxWidth(),
                                 onClick = {
-                                    ranking.mostRecentSurvivalPostDate?.apply(onTapViewPost)
+                                    ranking.mostRecentSurvivalPostDate.apply(onTapViewPost)
                                 },
                             )
                         }
