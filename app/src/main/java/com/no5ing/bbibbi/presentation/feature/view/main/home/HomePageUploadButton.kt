@@ -214,7 +214,7 @@ fun WaitingMembersPop(
                     Box {
                         pickersShattered.reversed().forEachIndexed { rawIdx, it ->
                             MiniCircledIcon(
-                                noImageLetter = it.displayName.first().toString(),
+                                noImageLetter = it.displayName?.first()?.toString() ?: "?",
                                 imageUrl = it.imageUrl,
                                 modifier = Modifier.offset(
                                     x = 16.dp * (pickersShattered.size - 1 - rawIdx)
@@ -228,7 +228,7 @@ fun WaitingMembersPop(
                     Text(
                         text = stringResource(
                             id = R.string.home_someone_waiting_you,
-                            pickers.first().displayName
+                            pickers.first().displayName ?:""
                         ),
                         style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                         color = MaterialTheme.bbibbiScheme.backgroundHover,
@@ -237,7 +237,7 @@ fun WaitingMembersPop(
                     Text(
                         text = stringResource(
                             id = R.string.home_some_people_waiting_you,
-                            pickers.first().displayName, pickers.size - 1
+                            pickers.first().displayName ?: "", pickers.size - 1
                         ),
                         style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                         color = MaterialTheme.bbibbiScheme.backgroundHover,
