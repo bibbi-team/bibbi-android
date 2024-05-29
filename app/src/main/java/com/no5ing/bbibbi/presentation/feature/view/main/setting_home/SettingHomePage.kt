@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -151,7 +150,7 @@ fun SettingHomePage(
                     )
                 },
                 onTapFormBanner = {
-                     context.openBrowser("https://docs.google.com/forms/d/e/1FAIpQLSeeIRAn45EBU4otZ5y2X4QPA9pCzU1Vw6IaDFF7czSrpgAeRg/viewform")
+                    context.openBrowser("https://docs.google.com/forms/d/e/1FAIpQLSeeIRAn45EBU4otZ5y2X4QPA9pCzU1Vw6IaDFF7czSrpgAeRg/viewform")
                 },
                 onTapMarketOpen = {
                     context.openMarket()

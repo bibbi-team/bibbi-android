@@ -42,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -83,7 +84,6 @@ fun NightHomePageContent(
         mutableIntStateOf(0)
     }
     val balloonColor = MaterialTheme.bbibbiScheme.button
-    val balloonText = "생존신고 횟수가 동일한 경우\n이모지, 댓글 수를 합산해서 등수를 정해요"
     val builder = rememberBalloonBuilder {
         setArrowSize(10)
         setArrowPosition(0.5f)
@@ -96,7 +96,6 @@ fun NightHomePageContent(
         setMarginHorizontal(12)
         setCornerRadius(12f)
         setBackgroundColor(balloonColor)
-        // setBackgroundColorResource(balloonColor)
         setBalloonAnimation(BalloonAnimation.ELASTIC)
     }
 
@@ -151,7 +150,7 @@ fun NightHomePageContent(
             UploadCountDownBar(warningState = warningState)
             SurvivalTextDescription(warningState = warningState)
             Spacer(modifier = Modifier.height(24.dp))
-            if(mainPageModel.isReady()) {
+            if (mainPageModel.isReady()) {
                 val ranking = mainPageModel.data.familyMemberMonthlyRanking
                 Box(
                     modifier = Modifier
@@ -161,7 +160,7 @@ fun NightHomePageContent(
                             MaterialTheme.bbibbiScheme.backgroundSecondary,
                             RoundedCornerShape(24.dp)
                         )
-                ){
+                ) {
                     Column(
                         modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -178,7 +177,7 @@ fun NightHomePageContent(
                                 horizontalArrangement = Arrangement.spacedBy(4.dp)
                             ) {
                                 Text(
-                                    text = "이번달 최고 기여자",
+                                    text = stringResource(id = R.string.home_max_monthly_contributor),
                                     style = MaterialTheme.bbibbiTypo.headTwoBold,
                                     color = MaterialTheme.bbibbiScheme.textPrimary,
                                 )
@@ -186,7 +185,7 @@ fun NightHomePageContent(
                                     builder = builder,
                                     balloonContent = {
                                         Text(
-                                            text = balloonText,
+                                            text = stringResource(id = R.string.home_contributor_baloon),
                                             textAlign = TextAlign.Center,
                                             color = MaterialTheme.bbibbiScheme.white,
                                             style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
@@ -205,7 +204,10 @@ fun NightHomePageContent(
                             }
 
                             Text(
-                                text = "${ranking.month}월 생존신고 횟수",
+                                text = stringResource(
+                                    id = R.string.home_max_monthly_contributor_month,
+                                    ranking.month
+                                ),
                                 style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
                                 color = MaterialTheme.bbibbiScheme.textSecondary,
                             )
@@ -218,7 +220,7 @@ fun NightHomePageContent(
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
                             Box(
-                               Modifier.padding(top = 36.dp)
+                                Modifier.padding(top = 36.dp)
                             ) {
                                 RankIcon(
                                     model = ranking.secondRanker,
@@ -255,19 +257,19 @@ fun NightHomePageContent(
                             }
                         }
                         Spacer(modifier = Modifier.height(36.dp))
-                        if(ranking.isAllRankersNull()) {
+                        if (ranking.isAllRankersNull() || ranking.mostRecentSurvivalPostDate == null) {
                             Text(
-                                text = "아직 활동한 가족이 없어요",
+                                text = stringResource(id = R.string.home_no_before_survival),
                                 style = MaterialTheme.bbibbiTypo.bodyOneBold,
                                 color = MaterialTheme.bbibbiScheme.textSecondary,
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                         } else {
                             FlatButton(
-                                text = "지난 날 생존신고 보기",
+                                text = stringResource(id = R.string.home_see_before_survival),
                                 modifier = Modifier.fillMaxWidth(),
                                 onClick = {
-                                    ranking.mostRecentSurvivalPostDate?.apply(onTapViewPost)
+                                    ranking.mostRecentSurvivalPostDate.apply(onTapViewPost)
                                 },
                             )
                         }
@@ -295,7 +297,7 @@ fun RankIcon(
     rankImage: Painter,
     badgeHeight: Dp,
 ) {
-    if(model == null) {
+    if (model == null) {
         Column(
             verticalArrangement = Arrangement.spacedBy(9.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -312,10 +314,12 @@ fun RankIcon(
                         .background(MaterialTheme.bbibbiScheme.backgroundHover, CircleShape),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Text(text = "?", style = TextStyle(
-                        fontSize = 33.75.sp,
-                        fontWeight = FontWeight.SemiBold
-                    ), color = MaterialTheme.colorScheme.onSurface)
+                    Text(
+                        text = "?", style = TextStyle(
+                            fontSize = 33.75.sp,
+                            fontWeight = FontWeight.SemiBold
+                        ), color = MaterialTheme.colorScheme.onSurface
+                    )
                 }
                 Image(
                     painter = noRankImage,
@@ -369,13 +373,15 @@ fun CommonEmptyBlock() {
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(modifier = Modifier
-            .size(width = 53.dp, height = 16.dp)
-            .background(MaterialTheme.bbibbiScheme.gray600, RoundedCornerShape(4.dp))
+        Box(
+            modifier = Modifier
+                .size(width = 53.dp, height = 16.dp)
+                .background(MaterialTheme.bbibbiScheme.gray600, RoundedCornerShape(4.dp))
         )
-        Box(modifier = Modifier
-            .size(width = 29.dp, height = 12.dp)
-            .background(MaterialTheme.bbibbiScheme.button, RoundedCornerShape(4.dp))
+        Box(
+            modifier = Modifier
+                .size(width = 29.dp, height = 12.dp)
+                .background(MaterialTheme.bbibbiScheme.button, RoundedCornerShape(4.dp))
         )
     }
 }

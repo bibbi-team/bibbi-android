@@ -44,8 +44,8 @@ fun VerticalGrid(
                 val column = index % columns
                 val row = index / columns
                 placeable.placeRelative(
-                    x = column * itemWidth + if(column > 0) gap else 0,
-                    y = columnY[column] + if(row > 0) verticalGap else 0,
+                    x = column * itemWidth + if (column > 0) gap else 0,
+                    y = columnY[column] + if (row > 0) verticalGap else 0,
                 )
                 columnY[column] += placeable.height
             }

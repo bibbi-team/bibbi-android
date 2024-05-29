@@ -13,6 +13,37 @@
     <string name="home_time_not_much">시간이 얼마 남지 않았어요!</string>
     <string name="home_time_over">내일 낮 10시부터 사진을 올릴 수 있어요!</string>
 
+    <string name="home_mission_survival_not_uploadable">생존신고 후 미션 사진을 올릴 수 있어요</string>
+    <string name="home_mission_not_uploadable">아직 미션 사진을 찍을 수 없어요</string>
+    <string name="home_mission_completed">오늘의 미션은 완료되었어요</string>
+    <string name="home_mission_upload_ready">미션 사진을 찍으러 가볼까요?</string>
+
+    <string name="home_someone_waiting_you">%1$s님이 기다리고 있어요</string>
+    <string name="home_some_people_waiting_you">%1$s님 외 %2$d명이 기다리고 있어요</string>
+
+    <string name="home_check_survival">생존 확인하기</string>
+    <string name="home_check_survival_description">%1$s님의 생존 여부를 물어볼까요?\n지금 알림이 전송됩니다.</string>
+    <string name="home_check_survival_confirm">지금 하기</string>
+    <string name="home_check_survival_cancel">다음에 하기</string>
+    <string name="home_check_survival_snack">%1$s님에게 생존신고 알림을 보냈어요</string>
+
+    <string name="home_survival_first">생존신고 사진을 먼저 찍으세요!</string>
+    <string name="home_survival_first_description">미션 사진을 올리려면\n생존신고 사진을 먼저 업로드해야해요.</string>
+    <string name="home_survival_first_confirm">생존신고 먼저 하기</string>
+    <string name="home_survival_first_cancel">다음에 하기</string>
+
+    <string name="home_mission_key">미션 열쇠 획득!</string>
+    <string name="home_mission_key_description">열쇠를 획득해 잠금이 해제되었어요.\n미션 사진을 찍을 수 있어요</string>
+    <string name="home_mission_key_confirm">미션 사진 찍기</string>
+    <string name="home_mission_key_cancel">닫기</string>
+
+    <string name="home_max_monthly_contributor">이번달 최고 기여자</string>
+    <string name="home_max_monthly_contributor_month">%1$d월 생존신고 횟수</string>
+    <string name="home_see_before_survival">지난 날 생존신고 보기</string>
+    <string name="home_no_before_survival">아직 활동한 가족이 없어요</string>
+    <string name="home_contributor_baloon">생존신고 횟수가 동일한 경우\n이모지, 댓글 수를 합산해서 등수를 정해요</string>
+
+
     <string name="register_continue">계속</string>
     <string name="register_complete">완료</string>
 

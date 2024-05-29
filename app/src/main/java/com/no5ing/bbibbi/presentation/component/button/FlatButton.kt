@@ -23,7 +23,7 @@ fun FlatButton(
     modifier: Modifier = Modifier,
     buttonColor: Color = MaterialTheme.bbibbiScheme.mainYellow,
     textColor: Color = MaterialTheme.bbibbiScheme.backgroundPrimary,
-    contentPadding: PaddingValues =  PaddingValues(
+    contentPadding: PaddingValues = PaddingValues(
         start = 24.dp,
         top = 12.dp,
         end = 24.dp,

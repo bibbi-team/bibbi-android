@@ -89,13 +89,14 @@ fun ProfilePageContent(
             state = pagerState,
             verticalAlignment = Alignment.Top,
         ) {
-            when(it) {
+            when (it) {
                 0 -> {
                     SurvivalProfilePageFeed(
                         postItemsState = postItemsState,
                         onTapContent = onTapContent
                     )
                 }
+
                 1 -> {
                     MissionProfilePageFeed(
                         postItemsState = missionItemState,
@@ -103,7 +104,7 @@ fun ProfilePageContent(
                     )
                 }
             }
-            
+
         }
 
     }
@@ -245,6 +246,7 @@ fun MissionProfilePageFeed(
         )
     }
 }
+
 @Composable
 fun ProfilePageContentItem(
     imageUrl: String,

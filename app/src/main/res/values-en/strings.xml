@@ -13,6 +13,36 @@
     <string name="home_time_not_much">There\'s not much time left!</string>
     <string name="home_time_over">You can upload photos from 12pm tomorrow!</string>
 
+    <string name="home_mission_survival_not_uploadable">You can upload mission photos after survival reporting</string>
+    <string name="home_mission_not_uploadable">You cannot take mission photos yet</string>
+    <string name="home_mission_completed">Today\'s mission is completed</string>
+    <string name="home_mission_upload_ready">Shall we go take mission photos?</string>
+
+    <string name="home_someone_waiting_you">%1$s is waiting for you</string>
+    <string name="home_some_people_waiting_you">%1$s and %2$d others are waiting for you</string>
+
+    <string name="home_check_survival">Check Survival</string>
+    <string name="home_check_survival_description">Shall we ask about %1$s\'s survival?\nAn alert will be sent now.</string>
+    <string name="home_check_survival_confirm">Do it now</string>
+    <string name="home_check_survival_cancel">Do it later</string>
+    <string name="home_check_survival_snack">A survival alert has been sent to %1$s</string>
+
+    <string name="home_survival_first">Take the survival report photo first!</string>
+    <string name="home_survival_first_description">To upload mission photos,\nyou need to upload the survival report photo first.</string>
+    <string name="home_survival_first_confirm">Do survival report first</string>
+    <string name="home_survival_first_cancel">Do it later</string>
+
+    <string name="home_mission_key">Mission key obtained!</string>
+    <string name="home_mission_key_description">The lock has been unlocked by obtaining the key.\nYou can take mission photos now</string>
+    <string name="home_mission_key_confirm">Take mission photo</string>
+    <string name="home_mission_key_cancel">Close</string>
+
+    <string name="home_max_monthly_contributor">Top Contributor of the Month</string>
+    <string name="home_max_monthly_contributor_month">%1$d times survival reporting in this month</string>
+    <string name="home_see_before_survival">View past survival reports</string>
+    <string name="home_no_before_survival">No family activity yet</string>
+    <string name="home_contributor_baloon">In case of equal survival reporting counts,\nrank is determined by summing up emojis and comments</string>
+
     <string name="register_continue">Continue</string>
     <string name="register_complete">Complete</string>
 

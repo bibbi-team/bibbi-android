@@ -24,7 +24,7 @@ class MainPageViewModel @Inject constructor(
     fun isMissionPopupShowable(): Boolean {
         val today = LocalDate.now()
         val lastSeen = localDataStorage.getLastWidgetPopupSeenDate()
-        if(lastSeen == null || lastSeen.isBefore(today)) {
+        if (lastSeen == null || lastSeen.isBefore(today)) {
             localDataStorage.setLastWidgetPopupSeenDate(today)
             return true
         }

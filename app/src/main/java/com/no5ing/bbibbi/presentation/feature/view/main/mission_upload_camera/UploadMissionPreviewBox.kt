@@ -1,7 +1,6 @@
 package com.no5ing.bbibbi.presentation.feature.view.main.mission_upload_camera
 
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,12 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.ClipOp
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView

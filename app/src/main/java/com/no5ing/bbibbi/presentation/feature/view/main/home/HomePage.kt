@@ -77,7 +77,7 @@ fun HomePage(
             unsavedDialogUri.value = tempUri
             unsavedDialogEnabled.value = true
         }
-        if(isDayTime) {
+        if (isDayTime) {
             mainPageViewModel.invoke(Arguments())
         } else {
             mainPageNightViewModel.invoke(Arguments())
@@ -135,7 +135,7 @@ fun HomePage(
                     isUploadAbleTime = remember { gapUntilNext() > 0 },
                     isAlreadyUploaded = !mainPageState.value.isReady() ||
                             mainPageState.value.data.isMeSurvivalUploadedToday,
-                    pickers = if(mainPageState.value.isReady()) mainPageState.value.data.pickers
+                    pickers = if (mainPageState.value.isReady()) mainPageState.value.data.pickers
                     else emptyList(),
                 )
             } else {

@@ -13,6 +13,36 @@
     <string name="home_time_not_much">残り時間があまりありません！</string>
     <string name="home_time_over">明日の12時から写真をアップロードできます！</string>
 
+    <string name="home_mission_survival_not_uploadable">生存報告後にミッション写真をアップロードできます</string>
+    <string name="home_mission_not_uploadable">まだミッション写真を撮ることができません</string>
+    <string name="home_mission_completed">今日のミッションは完了しました</string>
+    <string name="home_mission_upload_ready">ミッションの写真を撮りに行きましょうか？</string>
+
+    <string name="home_someone_waiting_you">%1$sがあなたを待っています</string>
+    <string name="home_some_people_waiting_you">%1$sと他%2$d人があなたを待っています</string>
+
+    <string name="home_check_survival">生存を確認する</string>
+    <string name="home_check_survival_description">%1$sの生存状況を尋ねましょうか？\nアラートが今送信されます。</string>
+    <string name="home_check_survival_confirm">今すぐ行う</string>
+    <string name="home_check_survival_cancel">後で行う</string>
+    <string name="home_check_survival_snack">%1$sに生存報告アラートが送信されました</string>
+
+    <string name="home_survival_first">まず生存報告写真を撮ってください！</string>
+    <string name="home_survival_first_description">ミッション写真をアップロードするには、\nまず生存報告写真をアップロードする必要があります。</string>
+    <string name="home_survival_first_confirm">先に生存報告をする</string>
+    <string name="home_survival_first_cancel">後で行う</string>
+
+    <string name="home_mission_key">ミッションキーを入手しました！</string>
+    <string name="home_mission_key_description">鍵を入手してロックが解除されました。\n今、ミッションの写真を撮ることができます</string>
+    <string name="home_mission_key_confirm">ミッションの写真を撮る</string>
+    <string name="home_mission_key_cancel">閉じる</string>
+
+    <string name="home_max_monthly_contributor">今月のトップ貢献者</string>
+    <string name="home_max_monthly_contributor_month">%1$d月の生存報告回数</string>
+    <string name="home_see_before_survival">過去の生存報告を見る</string>
+    <string name="home_no_before_survival">まだ家族の活動がありません</string>
+    <string name="home_contributor_baloon">生存報告の回数が同じ場合、\n絵文字とコメントを合算して順位を決定します</string>
+
     <string name="register_continue">続ける</string>
     <string name="register_complete">完了</string>
 

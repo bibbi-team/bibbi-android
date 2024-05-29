@@ -37,7 +37,7 @@ data class MainPageFeedModel(
 data class MainPagePickerModel(
     val memberId: String,
     val imageUrl: String?,
-    val displayName: String,
+    val displayName: String?,
 ) : Parcelable
 
 @Parcelize

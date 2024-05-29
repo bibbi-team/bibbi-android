@@ -34,6 +34,6 @@ fun UploadMissionDisplayBar(
             text = missionText,
             style = MaterialTheme.bbibbiTypo.bodyTwoBold,
             color = MaterialTheme.bbibbiScheme.mainYellow,
-            )
+        )
     }
 }

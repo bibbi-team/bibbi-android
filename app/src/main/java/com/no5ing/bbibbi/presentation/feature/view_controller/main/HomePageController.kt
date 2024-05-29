@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
@@ -19,7 +20,6 @@ import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarPick
 import com.no5ing.bbibbi.presentation.feature.view.common.GenericPopup
 import com.no5ing.bbibbi.presentation.feature.view.main.home.HomePage
-import com.no5ing.bbibbi.presentation.feature.view.main.home.TryPickPopup
 import com.no5ing.bbibbi.presentation.feature.view_controller.CameraViewPageController.goCameraViewPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarDetailPageController.goCalendarDetailPage
@@ -35,6 +35,7 @@ import com.no5ing.bbibbi.presentation.feature.view_model.MainPageViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.members.PickMemberViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.gapUntilNext
+import com.no5ing.bbibbi.util.localResources
 
 object HomePageController : NavigationDestination(
     route = mainHomePageRoute,
@@ -50,32 +51,45 @@ object HomePageController : NavigationDestination(
         var tryPickDialogMember by remember { mutableStateOf<MainPageTopBarModel?>(null) }
         val pickState = pickMemberViewModel.uiState.collectAsState()
         val postViewTypeState = remember { mutableStateOf(PostType.SURVIVAL) }
+        val resources = localResources()
         LaunchedEffect(pickState.value.status) {
             if (!pickState.value.isIdle()) {
                 mainPageViewModel.invoke(Arguments())
             }
         }
         LaunchedEffect(postViewTypeState.value) {
-            if(postViewTypeState.value == PostType.MISSION) {
+            if (postViewTypeState.value == PostType.MISSION) {
                 //미션 피드 진입
                 val mainPageState = mainPageViewModel.uiState.value
-                if(mainPageState.isReady()
+                if (mainPageState.isReady()
                     && mainPageState.data.isMissionUnlocked
                     && mainPageState.data.isMeSurvivalUploadedToday
-                    && !mainPageState.data.isMeMissionUploadedToday) {
-                    if(mainPageViewModel.isMissionPopupShowable())
+                    && !mainPageState.data.isMeMissionUploadedToday
+                ) {
+                    if (mainPageViewModel.isMissionPopupShowable())
                         isTryMissionPictureDialogVisible = true
                 }
             }
         }
-        TryPickPopup(
+
+        GenericPopup(
             enabledState = isPickDialogVisible,
-            targetNickname = tryPickDialogMember?.displayName ?: "",
-            onTapNow = {
+            title = stringResource(id = R.string.home_check_survival),
+            description = stringResource(
+                id = R.string.home_check_survival_description,
+                tryPickDialogMember?.displayName ?: ""
+            ),
+            image = painterResource(id = R.drawable.mission_require_survival),
+            confirmText = stringResource(id = R.string.home_check_survival_confirm),
+            cancelText = stringResource(id = R.string.home_check_survival_cancel),
+            onTapConfirm = {
                 isPickDialogVisible = false
                 mainPageViewModel.addPickMembersSet(tryPickDialogMember?.memberId ?: "")
                 snackBarHost.showSnackBarWithDismiss(
-                    message = "${tryPickDialogMember?.displayName?:""}님에게 생존신고 알림을 보냈어요",
+                    message = resources.getString(
+                        R.string.home_check_survival_snack,
+                        tryPickDialogMember?.displayName ?: ""
+                    ),
                     actionLabel = snackBarPick,
                 )
                 pickMemberViewModel.invoke(
@@ -86,17 +100,17 @@ object HomePageController : NavigationDestination(
                     )
                 )
             },
-            onTapLater = {
+            onTapCancel = {
                 isPickDialogVisible = false
             }
         )
         GenericPopup(
             enabledState = isRequireSurvivalDialogVisible,
-            title = "생존신고 사진을 먼저 찍으세요!",
-            description = "미션 사진을 올리려면\n생존신고 사진을 먼저 업로드해야해요.",
+            title = stringResource(id = R.string.home_survival_first),
+            description = stringResource(id = R.string.home_survival_first_description),
             image = painterResource(id = R.drawable.mission_require_survival),
-            confirmText = "생존신고 먼저 하기",
-            cancelText = "다음에 하기",
+            confirmText = stringResource(id = R.string.home_survival_first_confirm),
+            cancelText = stringResource(id = R.string.home_survival_first_cancel),
             onTapConfirm = {
                 isRequireSurvivalDialogVisible = false
                 navController.goPostUploadPage()
@@ -108,11 +122,11 @@ object HomePageController : NavigationDestination(
         )
         GenericPopup(
             enabledState = isTryMissionPictureDialogVisible,
-            title = "미션 열쇠 획득!",
-            description = "열쇠를 획득해 잠금이 해제되었어요.\n미션 사진을 찍을 수 있어요!",
+            title = stringResource(id = R.string.home_mission_key),
+            description = stringResource(id = R.string.home_mission_key_description),
             image = painterResource(id = R.drawable.mission_key),
-            confirmText = "미션 사진 찍기",
-            cancelText = "닫기",
+            confirmText = stringResource(id = R.string.home_mission_key_confirm),
+            cancelText = stringResource(id = R.string.home_mission_key_cancel),
             onTapConfirm = {
                 isTryMissionPictureDialogVisible = false
                 navController.goMissionUploadPage()
@@ -155,14 +169,14 @@ object HomePageController : NavigationDestination(
                     && uiValue.data.isMissionUnlocked
                     && !uiValue.data.isMeSurvivalUploadedToday
                     && !uiValue.data.isMeMissionUploadedToday
-                    ) {
+                ) {
                     isRequireSurvivalDialogVisible = true
-                } else if(uiValue.isReady()
+                } else if (uiValue.isReady()
                     && !uiValue.data.isMeMissionUploadedToday
                     && uiValue.data.isMeSurvivalUploadedToday
                     && uiValue.data.isMissionUnlocked
                     && gapUntilNext() > 0
-                    ) {
+                ) {
                     //MISSION UPLOAD PAGE
                     navController.goMissionUploadPage()
                     navController.goMissionCameraPage()

@@ -56,7 +56,6 @@ import com.no5ing.bbibbi.presentation.component.snackBarWarning
 import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.presentation.feature.view.main.calendar.MainCalendarDay
 import com.no5ing.bbibbi.presentation.feature.view.main.post_view.PostViewContent
-import com.no5ing.bbibbi.presentation.feature.view_model.mission.GetMissionByIdViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.AddPostReactionViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.CalendarWeekViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.FamilySwipePostsViewModel
@@ -95,7 +94,6 @@ fun CalendarDetailPage(
     calendarWeekViewModel: CalendarWeekViewModel = hiltViewModel(),
     familyPostsViewModel: FamilySwipePostsViewModel = hiltViewModel(),
 ) {
-    // val postState = familyPostViewModel.uiState.collectAsState()
     val resources = localResources()
     val snackBarState = LocalSnackbarHostState.current
     val uiState = calendarWeekViewModel.uiState.collectAsState()
@@ -317,7 +315,10 @@ fun CalendarDetailPage(
                                                 CalendarDetailBody(
                                                     onTapProfile = onTapProfile,
                                                     onTapRealEmojiCreate = onTapRealEmojiCreate,
-                                                    item = MainFeedUiState(item.post.toPost(), item.writer),
+                                                    item = MainFeedUiState(
+                                                        item.post.toPost(),
+                                                        item.writer
+                                                    ),
                                                     familyPostReactionBarViewModel = familyPostReactionBarViewModel,
                                                     removePostReactionViewModel = removePostReactionViewModel,
                                                     addPostReactionViewModel = addPostReactionViewModel,

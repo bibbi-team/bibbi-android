@@ -5,7 +5,6 @@ import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
-import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
 import com.no5ing.bbibbi.presentation.feature.uistate.post.CalendarFeedUiState
 import com.no5ing.bbibbi.presentation.feature.view_model.BaseViewModel
 import com.skydoves.sandwich.suspendMapSuccess

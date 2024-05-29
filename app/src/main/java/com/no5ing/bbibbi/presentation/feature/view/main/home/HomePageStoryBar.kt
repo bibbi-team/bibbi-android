@@ -20,7 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,32 +29,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
-import com.no5ing.bbibbi.data.model.APIResponse
-import com.no5ing.bbibbi.data.model.member.Member
-import com.no5ing.bbibbi.data.model.view.MainPageModel
 import com.no5ing.bbibbi.data.model.view.MainPageTopBarModel
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
-import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedStoryElementUiState
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.LocalSessionState
-import com.no5ing.bbibbi.util.gapBetweenNow
 import com.no5ing.bbibbi.util.gapUntilNext
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomePageStoryBar(
     //mainPageState: StateFlow<APIResponse<MainPageModel>>,
-    items:  List<MainPageTopBarModel>,
+    items: List<MainPageTopBarModel>,
     deferredPickStateSet: StateFlow<Set<String>>,
     onTapProfile: (String) -> Unit = {},
     onTapPick: (MainPageTopBarModel) -> Unit = {},
     onTapInvite: () -> Unit = {},
 ) {
     val meId = LocalSessionState.current.memberId
-   // val mainPageModel by mainPageState.collectAsState()
+    // val mainPageModel by mainPageState.collectAsState()
     val deferredPickSet = deferredPickStateSet.collectAsState()
-   // val items = if (mainPageModel.isReady()) mainPageModel.data.topBarElements else emptyList()
+    // val items = if (mainPageModel.isReady()) mainPageModel.data.topBarElements else emptyList()
 
     if (items.size == 1) {
         HomePageNoFamilyBar(
