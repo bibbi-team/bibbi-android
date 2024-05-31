@@ -74,7 +74,7 @@ fun UploadMissionCamera(
     val coroutineScope = rememberCoroutineScope()
     val torchState = remember { mutableStateOf(false) }
     val isPermissionGranted = remember { mutableStateOf(false) }
-    val cameraDirection = remember { mutableStateOf(CameraSelector.DEFAULT_FRONT_CAMERA) }
+    val cameraDirection = remember { mutableStateOf(CameraSelector.DEFAULT_BACK_CAMERA) }
     val cameraState = remember { mutableStateOf<Camera?>(null) }
     val captureState = remember { mutableStateOf(ImageCapture.Builder().build()) }
     var isCapturing by remember { mutableStateOf(false) }
