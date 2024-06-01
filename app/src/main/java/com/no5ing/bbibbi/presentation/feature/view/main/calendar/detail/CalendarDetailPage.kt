@@ -94,7 +94,6 @@ fun CalendarDetailPage(
     calendarWeekViewModel: CalendarWeekViewModel = hiltViewModel(),
     familyPostsViewModel: FamilySwipePostsViewModel = hiltViewModel(),
 ) {
-    // val postState = familyPostViewModel.uiState.collectAsState()
     val resources = localResources()
     val snackBarState = LocalSnackbarHostState.current
     val uiState = calendarWeekViewModel.uiState.collectAsState()
@@ -252,7 +251,7 @@ fun CalendarDetailPage(
                         model = asyncImagePainter(
                             source = currentPostState.data.getOrNull(
                                 pagerState.currentPage
-                            )?.post?.imageUrl
+                            )?.post?.postImgUrl
                         ),
                         contentDescription = null,
                         modifier = Modifier
@@ -316,10 +315,14 @@ fun CalendarDetailPage(
                                                 CalendarDetailBody(
                                                     onTapProfile = onTapProfile,
                                                     onTapRealEmojiCreate = onTapRealEmojiCreate,
-                                                    item = item,
+                                                    item = MainFeedUiState(
+                                                        item.post.toPost(),
+                                                        item.writer
+                                                    ),
                                                     familyPostReactionBarViewModel = familyPostReactionBarViewModel,
                                                     removePostReactionViewModel = removePostReactionViewModel,
                                                     addPostReactionViewModel = addPostReactionViewModel,
+                                                    missionText = item.post.missionContent,
                                                 )
 
                                             }
@@ -352,6 +355,7 @@ fun CalendarDetailPage(
 
 @Composable
 fun CalendarDetailBody(
+    missionText: String? = null,
     onTapProfile: (Member) -> Unit,
     onTapRealEmojiCreate: (String) -> Unit,
     item: MainFeedUiState,
@@ -372,6 +376,7 @@ fun CalendarDetailBody(
             removePostReactionViewModel = removePostReactionViewModel,
             addPostReactionViewModel = addPostReactionViewModel,
             onTapRealEmojiCreate = onTapRealEmojiCreate,
+            missionText = missionText,
         )
     }
 }

@@ -10,51 +10,52 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.PagingData
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
-import com.no5ing.bbibbi.data.model.member.Member
-import com.no5ing.bbibbi.data.model.post.Post
+import com.no5ing.bbibbi.data.model.post.PostType
+import com.no5ing.bbibbi.data.model.view.MainPageTopBarModel
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.BackToExitHandler
 import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
-import com.no5ing.bbibbi.presentation.feature.view_model.auth.RetrieveMeViewModel
-import com.no5ing.bbibbi.presentation.feature.view_model.post.DailyFamilyTopViewModel
-import com.no5ing.bbibbi.presentation.feature.view_model.post.IsMeUploadedTodayViewModel
-import com.no5ing.bbibbi.presentation.feature.view_model.post.MainPostFeedViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.MainPageNightViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.MainPageViewModel
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
-import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.gapUntilNext
-import com.no5ing.bbibbi.util.todayAsString
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDate
 
 @Composable
 fun HomePage(
-    retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
-    isMeUploadedTodayViewModel: IsMeUploadedTodayViewModel = hiltViewModel(),
-    familyPostsViewModel: MainPostFeedViewModel = hiltViewModel(),
-    familyPostTopViewModel: DailyFamilyTopViewModel = hiltViewModel(),
+    mainPageViewModel: MainPageViewModel = hiltViewModel(),
+    mainPageNightViewModel: MainPageNightViewModel = hiltViewModel(),
+    postViewTypeState: MutableState<PostType> = remember { mutableStateOf(PostType.SURVIVAL) },
     onTapLeft: () -> Unit = {},
     onTapRight: () -> Unit = {},
-    onTapProfile: (Member) -> Unit = {},
-    onTapContent: (Post) -> Unit = {},
+    onTapProfile: (String) -> Unit = {},
+    onTapContent: (String) -> Unit = {},
     onTapUpload: () -> Unit = {},
+    onTapMissionUpload: () -> Unit = {},
     onTapInvite: () -> Unit = {},
     onUnsavedPost: (Uri) -> Unit = {},
+    onTapViewPost: (LocalDate) -> Unit = {},
+    onTapPick: (MainPageTopBarModel) -> Unit = {},
 ) {
-    val memberId = LocalSessionState.current.memberId
-    val meUploadedState = isMeUploadedTodayViewModel.uiState.collectAsState()
+    val postViewType by postViewTypeState
+    val mainPageState = mainPageViewModel.uiState.collectAsState()
     val unsavedDialogUri = remember { mutableStateOf<Uri?>(null) }
     val unsavedDialogEnabled = remember { mutableStateOf(false) }
+    val isDayTime = gapUntilNext() > 0
     CustomAlertDialog(
         enabledState = unsavedDialogEnabled,
         title = stringResource(id = R.string.unsaved_post_dialog_title),
@@ -65,33 +66,21 @@ fun HomePage(
         }
     )
 
-    if (isMeUploadedTodayViewModel.shouldDisplayWidgetPopup) {
-        isMeUploadedTodayViewModel.shouldDisplayWidgetPopup = false
+    if (mainPageViewModel.shouldDisplayWidgetPopup) {
+        mainPageViewModel.shouldDisplayWidgetPopup = false
         TryWidgetPopup()
     }
     BackToExitHandler()
     LaunchedEffect(Unit) {
-        isMeUploadedTodayViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
-        val tempUri = retrieveMeViewModel.getAndDeleteTemporaryUri()
+        val tempUri = mainPageViewModel.getAndDeleteTemporaryUri()
         if (tempUri != null) {
             unsavedDialogUri.value = tempUri
             unsavedDialogEnabled.value = true
         }
-
-        if (familyPostsViewModel.isInitialize()) {
-            // familyMembersViewModel.invoke(Arguments())
-            retrieveMeViewModel.invoke(Arguments())
-            familyPostTopViewModel.invoke(Arguments())// TODO
-            familyPostsViewModel.invoke(
-                Arguments(
-                    arguments = mapOf(
-                        "date" to todayAsString(),
-                    )
-                )
-            )
+        if (isDayTime) {
+            mainPageViewModel.invoke(Arguments())
         } else {
-            familyPostTopViewModel.invoke(Arguments())
-            familyPostsViewModel.refresh()
+            mainPageNightViewModel.invoke(Arguments())
         }
     }
 
@@ -110,26 +99,57 @@ fun HomePage(
                     onTapLeft = onTapLeft,
                     onTapRight = onTapRight
                 )
-                HomePageContent(
-                    contentState = familyPostsViewModel.uiState,
-                    postTopState = familyPostTopViewModel.uiState,
-                    meState = retrieveMeViewModel.uiState,
-                    onTapContent = onTapContent,
-                    onTapProfile = onTapProfile,
-                    onTapInvite = onTapInvite,
-                    onRefresh = {
-                        familyPostTopViewModel.invoke(Arguments())
-                        retrieveMeViewModel.invoke(Arguments())
-                    }
+                if (isDayTime) {
+                    HomePageContent(
+                        mainPageState = mainPageViewModel.uiState,
+                        postViewTypeState = postViewTypeState,
+                        onTapContent = onTapContent,
+                        onTapProfile = onTapProfile,
+                        onTapInvite = onTapInvite,
+                        onTapPick = onTapPick,
+                        onRefresh = {
+                            mainPageViewModel.invoke(Arguments())
+                        },
+                        deferredPickStateSet = mainPageViewModel.deferredPickMembersSet
+                    )
+                } else {
+                    NightHomePageContent(
+                        mainPageState = mainPageNightViewModel.uiState,
+                        postViewTypeState = postViewTypeState,
+                        onTapViewPost = onTapViewPost,
+                        onTapProfile = onTapProfile,
+                        onTapInvite = onTapInvite,
+                        onTapPick = onTapPick,
+                        onRefresh = {
+                            mainPageNightViewModel.invoke(Arguments())
+                        },
+                        deferredPickStateSet = mainPageViewModel.deferredPickMembersSet
+                    )
+                }
+
+            }
+            if (postViewType == PostType.SURVIVAL) {
+                HomePageSurvivalUploadButton(
+                    onTap = onTapUpload,
+                    isLoading = !mainPageState.value.isReady(),
+                    isUploadAbleTime = remember { gapUntilNext() > 0 },
+                    isAlreadyUploaded = !mainPageState.value.isReady() ||
+                            mainPageState.value.data.isMeSurvivalUploadedToday,
+                    pickers = if (mainPageState.value.isReady()) mainPageState.value.data.pickers
+                    else emptyList(),
+                )
+            } else {
+                HomePageMissionUploadButton(
+                    onTap = onTapMissionUpload,
+                    isLoading = mainPageState.value.isLoading(),
+                    isMeUploadedToday = mainPageState.value.isReady()
+                            && mainPageState.value.data.isMeSurvivalUploadedToday,
+                    isMissionUnlocked = mainPageState.value.isReady() && mainPageState.value.data.isMissionUnlocked,
+                    isMeMissionUploaded = mainPageState.value.isReady()
+                            && mainPageState.value.data.isMeMissionUploadedToday,
                 )
             }
-            HomePageUploadButton(
-                onTap = onTapUpload,
-                isLoading = !meUploadedState.value.isReady(),
-                isUploadAbleTime = remember { gapUntilNext() > 0 },
-                isAlreadyUploaded = !meUploadedState.value.isReady() ||
-                        meUploadedState.value.data
-            )
+
         }
     }
 }
@@ -148,12 +168,11 @@ fun HomePagePreview() {
             ) {
                 HomePageTopBar()
                 HomePageContent(
-                    contentState = MutableStateFlow(PagingData.empty()),
-                    postTopState = MutableStateFlow(APIResponse.idle()),
-                    meState = MutableStateFlow(APIResponse.success(Member.unknown()))
+                    mainPageState = MutableStateFlow(APIResponse.idle()),
+                    deferredPickStateSet = MutableStateFlow(emptySet())
                 )
             }
-            HomePageUploadButton()
+            HomePageSurvivalUploadButton()
         }
 
     }

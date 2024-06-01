@@ -29,13 +29,17 @@ import com.no5ing.bbibbi.data.model.member.ImageUploadLink
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import com.no5ing.bbibbi.data.model.member.MemberRealEmojiList
+import com.no5ing.bbibbi.data.model.mission.Mission
 import com.no5ing.bbibbi.data.model.post.CalendarBanner
 import com.no5ing.bbibbi.data.model.post.CalendarElement
+import com.no5ing.bbibbi.data.model.post.DailyCalendarElement
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.model.post.PostComment
 import com.no5ing.bbibbi.data.model.post.PostReaction
 import com.no5ing.bbibbi.data.model.post.PostReactionSummary
 import com.no5ing.bbibbi.data.model.post.PostRealEmoji
+import com.no5ing.bbibbi.data.model.view.MainPageModel
+import com.no5ing.bbibbi.data.model.view.NightMainPageModel
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -45,6 +49,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.time.LocalDate
 
 interface RestAPI {
     /**
@@ -144,6 +149,11 @@ interface RestAPI {
             @Path("realEmojiId") realEmojiId: String,
             @Body body: UpdateMemberRealEmojiRequest,
         ): ApiResponse<MemberRealEmoji>
+
+        @POST("v1/members/{memberId}/pick")
+        suspend fun pickMember(
+            @Path("memberId") memberId: String,
+        ): ApiResponse<DefaultResponse>
     }
 
     /**
@@ -156,6 +166,7 @@ interface RestAPI {
             @Query("size") size: Int?,
             @Query("date") date: String?,
             @Query("memberId") memberId: String?,
+            @Query("type") type: String? = null,
             @Query("sort") sort: String? = "DESC",
         ): ApiResponse<Pagination<Post>>
 
@@ -167,6 +178,7 @@ interface RestAPI {
         @POST("v1/posts")
         suspend fun createPost(
             @Body body: CreatePostRequest,
+            @Query("type") type: String? = null,
         ): ApiResponse<Post>
 
         @POST("v1/posts/image-upload-request")
@@ -196,15 +208,9 @@ interface RestAPI {
             @Body body: CreatePostReactionRequest,
         ): ApiResponse<DefaultResponse>
 
-        @GET("v1/calendar?type=MONTHLY")
+        @GET("v1/calendar/monthly")
         suspend fun getMonthlyCalendar(
             @Query("yearMonth") yearMonth: String,
-        ): ApiResponse<ArrayResponse<CalendarElement>>
-
-        @GET("v1/calendar?type=WEEKLY")
-        suspend fun getWeeklyCalendar(
-            @Query("yearMonth") yearMonth: String,
-            @Query("week") week: Int,
         ): ApiResponse<ArrayResponse<CalendarElement>>
 
         @GET("v1/calendar/banner")
@@ -216,6 +222,11 @@ interface RestAPI {
         suspend fun getFamilySummary(
             @Query("yearMonth") yearMonth: String,
         ): ApiResponse<FamilySummary>
+
+        @GET("v1/calendar/daily")
+        suspend fun getDailyCalendar(
+            @Query("yearMonthDay") date: LocalDate,
+        ): ApiResponse<ArrayResponse<DailyCalendarElement>>
 
         @GET("v1/posts/{postId}/comments")
         suspend fun getPostComments(
@@ -261,6 +272,13 @@ interface RestAPI {
             @Path("postRealEmojiId") postRealEmojiId: String,
         ): ApiResponse<DefaultResponse>
 
+        @GET("v1/missions/today")
+        suspend fun getDailyMission(): ApiResponse<Mission>
+
+        @GET("v1/missions/{missionId}")
+        suspend fun getMissionById(
+            @Path("missionId") missionId: String,
+        ): ApiResponse<Mission>
     }
 
     /**
@@ -300,6 +318,14 @@ interface RestAPI {
         ): ApiResponse<DeepLink>
     }
 
+    interface ViewApi {
+        @GET("v1/view/main/daytime-page")
+        suspend fun getMainView(): ApiResponse<MainPageModel>
+
+        @GET("v1/view/main/nighttime-page")
+        suspend fun getNightMainView(): ApiResponse<NightMainPageModel>
+    }
+
     /**
      * API 모음
      */
@@ -308,4 +334,5 @@ interface RestAPI {
     fun getPostApi(): PostApi
     fun getAuthApi(): AuthApi
     fun getLinkApi(): LinkApi
+    fun getViewApi(): ViewApi
 }

@@ -31,10 +31,30 @@ fun CircleProfileImage(
     backgroundColor: Color = MaterialTheme.bbibbiScheme.backgroundSecondary,
     onTap: () -> Unit = {},
 ) {
+    CircleProfileImage(
+        size = size,
+        noImageLetter = member.name.first().toString(),
+        imageUrl = member.imageUrl,
+        opacity = opacity,
+        backgroundColor = backgroundColor,
+        onTap = onTap
+    )
+}
+
+@Composable
+fun CircleProfileImage(
+    modifier: Modifier = Modifier,
+    size: Dp,
+    noImageLetter: String,
+    imageUrl: String?,
+    opacity: Float = 1.0f,
+    backgroundColor: Color = MaterialTheme.bbibbiScheme.backgroundSecondary,
+    onTap: () -> Unit = {},
+) {
     Box {
-        if (member.hasProfileImage()) {
+        if (imageUrl != null) {
             AsyncImage(
-                model = asyncImagePainter(source = member.imageUrl),
+                model = asyncImagePainter(source = imageUrl),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = modifier
@@ -60,7 +80,7 @@ fun CircleProfileImage(
                 )
                 Box(modifier = Modifier.align(Alignment.Center)) {
                     Text(
-                        text = "${member.name.first()}",
+                        text = noImageLetter,
                         fontSize = 28.sp * (size / 90.dp),
                         color = MaterialTheme.bbibbiScheme.white.copy(alpha = opacity),
                         fontWeight = FontWeight.SemiBold,

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.post.Post
+import com.no5ing.bbibbi.data.model.post.PostType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.time.ZonedDateTime
@@ -27,6 +28,8 @@ fun rememberHomePageState(
                 imageUrl = "https://picsum.photos/300/300?random=01",
                 emojiCount = 0,
                 createdAt = ZonedDateTime.now(),
+                missionId = null,
+                type = PostType.SURVIVAL,
             )
         )
     },

@@ -122,13 +122,14 @@ fun PostViewPage(
     }
     LaunchedEffect(postState, pagerState.currentPage) {
         if (postState.isReady()) {
-            val currentPost =
-                (if (siblingPostState.isReady()) siblingPostState.data.getOrNull(pagerState.currentPage) else postState.data)
+            val currentPostId =
+                (if (siblingPostState.isReady()) siblingPostState.data.getOrNull(pagerState.currentPage)?.post?.postId
+                else postState.data.post.postId)
                     ?: return@LaunchedEffect
             familyPostReactionBarViewModel.invoke(
                 Arguments(
                     arguments = mapOf(
-                        "postId" to currentPost.post.postId,
+                        "postId" to currentPostId,
                         "memberId" to memberId
                     )
                 )
@@ -149,7 +150,9 @@ fun PostViewPage(
                         model = asyncImagePainter(
                             source =
                             if (postState.isReady())
-                                if (siblingPostState.isReady()) siblingPostState.data.getOrNull(pagerState.currentPage)?.post?.imageUrl
+                                if (siblingPostState.isReady()) siblingPostState.data.getOrNull(
+                                    pagerState.currentPage
+                                )?.post?.postImgUrl
                                 else postState.data.post.imageUrl
                             else null
                         ),
@@ -173,7 +176,8 @@ fun PostViewPage(
                     if (postState.isReady()) {
                         if (isPagerReady) {
                             HorizontalPager(state = pagerState) { page ->
-                                val postData = siblingPostState.data.getOrNull(page) ?: return@HorizontalPager
+                                val postData =
+                                    siblingPostState.data.getOrNull(page) ?: return@HorizontalPager
                                 PostViewBody(
                                     onDispose = onDispose,
                                     onTapProfile = onTapProfile,
@@ -181,8 +185,12 @@ fun PostViewPage(
                                     familyPostReactionBarViewModel = familyPostReactionBarViewModel,
                                     removePostReactionViewModel = removePostReactionViewModel,
                                     addPostReactionViewModel = addPostReactionViewModel,
-                                    postData = postData,
+                                    postData = MainFeedUiState(
+                                        postData.post.toPost(),
+                                        postData.writer
+                                    ),
                                     postCommentDialogState = postCommentDialogState,
+                                    missionText = postData.post.missionContent
                                 )
                             }
                         } else {
@@ -195,6 +203,7 @@ fun PostViewPage(
                                 addPostReactionViewModel = addPostReactionViewModel,
                                 postData = postState.data,
                                 postCommentDialogState = postCommentDialogState,
+                                missionText = null
                             )
                         }
 
@@ -211,6 +220,7 @@ fun PostViewBody(
     onTapProfile: (Member) -> Unit,
     onTapRealEmojiCreate: (String) -> Unit,
     postData: MainFeedUiState,
+    missionText: String? = null,
     familyPostReactionBarViewModel: PostReactionBarViewModel,
     removePostReactionViewModel: RemovePostReactionViewModel,
     addPostReactionViewModel: AddPostReactionViewModel,
@@ -233,6 +243,7 @@ fun PostViewBody(
             addPostReactionViewModel = addPostReactionViewModel,
             onTapRealEmojiCreate = onTapRealEmojiCreate,
             postCommentDialogState = postCommentDialogState,
+            missionText = missionText,
         )
     }
 }

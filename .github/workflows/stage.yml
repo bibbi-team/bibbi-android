@@ -11,6 +11,7 @@ on:
 jobs:
   deploy-stage:
     runs-on: macos-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip-ci]') }}
     environment: internal-test
     steps:
       - name: 브랜치 가져오기

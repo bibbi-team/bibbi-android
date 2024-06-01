@@ -93,43 +93,6 @@ suspend fun Context.getCameraProvider(): ProcessCameraProvider =
         }
     }
 
-suspend fun ImageCapture.takePhoto(context: Context): Uri? =
-    suspendCoroutine { continuation ->
-        val name = "${System.currentTimeMillis()}.jpg"
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/BBiBBi-Image")
-            }
-        }
-
-        val outputOptions = ImageCapture.OutputFileOptions
-            .Builder(
-                context.contentResolver,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues
-            )
-            .build()
-
-        this.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(context),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onError(e: ImageCaptureException) {
-                    Timber.e("[CameraView] photo capture failed", e)
-                    continuation.resume(null)
-                }
-
-                override fun onImageSaved(
-                    output: ImageCapture.OutputFileResults
-                ) {
-                    Timber.d("onImageSaved: ${output.savedUri}")
-                    continuation.resume(output.savedUri)
-                }
-            }
-        )
-    }
-
 suspend fun ImageCapture.takePhotoWithImage(context: Context, requiredFlip: Boolean): Uri? =
     suspendCoroutine { continuation ->
         this.takePicture(
@@ -149,7 +112,7 @@ suspend fun ImageCapture.takePhotoWithImage(context: Context, requiredFlip: Bool
                     else
                         image.toBitmap()
                             .rotateWithCropCenterRecycle(image.imageInfo.rotationDegrees).flip()
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, faos)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, faos)
                     faos.close()
                     continuation.resume(Uri.fromFile(context.getFileStreamPath(fileName)))
                 }
@@ -173,26 +136,6 @@ suspend fun ImageCapture.takePhotoTemporary(context: Context): ImageProxy? =
             }
         )
     }
-
-fun ImageProxy.toRequestBody(
-    contentType: MediaType? = null,
-    offset: Int = 0,
-): RequestBody {
-    val baos = ByteArrayOutputStream()
-    val actualBitmap = toBitmap().rotateWithCropCenter(imageInfo.rotationDegrees)
-    actualBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-    return object : RequestBody() {
-        override fun contentType() = contentType
-
-        override fun contentLength() = baos.size().toLong()
-
-        override fun writeTo(sink: BufferedSink) {
-            baos.use {
-                sink.write(it.toByteArray(), offset, it.size())
-            }
-        }
-    }
-}
 
 fun Bitmap.rotateWithCropCenter(degrees: Int): Bitmap {
     val matrix = Matrix().apply { postRotate(degrees.toFloat()) }
@@ -255,12 +198,6 @@ fun Modifier.customDialogModifier(pos: CustomDialogPosition) = layout { measurab
     }
 }
 
-@Composable
-fun getDialogWindow(): Window? = (LocalView.current.parent as? DialogWindowProvider)?.window
-
-@Composable
-fun getActivityWindow(): Window? = LocalView.current.context.getActivityWindow()
-
 private tailrec fun Context.getActivityWindow(): Window? =
     when (this) {
         is Activity -> window
@@ -282,14 +219,6 @@ fun getScreenSize(): Pair<Dp, Dp> {
     }
 }
 
-fun Context.findAndroidActivity(): Activity? {
-    var context = this
-    while (context is ContextWrapper) {
-        if (context is Activity) return context
-        context = context.baseContext
-    }
-    return null
-}
 
 fun getLinkIdFromUrl(url: String): String {
     return url.split("/").last()
@@ -327,7 +256,7 @@ fun randomBoolean() = (0..1).random() == 1
 
 fun gapUntilNext(): Long {
     val current = LocalDateTime.now()
-    if (current.hour < 12)
+    if (current.hour < 10)
         return -1
     val tomorrow = LocalDateTime
         .of(current.year, current.month, current.dayOfMonth, 0, 0, 0)

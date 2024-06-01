@@ -1,6 +1,8 @@
 package com.no5ing.bbibbi.presentation.feature.view.main.post_view
 
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +11,8 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -19,10 +23,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.MiniTextBubbleBox
@@ -32,12 +39,15 @@ import com.no5ing.bbibbi.presentation.feature.view_model.post.AddRealEmojiViewMo
 import com.no5ing.bbibbi.presentation.feature.view_model.post.MemberRealEmojiListViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.PostReactionBarViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.RemovePostReactionViewModel
+import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
+import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.asyncImagePainter
 
 @Composable
 fun PostViewContent(
     post: Post,
+    missionText: String? = null,
     modifier: Modifier = Modifier,
     onTapRealEmojiCreate: (String) -> Unit,
     familyPostReactionBarViewModel: PostReactionBarViewModel = hiltViewModel(),
@@ -117,6 +127,31 @@ fun PostViewContent(
                         .clip(RoundedCornerShape(48.dp)),
                     contentScale = ContentScale.Crop
                 )
+            }
+            if (missionText != null) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = 16.dp)
+                        .background(Color.Black.copy(alpha = 0.3f), RoundedCornerShape(26.dp))
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.mission_badge),
+                            contentDescription = null,
+                        )
+                        Text(
+                            text = missionText,
+                            style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
+                            color = MaterialTheme.bbibbiScheme.white,
+                        )
+                    }
+                }
             }
             MiniTextBubbleBox(
                 text = post.content,

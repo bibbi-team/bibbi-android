@@ -9,6 +9,8 @@ import java.time.ZonedDateTime
 data class Post(
     val postId: String,
     val authorId: String,
+    val type: PostType,
+    val missionId: String?,
     val commentCount: Int,
     val emojiCount: Int,
     val imageUrl: String,

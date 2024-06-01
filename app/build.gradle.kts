@@ -9,8 +9,6 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("io.sentry.android.gradle") version "4.3.0"
-    id("io.sentry.kotlin.compiler.gradle") version "4.3.0"
 }
 
 java {
@@ -28,20 +26,6 @@ secrets {
 val secretFile = file("../secrets.properties")
 val secretProperties = Properties().apply {
     load(secretFile.inputStream())
-}
-
-sentry {
-    debug = false
-    org = "bibbi"
-    projectName = "android"
-    authToken = secretProperties["sentryAuthToken"]?.toString()
-    url = secretProperties["sentryUrl"]?.toString()
-
-    includeProguardMapping = true
-    autoUploadProguardMapping = true
-    autoInstallation {
-        enabled = false
-    }
 }
 
 
@@ -63,7 +47,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 11011
-        versionName = "1.1.3"
+        versionName = "1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -121,30 +105,30 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("androidx.annotation:annotation-experimental:1.4.0")
     implementation("androidx.annotation:annotation:1.7.1")
-    implementation("androidx.browser:browser:1.7.0")
+    implementation("androidx.browser:browser:1.8.0")
     implementation("androidx.camera:camera-core:1.4.0-alpha04")
     implementation("androidx.camera:camera-lifecycle:1.4.0-alpha04")
     implementation("androidx.camera:camera-camera2:1.4.0-alpha04")
-    implementation("androidx.compose.animation:animation-core:1.6.1")
-    implementation("androidx.compose.animation:animation:1.6.1")
-    implementation("androidx.compose.foundation:foundation-layout:1.6.1")
-    implementation("androidx.compose.foundation:foundation:1.6.1")
-    implementation("androidx.compose.material3:material3:1.2.0")
-    implementation("androidx.compose.material:material-icons-core:1.6.1")
-    implementation("androidx.compose.material:material:1.6.1")
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.1")
-    implementation("androidx.compose.runtime:runtime-saveable:1.6.1")
-    implementation("androidx.compose.runtime:runtime:1.6.1")
+    implementation("androidx.compose.animation:animation-core:1.6.3")
+    implementation("androidx.compose.animation:animation:1.6.3")
+    implementation("androidx.compose.foundation:foundation-layout:1.6.3")
+    implementation("androidx.compose.foundation:foundation:1.6.3")
+    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation("androidx.compose.material:material-icons-core:1.6.3")
+    implementation("androidx.compose.material:material:1.6.3")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.3")
+    implementation("androidx.compose.runtime:runtime-saveable:1.6.3")
+    implementation("androidx.compose.runtime:runtime:1.6.3")
     implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-geometry:1.6.1")
+    implementation("androidx.compose.ui:ui-geometry:1.6.3")
     implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-text:1.6.1")
+    implementation("androidx.compose.ui:ui-text:1.6.3")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.ui:ui-unit:1.6.1")
+    implementation("androidx.compose.ui:ui-unit:1.6.3")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.glance:glance-appwidget:1.0.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0-rc01")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("androidx.lifecycle:lifecycle-common:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-core-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
@@ -154,8 +138,8 @@ dependencies {
     implementation("androidx.navigation:navigation-common:2.7.7")
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
-    implementation("androidx.paging:paging-common-ktx:3.3.0-alpha03")
-    implementation("androidx.paging:paging-compose:3.3.0-alpha03")
+    implementation("androidx.paging:paging-common-ktx:3.3.0-alpha04")
+    implementation("androidx.paging:paging-compose:3.3.0-alpha04")
     implementation("androidx.savedstate:savedstate:1.2.1")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
     implementation("com.airbnb.android:lottie-compose:6.3.0")
@@ -170,7 +154,7 @@ dependencies {
     implementation("com.github.skydoves:sandwich-retrofit:2.0.5")
     implementation("com.github.skydoves:sandwich:2.0.5")
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.google.dagger:dagger:2.49")
     implementation("com.google.dagger:hilt-android:2.49")
@@ -205,6 +189,4 @@ dependencies {
     kapt("com.google.dagger:dagger-compiler:2.49")
     kapt("com.google.dagger:hilt-android-compiler:2.49")
     testImplementation("junit:junit:4.13.2")
-    implementation("io.sentry:sentry-android:7.4.0")
-    implementation("io.sentry:sentry-compose-android:7.4.0")
 }

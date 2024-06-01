@@ -20,7 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,28 +29,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.no5ing.bbibbi.R
-import com.no5ing.bbibbi.data.model.APIResponse
-import com.no5ing.bbibbi.data.model.member.Member
+import com.no5ing.bbibbi.data.model.view.MainPageTopBarModel
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
-import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedStoryElementUiState
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.LocalSessionState
+import com.no5ing.bbibbi.util.gapUntilNext
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomePageStoryBar(
-    postTopStateFlow: StateFlow<APIResponse<List<MainFeedStoryElementUiState>>>,
-    meStateFlow: StateFlow<APIResponse<Member>>,
-    onTapProfile: (Member) -> Unit = {},
+    //mainPageState: StateFlow<APIResponse<MainPageModel>>,
+    items: List<MainPageTopBarModel>,
+    deferredPickStateSet: StateFlow<Set<String>>,
+    onTapProfile: (String) -> Unit = {},
+    onTapPick: (MainPageTopBarModel) -> Unit = {},
     onTapInvite: () -> Unit = {},
 ) {
     val meId = LocalSessionState.current.memberId
-    val postTopState by postTopStateFlow.collectAsState()
-    val meState by meStateFlow.collectAsState()
-    //val items = familyListStateFlow.collectAsLazyPagingItems()
+    // val mainPageModel by mainPageState.collectAsState()
+    val deferredPickSet = deferredPickStateSet.collectAsState()
+    // val items = if (mainPageModel.isReady()) mainPageModel.data.topBarElements else emptyList()
 
-    if (postTopState.isReady() && postTopState.data.size == 1) {
+    if (items.size == 1) {
         HomePageNoFamilyBar(
             modifier = Modifier
                 .fillMaxWidth()
@@ -59,52 +59,37 @@ fun HomePageStoryBar(
                 .padding(horizontal = 16.dp),
             onTap = onTapInvite,
         )
-    } else if (postTopState.isReady()) {
+    } else if (items.size > 1) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 24.dp),
         ) {
             item {
-                Spacer(modifier = Modifier.width(20.dp))
+                Spacer(modifier = Modifier.width(8.dp))
             }
 
-            if (meState.isReady() && postTopState.isReady()) {
-                val item = meState.data
-                val meData = postTopState.data.indexOfFirst { it.member.memberId == meId }
-                item {
+            items(
+                count = items.size,
+                key = { items[it].memberId }
+            ) { index ->
+                val item = items[index]
+                Row {
+                    Spacer(modifier = Modifier.width(12.dp))
                     StoryBarIcon(
                         member = item,
                         onTap = {
-                            onTapProfile(item)
+                            onTapProfile(item.memberId)
                         },
-                        isMe = true,
-                        isUploaded = postTopState.data[meData].isUploadedToday,
-                        rank = meData,
+                        isUploaded = item.displayRank != null,
+                        rank = index,
+                        isMe = item.memberId == meId,
+                        isInDeferredPickState = deferredPickSet.value.contains(item.memberId),
+                        onTapPick = {
+                            onTapPick(item)
+                        }
                     )
                 }
-            }
-
-
-            items(
-                count = postTopState.data.size,
-                key = { postTopState.data[it].member.memberId }
-            ) { index ->
-                val item = postTopState.data[index]
-                if (item.member.memberId != meId) {
-                    Row {
-                        Spacer(modifier = Modifier.width(12.dp))
-                        StoryBarIcon(
-                            member = item.member,
-                            onTap = {
-                                onTapProfile(item.member)
-                            },
-                            isUploaded = item.isUploadedToday,
-                            rank = index,
-                        )
-                    }
-                }
-
             }
 
             item {
@@ -118,11 +103,14 @@ fun HomePageStoryBar(
 @Composable
 fun StoryBarIcon(
     onTap: () -> Unit,
-    member: Member,
+    onTapPick: () -> Unit,
+    member: MainPageTopBarModel,
+    isInDeferredPickState: Boolean = false,
     isMe: Boolean = false,
     isUploaded: Boolean,
     rank: Int,
 ) {
+    val canUpload = gapUntilNext() > 0
     Column(
         modifier = Modifier
             .width(64.dp)
@@ -146,7 +134,8 @@ fun StoryBarIcon(
                     .size(64.dp)
             ) {
                 CircleProfileImage(
-                    member = member,
+                    noImageLetter = member.noImageLetter,
+                    imageUrl = member.imageUrl,
                     size = if (rankColor == null) 64.dp else 62.dp,
                     onTap = onTap,
                     opacity = if (isUploaded) 1.0f else 0.4f
@@ -157,7 +146,7 @@ fun StoryBarIcon(
                 modifier = Modifier
                     .size(64.dp)
             ) {
-                if (member.isBirthdayToday) {
+                if (member.shouldShowBirthdayMark) {
                     Image(
                         painter = painterResource(id = R.drawable.birthday_badge),
                         contentDescription = null,
@@ -183,9 +172,25 @@ fun StoryBarIcon(
                     )
                 }
             }
+            if (member.shouldShowPickIcon && !isInDeferredPickState && canUpload) {
+                Box(
+                    contentAlignment = Alignment.BottomEnd,
+                    modifier = Modifier
+                        .size(64.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.pick_icon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(32.dp)
+                            .clickable { onTapPick() }
+                            .offset(x = 6.dp, y = 4.dp),
+                    )
+                }
+            }
         }
         Text(
-            text = if (isMe) stringResource(id = R.string.family_me) else member.name,
+            text = if (isMe) stringResource(id = R.string.family_me) else member.displayName,
             color = MaterialTheme.bbibbiScheme.textSecondary,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
@@ -196,7 +201,7 @@ fun StoryBarIcon(
 }
 
 @Composable
-private fun getRankColor(rank: Int) = when (rank) {
+fun getRankColor(rank: Int) = when (rank) {
     0 -> MaterialTheme.bbibbiScheme.mainYellow
     1 -> Color(0xff7FEC93)
     2 -> Color(0xffFFC98D)

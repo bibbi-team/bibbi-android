@@ -86,6 +86,7 @@ fun OnBoardingPage(
                         0 -> OnBoardingFirstPage()
                         1 -> OnBoardingSecondPage()
                         2 -> OnBoardingThirdPage()
+                        3 -> OnBoardingFourthPage()
                     }
                 }
             }
@@ -109,7 +110,7 @@ fun OnBoardingPage(
                         .padding(vertical = 12.dp),
                     contentPadding = PaddingValues(vertical = 18.dp),
                     onClick = {
-                        if (onBoardingPageState.pagerState.currentPage >= 2) {
+                        if (onBoardingPageState.pagerState.currentPage >= 3) {
                             if (!perm.status.isGranted) {
                                 perm.launchPermissionRequest()
                             } else {
@@ -125,7 +126,7 @@ fun OnBoardingPage(
                     },
                     buttonColor = MaterialTheme.bbibbiScheme.backgroundPrimary,
                     textColor = MaterialTheme.bbibbiScheme.white,
-                    isActive = onBoardingPageState.pagerState.currentPage == 2,
+                    isActive = onBoardingPageState.pagerState.currentPage == 3,
                     byPassCtaIgnore = true,
                 )
             }

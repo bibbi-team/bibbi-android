@@ -96,6 +96,15 @@ fun PostCommentDialog(
     createPostCommentViewModel: CreatePostCommentViewModel = hiltViewModel(),
     deletePostCommentViewModel: DeletePostCommentViewModel = hiltViewModel(),
 ) {
+    LaunchedEffect(postId) {
+        commentViewModel.invoke(
+            Arguments(
+                arguments = mapOf(
+                    "postId" to postId
+                )
+            )
+        )
+    }
     if (isEnabled.value) {
         val snackBarHost = LocalSnackbarHostState.current
         val focusManager = LocalFocusManager.current
@@ -110,20 +119,8 @@ fun PostCommentDialog(
             mutableStateOf(false)
         }
 
-        val uiState = commentViewModel.uiState.collectAsLazyPagingItems()
-        LaunchedEffect(Unit) {
-            if (commentViewModel.isInitialize()) {
-                commentViewModel.invoke(
-                    Arguments(
-                        arguments = mapOf(
-                            "postId" to postId
-                        )
-                    )
-                )
-            } else {
-                commentViewModel.refresh()
-            }
-        }
+        val uiState = commentViewModel.commentLiveData.collectAsLazyPagingItems()
+
 
         LaunchedEffect(uiState.loadState.refresh) {
             if (pauseNextScroll) {

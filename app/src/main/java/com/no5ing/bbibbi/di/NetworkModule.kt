@@ -1,6 +1,7 @@
 package com.no5ing.bbibbi.di
 
 import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
@@ -162,6 +163,7 @@ object NetworkModule {
                 JacksonConverterFactory.create(
                     jacksonObjectMapper()
                         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
                         .registerModule(kotlinModule())
                         .registerModule(JavaTimeModule())
                 )
@@ -201,12 +203,19 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideRestViewApi(retrofit: Retrofit): RestAPI.ViewApi {
+        return retrofit.create(RestAPI.ViewApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideRestApi(
         familyApi: RestAPI.FamilyApi,
         memberApi: RestAPI.MemberApi,
         postApi: RestAPI.PostApi,
         authApi: RestAPI.AuthApi,
         linkApi: RestAPI.LinkApi,
+        viewApi: RestAPI.ViewApi,
     ): RestAPI {
         return object : RestAPI {
             override fun getFamilyApi(): RestAPI.FamilyApi {
@@ -227,6 +236,10 @@ object NetworkModule {
 
             override fun getLinkApi(): RestAPI.LinkApi {
                 return linkApi
+            }
+
+            override fun getViewApi(): RestAPI.ViewApi {
+                return viewApi
             }
         }
     }

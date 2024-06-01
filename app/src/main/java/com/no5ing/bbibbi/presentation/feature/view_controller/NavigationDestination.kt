@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -16,7 +15,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import io.sentry.compose.SentryTraced
 import timber.log.Timber
 import java.net.URLEncoder
 
@@ -67,6 +65,8 @@ abstract class NavigationDestination(
         internal const val settingWebViewPageRoute = "setting/webview"
         internal const val settingQuitPageRoute = "setting/quit"
         internal const val cameraViewRoute = "common/camera"
+        internal const val uploadMissionPageRoute = "main/upload-mission"
+        internal const val uploadMissionPreviewPageRoute = "main/upload-mission-preview"
 
 
         @OptIn(ExperimentalComposeUiApi::class)
@@ -85,9 +85,7 @@ abstract class NavigationDestination(
             popEnterTransition = popEnterTransition,
             popExitTransition = popExitTransition,
         ) {
-            SentryTraced(tag = destination::class.java.simpleName) {
-                destination.Render(controller, it)
-            }
+            destination.Render(controller, it)
         }
 
         fun NavHostController.popAll() {

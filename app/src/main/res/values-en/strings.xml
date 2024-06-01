@@ -13,6 +13,36 @@
     <string name="home_time_not_much">There\'s not much time left!</string>
     <string name="home_time_over">You can upload photos from 12pm tomorrow!</string>
 
+    <string name="home_mission_survival_not_uploadable">You can upload mission photos after survival reporting</string>
+    <string name="home_mission_not_uploadable">You cannot take mission photos yet</string>
+    <string name="home_mission_completed">Today\'s mission is completed</string>
+    <string name="home_mission_upload_ready">Shall we go take mission photos?</string>
+
+    <string name="home_someone_waiting_you">%1$s is waiting for you</string>
+    <string name="home_some_people_waiting_you">%1$s and %2$d others are waiting for you</string>
+
+    <string name="home_check_survival">Check Survival</string>
+    <string name="home_check_survival_description">Shall we ask about %1$s\'s survival?\nAn alert will be sent now.</string>
+    <string name="home_check_survival_confirm">Do it now</string>
+    <string name="home_check_survival_cancel">Do it later</string>
+    <string name="home_check_survival_snack">A survival alert has been sent to %1$s</string>
+
+    <string name="home_survival_first">Take the survival report photo first!</string>
+    <string name="home_survival_first_description">To upload mission photos,\nyou need to upload the survival report photo first.</string>
+    <string name="home_survival_first_confirm">Do survival report first</string>
+    <string name="home_survival_first_cancel">Do it later</string>
+
+    <string name="home_mission_key">Mission key obtained!</string>
+    <string name="home_mission_key_description">The lock has been unlocked by obtaining the key.\nYou can take mission photos now</string>
+    <string name="home_mission_key_confirm">Take mission photo</string>
+    <string name="home_mission_key_cancel">Close</string>
+
+    <string name="home_max_monthly_contributor">Top Contributor of the Month</string>
+    <string name="home_max_monthly_contributor_month">%1$d times survival reporting in this month</string>
+    <string name="home_see_before_survival">View past survival reports</string>
+    <string name="home_no_before_survival">No family activity yet</string>
+    <string name="home_contributor_baloon">In case of equal survival reporting counts,\nrank is determined by summing up emojis and comments</string>
+
     <string name="register_continue">Continue</string>
     <string name="register_complete">Complete</string>
 
@@ -57,9 +87,10 @@
     <string name="family_copy_link">Invite family to BiBBi</string>
     <string name="family_your_family">Your Family</string>
 
-    <string name="onboarding_first_title">At 12pm every day, receive a notification and send a photo to your family</string>
+    <string name="onboarding_first_title">At 10am every day, receive a notification and send a photo to your family</string>
     <string name="onboarding_second_title">Check your family\'s daily life at a glance with the home screen widget</string>
-    <string name="onboarding_third_title">Don\'t miss the notifications that come only twice a day, make sure to allow them!</string>
+    <string name="onboarding_third_title">When half of the family reports survival,\nyou can take a new mission photo!</string>
+    <string name="onboarding_fourth_title">Don\'t miss the notifications that come only twice a day, make sure to allow them!</string>
     <string name="onboarding_next">Allow notifications and create a family room</string>
     <string name="onboarding_next_join">Allow notifications and enter</string>
     <string name="family_me">Me</string>
@@ -190,4 +221,7 @@
     <string name="try_widget_title">Have you added the widget?</string>
     <string name="try_widget_description">With the widget on the home screen\nYou can quickly grasp the news of the family</string>
     <string name="register_at">Registered At %1$s</string>
+
+    <string name="post_type_survival">Survival</string>
+    <string name="post_type_mission">Mission</string>
 </resources>

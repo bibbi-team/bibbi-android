@@ -3,9 +3,9 @@ package com.no5ing.bbibbi.presentation.feature.view_model.post
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.no5ing.bbibbi.data.model.post.Post
 import com.no5ing.bbibbi.data.repository.Arguments
-import com.no5ing.bbibbi.data.repository.post.GetFeedsRepository
-import com.no5ing.bbibbi.presentation.feature.uistate.family.MainFeedUiState
+import com.no5ing.bbibbi.data.repository.post.GetPostsRepository
 import com.no5ing.bbibbi.presentation.feature.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,17 +15,17 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class MainPostFeedViewModel @Inject constructor(
-    private val getPostsRepository: GetFeedsRepository,
-) : BaseViewModel<PagingData<MainFeedUiState>>() {
-    override fun initState(): PagingData<MainFeedUiState> {
+class FamilyMissionPostsViewModel @Inject constructor(
+    private val getPostsRepository: GetPostsRepository,
+) : BaseViewModel<PagingData<Post>>() {
+    override fun initState(): PagingData<Post> {
         return PagingData.empty()
     }
 
     override fun invoke(arguments: Arguments) {
         withMutexScope(Dispatchers.IO) {
             getPostsRepository
-                .fetch(arguments)
+                .fetch(arguments.copy(arguments = arguments.arguments + mapOf("type" to "MISSION")))
                 .cachedIn(viewModelScope)
                 .stateIn(
                     scope = viewModelScope,
@@ -36,8 +36,6 @@ class MainPostFeedViewModel @Inject constructor(
                 }
         }
     }
-
-    fun refresh() = getPostsRepository.invalidateSource()
 
     override fun release() {
         super.release()

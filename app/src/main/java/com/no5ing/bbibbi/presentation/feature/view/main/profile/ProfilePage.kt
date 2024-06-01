@@ -31,6 +31,7 @@ import com.no5ing.bbibbi.presentation.component.snackBarWarning
 import com.no5ing.bbibbi.presentation.feature.view.common.AlbumCameraSelectDialog
 import com.no5ing.bbibbi.presentation.feature.view_model.members.ChangeProfileImageViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.members.FamilyMemberViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.FamilyMissionPostsViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.FamilyPostsViewModel
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
@@ -51,6 +52,7 @@ fun ProfilePage(
     familyMemberViewModel: FamilyMemberViewModel = hiltViewModel(),
     profileImageChangeViewModel: ChangeProfileImageViewModel = hiltViewModel(),
     familyPostsViewModel: FamilyPostsViewModel = hiltViewModel(),
+    familyMissionPostsViewModel: FamilyMissionPostsViewModel = hiltViewModel(),
     memberState: State<APIResponse<Member>> = familyMemberViewModel.uiState.collectAsState(),
 ) {
     val sessionState = LocalSessionState.current
@@ -60,6 +62,7 @@ fun ProfilePage(
     val snackBarHost = LocalSnackbarHostState.current
     LaunchedEffect(Unit) {
         familyPostsViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
+        familyMissionPostsViewModel.invoke(Arguments(arguments = mapOf("memberId" to memberId)))
         familyMemberViewModel.invoke(Arguments(resourceId = memberId))
     }
     LaunchedEffect(changeableUriState.value) {
@@ -146,6 +149,7 @@ fun ProfilePage(
             ProfilePageContent(
                 onTapContent = onTapPost,
                 postItemsState = familyPostsViewModel.uiState,
+                missionItemState = familyMissionPostsViewModel.uiState,
             )
         }
     }
@@ -171,7 +175,8 @@ fun ProfilePagePreview() {
             )
             ProfilePageContent(
                 onTapContent = {},
-                postItemsState = MutableStateFlow(PagingData.empty())
+                postItemsState = MutableStateFlow(PagingData.empty()),
+                missionItemState = MutableStateFlow(PagingData.empty())
             )
         }
     }

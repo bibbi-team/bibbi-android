@@ -61,7 +61,8 @@ class GetFeedPageSource @Inject constructor(
             date = arguments.get("date"),
             memberId = arguments.get("memberId"),
             page = loadParams.key ?: 1,
-            size = loadParams.loadSize
+            size = loadParams.loadSize,
+            type = null,
         )
         return posts.mapSuccess {
             Pagination<MainFeedUiState>(

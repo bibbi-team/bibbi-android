@@ -15,12 +15,14 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.main.CreateRealEmo
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyListPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.HomePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.ImagePreviewPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.MissionUploadPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostReUploadPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostUploadPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostViewPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.ProfilePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.QuitPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.SettingHomePageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.UploadMissionPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.WebViewPageController
 import com.no5ing.bbibbi.presentation.navigation.animation.fullHorizontalSlideInToLeft
 import com.no5ing.bbibbi.presentation.navigation.animation.fullHorizontalSlideInToRight
@@ -114,6 +116,14 @@ fun NavGraphBuilder.mainGraph(
         composable(
             controller = navController,
             destination = CreateRealEmojiPageController
+        )
+        composable(
+            controller = navController,
+            destination = UploadMissionPageController
+        )
+        composable(
+            controller = navController,
+            destination = MissionUploadPageController
         )
         composable(
             controller = navController,
