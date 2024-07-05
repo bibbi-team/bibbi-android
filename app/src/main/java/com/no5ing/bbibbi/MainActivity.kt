@@ -40,6 +40,7 @@ import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigate
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.navigateUnsafeDeepLink
 import com.no5ing.bbibbi.presentation.feature.view_controller.landing.AlreadyFamilyExistsPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.landing.AlreadyFamilyExistsPageController.goAlreadyFamilyExistsPage
 import com.no5ing.bbibbi.presentation.navigation.NavDestinationListener
 import com.no5ing.bbibbi.presentation.theme.BbibbiTheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
@@ -120,7 +121,7 @@ class MainActivity : ComponentActivity() {
                         } else {
                             //님머함?
                             runOnUiThread {
-                                localNavController?.navigate(AlreadyFamilyExistsPageController)
+                                localNavController?.goAlreadyFamilyExistsPage(linkId)
                             }
                         }
                     }

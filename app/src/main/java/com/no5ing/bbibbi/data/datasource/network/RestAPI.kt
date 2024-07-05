@@ -38,6 +38,7 @@ import com.no5ing.bbibbi.data.model.post.PostComment
 import com.no5ing.bbibbi.data.model.post.PostReaction
 import com.no5ing.bbibbi.data.model.post.PostReactionSummary
 import com.no5ing.bbibbi.data.model.post.PostRealEmoji
+import com.no5ing.bbibbi.data.model.view.FamilyInviteModel
 import com.no5ing.bbibbi.data.model.view.MainPageModel
 import com.no5ing.bbibbi.data.model.view.NightMainPageModel
 import com.skydoves.sandwich.ApiResponse
@@ -324,6 +325,11 @@ interface RestAPI {
 
         @GET("v1/view/main/nighttime-page")
         suspend fun getNightMainView(): ApiResponse<NightMainPageModel>
+
+        @GET("v1/view/family-invite/{linkId}")
+        suspend fun getFamilyInviteView(
+            @Path("linkId") linkId: String,
+        ): ApiResponse<FamilyInviteModel>
     }
 
     /**
