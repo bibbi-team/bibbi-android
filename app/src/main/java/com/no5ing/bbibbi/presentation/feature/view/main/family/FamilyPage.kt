@@ -86,6 +86,10 @@ fun FamilyPage(
                 meState = meState,
                 membersState = familyMembersViewModel.uiState,
                 onTapProfile = onTapFamily,
+                shouldShowBalloon = familyMembersViewModel.shouldShowFamilyNewIcon(),
+                onTapFamilyName = {
+                    familyMembersViewModel.hideShowFamilyNewIcon()
+                }
             )
         }
     }

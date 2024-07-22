@@ -13,6 +13,16 @@ val pretendardFamily = FontFamily(
     Font(R.font.pretendard_regular, FontWeight.Normal),
     Font(R.font.pretendard_semibold, FontWeight.SemiBold)
 )
+val cafe24Family = FontFamily(
+    Font(R.font.cafe24ssurround, FontWeight.Normal)
+)
+val familyNameTextStyle = TextStyle(
+    fontFamily = cafe24Family,
+    fontWeight = FontWeight.Normal,
+    fontSize = 16.sp,
+    lineHeight = 24.sp,
+    letterSpacing = -(0.3.sp)
+)
 val Typography = Typography(
     titleLarge = TextStyle(
         fontFamily = pretendardFamily,

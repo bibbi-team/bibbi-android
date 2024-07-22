@@ -88,7 +88,7 @@
 
     <string name="family_title">가족</string>
     <string name="family_copy_link">삐삐에 가족 초대하기</string>
-    <string name="family_your_family">당신의 가족</string>
+    <string name="family_your_family">나의 가족</string>
 
     <string name="onboarding_first_title">매일 아침 10시, 알림을 받으면\n가족에게 1장의 사진을 보내세요</string>
     <string name="onboarding_second_title">홈 화면에 삐삐 위젯을 추가해\n가족의 일상을 한 눈에 확인해요</string>

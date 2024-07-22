@@ -43,6 +43,8 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         const val TEMPORARY_POST_URI = "temporary_post_uri"
         const val WIDGET_POPUP_PERIOD_KEY = "widget_popup_period"
         const val MISSION_WIDGET_PERIOD_KEY = "mission_widget_period"
+        const val FAMILY_NAME_FEATURE_MAIN_KEY = "family_name_feature_main"
+        const val FAMILY_NAME_FEATURE_FAMILY_KEY = "family_name_feature_family"
     }
 
     fun logOut() {
@@ -151,6 +153,28 @@ class LocalDataStorage @Inject constructor(val context: Context) {
     fun setLastWidgetPopupSeenDate(date: LocalDate) {
         val editor = preferences.edit()
         editor.putString(MISSION_WIDGET_PERIOD_KEY, date.toString())
+        editor.apply()
+        editor.commit()
+    }
+
+    fun getFamilyAndMemberNameFeatureMain(): Boolean {
+        return preferences.getBoolean(FAMILY_NAME_FEATURE_MAIN_KEY, true)
+    }
+
+    fun setFamilyAndMemberNameFeatureMain() {
+        val editor = preferences.edit()
+        editor.putBoolean(FAMILY_NAME_FEATURE_MAIN_KEY, false)
+        editor.apply()
+        editor.commit()
+    }
+
+    fun getFamilyAndMemberNameFeatureFamily(): Boolean {
+        return preferences.getBoolean(FAMILY_NAME_FEATURE_FAMILY_KEY, true)
+    }
+
+    fun setFamilyAndMemberNameFeatureFamily() {
+        val editor = preferences.edit()
+        editor.putBoolean(FAMILY_NAME_FEATURE_FAMILY_KEY, false)
         editor.apply()
         editor.commit()
     }

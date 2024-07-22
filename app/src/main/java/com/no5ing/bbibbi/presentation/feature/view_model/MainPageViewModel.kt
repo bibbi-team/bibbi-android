@@ -20,6 +20,12 @@ class MainPageViewModel @Inject constructor(
 ) : BaseViewModel<APIResponse<MainPageModel>>() {
     var shouldDisplayWidgetPopup = localDataStorage.getAndRemoveWidgetPopupPeriod()
     val deferredPickMembersSet = MutableStateFlow(setOf<String>())
+    
+    fun shouldShowFamilyNewIcon() = localDataStorage.getFamilyAndMemberNameFeatureMain()
+
+    fun hideShowFamilyNewIcon() {
+        localDataStorage.setFamilyAndMemberNameFeatureMain()
+    }
 
     fun isMissionPopupShowable(): Boolean {
         val today = LocalDate.now()
