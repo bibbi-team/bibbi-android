@@ -2,6 +2,7 @@ package com.no5ing.bbibbi.data.datasource.network
 
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddPostRealEmojiRequest
+import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeFamilyNameRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeNameRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeProfileImageRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.CreateMemberRealEmojiRequest
@@ -59,6 +60,15 @@ interface RestAPI {
     interface FamilyApi {
         @POST("v1/families")
         suspend fun createFamily(): ApiResponse<Family>
+
+        @GET("v1/me/family-info")
+        suspend fun getMyFamily(): ApiResponse<Family>
+
+        @PUT("v1/families/{familyId}/name")
+        suspend fun updateFamilyName(
+            @Path("familyId") familyId: String,
+            @Body body: ChangeFamilyNameRequest,
+        ): ApiResponse<Family>
     }
 
     /**

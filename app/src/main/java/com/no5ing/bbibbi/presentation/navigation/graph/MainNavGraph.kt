@@ -10,6 +10,7 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestinat
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination.Companion.mainPageRoute
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarDetailPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ChangeFamilyNamePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.ChangeNickNamePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.CreateRealEmojiPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyListPageController
@@ -142,6 +143,16 @@ fun NavGraphBuilder.mainGraph(
         composable(
             controller = navController,
             destination = ChangeNickNamePageController,
+        )
+        composable(
+            controller = navController,
+            destination = ChangeFamilyNamePageController,
+            enterTransition = {
+                fullHorizontalSlideInToRight()
+            },
+            popExitTransition = {
+                fullHorizontalSlideOutToLeft()
+            }
         )
         composable(
             controller = navController,

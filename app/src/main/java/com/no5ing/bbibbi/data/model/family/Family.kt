@@ -8,5 +8,9 @@ import java.time.ZonedDateTime
 @Parcelize
 data class Family(
     val familyId: String,
+    val familyName: String?,
+    val familyNameEditorId: String?,
     val createdAt: ZonedDateTime,
-) : Parcelable, BaseModel()
+) : Parcelable, BaseModel() {
+    fun hasName() = !familyName.isNullOrEmpty()
+}

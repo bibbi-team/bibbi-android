@@ -21,6 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -33,6 +35,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
+import com.no5ing.bbibbi.data.model.family.Family
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
@@ -51,11 +54,13 @@ fun FamilyPageMemberList(
     meId: String,
     meState: State<APIResponse<Member>>,
     membersState: StateFlow<PagingData<Member>>,
+    familyState: StateFlow<APIResponse<Family>>,
     onTapProfile: (Member) -> Unit = {},
     onTapFamilyName: () -> Unit = {},
     shouldShowBalloon: Boolean = false,
 ) {
     val members = membersState.collectAsLazyPagingItems()
+    val family by familyState.collectAsState()
     val balloonColor = MaterialTheme.bbibbiScheme.mainYellow
     val builder = rememberBalloonBuilder {
         setArrowSize(10)
@@ -92,13 +97,24 @@ fun FamilyPageMemberList(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.family_your_family),
-                        style = MaterialTheme.bbibbiTypo.headOne.copy(
-                            fontWeight = FontWeight.SemiBold,
-                        ),
-                        color = MaterialTheme.bbibbiScheme.textPrimary,
-                    )
+                    if(family.isReady() && family.data.hasName()) {
+                        Text(
+                            text = family.data.familyName ?: "UNKNOWN",
+                            style = MaterialTheme.bbibbiTypo.headOne.copy(
+                                fontWeight = FontWeight.SemiBold,
+                            ),
+                            color = MaterialTheme.bbibbiScheme.textPrimary,
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(id = R.string.family_your_family),
+                            style = MaterialTheme.bbibbiTypo.headOne.copy(
+                                fontWeight = FontWeight.SemiBold,
+                            ),
+                            color = MaterialTheme.bbibbiScheme.textPrimary,
+                        )
+                    }
+
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = members.itemCount.toString(),

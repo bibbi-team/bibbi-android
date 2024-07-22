@@ -142,6 +142,8 @@
     <string name="calendar_banner_title_percent">%</string>
     <string name="back_to_exit_message">もう一度押して終了</string>
     <string name="change_nickname">ニックネームを変更</string>
+    <string name="change_family_name">家族名を変更</string>
+    <string name="change_family_name_sample_text">Lovely Family</string>
     <string name="change_nickname_description">ニックネームを変更してください</string>
     <string name="change_nickname_complete">完了</string>
     <string name="change_nickname_completed">ニックネームの変更に成功しました！</string>

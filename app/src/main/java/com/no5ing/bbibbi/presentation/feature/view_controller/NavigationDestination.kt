@@ -62,6 +62,7 @@ abstract class NavigationDestination(
         internal const val settingPageRoute = "setting"
         internal const val settingHomePageRoute = "setting/home"
         internal const val settingNickNameRoute = "setting/nickname"
+        internal const val settingFamilyNameRoute = "setting/family-name"
         internal const val settingWebViewPageRoute = "setting/webview"
         internal const val settingQuitPageRoute = "setting/quit"
         internal const val cameraViewRoute = "common/camera"
