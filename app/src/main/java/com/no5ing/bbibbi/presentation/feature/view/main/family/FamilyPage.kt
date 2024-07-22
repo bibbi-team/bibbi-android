@@ -64,6 +64,7 @@ fun FamilyPage(
     LaunchedEffect(Unit) {
         if (familyMembersViewModel.isInitialize()) {
             familyMembersViewModel.invoke(Arguments())
+            familyInfoViewModel.invoke(Arguments())
         }
     }
     BBiBBiSurface(
