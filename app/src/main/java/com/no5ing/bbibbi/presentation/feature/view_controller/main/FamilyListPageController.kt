@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.feature.view.main.family.FamilyPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.ChangeFamilyNamePageController.goChangeFamilyNamePage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.ProfilePageController.goProfilePage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.SettingHomePageController.goSettingHomePage
 import com.no5ing.bbibbi.util.getLinkIdFromUrl
@@ -38,6 +39,10 @@ object FamilyListPageController : NavigationDestination(
             },
             onTapSetting = {
                 navController.goSettingHomePage()
+            },
+            onTapFamilyNameChange = {
+                navController.popBackStack()
+                navController.goChangeFamilyNamePage()
             }
         )
     }

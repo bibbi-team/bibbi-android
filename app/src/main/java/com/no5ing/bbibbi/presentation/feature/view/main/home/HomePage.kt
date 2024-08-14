@@ -53,6 +53,7 @@ fun HomePage(
 ) {
     val postViewType by postViewTypeState
     val mainPageState = mainPageViewModel.uiState.collectAsState()
+    val mainPageNightState = mainPageNightViewModel.uiState.collectAsState()
     val unsavedDialogUri = remember { mutableStateOf<Uri?>(null) }
     val unsavedDialogEnabled = remember { mutableStateOf(false) }
     val isDayTime = gapUntilNext() > 0
@@ -95,11 +96,18 @@ fun HomePage(
                     .fillMaxWidth()
                     .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
             ) {
-                HomePageTopBar(
-                    onTapLeft = onTapLeft,
-                    onTapRight = onTapRight
-                )
                 if (isDayTime) {
+                    HomePageTopBar(
+                        onTapLeft = {
+                            mainPageViewModel.hideShowFamilyNewIcon()
+                            onTapLeft()
+                        },
+                        onTapRight = onTapRight,
+                        isNewIconEnabled = mainPageViewModel.shouldShowFamilyNewIcon(),
+                        familyName = if(mainPageState.value.isReady())
+                            mainPageState.value.data.topBarElements.firstOrNull()?.familyName
+                        else null
+                    )
                     HomePageContent(
                         mainPageState = mainPageViewModel.uiState,
                         postViewTypeState = postViewTypeState,
@@ -113,6 +121,17 @@ fun HomePage(
                         deferredPickStateSet = mainPageViewModel.deferredPickMembersSet
                     )
                 } else {
+                    HomePageTopBar(
+                        onTapLeft = {
+                            mainPageViewModel.hideShowFamilyNewIcon()
+                            onTapLeft()
+                        },
+                        onTapRight = onTapRight,
+                        isNewIconEnabled = mainPageViewModel.shouldShowFamilyNewIcon(),
+                        familyName = if(mainPageNightState.value.isReady())
+                            mainPageNightState.value.data.topBarElements.firstOrNull()?.familyName
+                        else null
+                    )
                     NightHomePageContent(
                         mainPageState = mainPageNightViewModel.uiState,
                         postViewTypeState = postViewTypeState,
@@ -166,7 +185,10 @@ fun HomePagePreview() {
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                HomePageTopBar()
+                HomePageTopBar(
+                    isNewIconEnabled = true,
+                    familyName = null,
+                )
                 HomePageContent(
                     mainPageState = MutableStateFlow(APIResponse.idle()),
                     deferredPickStateSet = MutableStateFlow(emptySet())

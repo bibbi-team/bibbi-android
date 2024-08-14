@@ -14,7 +14,7 @@ data class DeepLink(
     companion object {
         fun mock() = DeepLink(
             linkId = "linkId",
-            url = "https://no5ing.kr/o/sdo3032k3f",
+            url = "https://bibbi.app/o/sdo3032k3f",
             type = "type",
             details = mapOf("key" to "value")
         )

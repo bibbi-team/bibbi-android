@@ -49,6 +49,7 @@ data class MainPageTopBarModel(
     val displayRank: Int?,
     val shouldShowBirthdayMark: Boolean,
     val shouldShowPickIcon: Boolean,
+    val familyName: String?,
 ) : Parcelable
 
 @Parcelize

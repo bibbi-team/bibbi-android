@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -17,12 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.PagingData
 import com.no5ing.bbibbi.data.model.APIResponse
+import com.no5ing.bbibbi.data.model.family.Family
 import com.no5ing.bbibbi.data.model.link.DeepLink
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.feature.view_model.auth.RetrieveMeViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.family.FamilyInfoViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.family.FamilyInviteLinkViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.members.FamilyMembersViewModel
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
@@ -34,15 +37,18 @@ fun FamilyPage(
     familyMembersViewModel: FamilyMembersViewModel = hiltViewModel(),
     retrieveMeViewModel: RetrieveMeViewModel = hiltViewModel(),
     familyInviteLinkViewModel: FamilyInviteLinkViewModel = hiltViewModel(),
+    familyInfoViewModel: FamilyInfoViewModel = hiltViewModel(),
     onDispose: () -> Unit,
     onTapSetting: () -> Unit,
     onTapFamily: (Member) -> Unit,
     onTapShare: (String) -> Unit,
+    onTapFamilyNameChange: () -> Unit,
 ) {
     val meId = LocalSessionState.current.memberId
     val familyId = LocalSessionState.current.familyId
     val meState = retrieveMeViewModel.uiState.collectAsState()
     val inviteLinkState = familyInviteLinkViewModel.uiState.collectAsState()
+    val familyState by familyInfoViewModel.uiState.collectAsState()
 
     LaunchedEffect(inviteLinkState) {
         if (inviteLinkState.value.isIdle()) {
@@ -58,6 +64,7 @@ fun FamilyPage(
     LaunchedEffect(Unit) {
         if (familyMembersViewModel.isInitialize()) {
             familyMembersViewModel.invoke(Arguments())
+            familyInfoViewModel.invoke(Arguments())
         }
     }
     BBiBBiSurface(
@@ -86,6 +93,12 @@ fun FamilyPage(
                 meState = meState,
                 membersState = familyMembersViewModel.uiState,
                 onTapProfile = onTapFamily,
+                shouldShowBalloon = familyMembersViewModel.shouldShowFamilyNewIcon(),
+                familyState = familyInfoViewModel.uiState,
+                onTapFamilyName = {
+                    familyMembersViewModel.hideShowFamilyNewIcon()
+                    onTapFamilyNameChange()
+                }
             )
         }
     }
@@ -121,6 +134,7 @@ fun FamilyPagePreview() {
                 meId = Member.unknown().memberId,
                 meState = remember { mutableStateOf(APIResponse.success(Member.unknown())) },
                 membersState = MutableStateFlow(PagingData.empty()),
+                familyState = MutableStateFlow(APIResponse.unknownError()),
             )
         }
     }

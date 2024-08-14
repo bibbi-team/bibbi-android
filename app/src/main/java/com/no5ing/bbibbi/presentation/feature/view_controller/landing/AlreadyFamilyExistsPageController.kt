@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import androidx.navigation.navArgument
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.feature.view.landing.already_family_exists.AlreadyFamilyExistsView
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
@@ -15,6 +16,7 @@ import com.no5ing.bbibbi.presentation.feature.view_model.family.QuitFamilyViewMo
 
 
 object AlreadyFamilyExistsPageController : NavigationDestination(
+    arguments = listOf(navArgument("linkId") {}),
     route = landingAlreadyFamilyExistsRoute,
 ) {
     @Composable
@@ -28,6 +30,8 @@ object AlreadyFamilyExistsPageController : NavigationDestination(
             }
         }
         AlreadyFamilyExistsView(
+            linkId = backStackEntry.arguments?.getString("linkId")
+                ?: throw RuntimeException(),
             onTapDispose = {
                 navController.popBackStack()
             },
@@ -39,8 +43,8 @@ object AlreadyFamilyExistsPageController : NavigationDestination(
         )
     }
 
-    fun NavHostController.goAlreadyFamilyExistsPage() {
-        navigate(AlreadyFamilyExistsPageController)
+    fun NavHostController.goAlreadyFamilyExistsPage(linkId: String) {
+        navigate(AlreadyFamilyExistsPageController, params = listOf("linkId" to linkId))
     }
 }
 

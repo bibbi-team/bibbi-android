@@ -2,6 +2,7 @@ package com.no5ing.bbibbi.data.datasource.network
 
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddFcmTokenRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.AddPostRealEmojiRequest
+import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeFamilyNameRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeNameRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.ChangeProfileImageRequest
 import com.no5ing.bbibbi.data.datasource.network.request.member.CreateMemberRealEmojiRequest
@@ -38,6 +39,7 @@ import com.no5ing.bbibbi.data.model.post.PostComment
 import com.no5ing.bbibbi.data.model.post.PostReaction
 import com.no5ing.bbibbi.data.model.post.PostReactionSummary
 import com.no5ing.bbibbi.data.model.post.PostRealEmoji
+import com.no5ing.bbibbi.data.model.view.FamilyInviteModel
 import com.no5ing.bbibbi.data.model.view.MainPageModel
 import com.no5ing.bbibbi.data.model.view.NightMainPageModel
 import com.skydoves.sandwich.ApiResponse
@@ -58,6 +60,15 @@ interface RestAPI {
     interface FamilyApi {
         @POST("v1/families")
         suspend fun createFamily(): ApiResponse<Family>
+
+        @GET("v1/me/family-info")
+        suspend fun getMyFamily(): ApiResponse<Family>
+
+        @PUT("v1/families/{familyId}/name")
+        suspend fun updateFamilyName(
+            @Path("familyId") familyId: String,
+            @Body body: ChangeFamilyNameRequest,
+        ): ApiResponse<Family>
     }
 
     /**
@@ -324,6 +335,11 @@ interface RestAPI {
 
         @GET("v1/view/main/nighttime-page")
         suspend fun getNightMainView(): ApiResponse<NightMainPageModel>
+
+        @GET("v1/view/family-invite/{linkId}")
+        suspend fun getFamilyInviteView(
+            @Path("linkId") linkId: String,
+        ): ApiResponse<FamilyInviteModel>
     }
 
     /**

@@ -142,6 +142,8 @@
     <string name="calendar_banner_title_percent">%</string>
     <string name="back_to_exit_message">Press again to exit</string>
     <string name="change_nickname">Change Nickname</string>
+    <string name="change_family_name">Change Family Name</string>
+    <string name="change_family_name_sample_text">Lovely Family</string>
     <string name="change_nickname_description">Please change your nickname</string>
     <string name="change_nickname_complete">Complete</string>
     <string name="change_nickname_completed">Nickname change was successful!</string>
