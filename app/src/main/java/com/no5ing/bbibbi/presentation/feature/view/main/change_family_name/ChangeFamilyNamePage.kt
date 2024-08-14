@@ -87,13 +87,12 @@ fun ChangeFamilyNamePage(
 
         }
     }
-    val successMessage = stringResource(id = R.string.change_nickname_completed)
     val errorMessage = getErrorMessage(errorCode = uiState.value.errorCode)
     LaunchedEffect(uiState.value) {
         when (uiState.value.status) {
             is APIResponse.Status.SUCCESS -> {
                 snackBarHost.showSnackBarWithDismiss(
-                    successMessage,
+                    "가족 방 이름 변경에 성공했어요!",
                     actionLabel = snackBarSuccess,
                 )
                 onDispose()
