@@ -14,7 +14,6 @@ class FirebaseService : FirebaseMessagingService() {
     companion object {
         const val channel_id = "bbibbi_channel"
     }
-
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Timber.d("[FirebaseService] onMessageReceived notification: ${remoteMessage.notification}")
         Timber.d("[FirebaseService] onMessageReceived data: ${remoteMessage.data}")
