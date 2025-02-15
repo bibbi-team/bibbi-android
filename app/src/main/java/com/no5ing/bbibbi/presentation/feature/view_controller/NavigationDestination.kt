@@ -53,6 +53,7 @@ abstract class NavigationDestination(
         internal const val mainCalendarPageRoute = "main/calendar"
         internal const val mainCalendarDetailPageRoute = "main/calendar/detail"
         internal const val mainProfilePageRoute = "main/profile"
+        internal const val mainNotificationPageRoute = "main/notification"
         internal const val mainImagePreviewRoute = "main/image-preview"
         internal const val postPageRoute = "post"
         internal const val postViewPageRoute = "post/view"
@@ -128,7 +129,7 @@ abstract class NavigationDestination(
                     )
                     return
                 }
-            }
+            }?: return
 
             navigate(
                 deepLink,

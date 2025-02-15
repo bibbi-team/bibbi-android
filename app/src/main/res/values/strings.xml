@@ -62,6 +62,7 @@
     <string name="upload_post">사진 올리기</string>
     <string name="upload_image">사진 업로드</string>
     <string name="setting_and_privacy">설정 및 개인정보</string>
+    <string name="notifcation_page_title">알림</string>
 
     <string name="real_emoji_upload_title">리얼 이모지</string>
     <string name="real_emoji_follow_emoji">표정을 따라해보세요</string>
