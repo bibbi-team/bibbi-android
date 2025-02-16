@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaItem
@@ -37,11 +38,21 @@ fun EqualizerWithPlayerAndAmplitude(
     val mediaItem = MediaItem.fromUri(url)
     val context = LocalContext.current
     val density = LocalDensity.current
+    val view = LocalView.current
 
     var calculatedMaxSizeMillis by remember {
         mutableStateOf(0L)
     }
-    var maxBarSize by remember { mutableStateOf(0) }
+    val measuredWidth = remember { mutableStateOf(0) }
+    val maxBarSize by remember {
+        derivedStateOf {
+            if (measuredWidth.value > 0) {
+                (measuredWidth.value / with(density) { 6.dp.toPx() }).toInt()
+            } else {
+                0
+            }
+        }
+    }
     var amplitudes by remember {
         mutableStateOf(listOf(0.0f))
     }
@@ -51,6 +62,11 @@ fun EqualizerWithPlayerAndAmplitude(
 
     var isPlaying by remember {
         mutableStateOf(false)
+    }
+
+    fun resetCurrentPlaybackStatus() {
+        if (calculatedMaxSizeMillis == 0L) return
+        timeRemainingMillis = calculatedMaxSizeMillis
     }
 
     // Start playing when the component is launched
@@ -75,6 +91,12 @@ fun EqualizerWithPlayerAndAmplitude(
         if (isPlaying) {
             while(true) {
                 if (player.currentMediaItem != mediaItem) {
+                    resetCurrentPlaybackStatus()
+                    isPlaying = false
+                    break
+                }
+                if (player.playbackState == ExoPlayer.STATE_ENDED) {
+                    resetCurrentPlaybackStatus()
                     isPlaying = false
                     break
                 }
@@ -115,77 +137,88 @@ fun EqualizerWithPlayerAndAmplitude(
     }
     
 
-    Row(
+    Box(
         modifier = Modifier
             .padding(top = 6.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(100.dp))
             .background(MaterialTheme.bbibbiScheme.backgroundSecondary)
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        if (isPlaying) {
-            Icon(
-                painter = painterResource(id = R.drawable.pause_button),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(12.dp)
-                    .clickable { tapPause() },
-                tint = MaterialTheme.bbibbiScheme.mainYellow
-            )
-        } else {
-            Icon(
-                painter = painterResource(id = R.drawable.play_button),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(12.dp)
-                    .clickable { tapPlay() },
-                tint = MaterialTheme.bbibbiScheme.mainYellow
-            )
-        }
-        LazyRow(
-            modifier = Modifier
-                .weight(1.0f)
-                .onGloballyPositioned {
-                    maxBarSize = with(density) {
-                        (it.size.width / 6.dp.toPx()).toInt()
+            .padding(16.dp)
+            .onGloballyPositioned { coordinates ->
+                val newWidth = coordinates.size.width
+                // 변경된 경우에만 업데이트
+                view.post {
+                    if (newWidth != measuredWidth.value) {
+                        measuredWidth.value = newWidth
                     }
-                },
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            items(scopedAmplitudes.size) { index ->
-                val barHeight = 2.dp + (scopedAmplitudes[index] * 22).dp
-                val barColor = if (index < highlightIndex) {
-                    MaterialTheme.bbibbiScheme.mainYellow
-                } else {
-                    MaterialTheme.bbibbiScheme.gray500
                 }
-                Box(
-                    modifier = Modifier
-                        .width(2.dp)
-                        .height(barHeight)
-                        .clip(RoundedCornerShape(100.dp))
-                        .background(barColor)
-                )
             }
+    ) {
+        Row(
+            modifier = Modifier
+              //  .padding(top = 6.dp)
+                .fillMaxWidth(),
 
-            items((maxBarSize - amplitudes.size).coerceAtLeast(0)) {
-                Box(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            if (isPlaying) {
+                Icon(
+                    painter = painterResource(id = R.drawable.pause_button),
+                    contentDescription = null,
                     modifier = Modifier
-                        .width(2.dp)
-                        .height(2.dp)
-                        .clip(RoundedCornerShape(100.dp))
-                        .background(MaterialTheme.bbibbiScheme.gray600)
+                        .size(12.dp)
+                        .clickable { tapPause() },
+                    tint = MaterialTheme.bbibbiScheme.mainYellow
+                )
+            } else {
+                Icon(
+                    painter = painterResource(id = R.drawable.play_button),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(12.dp)
+                        .clickable { tapPlay() },
+                    tint = MaterialTheme.bbibbiScheme.mainYellow
                 )
             }
+            LazyRow(
+                modifier = Modifier.weight(1.0f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                items(scopedAmplitudes.size) { index ->
+                    val barHeight = 2.dp + (scopedAmplitudes[index] * 22).dp
+                    val barColor = if (index < highlightIndex) {
+                        MaterialTheme.bbibbiScheme.mainYellow
+                    } else {
+                        MaterialTheme.bbibbiScheme.gray500
+                    }
+                    Box(
+                        modifier = Modifier
+                            .width(2.dp)
+                            .height(barHeight)
+                            .clip(RoundedCornerShape(100.dp))
+                            .background(barColor)
+                    )
+                }
+
+                items((maxBarSize - amplitudes.size).coerceAtLeast(0)) {
+                    Box(
+                        modifier = Modifier
+                            .width(2.dp)
+                            .height(2.dp)
+                            .clip(RoundedCornerShape(100.dp))
+                            .background(MaterialTheme.bbibbiScheme.gray600)
+                    )
+                }
+            }
+            Text(
+                text = formatTime((timeRemainingMillis / 1000).toInt()),
+                style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+                color = MaterialTheme.bbibbiScheme.gray500,
+            )
         }
-        Text(
-            text = formatTime((timeRemainingMillis / 1000).toInt()),
-            style = MaterialTheme.bbibbiTypo.bodyOneRegular,
-            color = MaterialTheme.bbibbiScheme.gray500,
-        )
     }
+
 
 }
