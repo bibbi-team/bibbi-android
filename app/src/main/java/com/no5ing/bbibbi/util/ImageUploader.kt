@@ -22,3 +22,20 @@ fun OkHttpClient.uploadImage(
         null
     }
 }
+
+fun OkHttpClient.uploadVoiceComment(
+    targetFile: File,
+    targetUrl: String
+): String? {
+    val destinationUrl = removeQueryParams(targetUrl)
+    val request = Request.Builder()
+        .url(targetUrl)
+        .put(targetFile.asRequestBody("audio/mp4".toMediaType()))
+        .build()
+    val response = runCatching { newCall(request).execute() }.getOrNull()
+    return if (response?.isSuccessful == true) {
+        destinationUrl
+    } else {
+        null
+    }
+}

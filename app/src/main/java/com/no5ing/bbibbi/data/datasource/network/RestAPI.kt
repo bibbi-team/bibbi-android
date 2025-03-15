@@ -13,6 +13,7 @@ import com.no5ing.bbibbi.data.datasource.network.request.member.UpdateMemberReal
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostCommentRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostReactionRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.CreatePostRequest
+import com.no5ing.bbibbi.data.datasource.network.request.post.CreateVoiceCommentRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.DeletePostReactionRequest
 import com.no5ing.bbibbi.data.datasource.network.request.post.UpdatePostCommentRequest
 import com.no5ing.bbibbi.data.datasource.network.response.ArrayResponse
@@ -31,6 +32,7 @@ import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import com.no5ing.bbibbi.data.model.member.MemberRealEmojiList
 import com.no5ing.bbibbi.data.model.mission.Mission
+import com.no5ing.bbibbi.data.model.notification.NotificationModel
 import com.no5ing.bbibbi.data.model.post.CalendarBanner
 import com.no5ing.bbibbi.data.model.post.CalendarElement
 import com.no5ing.bbibbi.data.model.post.DailyCalendarElement
@@ -197,6 +199,11 @@ interface RestAPI {
             @Body body: ImageUploadRequest,
         ): ApiResponse<ImageUploadLink>
 
+        @POST("v1/posts/temp/voice-comments/audio-file-upload-request")
+        suspend fun voiceCommentUploadRequest(
+            @Body body: ImageUploadRequest,
+        ): ApiResponse<ImageUploadLink>
+
         @GET("v1/posts/{postId}/reactions/summary")
         suspend fun getPostReactionSummary(
             @Path("postId") postId: String,
@@ -258,6 +265,18 @@ interface RestAPI {
             @Path("postId") postId: String,
             @Body body: CreatePostCommentRequest,
         ): ApiResponse<PostComment>
+
+        @POST("v1/posts/{postId}/voice-comments")
+        suspend fun createVoiceComment(
+            @Path("postId") postId: String,
+            @Body body: CreateVoiceCommentRequest,
+        ): ApiResponse<PostComment>
+
+        @DELETE("v1/posts/{postId}/voice-comments/{commentId}")
+        suspend fun deleteVoiceComment(
+            @Path("postId") postId: String,
+            @Path("commentId") commentId: String,
+        ): ApiResponse<DefaultResponse>
 
         @PUT("v1/posts/{postId}/comments/{commentId}")
         suspend fun updatePostComment(
@@ -342,6 +361,11 @@ interface RestAPI {
         ): ApiResponse<FamilyInviteModel>
     }
 
+    interface NotificationApi {
+        @GET("v1/notifications")
+        suspend fun getDisplayableNotifications(): ApiResponse<List<NotificationModel>>
+    }
+
     /**
      * API 모음
      */
@@ -351,4 +375,5 @@ interface RestAPI {
     fun getAuthApi(): AuthApi
     fun getLinkApi(): LinkApi
     fun getViewApi(): ViewApi
+    fun getNotificationApi(): NotificationApi
 }

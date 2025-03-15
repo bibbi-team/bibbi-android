@@ -42,6 +42,7 @@ fun HomePage(
     postViewTypeState: MutableState<PostType> = remember { mutableStateOf(PostType.SURVIVAL) },
     onTapLeft: () -> Unit = {},
     onTapRight: () -> Unit = {},
+    onTapAlarm: () -> Unit = {},
     onTapProfile: (String) -> Unit = {},
     onTapContent: (String) -> Unit = {},
     onTapUpload: () -> Unit = {},
@@ -102,6 +103,7 @@ fun HomePage(
                             mainPageViewModel.hideShowFamilyNewIcon()
                             onTapLeft()
                         },
+                        onTapAlarm = onTapAlarm,
                         onTapRight = onTapRight,
                         isNewIconEnabled = mainPageViewModel.shouldShowFamilyNewIcon(),
                         familyName = if(mainPageState.value.isReady())
@@ -126,6 +128,7 @@ fun HomePage(
                             mainPageViewModel.hideShowFamilyNewIcon()
                             onTapLeft()
                         },
+                        onTapAlarm = onTapAlarm,
                         onTapRight = onTapRight,
                         isNewIconEnabled = mainPageViewModel.shouldShowFamilyNewIcon(),
                         familyName = if(mainPageNightState.value.isReady())

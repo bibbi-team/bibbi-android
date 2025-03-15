@@ -4,6 +4,7 @@ import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.datasource.network.response.DefaultResponse
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.APIResponse.Companion.wrapToAPIResponse
+import com.no5ing.bbibbi.data.model.post.PostCommentType
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.feature.view_model.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,12 +22,25 @@ class DeletePostCommentViewModel @Inject constructor(
     override fun invoke(arguments: Arguments) {
         val postId = arguments.get("postId") ?: throw RuntimeException()
         val commentId = arguments.get("commentId") ?: throw RuntimeException()
+        val type = PostCommentType.valueOf(arguments.get("type") ?: throw RuntimeException())
         withMutexScope(Dispatchers.IO, uiState.value.isIdle()) {
-            val res = restAPI.getPostApi().deletePostComment(
-                postId = postId,
-                commentId = commentId,
-            )
-            setState(res.wrapToAPIResponse())
+            when(type) {
+                PostCommentType.TEXT -> {
+                    val res = restAPI.getPostApi().deletePostComment(
+                        postId = postId,
+                        commentId = commentId,
+                    )
+                    setState(res.wrapToAPIResponse())
+                }
+                PostCommentType.VOICE -> {
+                    val res = restAPI.getPostApi().deleteVoiceComment(
+                        postId = postId,
+                        commentId = commentId,
+                    )
+                    setState(res.wrapToAPIResponse())
+                }
+            }
+
         }
     }
 

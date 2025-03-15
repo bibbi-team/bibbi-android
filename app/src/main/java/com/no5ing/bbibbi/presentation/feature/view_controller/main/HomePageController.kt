@@ -26,6 +26,7 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarDetai
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarPageController.goCalendarPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyListPageController.goFamilyListPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.MissionUploadPageController.goMissionUploadPage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.NotificationPageController.goNotificationPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostReUploadPageController.goPostReUploadPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostUploadPageController.goPostUploadPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostViewPageController.goPostViewPage
@@ -146,8 +147,11 @@ object HomePageController : NavigationDestination(
             onTapProfile = {
                 navController.goProfilePage(it)
             },
+            onTapAlarm = {
+               navController.goNotificationPage()
+            },
             onTapContent = {
-                navController.goPostViewPage(it)
+               navController.goPostViewPage(it)
             },
             onTapUpload = {
                 navController.goPostUploadPage()

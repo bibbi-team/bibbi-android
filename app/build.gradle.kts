@@ -46,8 +46,8 @@ android {
         applicationId = "com.no5ing.bbibbi"
         minSdk = 26
         targetSdk = 34
-        versionCode = 11011
-        versionName = "1.2.1"
+        versionCode = 11015
+        versionName = "1.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -100,6 +100,8 @@ dependencies {
     androidTestImplementation("junit:junit:4.13.2")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.10.01"))
     debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("com.github.lincollincol:amplituda:2.3.0")
+    implementation("androidx.media3:media3-exoplayer:1.1.0")
     implementation("androidx.camera:camera-view:1.4.0-alpha04")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.activity:activity-ktx:1.8.2")
@@ -120,11 +122,11 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-saveable:1.6.3")
     implementation("androidx.compose.runtime:runtime:1.6.3")
     implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-geometry:1.6.3")
+    implementation("androidx.compose.ui:ui-geometry:1.7.8")
     implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-text:1.6.3")
+    implementation("androidx.compose.ui:ui-text:1.7.8")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.ui:ui-unit:1.6.3")
+    implementation("androidx.compose.ui:ui-unit:1.7.8")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.glance:glance-appwidget:1.0.0")

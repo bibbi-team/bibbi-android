@@ -9,7 +9,9 @@ import java.time.ZonedDateTime
 data class PostComment(
     val commentId: String,
     val postId: String,
+    val type: PostCommentType,
     val memberId: String,
-    val comment: String,
+    val comment: String?,
+    val voiceUrl: String?,
     val createdAt: ZonedDateTime,
 ) : Parcelable, BaseModel()

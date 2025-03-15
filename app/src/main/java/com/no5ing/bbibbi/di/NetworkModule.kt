@@ -209,6 +209,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideRestNotificationApi(retrofit: Retrofit): RestAPI.NotificationApi {
+        return retrofit.create(RestAPI.NotificationApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideRestApi(
         familyApi: RestAPI.FamilyApi,
         memberApi: RestAPI.MemberApi,
@@ -216,6 +222,7 @@ object NetworkModule {
         authApi: RestAPI.AuthApi,
         linkApi: RestAPI.LinkApi,
         viewApi: RestAPI.ViewApi,
+        notificationApi: RestAPI.NotificationApi,
     ): RestAPI {
         return object : RestAPI {
             override fun getFamilyApi(): RestAPI.FamilyApi {
@@ -240,6 +247,10 @@ object NetworkModule {
 
             override fun getViewApi(): RestAPI.ViewApi {
                 return viewApi
+            }
+
+            override fun getNotificationApi(): RestAPI.NotificationApi {
+                return notificationApi
             }
         }
     }

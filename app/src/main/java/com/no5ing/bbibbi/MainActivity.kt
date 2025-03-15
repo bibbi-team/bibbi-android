@@ -1,10 +1,12 @@
 package com.no5ing.bbibbi
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -195,6 +197,7 @@ class MainActivity : ComponentActivity() {
             keepSplash = false
             isReady = true
         }
+
 
         installSplashScreen().apply {
             setKeepOnScreenCondition {
