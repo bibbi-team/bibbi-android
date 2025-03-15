@@ -15,5 +15,6 @@ data class PostCommentUiState(
     val type: PostCommentType,
     val createdAt: ZonedDateTime,
     val content: String,
+    val voiceUrl: String?,
     val member: Member?,
 ) : Parcelable, BaseModel()

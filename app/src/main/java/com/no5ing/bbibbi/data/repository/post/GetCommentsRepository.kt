@@ -77,9 +77,10 @@ class GetCommentsPageSource @Inject constructor(
                         postId = it.postId,
                         type = it.type,
                         memberId = it.memberId,
-                        content = it.comment,
+                        content = it.comment ?: "",
                         createdAt = it.createdAt,
-                        member = member.getOrNull()
+                        member = member.getOrNull(),
+                        voiceUrl = it.voiceUrl,
                     )
                 }
             )

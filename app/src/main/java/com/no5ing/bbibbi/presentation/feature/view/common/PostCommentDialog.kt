@@ -670,7 +670,7 @@ fun CommentBox(
                         )
                         PostCommentType.VOICE -> EqualizerWithPlayerAndAmplitude(
                             player = player,
-                            url = comment.content
+                            url = comment.voiceUrl ?: ""
                         )
                     }
 
