@@ -55,6 +55,7 @@ fun BoxScope.HomePageSurvivalUploadButton(
     isAlreadyUploaded: Boolean = false,
     pickers: List<MainPagePickerModel> = emptyList(),
     onTap: () -> Unit = {},
+    onTapDisabled: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -73,18 +74,19 @@ fun BoxScope.HomePageSurvivalUploadButton(
                         pickers = pickers,
                     )
                 } else {
-                    UploadHelperPop(
-                        text =
-                        if (isUploadAbleTime && !isAlreadyUploaded)
-                            stringResource(id = R.string.home_one_image_per_day)
-                        else if (isAlreadyUploaded)
-                            stringResource(id = R.string.home_already_uploaded_today)
-                        else
-                            stringResource(id = R.string.home_not_camera_time)
-                    )
+                    if (isUploadAbleTime) {
+                        UploadHelperPop(
+                            text =
+                            if (!isAlreadyUploaded)
+                                stringResource(id = R.string.home_one_image_per_day)
+                            else
+                                stringResource(id = R.string.home_already_uploaded_today)
+                        )
+                    }
                 }
                 CameraCaptureButton(
                     onClick = onTap,
+                    onClickDisabled = onTapDisabled,
                     isCapturing = !isUploadAbleTime || isAlreadyUploaded,
                 )
             }
@@ -100,6 +102,7 @@ fun BoxScope.HomePageMissionUploadButton(
     isMissionUnlocked: Boolean,
     isMeMissionUploaded: Boolean,
     onTap: () -> Unit = {},
+    onTapDisabled: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -128,6 +131,7 @@ fun BoxScope.HomePageMissionUploadButton(
                     onClick = onTap,
                     isCapturing = !(!isMeMissionUploaded && isMissionUnlocked && isMeUploadedToday),
                     ignoreDisabledState = true,
+                    onClickDisabled = onTapDisabled,
                 )
             }
         }

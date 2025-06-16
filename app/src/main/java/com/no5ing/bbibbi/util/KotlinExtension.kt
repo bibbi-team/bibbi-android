@@ -178,6 +178,13 @@ fun Context.forceRestart() {
     }
 }
 
+fun Context.exit() {
+    if (this is Activity) {
+        Timber.d("[Activity] Exiting application...")
+        this.finishAffinity()
+    }
+}
+
 enum class CustomDialogPosition {
     BOTTOM, TOP
 }

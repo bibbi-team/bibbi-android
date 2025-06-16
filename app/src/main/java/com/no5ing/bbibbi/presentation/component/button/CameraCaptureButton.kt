@@ -14,6 +14,7 @@ import com.no5ing.bbibbi.util.LocalMixpanelProvider
 fun CameraCaptureButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
+    onClickDisabled: () -> Unit = {},
     isCapturing: Boolean,
     ignoreDisabledState: Boolean = false,
 ) {
@@ -27,6 +28,8 @@ fun CameraCaptureButton(
                 mixPanel.track("Click_btn_camera")
                 if (!isCapturing || ignoreDisabledState) {
                     onClick()
+                } else {
+                    onClickDisabled()
                 }
             },
         alpha = if (isCapturing) 0.3f else 1.0f,
