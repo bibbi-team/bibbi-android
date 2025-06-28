@@ -11,11 +11,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +45,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
+import com.no5ing.bbibbi.presentation.component.BannerAd
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.feature.state.post.view.PostViewPageState
 import com.no5ing.bbibbi.presentation.feature.state.post.view.rememberPostViewPageState
@@ -55,6 +59,7 @@ import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.asyncImagePainter
+import com.no5ing.bbibbi.util.getAdView
 import com.no5ing.bbibbi.util.toLocalizedDate
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -91,6 +96,7 @@ fun PostViewPage(
             }
         )
     }
+    val adView = getAdView()
     LaunchedEffect(postState) {
         if (postState.isReady()) {
             val currentPost = postState.data.post
@@ -209,6 +215,18 @@ fun PostViewPage(
 
                     }
                 }
+            }
+        }
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Box(
+                contentAlignment = Alignment.BottomCenter,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .windowInsetsPadding(WindowInsets.systemBars)) {
+                BannerAd(adView = adView, modifier = Modifier.fillMaxWidth())
             }
         }
     }

@@ -7,13 +7,17 @@ import android.provider.MediaStore
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -35,6 +39,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
+import com.no5ing.bbibbi.presentation.component.BannerAd
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarCamera
 import com.no5ing.bbibbi.presentation.component.snackBarWarning
@@ -42,6 +47,7 @@ import com.no5ing.bbibbi.presentation.feature.view_model.post.CreatePostViewMode
 import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.codePointLength
+import com.no5ing.bbibbi.util.getAdView
 import com.no5ing.bbibbi.util.getErrorMessage
 import kotlinx.coroutines.launch
 
@@ -82,6 +88,7 @@ fun PostUploadPage(
     val mixPanel = LocalMixpanelProvider.current
     val uploadResult = createPostViewModel.uiState.collectAsState()
     val snackErrorMessage = getErrorMessage(errorCode = uploadResult.value.errorCode)
+    val adView = getAdView()
     LaunchedEffect(uploadResult.value) {
         if (uploadResult.value.isReady()) {
             onDisposeWithSave()
@@ -102,62 +109,66 @@ fun PostUploadPage(
                     modifier = Modifier
                         .padding(vertical = 10.dp)
                         .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    PostUploadPageTopBar(
-                        onDispose = onDisposeWithSave,
-                    )
-                    Spacer(modifier = Modifier.height(48.dp))
-                    PostUploadPageImagePreview(
-                        previewImgUrl = imageUrl.value,
-                        imageTextState = imageText,
-                        onTapImageTextButton = {
-                            mixPanel.track("Click_PhotoText")
-                            textOverlayShown.value = true
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(48.dp))
-                    PostUploadPageUploadBar(
-                        isIdle = uploadResult.value.isIdle(),
-                        onClickUpload = {
-                            mixPanel.track("Click_UploadPhoto")
-                            createPostViewModel.invoke(
-                                Arguments(
-                                    arguments = mapOf(
-                                        "imageUri" to imageUrl.value.toString(),
-                                        "content" to imageText.value
-                                    )
-                                )
-                            )
-                        },
-                        onClickSave = {
-                            val bitmap =
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-                                    ImageDecoder.decodeBitmap(
-                                        ImageDecoder.createSource(
-                                            context.contentResolver,
-                                            imageUrl.value!!
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        PostUploadPageTopBar(
+                            onDispose = onDisposeWithSave,
+                        )
+                        Spacer(modifier = Modifier.height(48.dp))
+                        PostUploadPageImagePreview(
+                            previewImgUrl = imageUrl.value,
+                            imageTextState = imageText,
+                            onTapImageTextButton = {
+                                mixPanel.track("Click_PhotoText")
+                                textOverlayShown.value = true
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(48.dp))
+                        PostUploadPageUploadBar(
+                            isIdle = uploadResult.value.isIdle(),
+                            onClickUpload = {
+                                mixPanel.track("Click_UploadPhoto")
+                                createPostViewModel.invoke(
+                                    Arguments(
+                                        arguments = mapOf(
+                                            "imageUri" to imageUrl.value.toString(),
+                                            "content" to imageText.value
                                         )
                                     )
-                                else
-                                    MediaStore.Images.Media.getBitmap(
-                                        context.contentResolver,
-                                        imageUrl.value
-                                    )
-                            MediaStore.Images.Media.insertImage(
-                                context.contentResolver,
-                                bitmap,
-                                imageText.value,
-                                "bbibbi"
-                            )
-                            coroutineScope.launch {
-                                snackBarHost.showSnackBarWithDismiss(
-                                    message = snackSavedMessage,
-                                    actionLabel = snackBarCamera
                                 )
+                            },
+                            onClickSave = {
+                                val bitmap =
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                                        ImageDecoder.decodeBitmap(
+                                            ImageDecoder.createSource(
+                                                context.contentResolver,
+                                                imageUrl.value!!
+                                            )
+                                        )
+                                    else
+                                        MediaStore.Images.Media.getBitmap(
+                                            context.contentResolver,
+                                            imageUrl.value
+                                        )
+                                MediaStore.Images.Media.insertImage(
+                                    context.contentResolver,
+                                    bitmap,
+                                    imageText.value,
+                                    "bbibbi"
+                                )
+                                coroutineScope.launch {
+                                    snackBarHost.showSnackBarWithDismiss(
+                                        message = snackSavedMessage,
+                                        actionLabel = snackBarCamera
+                                    )
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
             AnimatedVisibility(
@@ -196,7 +207,16 @@ fun PostUploadPage(
                     }
                 )
             }
-
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                Box(
+                    contentAlignment = Alignment.BottomCenter,
+                    modifier = Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.systemBars)) {
+                    BannerAd(adView = adView, modifier = Modifier.fillMaxWidth())
+                }
+            }
         }
     }
 

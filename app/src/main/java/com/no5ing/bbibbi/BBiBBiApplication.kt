@@ -5,6 +5,7 @@ import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.appCheck
@@ -31,6 +32,9 @@ class BBiBBiApplication : Application(), ImageLoaderFactory {
             PlayIntegrityAppCheckProviderFactory.getInstance(),
         )
         KakaoSdk.init(this, BuildConfig.kakaoApiKey)
+        Thread {
+            MobileAds.initialize(this)
+        }.start()
     }
 
     override fun newImageLoader(): ImageLoader {

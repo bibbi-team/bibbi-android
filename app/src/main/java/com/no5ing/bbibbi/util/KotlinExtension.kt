@@ -36,6 +36,9 @@ import com.android.installreferrer.api.InstallReferrerStateListener
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.PermissionStatus
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -269,4 +272,16 @@ fun gapUntilNext(): Long {
         .of(current.year, current.month, current.dayOfMonth, 0, 0, 0)
         .plusDays(1)
     return current.until(tomorrow, ChronoUnit.SECONDS)
+}
+
+@Composable
+fun getAdView(): AdView {
+    val localContext = LocalContext.current
+    return remember {
+        AdView(localContext).apply {
+            this.setAdSize(AdSize.BANNER)
+            this.adUnitId = "ca-app-pub-7835112884789455/9259792746"
+            loadAd(AdRequest.Builder().build())
+        }
+    }
 }

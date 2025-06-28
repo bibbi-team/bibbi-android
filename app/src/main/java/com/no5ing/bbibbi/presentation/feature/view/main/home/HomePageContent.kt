@@ -3,13 +3,18 @@ package com.no5ing.bbibbi.presentation.feature.view.main.home
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -45,11 +50,13 @@ import com.no5ing.bbibbi.data.model.post.PostType
 import com.no5ing.bbibbi.data.model.view.MainPageFeedModel
 import com.no5ing.bbibbi.data.model.view.MainPageModel
 import com.no5ing.bbibbi.data.model.view.MainPageTopBarModel
+import com.no5ing.bbibbi.presentation.component.BannerAd
 import com.no5ing.bbibbi.presentation.component.VerticalGrid
 import com.no5ing.bbibbi.presentation.feature.view.common.PostTypeSwitchButton
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.gapBetweenNow
+import com.no5ing.bbibbi.util.getAdView
 import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
@@ -78,6 +85,7 @@ fun HomePageContent(
     else emptyList()
     var isRefreshing by remember { mutableStateOf(true) }
     val pagerState = rememberPagerState(pageCount = { 2 })
+    val adView = getAdView()
     val pullRefreshStyle = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = {
@@ -122,6 +130,8 @@ fun HomePageContent(
                 thickness = 1.dp,
                 color = MaterialTheme.bbibbiScheme.backgroundSecondary
             )
+            Spacer(modifier = Modifier.height(24.dp))
+            BannerAd(adView = adView, modifier = Modifier.fillMaxWidth())
             Spacer(modifier = Modifier.height(24.dp))
             UploadCountDownBar(warningState = warningState)
             if (postViewTypeState.value == PostType.SURVIVAL) {

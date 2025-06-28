@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -43,6 +46,7 @@ import com.no5ing.bbibbi.data.model.family.FamilySummary
 import com.no5ing.bbibbi.data.model.post.CalendarBanner
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
+import com.no5ing.bbibbi.presentation.component.BannerAd
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.feature.view_model.post.CalendarMonthViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.GetFamilySummaryViewModel
@@ -50,6 +54,7 @@ import com.no5ing.bbibbi.presentation.feature.view_model.post.MonthlyStatisticsV
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.formatYearMonth
+import com.no5ing.bbibbi.util.getAdView
 import com.no5ing.bbibbi.util.getScreenSize
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
@@ -189,8 +194,11 @@ fun MainCalendarPage(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .fillMaxWidth()
-                        .background(MaterialTheme.bbibbiScheme.backgroundSecondary, RoundedCornerShape(24.dp))
-                        .aspectRatio(335.0f/220)
+                        .background(
+                            MaterialTheme.bbibbiScheme.backgroundSecondary,
+                            RoundedCornerShape(24.dp)
+                        )
+                        .aspectRatio(335.0f / 220)
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
