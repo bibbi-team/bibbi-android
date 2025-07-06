@@ -156,7 +156,7 @@ class WidgetImageWorker(
     private fun fetchDetails(): Response {
         val client = createOkHttpClient()
         val widgetRequest = Request.Builder()
-            .url(BuildConfig.apiBaseUrl + "v1/widgets/single-recent-family-post")
+            .url(BuildConfig.apiBaseUrl + "/v1/widgets/single-recent-family-post")
             .get()
             .build()
         val response = client.newCall(widgetRequest).execute()
