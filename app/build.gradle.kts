@@ -12,12 +12,12 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 secrets {
@@ -31,7 +31,7 @@ val secretProperties = Properties().apply {
 
 android {
     namespace = "com.no5ing.bbibbi"
-    compileSdk = 34
+    compileSdk = 35
 
     signingConfigs {
         create("release") {
@@ -45,7 +45,7 @@ android {
     defaultConfig {
         applicationId = "com.no5ing.bbibbi"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 11015
         versionName = "1.3.1"
 
@@ -85,7 +85,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
