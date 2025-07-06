@@ -51,6 +51,7 @@ fun HomePage(
     onUnsavedPost: (Uri) -> Unit = {},
     onTapViewPost: (LocalDate) -> Unit = {},
     onTapPick: (MainPageTopBarModel) -> Unit = {},
+    onTapNight: () -> Unit = {},
 ) {
     val postViewType by postViewTypeState
     val mainPageState = mainPageViewModel.uiState.collectAsState()
@@ -82,6 +83,7 @@ fun HomePage(
         if (isDayTime) {
             mainPageViewModel.invoke(Arguments())
         } else {
+            mainPageViewModel.invoke(Arguments())
             mainPageNightViewModel.invoke(Arguments())
         }
     }
@@ -159,6 +161,11 @@ fun HomePage(
                             mainPageState.value.data.isMeSurvivalUploadedToday,
                     pickers = if (mainPageState.value.isReady()) mainPageState.value.data.pickers
                     else emptyList(),
+                    onTapDisabled = {
+                        if (gapUntilNext() <= 0) {
+                            onTapNight()
+                        }
+                    }
                 )
             } else {
                 HomePageMissionUploadButton(
@@ -169,6 +176,11 @@ fun HomePage(
                     isMissionUnlocked = mainPageState.value.isReady() && mainPageState.value.data.isMissionUnlocked,
                     isMeMissionUploaded = mainPageState.value.isReady()
                             && mainPageState.value.data.isMeMissionUploadedToday,
+                    onTapDisabled = {
+                        if (gapUntilNext() <= 0) {
+                            onTapNight()
+                        }
+                    }
                 )
             }
 

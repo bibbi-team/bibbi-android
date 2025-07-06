@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.feature.view_controller.main
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -7,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,6 +37,7 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.main.UploadMission
 import com.no5ing.bbibbi.presentation.feature.view_model.MainPageViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.members.PickMemberViewModel
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
+import com.no5ing.bbibbi.util.exit
 import com.no5ing.bbibbi.util.gapUntilNext
 import com.no5ing.bbibbi.util.localResources
 
@@ -49,6 +52,7 @@ object HomePageController : NavigationDestination(
         var isPickDialogVisible by remember { mutableStateOf(false) }
         var isRequireSurvivalDialogVisible by remember { mutableStateOf(false) }
         var isTryMissionPictureDialogVisible by remember { mutableStateOf(false) }
+        var isNightTimeDialogVisible by remember { mutableStateOf(false) }
         var tryPickDialogMember by remember { mutableStateOf<MainPageTopBarModel?>(null) }
         val pickState = pickMemberViewModel.uiState.collectAsState()
         val postViewTypeState = remember { mutableStateOf(PostType.SURVIVAL) }
@@ -122,6 +126,24 @@ object HomePageController : NavigationDestination(
             }
         )
         GenericPopup(
+            enabledState = isNightTimeDialogVisible,
+            title = "현재는 사진 업로드가 어려워요",
+            description = "내일 12시부터 사용이 가능하니,\n조금만 기다려 주세요.",
+            image = painterResource(id = R.drawable.sleep_bibbi),
+            confirmText = "홈으로 이동",
+            cancelText = "앱 종료하기",
+            onTapConfirm = {
+                isNightTimeDialogVisible = false
+            },
+            onTapCancel = {
+                isNightTimeDialogVisible = false
+                navController.context.exit()
+            },
+            onTapBackground = {
+                isNightTimeDialogVisible = false
+            }
+        )
+        GenericPopup(
             enabledState = isTryMissionPictureDialogVisible,
             title = stringResource(id = R.string.home_mission_key),
             description = stringResource(id = R.string.home_mission_key_description),
@@ -190,6 +212,9 @@ object HomePageController : NavigationDestination(
             postViewTypeState = postViewTypeState,
             onTapViewPost = { date ->
                 navController.goCalendarDetailPage(date)
+            },
+            onTapNight = {
+                isNightTimeDialogVisible = true
             }
         )
     }

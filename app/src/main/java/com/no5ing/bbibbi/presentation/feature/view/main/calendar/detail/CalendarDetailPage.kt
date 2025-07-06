@@ -11,12 +11,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
@@ -48,6 +51,7 @@ import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
+import com.no5ing.bbibbi.presentation.component.BannerAd
 import com.no5ing.bbibbi.presentation.component.CircleProfileImage
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
 import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
@@ -67,6 +71,7 @@ import com.no5ing.bbibbi.util.LocalSessionState
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.util.formatYearMonth
+import com.no5ing.bbibbi.util.getAdView
 import com.no5ing.bbibbi.util.localResources
 import com.no5ing.bbibbi.util.weekDates
 import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
@@ -171,6 +176,7 @@ fun CalendarDetailPage(
     }
 
     val currentPostState by familyPostsViewModel.uiState.collectAsState()
+    val adView = getAdView()
 
 
     val pagerState = key(currentPostState) {
@@ -348,7 +354,18 @@ fun CalendarDetailPage(
                 }
             }
         }
-
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Box(
+                contentAlignment = Alignment.BottomCenter,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .windowInsetsPadding(WindowInsets.systemBars)) {
+                BannerAd(adView = adView, modifier = Modifier.fillMaxWidth())
+            }
+        }
     }
 
 }

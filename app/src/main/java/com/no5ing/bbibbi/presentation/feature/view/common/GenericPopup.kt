@@ -37,10 +37,11 @@ fun GenericPopup(
     cancelText: String,
     onTapConfirm: () -> Unit = {},
     onTapCancel: () -> Unit = {},
+    onTapBackground: () -> Unit = onTapCancel,
 ) {
     if (enabledState) {
         BasicAlertDialog(
-            onDismissRequest = onTapCancel,
+            onDismissRequest = onTapBackground,
             modifier = Modifier,
             properties = DialogProperties()
         ) {

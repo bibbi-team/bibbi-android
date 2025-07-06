@@ -21,12 +21,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -50,11 +53,16 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
+import com.no5ing.bbibbi.presentation.component.BannerAd
 import com.no5ing.bbibbi.presentation.component.ClosableTopBar
 import com.no5ing.bbibbi.presentation.component.button.CameraCaptureButton
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
+import com.no5ing.bbibbi.util.getAdView
 import com.no5ing.bbibbi.util.getCameraProvider
 import com.no5ing.bbibbi.util.takePhotoWithImage
 import kotlinx.coroutines.launch
@@ -122,6 +130,7 @@ fun CameraView(
         preview.setSurfaceProvider(previewView.surfaceProvider)
     }
 
+    val adView = getAdView()
     val zoomValue: Float by animateFloatAsState(
         targetValue = if (isZoomed) 0.5f else 0.0f,
         animationSpec = tween(
@@ -156,91 +165,98 @@ fun CameraView(
         Column(
             modifier = Modifier
                 .padding(vertical = 10.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            ClosableTopBar(
-                onDispose = onDispose,
-                title = stringResource(id = R.string.camera_title),
-            )
-            Spacer(modifier = Modifier.height(48.dp))
-            Box {
-                AndroidView(
-                    { previewView },
-                    modifier = Modifier
-                        .aspectRatio(1.0f)
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(48.dp))
-                        .background(MaterialTheme.bbibbiScheme.backgroundHover),
+            Column {
+                ClosableTopBar(
+                    onDispose = onDispose,
+                    title = stringResource(id = R.string.camera_title),
                 )
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1.0f)
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp),
-                    contentAlignment = Alignment.BottomCenter
+                Spacer(modifier = Modifier.height(48.dp))
+                Box {
+                    AndroidView(
+                        { previewView },
+                        modifier = Modifier
+                            .aspectRatio(1.0f)
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(48.dp))
+                            .background(MaterialTheme.bbibbiScheme.backgroundHover),
+                    )
+                    Box(
+                        modifier = Modifier
+                            .aspectRatio(1.0f)
+                            .fillMaxWidth()
+                            .padding(bottom = 20.dp),
+                        contentAlignment = Alignment.BottomCenter
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.zoom_button),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(43.dp)
+                                .clickable {
+                                    isZoomed = !isZoomed
+                                }
+                        )
+
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(36.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.zoom_button),
-                        contentDescription = null,
+                        painter = painterResource(R.drawable.toggle_flash_button),
+                        contentDescription = null, // 필수 param
                         modifier = Modifier
-                            .size(43.dp)
+                            .size(48.dp)
                             .clickable {
-                                isZoomed = !isZoomed
+                                torchState.value = !torchState.value
+                                cameraState.value?.cameraControl?.enableTorch(torchState.value)
                             }
                     )
+                    CameraCaptureButton(
+                        onClick = {
+                            if (isCapturing) return@CameraCaptureButton
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            coroutineScope.launch {
+                                isCapturing = true
+                                val uri = captureState.value.takePhotoWithImage(
+                                    context,
+                                    requiredFlip = cameraDirection.value == CameraSelector.DEFAULT_FRONT_CAMERA
+                                )
+                                isCapturing = false
+                                onImageCaptured(uri)
+                            }
+                        },
+                        isCapturing = isCapturing,
+                    )
+                    Image(
+                        painter = painterResource(R.drawable.rorate_button),
+                        contentDescription = null, // 필수 param
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clickable {
+                                cameraDirection.value = run {
+                                    if (cameraDirection.value == CameraSelector.DEFAULT_BACK_CAMERA) {
+                                        CameraSelector.DEFAULT_FRONT_CAMERA
+                                    } else {
+                                        CameraSelector.DEFAULT_BACK_CAMERA
+                                    }
+                                }
 
+                            }
+                    )
                 }
             }
-
-            Spacer(modifier = Modifier.height(36.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.toggle_flash_button),
-                    contentDescription = null, // 필수 param
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable {
-                            torchState.value = !torchState.value
-                            cameraState.value?.cameraControl?.enableTorch(torchState.value)
-                        }
-                )
-                CameraCaptureButton(
-                    onClick = {
-                        if (isCapturing) return@CameraCaptureButton
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        coroutineScope.launch {
-                            isCapturing = true
-                            val uri = captureState.value.takePhotoWithImage(
-                                context,
-                                requiredFlip = cameraDirection.value == CameraSelector.DEFAULT_FRONT_CAMERA
-                            )
-                            isCapturing = false
-                            onImageCaptured(uri)
-                        }
-                    },
-                    isCapturing = isCapturing,
-                )
-                Image(
-                    painter = painterResource(R.drawable.rorate_button),
-                    contentDescription = null, // 필수 param
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable {
-                            cameraDirection.value = run {
-                                if (cameraDirection.value == CameraSelector.DEFAULT_BACK_CAMERA) {
-                                    CameraSelector.DEFAULT_FRONT_CAMERA
-                                } else {
-                                    CameraSelector.DEFAULT_BACK_CAMERA
-                                }
-                            }
-
-                        }
-                )
+            Box(modifier = Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.systemBars)) {
+                BannerAd(adView = adView, modifier = Modifier.fillMaxWidth())
             }
+
         }
 
     }

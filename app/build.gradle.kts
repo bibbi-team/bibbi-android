@@ -47,7 +47,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 11015
-        versionName = "1.3.0"
+        versionName = "1.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -187,6 +187,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.android.gms:play-services-ads:22.0.0")
     implementation(project(":widget"))
     kapt("com.google.dagger:dagger-compiler:2.49")
     kapt("com.google.dagger:hilt-android-compiler:2.49")

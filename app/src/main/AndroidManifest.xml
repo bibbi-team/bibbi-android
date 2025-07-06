@@ -34,6 +34,9 @@
         <profileable
             android:shell="true"
             tools:targetApi="29" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7835112884789455~6071626275"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
