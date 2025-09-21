@@ -27,6 +27,7 @@ import com.no5ing.bbibbi.data.repository.Arguments
 import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.BackToExitHandler
+import com.no5ing.bbibbi.presentation.component.button.CTAButton
 import com.no5ing.bbibbi.presentation.feature.view.common.CustomAlertDialog
 import com.no5ing.bbibbi.presentation.feature.view_model.MainPageNightViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.MainPageViewModel
@@ -52,6 +53,7 @@ fun HomePage(
     onTapViewPost: (LocalDate) -> Unit = {},
     onTapPick: (MainPageTopBarModel) -> Unit = {},
     onTapNight: () -> Unit = {},
+    onTapFamilyStudio: () -> Unit = {},
 ) {
     val postViewType by postViewTypeState
     val mainPageState = mainPageViewModel.uiState.collectAsState()
@@ -99,6 +101,10 @@ fun HomePage(
                     .fillMaxWidth()
                     .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
             ) {
+                CTAButton(
+                    text = "gogo",
+                    onClick = { onTapFamilyStudio() },
+                )
                 if (isDayTime) {
                     HomePageTopBar(
                         onTapLeft = {
