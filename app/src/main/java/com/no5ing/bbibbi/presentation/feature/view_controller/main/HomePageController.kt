@@ -1,6 +1,5 @@
 package com.no5ing.bbibbi.presentation.feature.view_controller.main
 
-import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -8,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,6 +25,7 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestinat
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarDetailPageController.goCalendarDetailPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.CalendarPageController.goCalendarPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyListPageController.goFamilyListPage
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyStudioPageController.goFamilyStudioPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.MissionUploadPageController.goMissionUploadPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.NotificationPageController.goNotificationPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostReUploadPageController.goPostReUploadPage
@@ -215,6 +214,9 @@ object HomePageController : NavigationDestination(
             },
             onTapNight = {
                 isNightTimeDialogVisible = true
+            },
+            onTapFamilyStudio = {
+                navController.goFamilyStudioPage()
             }
         )
     }

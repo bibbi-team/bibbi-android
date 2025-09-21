@@ -4,6 +4,7 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -52,4 +53,35 @@ fun CTAButton(
             style = MaterialTheme.bbibbiTypo.bodyOneBold,
         )
     }
+}
+
+@Composable
+fun CustomCTAButton(
+    modifier: Modifier = Modifier,
+    buttonColor: Color = MaterialTheme.bbibbiScheme.mainYellow,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    onClick: () -> Unit = {},
+    isActive: Boolean = true,
+    byPassCtaIgnore: Boolean = false,
+    content: @Composable() (RowScope.() -> Unit),
+) {
+    val opacityAlpha: Float by animateFloatAsState(
+        targetValue = if (isActive) 1f else 0.2f,
+        animationSpec = tween(
+            durationMillis = 130,
+            easing = LinearEasing,
+        ), label = ""
+    )
+    Button(
+        shape = RoundedCornerShape(100.dp),
+        onClick = { if (isActive || byPassCtaIgnore) onClick() },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = buttonColor.copy(
+                alpha = opacityAlpha
+            )
+        ),
+        modifier = modifier,
+        contentPadding = contentPadding,
+        content = content,
+    )
 }

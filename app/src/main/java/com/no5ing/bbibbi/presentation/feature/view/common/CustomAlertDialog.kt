@@ -1,5 +1,6 @@
 package com.no5ing.bbibbi.presentation.feature.view.common
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,6 +49,7 @@ fun CustomAlertDialog(
     enabledState: State<Boolean> = remember { mutableStateOf(false) },
     title: String,
     description: String,
+    clickableTitle: String? = null,
     confirmRequest: () -> Unit = {},
     dismissRequest: () -> Unit = {
         if (enabledState is MutableState) enabledState.value = false
@@ -55,6 +57,7 @@ fun CustomAlertDialog(
     cancelRequest: () -> Unit = {
         if (enabledState is MutableState) enabledState.value = false
     },
+    onClickClickableTitle: () -> Unit = {},
     confirmMessage: String = stringResource(id = R.string.dialog_confirm),
     cancelMessage: String = stringResource(id = R.string.dialog_cancel),
     hasCancel: Boolean = true,
@@ -112,12 +115,33 @@ fun CustomAlertDialog(
                     )
                 },
                 text = {
-                    Text(
-                        description,
-                        color = MaterialTheme.bbibbiScheme.textSecondary,
-                        style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
-                        textAlign = TextAlign.Center,
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            description,
+                            color = MaterialTheme.bbibbiScheme.textSecondary,
+                            style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
+                            textAlign = TextAlign.Center,
+                        )
+                        if (clickableTitle != null) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(top = 8.dp)
+                                    .clickable {
+                                        onClickClickableTitle()
+                                    }
+                            ) {
+                                Text(
+                                    text = clickableTitle,
+                                    style = MaterialTheme.bbibbiTypo.bodyTwoBold,
+                                    color = MaterialTheme.bbibbiScheme.mainYellow,
+                                    textAlign = TextAlign.Center,
+                                )
+                            }
+                        }
+                    }
+
                 },
                 shape = RoundedCornerShape(14.dp),
                 containerColor = MaterialTheme.bbibbiScheme.backgroundSecondary,

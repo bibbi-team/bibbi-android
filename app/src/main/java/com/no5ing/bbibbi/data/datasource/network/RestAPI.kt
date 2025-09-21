@@ -33,6 +33,9 @@ import com.no5ing.bbibbi.data.model.member.MemberRealEmoji
 import com.no5ing.bbibbi.data.model.member.MemberRealEmojiList
 import com.no5ing.bbibbi.data.model.mission.Mission
 import com.no5ing.bbibbi.data.model.notification.NotificationModel
+import com.no5ing.bbibbi.data.model.post.AIImageCount
+import com.no5ing.bbibbi.data.model.post.AIImageResponse
+import com.no5ing.bbibbi.data.model.post.AIPost
 import com.no5ing.bbibbi.data.model.post.CalendarBanner
 import com.no5ing.bbibbi.data.model.post.CalendarElement
 import com.no5ing.bbibbi.data.model.post.DailyCalendarElement
@@ -45,12 +48,15 @@ import com.no5ing.bbibbi.data.model.view.FamilyInviteModel
 import com.no5ing.bbibbi.data.model.view.MainPageModel
 import com.no5ing.bbibbi.data.model.view.NightMainPageModel
 import com.skydoves.sandwich.ApiResponse
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.time.LocalDate
@@ -194,6 +200,12 @@ interface RestAPI {
             @Query("type") type: String? = null,
         ): ApiResponse<Post>
 
+        @POST("v1/posts")
+        suspend fun createAiPost(
+            @Body body: CreatePostRequest,
+            @Query("type") type: String? = null,
+        ): ApiResponse<AIPost>
+
         @POST("v1/posts/image-upload-request")
         suspend fun getUploadPostImageRequest(
             @Body body: ImageUploadRequest,
@@ -309,6 +321,23 @@ interface RestAPI {
         suspend fun getMissionById(
             @Path("missionId") missionId: String,
         ): ApiResponse<Mission>
+
+        @Multipart
+        @POST("v1/ai-images/convert")
+        suspend fun convertImage(
+            @Part image: MultipartBody.Part
+        ): ApiResponse<AIImageResponse>
+
+        @GET("v1/posts/ai-images")
+        suspend fun getAiImagePosts(
+            @Query("page") page: Int?,
+            @Query("size") size: Int?,
+            @Query("memberId") memberId: String?,
+            @Query("sort") sort: String? = "DESC",
+        ): ApiResponse<Pagination<AIPost>>
+
+        @GET("v1/posts/ai-images/count")
+        suspend fun getAiImagePostCount(): ApiResponse<AIImageCount>
     }
 
     /**
