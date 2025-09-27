@@ -36,6 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.post.AIPost
 import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.component.AIPhotoInfoBaloon
 import com.no5ing.bbibbi.presentation.component.BBiBBiPreviewSurface
 import com.no5ing.bbibbi.presentation.component.BBiBBiSurface
 import com.no5ing.bbibbi.presentation.component.DisposableTopBar
@@ -115,17 +116,19 @@ fun FamilyStudioPage(
                                     .padding(vertical = 2.dp, horizontal = 6.dp)
                                 ) {
                                     Text(
-                                        text = "${LocalDate.now().monthValue}월",
+                                        text = "추석",
                                         color = MaterialTheme.bbibbiScheme.backgroundPrimary,
                                         style = MaterialTheme.bbibbiTypo.bodyTwoBold,
                                     )
                                 }
                                 Box(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = "추석",
+                                    text = "9/29~10/27",
                                     color = MaterialTheme.bbibbiScheme.textPrimary,
                                     style = MaterialTheme.bbibbiTypo.headTwoBold,
                                 )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                AIPhotoInfoBaloon()
                             }
                             Text(
                                 text = "${photoCount}개의 추억",

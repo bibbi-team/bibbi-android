@@ -101,10 +101,6 @@ fun HomePage(
                     .fillMaxWidth()
                     .background(MaterialTheme.bbibbiScheme.backgroundPrimary)
             ) {
-                CTAButton(
-                    text = "gogo",
-                    onClick = { onTapFamilyStudio() },
-                )
                 if (isDayTime) {
                     HomePageTopBar(
                         onTapLeft = {
@@ -128,6 +124,7 @@ fun HomePage(
                         onRefresh = {
                             mainPageViewModel.invoke(Arguments())
                         },
+                        onTapAi = onTapFamilyStudio,
                         deferredPickStateSet = mainPageViewModel.deferredPickMembersSet
                     )
                 } else {
@@ -173,7 +170,7 @@ fun HomePage(
                         }
                     }
                 )
-            } else {
+            } else if (postViewType == PostType.MISSION) {
                 HomePageMissionUploadButton(
                     onTap = onTapMissionUpload,
                     isLoading = mainPageState.value.isLoading(),

@@ -2,6 +2,8 @@ package com.no5ing.bbibbi.presentation.feature.view.main.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -12,12 +14,15 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -44,20 +49,25 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.no5ing.bbibbi.R
 import com.no5ing.bbibbi.data.model.APIResponse
 import com.no5ing.bbibbi.data.model.post.PostType
 import com.no5ing.bbibbi.data.model.view.MainPageFeedModel
 import com.no5ing.bbibbi.data.model.view.MainPageModel
 import com.no5ing.bbibbi.data.model.view.MainPageTopBarModel
+import com.no5ing.bbibbi.data.repository.Arguments
+import com.no5ing.bbibbi.presentation.component.AIPhotoInfoBaloon
 import com.no5ing.bbibbi.presentation.component.BannerAd
 import com.no5ing.bbibbi.presentation.component.VerticalGrid
 import com.no5ing.bbibbi.presentation.feature.view.common.PostTypeSwitchButton
+import com.no5ing.bbibbi.presentation.feature.view_model.post.GetAiImageCountViewModel
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.gapBetweenNow
 import com.no5ing.bbibbi.util.getAdView
 import kotlinx.coroutines.flow.StateFlow
+import java.time.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
@@ -69,6 +79,7 @@ fun HomePageContent(
     onTapProfile: (String) -> Unit = {},
     onTapPick: (MainPageTopBarModel) -> Unit = {},
     onTapInvite: () -> Unit = {},
+    onTapAi: () -> Unit = {},
     onRefresh: () -> Unit = {},
 ) {
     val warningState = remember {
@@ -84,7 +95,7 @@ fun HomePageContent(
         mainPageModel.data.missionFeeds
     else emptyList()
     var isRefreshing by remember { mutableStateOf(true) }
-    val pagerState = rememberPagerState(pageCount = { 2 })
+    val pagerState = rememberPagerState(pageCount = { 3 })
     val adView = getAdView()
     val pullRefreshStyle = rememberPullRefreshState(
         refreshing = isRefreshing,
@@ -100,11 +111,19 @@ fun HomePageContent(
         }
     }
     LaunchedEffect(postViewTypeState.value) {
-        val page = if (postViewTypeState.value == PostType.SURVIVAL) 0 else 1
+        val page = when (postViewTypeState.value) {
+            PostType.SURVIVAL -> 0
+            PostType.MISSION -> 1
+            PostType.AI_IMAGE -> 2
+        }
         pagerState.animateScrollToPage(page)
     }
     LaunchedEffect(pagerState.currentPage) {
-        val type = if (pagerState.currentPage == 0) PostType.SURVIVAL else PostType.MISSION
+        val type = when (pagerState.currentPage) {
+            0 -> PostType.SURVIVAL
+            1 -> PostType.MISSION
+            else -> PostType.AI_IMAGE
+        }
         if (type != postViewTypeState.value) {
             postViewTypeState.value = type
         }
@@ -136,13 +155,27 @@ fun HomePageContent(
             UploadCountDownBar(warningState = warningState)
             if (postViewTypeState.value == PostType.SURVIVAL) {
                 SurvivalTextDescription(warningState = warningState)
-            } else {
+            } else if (postViewTypeState.value == PostType.MISSION) {
                 MissionTextDescription(
                     warningState = warningState,
                     isMissionUnlocked = mainPageModel.isReady() && mainPageModel.data.isMissionUnlocked,
                     missionText = if (mainPageModel.isReady()) mainPageModel.data.dailyMissionContent else "",
                     remainingMemberCnt = if (mainPageModel.isReady()) mainPageModel.data.leftUploadCountUntilMissionUnlock else 0
                 )
+            } else {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(20.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "AI가 만들어주는 우리 가족 사진관이에요",
+                        color = MaterialTheme.bbibbiScheme.textSecondary,
+                        style = MaterialTheme.bbibbiTypo.bodyTwoRegular,
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -170,6 +203,10 @@ fun HomePageContent(
                         postItems = missionFeedItems,
                         isMissionUnlocked = mainPageModel.isReady() && mainPageModel.data.isMissionUnlocked,
                         onTapContent = onTapContent,
+                    )
+
+                    2 -> AIImageTab(
+                        onTap = onTapAi,
                     )
                 }
             }
@@ -263,6 +300,69 @@ fun MissionFeedTab(
 
 
         }
+    }
+}
+
+@Composable
+fun AIImageTab(
+    onTap: () -> Unit,
+    aiImageCountViewModel: GetAiImageCountViewModel = hiltViewModel(),
+) {
+    val aiImageState = aiImageCountViewModel.uiState.collectAsState()
+    LaunchedEffect(Unit) {
+        aiImageCountViewModel.invoke(Arguments())
+    }
+    val photoCount = if(aiImageState.value.isReady()) {
+        aiImageState.value.data.familyAiImageCount
+    } else {
+        0
+    }
+    Column(
+        modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(modifier = Modifier
+                    .background(MaterialTheme.bbibbiScheme.icon, RoundedCornerShape(100.dp))
+                    .padding(vertical = 2.dp, horizontal = 6.dp)
+                ) {
+                    Text(
+                        text = "추석",
+                        color = MaterialTheme.bbibbiScheme.backgroundPrimary,
+                        style = MaterialTheme.bbibbiTypo.bodyTwoBold,
+                    )
+                }
+                Box(modifier = Modifier.width(6.dp))
+                Text(
+                    text = "9/29~10/27",
+                    color = MaterialTheme.bbibbiScheme.textPrimary,
+                    style = MaterialTheme.bbibbiTypo.headTwoBold,
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                AIPhotoInfoBaloon()
+            }
+            Text(
+                text = "${photoCount}개의 추억",
+                color = MaterialTheme.bbibbiScheme.textPrimary,
+                style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+            )
+
+        }
+        Box(modifier = Modifier.height(16.dp))
+        Image(
+            painter = painterResource(id = R.drawable.family_studio_banner),
+            contentDescription = null,
+            modifier = Modifier.fillMaxWidth().clickable {
+                onTap()
+            },
+            contentScale = ContentScale.FillWidth
+        )
     }
 }
 
