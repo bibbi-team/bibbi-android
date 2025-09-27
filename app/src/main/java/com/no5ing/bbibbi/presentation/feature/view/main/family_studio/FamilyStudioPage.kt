@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -64,7 +65,12 @@ fun FamilyStudioPage(
 ) {
     val aiImageState = aiImageCountViewModel.uiState.collectAsState()
     LaunchedEffect(Unit) {
-        postsViewModel.invoke(Arguments())
+        if (postsViewModel.isInitialize()) {
+            postsViewModel.invoke(Arguments())
+        } else {
+            postsViewModel.refresh()
+        }
+
         aiImageCountViewModel.invoke(Arguments())
     }
     val photoCount = if(aiImageState.value.isReady()) {
@@ -159,8 +165,10 @@ fun FamilyStudioPage(
             Box(
                 modifier = Modifier
                     .padding(horizontal = 12.dp, vertical = 15.dp)
+                    .navigationBarsPadding()
                     .align(Alignment.BottomCenter)
             ) {
+
                 CustomCTAButton(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(vertical = 18.dp),

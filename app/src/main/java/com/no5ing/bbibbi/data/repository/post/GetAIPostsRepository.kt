@@ -38,6 +38,11 @@ class GetAIPostsRepository @Inject constructor(
         }.flow
     }
 
+    fun invalidateSource() {
+        if (::pagingSource.isInitialized)
+            pagingSource.invalidate()
+    }
+
     override fun closeResources() {
         super.closeResources()
         if (::pagingSource.isInitialized)

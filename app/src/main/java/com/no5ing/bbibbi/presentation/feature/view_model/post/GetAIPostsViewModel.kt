@@ -1,5 +1,7 @@
 package com.no5ing.bbibbi.presentation.feature.view_model.post
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -40,6 +42,10 @@ class GetAIPostsViewModel @Inject constructor(
                     setState(it)
                 }
         }
+    }
+
+    fun refresh() {
+        getPostsRepository.invalidateSource()
     }
 
     override fun release() {
