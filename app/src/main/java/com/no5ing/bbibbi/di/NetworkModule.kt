@@ -64,8 +64,12 @@ object NetworkModule {
 
             builder.build()
         }
+        val isLongTask = request.url.encodedPath.endsWith("/convert")
+        val response = (if (isLongTask) {
+            it.withReadTimeout(180, java.util.concurrent.TimeUnit.SECONDS)   // 응답 대기 길게
+                .withWriteTimeout(180, java.util.concurrent.TimeUnit.SECONDS)  // 업로드도 길게
+        } else it).proceed(modifiedRequest)
 
-        val response = it.proceed(modifiedRequest)
         val elapsed = System.currentTimeMillis() - start
         Timber.d("[NetworkModule] ${request.method} ${request.url} ${response.code} ${elapsed}ms")
         if (response.code == 426) {

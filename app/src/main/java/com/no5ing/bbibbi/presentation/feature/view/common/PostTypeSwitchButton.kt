@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -45,82 +47,109 @@ fun PostTypeSwitchButton(
     isLocked: Boolean = true,
     state: MutableState<PostType> = remember { mutableStateOf(PostType.SURVIVAL) }
 ) {
-    val isSurvival = state.value == PostType.SURVIVAL
-    val widthMax = 138.dp.dpToPx()
+    //val isSurvival = state.value == PostType.SURVIVAL
+    val widthMax = 230.dp.dpToPx()
     val buttonPosition: Dp by animateDpAsState(
         targetValue =
-        if (isSurvival) 0.dp else 69.dp, animationSpec = tween(
+        when(state.value) {
+            PostType.SURVIVAL -> 0.dp
+            PostType.MISSION -> 69.dp
+            PostType.AI_IMAGE -> 140.dp
+        }, animationSpec = tween(
             durationMillis = 130,
             easing = LinearEasing,
         ),
         label = ""
     )
     val survivalButtonColor: Color by animateColorAsState(
-        targetValue = if (isSurvival) MaterialTheme.bbibbiScheme.backgroundPrimary else MaterialTheme.bbibbiScheme.gray500,
+        targetValue = if (state.value == PostType.SURVIVAL) MaterialTheme.bbibbiScheme.backgroundPrimary else MaterialTheme.bbibbiScheme.gray500,
         label = "",
     )
     val missionButtonColor: Color by animateColorAsState(
-        targetValue = if (isSurvival) MaterialTheme.bbibbiScheme.gray500 else MaterialTheme.bbibbiScheme.backgroundPrimary,
+        targetValue = if (state.value == PostType.MISSION) MaterialTheme.bbibbiScheme.backgroundPrimary else MaterialTheme.bbibbiScheme.gray500,
         label = "",
     )
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .size(width = 138.dp, height = 40.dp)
-            .background(MaterialTheme.bbibbiScheme.backgroundHover, RoundedCornerShape(40.dp))
-            .pointerInput(Unit) {
-                detectTapGestures { offset ->
-                    if (widthMax / 2 > offset.x) {
-                        state.value = PostType.SURVIVAL
-                    } else {
-                        state.value = PostType.MISSION
-                    }
-                    Timber.d("offset: $offset")
-                }
-            }
-        //.padding(vertical = 8.dp, horizontal = 12.dp)
-    ) {
+    Box{
         Box(
+            contentAlignment = Alignment.CenterStart,
             modifier = Modifier
-                .align(Alignment.CenterStart)
-                .offset(x = buttonPosition)
-                .size(width = 70.dp, height = 40.dp)
-                .background(MaterialTheme.bbibbiScheme.iconSelected, RoundedCornerShape(40.dp))
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 24.dp,
-                    end = if (isLocked) 14.dp else 24.dp
-                ),
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .size(width = 230.dp, height = 40.dp)
+                .background(MaterialTheme.bbibbiScheme.backgroundHover, RoundedCornerShape(40.dp))
+                .pointerInput(Unit) {
+                    detectTapGestures { offset ->
+                        val divVal = widthMax / 3
+                        if (offset.x < divVal) {
+                            state.value = PostType.SURVIVAL
+                        } else if (offset.x < divVal * 2) {
+                            state.value = PostType.MISSION
+                        } else {
+                            state.value = PostType.AI_IMAGE
+                        }
+                        Timber.d("offset: $offset")
+                    }
+                }
         ) {
-            Text(
-                text = stringResource(id = R.string.post_type_survival),
-                style = MaterialTheme.bbibbiTypo.bodyTwoBold,
-                color = survivalButtonColor
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .offset(x = buttonPosition)
+                    .size(width = 70.dp, height = 40.dp)
+                    .background(MaterialTheme.bbibbiScheme.iconSelected, RoundedCornerShape(40.dp))
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(2.dp)
+            Box(
+                modifier = Modifier.width(138.dp),
+                contentAlignment = Alignment.CenterStart
             ) {
-                Text(
-                    text = stringResource(id = R.string.post_type_mission),
-                    style = MaterialTheme.bbibbiTypo.bodyTwoBold,
-                    color = missionButtonColor,
-                )
-                if (isLocked) {
-                    Image(
-                        modifier = Modifier.size(12.dp),
-                        painter = painterResource(id = R.drawable.lock_icon),
-                        contentDescription = "locked"
+                Row(
+                    modifier = Modifier
+                        .width(138.dp)
+                        .padding(
+                            start = 24.dp,
+                            end = if (isLocked) 14.dp else 24.dp
+                        ),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.post_type_survival),
+                        style = MaterialTheme.bbibbiTypo.bodyTwoBold,
+                        color = survivalButtonColor
                     )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.post_type_mission),
+                            style = MaterialTheme.bbibbiTypo.bodyTwoBold,
+                            color = missionButtonColor,
+                        )
+                        if (isLocked) {
+                            Image(
+                                modifier = Modifier.size(12.dp),
+                                painter = painterResource(id = R.drawable.lock_icon),
+                                contentDescription = "locked"
+                            )
+                        }
+                    }
                 }
             }
 
         }
+        Box(
+            modifier = Modifier.offset(x = 136.dp)
+        ) {
+            Image(
+                modifier = Modifier
+                    .background(Color.Transparent)
+                    .size(width = 94.dp, height = 40.dp),
+                painter = painterResource(id = R.drawable.photo_studio),
+                contentDescription = "photo studio",
+            )
+        }
+
     }
+
 
 }
 

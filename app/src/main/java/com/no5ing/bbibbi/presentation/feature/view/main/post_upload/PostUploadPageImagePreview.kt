@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,7 +36,8 @@ import com.no5ing.bbibbi.util.toCodePointList
 @Composable
 fun PostUploadPageImagePreview(
     previewImgUrl: Uri?,
-    imageTextState: State<String>,
+    imageTextState: State<String> = mutableStateOf(""),
+    supportText: Boolean = true,
     onTapImageTextButton: () -> Unit = {},
 ) {
     val imageText by imageTextState
@@ -60,66 +62,67 @@ fun PostUploadPageImagePreview(
             }
         }
 
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 20.dp)
-                .clickable {
-                    onTapImageTextButton()
-                }
-        ) {
-            if (imageText.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .background(
-                            color = Color.Black.copy(alpha = 0.3f),
-                            RoundedCornerShape(10.dp)
-                        )
-                        .padding(horizontal = 10.dp, vertical = 8.dp)
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(
-                            5.dp,
-                            Alignment.CenterHorizontally
-                        ),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.write_icon),
-                            contentDescription = null,
-                            tint = MaterialTheme.bbibbiScheme.textPrimary,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Text(
-                            text = stringResource(id = R.string.post_upload_text_description),
-                            color = MaterialTheme.bbibbiScheme.textPrimary,
-                            style = MaterialTheme.bbibbiTypo.headTwoBold,
-                        )
+        if (supportText) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 20.dp)
+                    .clickable {
+                        onTapImageTextButton()
                     }
-                }
-            } else {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(2.dp)
-                ) {
-                    imageText.toCodePointList().forEach { character ->
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(Color.Black.copy(alpha = 0.3f))
-                                .size(width = 28.dp, height = 41.dp),
-                            contentAlignment = Alignment.Center
+            ) {
+                if (imageText.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                color = Color.Black.copy(alpha = 0.3f),
+                                RoundedCornerShape(10.dp)
+                            )
+                            .padding(horizontal = 10.dp, vertical = 8.dp)
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(
+                                5.dp,
+                                Alignment.CenterHorizontally
+                            ),
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.write_icon),
+                                contentDescription = null,
+                                tint = MaterialTheme.bbibbiScheme.textPrimary,
+                                modifier = Modifier.size(24.dp)
+                            )
                             Text(
-                                text = character,
-                                color = MaterialTheme.bbibbiScheme.white,
+                                text = stringResource(id = R.string.post_upload_text_description),
+                                color = MaterialTheme.bbibbiScheme.textPrimary,
                                 style = MaterialTheme.bbibbiTypo.headTwoBold,
                             )
                         }
                     }
+                } else {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        imageText.toCodePointList().forEach { character ->
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(Color.Black.copy(alpha = 0.3f))
+                                    .size(width = 28.dp, height = 41.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = character,
+                                    color = MaterialTheme.bbibbiScheme.white,
+                                    style = MaterialTheme.bbibbiTypo.headTwoBold,
+                                )
+                            }
+                        }
 
+                    }
                 }
             }
         }
-
     }
 }

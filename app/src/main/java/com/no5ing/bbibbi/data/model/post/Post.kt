@@ -17,3 +17,14 @@ data class Post(
     val content: String,
     val createdAt: ZonedDateTime,
 ) : Parcelable, BaseModel()
+
+@Parcelize
+data class AIPost(
+    val postId: String,
+    val authorId: String,
+    val type: PostType,
+    val imageUrl: String,
+    val authorName: String?,
+    val authorImageUrl: String?,
+    val createdAt: ZonedDateTime,
+) : Parcelable, BaseModel()

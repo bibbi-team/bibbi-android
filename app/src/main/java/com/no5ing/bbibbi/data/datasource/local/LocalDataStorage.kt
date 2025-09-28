@@ -45,6 +45,7 @@ class LocalDataStorage @Inject constructor(val context: Context) {
         const val MISSION_WIDGET_PERIOD_KEY = "mission_widget_period"
         const val FAMILY_NAME_FEATURE_MAIN_KEY = "family_name_feature_main"
         const val FAMILY_NAME_FEATURE_FAMILY_KEY = "family_name_feature_family"
+        const val AI_IMAGE_TERM_KEY = "ai_image_term"
     }
 
     fun logOut() {
@@ -164,6 +165,17 @@ class LocalDataStorage @Inject constructor(val context: Context) {
     fun setFamilyAndMemberNameFeatureMain() {
         val editor = preferences.edit()
         editor.putBoolean(FAMILY_NAME_FEATURE_MAIN_KEY, false)
+        editor.apply()
+        editor.commit()
+    }
+
+    fun shouldAgreeAiImageTerm(): Boolean {
+        return preferences.getBoolean(AI_IMAGE_TERM_KEY, true)
+    }
+
+    fun setShouldAgreeAiImageTerm() {
+        val editor = preferences.edit()
+        editor.putBoolean(AI_IMAGE_TERM_KEY, false)
         editor.apply()
         editor.commit()
     }

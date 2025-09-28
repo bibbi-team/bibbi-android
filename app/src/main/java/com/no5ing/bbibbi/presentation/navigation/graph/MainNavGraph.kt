@@ -14,6 +14,10 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.main.ChangeFamilyN
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.ChangeNickNamePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.CreateRealEmojiPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyListPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyStudioCameraPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyStudioPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyStudioPreviewPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyStudioUploadPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.HomePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.ImagePreviewPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.MissionUploadPageController
@@ -135,7 +139,15 @@ fun NavGraphBuilder.mainGraph(
         )
         composable(
             controller = navController,
+            destination = FamilyStudioCameraPageController
+        )
+        composable(
+            controller = navController,
             destination = MissionUploadPageController
+        )
+        composable(
+            controller = navController,
+            destination = FamilyStudioUploadPageController
         )
         composable(
             controller = navController,
@@ -153,7 +165,21 @@ fun NavGraphBuilder.mainGraph(
         )
         composable(
             controller = navController,
+            destination = FamilyStudioPageController,
+            enterTransition = {
+                fullHorizontalSlideInToLeft()
+            },
+            popExitTransition = {
+                fullHorizontalSlideOutToRight()
+            }
+        )
+        composable(
+            controller = navController,
             destination = ChangeNickNamePageController,
+        )
+        composable(
+            controller = navController,
+            destination = FamilyStudioPreviewPageController,
         )
         composable(
             controller = navController,

@@ -20,6 +20,7 @@ import com.no5ing.bbibbi.presentation.component.button.CTAButton
 @Composable
 fun PostUploadPageUploadBar(
     isIdle: Boolean,
+    isSaveIdle: Boolean = true,
     onClickUpload: () -> Unit = {},
     onClickSave: () -> Unit = {},
 ) {
@@ -43,7 +44,9 @@ fun PostUploadPageUploadBar(
             modifier = Modifier
                 .size(48.dp)
                 .clickable {
-                    onClickSave()
+                    if (isSaveIdle) {
+                        onClickSave()
+                    }
                 }
         )
     }
