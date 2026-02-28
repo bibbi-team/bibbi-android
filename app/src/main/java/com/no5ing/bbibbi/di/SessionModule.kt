@@ -1,6 +1,7 @@
 package com.no5ing.bbibbi.di
 
 import android.content.Context
+import com.no5ing.bbibbi.data.datasource.local.LocalDataStorage
 import com.no5ing.bbibbi.data.model.auth.AuthResult
 import com.no5ing.bbibbi.data.model.member.Member
 import com.no5ing.bbibbi.presentation.feature.uistate.common.SessionState
@@ -11,7 +12,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SessionModule @Inject constructor(val context: Context) {
+class SessionModule @Inject constructor(
+    val context: Context,
+    private val localDataStorage: LocalDataStorage,
+) {
     private val _sessionState = MutableStateFlow(SessionState(isLoggedIn = false))
     val sessionState: StateFlow<SessionState> = _sessionState
 
@@ -20,6 +24,9 @@ class SessionModule @Inject constructor(val context: Context) {
     }
 
     fun onRefreshToken(newTokenPair: AuthResult) {
+        localDataStorage.setAuthTokens(newTokenPair)
+        Timber.d("[SessionModule] Token persisted to disk after refresh")
+
         _sessionState.value = _sessionState.value.copy(
             isLoggedIn = true,
             _apiToken = newTokenPair,

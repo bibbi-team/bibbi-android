@@ -24,6 +24,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okio.Timeout
+import java.io.IOException
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import timber.log.Timber
@@ -84,45 +87,82 @@ object NetworkModule {
         sessionModule: SessionModule,
     ): Authenticator {
         val authenticatorClient = createOkHttpClient(null, null)
+        val refreshLock = ReentrantLock()
+        var lastRefreshedAccessToken: String? = null
+
         return Authenticator { _, response ->
             if (response.code == 401) {
-                Timber.d("[NetworkModule] Refresh tokens with Authenticator")
-                val currentSession = sessionModule.sessionState.value
-                if (!currentSession.isLoggedIn()) return@Authenticator null
+                Timber.d("[NetworkModule] 401 received, attempting token refresh")
 
-                val previousApiToken = currentSession.apiToken
-                val headers = Headers.headersOf(
-                    "Accept", "application/json",
-                    "X-APP-KEY", BuildConfig.appKey,
-                    "X-APP-VERSION", BuildConfig.VERSION_NAME,
-                    "X-USER-PLATFORM", "AOS",
-                    "X-USER-ID", currentSession.memberId,
-                )
-                val refreshRequest = Request.Builder()
-                    .url(BuildConfig.apiBaseUrl + "v1/auth/refresh")
-                    .headers(headers)
-                    .post(
-                        "{\"refreshToken\": \"${previousApiToken.refreshToken}\"}"
-                            .toRequestBody("application/json".toMediaType())
-                    )
-                    .build()
-                kotlin.runCatching {
-                    authenticatorClient.newCall(refreshRequest).execute().use { refreshResponse ->
-                        if (refreshResponse.isSuccessful) {
-                            val newToken = refreshResponse.body!!.string()
-                            val newTokenObject = Gson().fromJson(newToken, AuthResult::class.java)
+                refreshLock.withLock {
+                    val currentSession = sessionModule.sessionState.value
+                    if (!currentSession.isLoggedIn()) return@Authenticator null
 
-                            sessionModule.onRefreshToken(newTokenObject)
-                            return@Authenticator response.request
-                                .newBuilder()
-                                .removeHeader("X-AUTH-TOKEN")
-                                .addHeader("X-AUTH-TOKEN", newTokenObject.accessToken)
-                                .build()
-                        } else throw RuntimeException()
+                    val failedRequestToken = response.request.header("X-AUTH-TOKEN")
+                    val currentAccessToken = currentSession.apiToken.accessToken
+
+                    // 다른 스레드가 이미 refresh에 성공한 경우, 새 토큰으로 재시도
+                    if (failedRequestToken != null
+                        && failedRequestToken != currentAccessToken
+                        && currentAccessToken == lastRefreshedAccessToken
+                    ) {
+                        Timber.d("[NetworkModule] Token already refreshed by another thread, retrying")
+                        return@Authenticator response.request
+                            .newBuilder()
+                            .removeHeader("X-AUTH-TOKEN")
+                            .addHeader("X-AUTH-TOKEN", currentAccessToken)
+                            .build()
                     }
-                }.onFailure {
-                    requireTokenInvalidRestart.value = true
-                    sessionModule.invalidateSession()
+
+                    val previousApiToken = currentSession.apiToken
+                    val headers = Headers.headersOf(
+                        "Accept", "application/json",
+                        "X-APP-KEY", BuildConfig.appKey,
+                        "X-APP-VERSION", BuildConfig.VERSION_NAME,
+                        "X-USER-PLATFORM", "AOS",
+                        "X-USER-ID", currentSession.memberId,
+                    )
+                    val refreshRequest = Request.Builder()
+                        .url(BuildConfig.apiBaseUrl + "v1/auth/refresh")
+                        .headers(headers)
+                        .post(
+                            "{\"refreshToken\": \"${previousApiToken.refreshToken}\"}"
+                                .toRequestBody("application/json".toMediaType())
+                        )
+                        .build()
+
+                    try {
+                        authenticatorClient.newCall(refreshRequest).execute()
+                            .use { refreshResponse ->
+                                if (refreshResponse.isSuccessful) {
+                                    val newToken = refreshResponse.body!!.string()
+                                    val newTokenObject =
+                                        Gson().fromJson(newToken, AuthResult::class.java)
+
+                                    sessionModule.onRefreshToken(newTokenObject)
+                                    lastRefreshedAccessToken = newTokenObject.accessToken
+                                    Timber.d("[NetworkModule] Token refresh succeeded")
+
+                                    return@Authenticator response.request
+                                        .newBuilder()
+                                        .removeHeader("X-AUTH-TOKEN")
+                                        .addHeader("X-AUTH-TOKEN", newTokenObject.accessToken)
+                                        .build()
+                                } else {
+                                    // 서버가 refresh token을 명시적으로 거부 (만료/무효)
+                                    Timber.w(
+                                        "[NetworkModule] Refresh failed with HTTP %d - invalidating session",
+                                        refreshResponse.code
+                                    )
+                                    requireTokenInvalidRestart.value = true
+                                    sessionModule.invalidateSession()
+                                }
+                            }
+                    } catch (e: IOException) {
+                        // 네트워크 오류 (타임아웃, 연결 끊김 등)
+                        // 세션을 삭제하지 않음 — 디스크에 유효한 토큰이 남아있음
+                        Timber.w(e, "[NetworkModule] Network error during token refresh - NOT invalidating session")
+                    }
                 }
             }
             null
