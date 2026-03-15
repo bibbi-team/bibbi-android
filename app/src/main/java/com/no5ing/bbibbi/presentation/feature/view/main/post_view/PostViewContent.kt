@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -127,6 +130,37 @@ fun PostViewContent(
                         .clip(RoundedCornerShape(48.dp)),
                     contentScale = ContentScale.Crop
                 )
+            }
+            if (post.address != null) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(start = 20.dp, top = 20.dp)
+                        .background(
+                            color = Color.Black.copy(alpha = 0.3f),
+                            RoundedCornerShape(100.dp)
+                        )
+                        .padding(horizontal = 10.dp, vertical = 8.dp)
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.location_icon),
+                            contentDescription = null,
+                            tint = MaterialTheme.bbibbiScheme.mainYellow,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = post.address,
+                            color = MaterialTheme.bbibbiScheme.mainYellow,
+                            style = MaterialTheme.bbibbiTypo.bodyTwoBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                }
             }
             if (missionText != null) {
                 Box(

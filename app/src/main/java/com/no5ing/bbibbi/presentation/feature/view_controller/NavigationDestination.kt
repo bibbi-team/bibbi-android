@@ -73,6 +73,7 @@ abstract class NavigationDestination(
         internal const val cameraViewRoute = "common/camera"
         internal const val uploadMissionPageRoute = "main/upload-mission"
         internal const val uploadMissionPreviewPageRoute = "main/upload-mission-preview"
+        internal const val locationPickerRoute = "post/location-picker"
 
 
         @OptIn(ExperimentalComposeUiApi::class)

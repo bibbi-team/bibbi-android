@@ -19,6 +19,7 @@ data class DailyCalendarElement(
     val emojiCount: Int,
     val allFamilyMembersUploaded: Boolean,
     val createdAt: ZonedDateTime,
+    val address: String?,
 ) : Parcelable, BaseModel() {
     fun toPost() = Post(
         postId = postId,
@@ -30,5 +31,6 @@ data class DailyCalendarElement(
         imageUrl = postImgUrl,
         content = postContent,
         createdAt = createdAt,
+        address = address,
     )
 }

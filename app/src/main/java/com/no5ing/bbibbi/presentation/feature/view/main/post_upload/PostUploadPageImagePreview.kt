@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.no5ing.bbibbi.R
@@ -37,10 +38,12 @@ import com.no5ing.bbibbi.util.toCodePointList
 fun PostUploadPageImagePreview(
     previewImgUrl: Uri?,
     imageTextState: State<String> = mutableStateOf(""),
+    addressState: State<String?> = mutableStateOf(null),
     supportText: Boolean = true,
     onTapImageTextButton: () -> Unit = {},
 ) {
     val imageText by imageTextState
+    val address by addressState
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -59,6 +62,38 @@ fun PostUploadPageImagePreview(
                     painter = rememberAsyncImagePainter(model = previewImgUrl),
                     contentDescription = null,
                 )
+            }
+        }
+
+        if (!address.isNullOrEmpty()) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(start = 20.dp, top = 20.dp)
+                    .background(
+                        color = Color.Black.copy(alpha = 0.3f),
+                        RoundedCornerShape(100.dp)
+                    )
+                    .padding(horizontal = 10.dp, vertical = 8.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.location_icon),
+                        contentDescription = null,
+                        tint = MaterialTheme.bbibbiScheme.mainYellow,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = address!!,
+                        color = MaterialTheme.bbibbiScheme.mainYellow,
+                        style = MaterialTheme.bbibbiTypo.bodyTwoBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
         }
 

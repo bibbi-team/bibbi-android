@@ -45,6 +45,9 @@ import com.no5ing.bbibbi.presentation.feature.view.main.post_upload.PostUploadPa
 import com.no5ing.bbibbi.presentation.feature.view.main.post_upload.PostUploadPageUploadBar
 import com.no5ing.bbibbi.presentation.feature.view_model.mission.GetTodayMissionViewModel
 import com.no5ing.bbibbi.presentation.feature.view_model.post.CreatePostViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.codePointLength
@@ -52,11 +55,16 @@ import com.no5ing.bbibbi.util.getErrorMessage
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MissionUploadPage(
     onDispose: () -> Unit,
+    onNavigateToLocationPicker: () -> Unit = {},
     todayMissionViewModel: GetTodayMissionViewModel = hiltViewModel(),
     imageUrl: State<Uri?>,
+    locationLatitude: State<Double?> = remember { mutableStateOf(null) },
+    locationLongitude: State<Double?> = remember { mutableStateOf(null) },
+    locationAddress: State<String?> = remember { mutableStateOf(null) },
     imageText: MutableState<String> = remember {
         mutableStateOf("")
     },
@@ -65,6 +73,25 @@ fun MissionUploadPage(
     },
     createPostViewModel: CreatePostViewModel = hiltViewModel(),
 ) {
+    var pendingLocationNavigation by remember { mutableStateOf(false) }
+    val locationPermissionState = rememberPermissionState(
+        permission = android.Manifest.permission.ACCESS_FINE_LOCATION
+    ) { isGranted ->
+        if (isGranted) {
+            onNavigateToLocationPicker()
+        }
+    }
+    LaunchedEffect(pendingLocationNavigation) {
+        if (pendingLocationNavigation) {
+            pendingLocationNavigation = false
+            if (locationPermissionState.status.isGranted) {
+                onNavigateToLocationPicker()
+            } else {
+                locationPermissionState.launchPermissionRequest()
+            }
+        }
+    }
+
     LaunchedEffect(Unit) {
         if (todayMissionViewModel.uiState.value.isIdle()) {
             todayMissionViewModel.invoke(Arguments())
@@ -120,6 +147,7 @@ fun MissionUploadPage(
                     PostUploadPageImagePreview(
                         previewImgUrl = imageUrl.value,
                         imageTextState = imageText,
+                        addressState = locationAddress,
                         onTapImageTextButton = {
                             mixPanel.track("Click_PhotoText")
                             textOverlayShown.value = true
@@ -128,16 +156,22 @@ fun MissionUploadPage(
                     Spacer(modifier = Modifier.height(48.dp))
                     PostUploadPageUploadBar(
                         isIdle = uploadResult.value.isIdle(),
+                        showLocationButton = true,
+                        onClickLocation = {
+                            pendingLocationNavigation = true
+                        },
                         onClickUpload = {
                             mixPanel.track("Click_UploadPhoto")
+                            val args = mutableMapOf(
+                                "imageUri" to imageUrl.value.toString(),
+                                "content" to imageText.value,
+                                "type" to "MISSION"
+                            )
+                            locationLatitude.value?.let { args["latitude"] = it.toString() }
+                            locationLongitude.value?.let { args["longitude"] = it.toString() }
+                            locationAddress.value?.let { args["address"] = it }
                             createPostViewModel.invoke(
-                                Arguments(
-                                    arguments = mapOf(
-                                        "imageUri" to imageUrl.value.toString(),
-                                        "content" to imageText.value,
-                                        "type" to "MISSION"
-                                    )
-                                )
+                                Arguments(arguments = args)
                             )
                         },
                         onClickSave = {
