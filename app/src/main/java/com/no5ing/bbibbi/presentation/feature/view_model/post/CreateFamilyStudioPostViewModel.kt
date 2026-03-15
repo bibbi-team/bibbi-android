@@ -35,7 +35,8 @@ class CreateFamilyStudioPostViewModel @Inject constructor(
                     content = "",
                     uploadTime = getZonedDateTimeString(),
                 ),
-                type = arguments.get("type")
+                type = arguments.get("type"),
+                aiPostType = arguments.get("aiPostType")?.uppercase(),
             ).wrapToAPIResponse()
             setState(postResult)
         }
