@@ -15,6 +15,7 @@ data class Post(
     val emojiCount: Int,
     val imageUrl: String,
     val content: String,
+    val address: String?,
     val createdAt: ZonedDateTime,
 ) : Parcelable, BaseModel()
 

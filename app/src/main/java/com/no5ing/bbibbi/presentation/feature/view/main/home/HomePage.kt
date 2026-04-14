@@ -53,7 +53,7 @@ fun HomePage(
     onTapViewPost: (LocalDate) -> Unit = {},
     onTapPick: (MainPageTopBarModel) -> Unit = {},
     onTapNight: () -> Unit = {},
-    onTapFamilyStudio: () -> Unit = {},
+    onTapFamilyStudio: (String) -> Unit = {},
 ) {
     val postViewType by postViewTypeState
     val mainPageState = mainPageViewModel.uiState.collectAsState()

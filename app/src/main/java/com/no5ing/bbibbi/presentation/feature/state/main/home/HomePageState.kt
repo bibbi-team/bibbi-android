@@ -30,6 +30,7 @@ fun rememberHomePageState(
                 createdAt = ZonedDateTime.now(),
                 missionId = null,
                 type = PostType.SURVIVAL,
+                address = null,
             )
         )
     },

@@ -65,6 +65,7 @@ import java.util.UUID
 
 @Composable
 fun FamilyStudioUploadPage(
+    aiPostType: String = "",
     onDispose: () -> Unit,
     imageUrl: State<Uri?>,
     convertAIImageViewModel: ConvertAIImageViewModel = hiltViewModel(),
@@ -141,14 +142,14 @@ fun FamilyStudioUploadPage(
                         isSaveIdle = convertResult.value.isReady(),
                         onClickUpload = {
                             mixPanel.track("Click_UploadPhoto")
-                            createPostViewModel.invoke(
-                                Arguments(
-                                    arguments = mapOf(
-                                        "imageUrl" to convertResult.value.data.imageUrl,
-                                        "type" to "AI_IMAGE"
-                                    )
-                                )
+                            val args = mutableMapOf(
+                                "imageUrl" to convertResult.value.data.imageUrl,
+                                "type" to "AI_IMAGE",
                             )
+                            if (aiPostType.isNotEmpty()) {
+                                args["aiPostType"] = aiPostType
+                            }
+                            createPostViewModel.invoke(Arguments(arguments = args))
                         },
                         onClickSave = {
                             coroutineScope.launch {

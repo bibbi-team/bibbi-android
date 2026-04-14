@@ -7,6 +7,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
 import com.google.gson.Gson
 import com.no5ing.bbibbi.BuildConfig
+import com.no5ing.bbibbi.data.datasource.network.KakaoLocalApi
 import com.no5ing.bbibbi.data.datasource.network.RestAPI
 import com.no5ing.bbibbi.data.model.auth.AuthResult
 import com.skydoves.sandwich.SandwichInitializer
@@ -213,6 +214,22 @@ object NetworkModule {
                 )
             )
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideKakaoLocalApi(): KakaoLocalApi {
+        return Retrofit.Builder()
+            .baseUrl("https://dapi.kakao.com/")
+            .addConverterFactory(
+                JacksonConverterFactory.create(
+                    jacksonObjectMapper()
+                        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                        .registerModule(kotlinModule())
+                )
+            )
+            .build()
+            .create(KakaoLocalApi::class.java)
     }
 
     @Provides

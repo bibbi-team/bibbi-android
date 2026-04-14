@@ -9,4 +9,7 @@ data class CreatePostRequest(
     val imageUrl: String,
     val content: String,
     val uploadTime: String,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val address: String? = null,
 ) : Parcelable, BaseModel()

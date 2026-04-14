@@ -20,6 +20,7 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyStudioP
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.FamilyStudioUploadPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.HomePageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.ImagePreviewPageController
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.LocationPickerPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.MissionUploadPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.NotificationPageController
 import com.no5ing.bbibbi.presentation.feature.view_controller.main.PostReUploadPageController
@@ -204,6 +205,16 @@ fun NavGraphBuilder.mainGraph(
         composable(
             controller = navController,
             destination = QuitPageController,
+        )
+        composable(
+            controller = navController,
+            destination = LocationPickerPageController,
+            enterTransition = {
+                fullHorizontalSlideInToLeft()
+            },
+            popExitTransition = {
+                fullHorizontalSlideOutToRight()
+            }
         )
     }
 }

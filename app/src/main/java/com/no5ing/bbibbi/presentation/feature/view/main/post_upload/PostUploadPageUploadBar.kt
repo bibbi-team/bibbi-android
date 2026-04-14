@@ -21,8 +21,10 @@ import com.no5ing.bbibbi.presentation.component.button.CTAButton
 fun PostUploadPageUploadBar(
     isIdle: Boolean,
     isSaveIdle: Boolean = true,
+    showLocationButton: Boolean = false,
     onClickUpload: () -> Unit = {},
     onClickSave: () -> Unit = {},
+    onClickLocation: () -> Unit = {},
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -31,7 +33,20 @@ fun PostUploadPageUploadBar(
             Alignment.CenterHorizontally
         ),
     ) {
-        Box(modifier = Modifier.size(48.dp))
+        if (showLocationButton) {
+            Image(
+                painter = painterResource(R.drawable.location_button),
+                contentDescription = null, // 필수 param
+                modifier = Modifier
+                    .size(48.dp)
+                    .clickable {
+                        onClickLocation()
+                    }
+            )
+        } else {
+            Box(modifier = Modifier.size(48.dp))
+        }
+
         CTAButton(
             text = stringResource(id = R.string.upload_image),
             contentPadding = PaddingValues(horizontal = 60.dp, vertical = 15.dp),

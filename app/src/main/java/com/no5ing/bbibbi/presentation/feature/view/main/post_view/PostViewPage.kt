@@ -28,10 +28,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -85,20 +85,20 @@ fun PostViewPage(
     val memberId = LocalSessionState.current.memberId
 
     var isPagerReady by remember { mutableStateOf(false) }
+    var siblingPostsLoaded by remember { mutableStateOf(false) }
     val postState by postViewPageState.uiState.collectAsState()
     val siblingPostState by familyPostsViewModel.uiState.collectAsState()
-    val pagerState = key(siblingPostState) {
-        rememberPagerState(
-            initialPage = if (siblingPostState.isReady()) siblingPostState.data
-                .indexOfFirst { it.post.postId == postId } else 0,
-            pageCount = {
-                if (siblingPostState.isReady()) siblingPostState.data.size else 1
-            }
-        )
-    }
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        pageCount = {
+            if (siblingPostState.isReady()) siblingPostState.data.size else 1
+        }
+    )
     val adView = getAdView()
+    // Load sibling posts once when postState becomes ready
     LaunchedEffect(postState) {
-        if (postState.isReady()) {
+        if (!siblingPostsLoaded && postState.isReady()) {
+            siblingPostsLoaded = true
             val currentPost = postState.data.post
             familyPostsViewModel.invoke(
                 Arguments(
@@ -109,8 +109,10 @@ fun PostViewPage(
             )
         }
     }
-    LaunchedEffect(postState, postCommentDialogState.value) {
-        if (!postCommentDialogState.value && postState.isReady()) {
+    // Refresh sibling posts only when comment dialog actually closes
+    var wasCommentDialogOpen by remember { mutableStateOf(false) }
+    LaunchedEffect(postCommentDialogState.value) {
+        if (wasCommentDialogOpen && !postCommentDialogState.value && postState.isReady()) {
             val currentPost = postState.data.post
             familyPostsViewModel.invoke(
                 Arguments(
@@ -120,26 +122,48 @@ fun PostViewPage(
                 )
             )
         }
+        wasCommentDialogOpen = postCommentDialogState.value
     }
+    // When sibling posts load, scroll pager to the correct post
     LaunchedEffect(siblingPostState) {
         if (siblingPostState.isReady()) {
+            val targetPage = siblingPostState.data
+                .indexOfFirst { it.post.postId == postId }
+                .coerceAtLeast(0)
+            pagerState.scrollToPage(targetPage)
             isPagerReady = true
         }
     }
-    LaunchedEffect(postState, pagerState.currentPage) {
+    // Load reactions for initial post
+    LaunchedEffect(postState) {
         if (postState.isReady()) {
-            val currentPostId =
-                (if (siblingPostState.isReady()) siblingPostState.data.getOrNull(pagerState.currentPage)?.post?.postId
-                else postState.data.post.postId)
-                    ?: return@LaunchedEffect
             familyPostReactionBarViewModel.invoke(
                 Arguments(
                     arguments = mapOf(
-                        "postId" to currentPostId,
+                        "postId" to postState.data.post.postId,
                         "memberId" to memberId
                     )
                 )
             )
+        }
+    }
+    // Reload reactions when user swipes to a different page
+    LaunchedEffect(isPagerReady) {
+        if (isPagerReady) {
+            snapshotFlow { pagerState.currentPage }
+                .collect { page ->
+                    val currentPostId =
+                        siblingPostState.data.getOrNull(page)?.post?.postId
+                            ?: return@collect
+                    familyPostReactionBarViewModel.invoke(
+                        Arguments(
+                            arguments = mapOf(
+                                "postId" to currentPostId,
+                                "memberId" to memberId
+                            )
+                        )
+                    )
+                }
         }
     }
     BBiBBiSurface(modifier = Modifier.fillMaxSize()) {

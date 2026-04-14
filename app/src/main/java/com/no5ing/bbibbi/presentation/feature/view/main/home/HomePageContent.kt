@@ -2,6 +2,7 @@ package com.no5ing.bbibbi.presentation.feature.view.main.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import coil.compose.AsyncImage
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -61,7 +62,8 @@ import com.no5ing.bbibbi.presentation.component.AIPhotoInfoBaloon
 import com.no5ing.bbibbi.presentation.component.BannerAd
 import com.no5ing.bbibbi.presentation.component.VerticalGrid
 import com.no5ing.bbibbi.presentation.feature.view.common.PostTypeSwitchButton
-import com.no5ing.bbibbi.presentation.feature.view_model.post.GetAiImageCountViewModel
+import com.no5ing.bbibbi.presentation.feature.view_model.post.GetAiImageTypesViewModel
+import com.no5ing.bbibbi.util.asyncImagePainter
 import com.no5ing.bbibbi.presentation.theme.bbibbiScheme
 import com.no5ing.bbibbi.presentation.theme.bbibbiTypo
 import com.no5ing.bbibbi.util.gapBetweenNow
@@ -79,7 +81,7 @@ fun HomePageContent(
     onTapProfile: (String) -> Unit = {},
     onTapPick: (MainPageTopBarModel) -> Unit = {},
     onTapInvite: () -> Unit = {},
-    onTapAi: () -> Unit = {},
+    onTapAi: (String) -> Unit = {},
     onRefresh: () -> Unit = {},
 ) {
     val warningState = remember {
@@ -305,64 +307,77 @@ fun MissionFeedTab(
 
 @Composable
 fun AIImageTab(
-    onTap: () -> Unit,
-    aiImageCountViewModel: GetAiImageCountViewModel = hiltViewModel(),
+    onTap: (String) -> Unit,
+    aiImageTypesViewModel: GetAiImageTypesViewModel = hiltViewModel(),
 ) {
-    val aiImageState = aiImageCountViewModel.uiState.collectAsState()
+    val typesState = aiImageTypesViewModel.uiState.collectAsState()
     LaunchedEffect(Unit) {
-        aiImageCountViewModel.invoke(Arguments())
+        aiImageTypesViewModel.invoke(Arguments())
     }
-    val photoCount = if(aiImageState.value.isReady()) {
-        aiImageState.value.data.familyAiImageCount
-    } else {
-        0
-    }
-    Column(
-        modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Box(modifier = Modifier
-                    .background(MaterialTheme.bbibbiScheme.icon, RoundedCornerShape(100.dp))
-                    .padding(vertical = 2.dp, horizontal = 6.dp)
-                ) {
-                    Text(
-                        text = "추석",
-                        color = MaterialTheme.bbibbiScheme.backgroundPrimary,
-                        style = MaterialTheme.bbibbiTypo.bodyTwoBold,
-                    )
-                }
-                Box(modifier = Modifier.width(6.dp))
-                Text(
-                    text = "9/29~10/27",
-                    color = MaterialTheme.bbibbiScheme.textPrimary,
-                    style = MaterialTheme.bbibbiTypo.headTwoBold,
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                AIPhotoInfoBaloon()
-            }
-            Text(
-                text = "${photoCount}개의 추억",
-                color = MaterialTheme.bbibbiScheme.textPrimary,
-                style = MaterialTheme.bbibbiTypo.bodyOneRegular,
-            )
+    if (!typesState.value.isReady()) return
+    val types = typesState.value.data.results
+    if (types.isEmpty()) return
 
+    Column(
+        modifier = Modifier
+            .padding(vertical = 20.dp, horizontal = 20.dp)
+    ) {
+        types.forEach { aiType ->
+            val dateRange = formatDateRange(aiType.startDate, aiType.endDate)
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Box(modifier = Modifier
+                        .background(MaterialTheme.bbibbiScheme.icon, RoundedCornerShape(100.dp))
+                        .padding(vertical = 2.dp, horizontal = 6.dp)
+                    ) {
+                        Text(
+                            text = aiType.getTypeName(),
+                            color = MaterialTheme.bbibbiScheme.backgroundPrimary,
+                            style = MaterialTheme.bbibbiTypo.bodyTwoBold,
+                        )
+                    }
+                    Box(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = dateRange,
+                        color = MaterialTheme.bbibbiScheme.textPrimary,
+                        style = MaterialTheme.bbibbiTypo.headTwoBold,
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    AIPhotoInfoBaloon()
+                }
+                Text(
+                    text = "${aiType.postCount}개의 추억",
+                    color = MaterialTheme.bbibbiScheme.textPrimary,
+                    style = MaterialTheme.bbibbiTypo.bodyOneRegular,
+                )
+            }
+            Box(modifier = Modifier.height(16.dp))
+            AsyncImage(
+                model = asyncImagePainter(source = aiType.imageUrl),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onTap(aiType.aiPostType) },
+                contentScale = ContentScale.FillWidth,
+            )
+            Box(modifier = Modifier.height(24.dp))
         }
-        Box(modifier = Modifier.height(16.dp))
-        Image(
-            painter = painterResource(id = R.drawable.family_studio_banner),
-            contentDescription = null,
-            modifier = Modifier.fillMaxWidth().clickable {
-                onTap()
-            },
-            contentScale = ContentScale.FillWidth
-        )
+    }
+}
+
+private fun formatDateRange(startDate: String, endDate: String): String {
+    return try {
+        val start = LocalDate.parse(startDate)
+        val end = LocalDate.parse(endDate)
+        "${start.monthValue}/${start.dayOfMonth}~${end.monthValue}/${end.dayOfMonth}"
+    } catch (e: Exception) {
+        "$startDate~$endDate"
     }
 }
 

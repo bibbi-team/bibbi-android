@@ -36,6 +36,7 @@ import com.no5ing.bbibbi.data.model.notification.NotificationModel
 import com.no5ing.bbibbi.data.model.post.AIImageCount
 import com.no5ing.bbibbi.data.model.post.AIImageResponse
 import com.no5ing.bbibbi.data.model.post.AIPost
+import com.no5ing.bbibbi.data.model.post.AIPostType
 import com.no5ing.bbibbi.data.model.post.CalendarBanner
 import com.no5ing.bbibbi.data.model.post.CalendarElement
 import com.no5ing.bbibbi.data.model.post.DailyCalendarElement
@@ -204,6 +205,7 @@ interface RestAPI {
         suspend fun createAiPost(
             @Body body: CreatePostRequest,
             @Query("type") type: String? = null,
+            @Query("aiPostType") aiPostType: String? = null,
         ): ApiResponse<AIPost>
 
         @POST("v1/posts/image-upload-request")
@@ -334,10 +336,16 @@ interface RestAPI {
             @Query("size") size: Int?,
             @Query("memberId") memberId: String?,
             @Query("sort") sort: String? = "DESC",
+            @Query("aiPostType") aiPostType: String? = null,
         ): ApiResponse<Pagination<AIPost>>
 
         @GET("v1/posts/ai-images/count")
-        suspend fun getAiImagePostCount(): ApiResponse<AIImageCount>
+        suspend fun getAiImagePostCount(
+            @Query("aiPostType") aiPostType: String? = null,
+        ): ApiResponse<AIImageCount>
+
+        @GET("v1/posts/ai-images/types")
+        suspend fun getAiImageTypes(): ApiResponse<ArrayResponse<AIPostType>>
     }
 
     /**

@@ -215,8 +215,8 @@ object HomePageController : NavigationDestination(
             onTapNight = {
                 isNightTimeDialogVisible = true
             },
-            onTapFamilyStudio = {
-                navController.goFamilyStudioPage()
+            onTapFamilyStudio = { aiPostType ->
+                navController.goFamilyStudioPage(aiPostType)
             }
         )
     }

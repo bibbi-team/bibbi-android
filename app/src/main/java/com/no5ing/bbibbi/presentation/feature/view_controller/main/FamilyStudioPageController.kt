@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import androidx.navigation.navArgument
 import com.no5ing.bbibbi.BuildConfig
 import com.no5ing.bbibbi.presentation.feature.view.main.family_studio.FamilyStudioPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
@@ -17,23 +18,26 @@ import com.no5ing.bbibbi.presentation.feature.view_controller.main.WebViewPageCo
 import com.no5ing.bbibbi.presentation.feature.view_model.post.GetAiImageCountViewModel
 
 object FamilyStudioPageController: NavigationDestination(
-    route = mainFamilyStudioPageRoute
+    route = mainFamilyStudioPageRoute,
+    arguments = listOf(navArgument("aiPostType") {}),
 ) {
     @Composable
     override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
+        val aiPostType = backStackEntry.arguments?.getString("aiPostType") ?: ""
         val aiImageCountViewModel = hiltViewModel<GetAiImageCountViewModel>()
         val dialogState = remember { mutableStateOf(false) }
         if (aiImageCountViewModel.shouldShowTermDialog()) {
             dialogState.value = true
         }
         FamilyStudioPage(
+            aiPostType = aiPostType,
             isTermDialogEnabled = dialogState,
             aiImageCountViewModel = aiImageCountViewModel,
             onDispose = {
                 navController.popBackStack()
             },
             onTapCreateImage = {
-                navController.goFamilyStudioUploadPage()
+                navController.goFamilyStudioUploadPage(aiPostType)
                 navController.goFamilyStudioCameraPage()
             },
             onTapAiPost = {
@@ -52,7 +56,7 @@ object FamilyStudioPageController: NavigationDestination(
         )
     }
 
-    fun NavHostController.goFamilyStudioPage() {
-        navigate(FamilyStudioPageController)
+    fun NavHostController.goFamilyStudioPage(aiPostType: String) {
+        navigate(FamilyStudioPageController, params = listOf("aiPostType" to aiPostType))
     }
 }

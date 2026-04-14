@@ -10,6 +10,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import com.no5ing.bbibbi.presentation.feature.view.main.post_upload.PostUploadPage
 import com.no5ing.bbibbi.presentation.feature.view_controller.NavigationDestination
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.LocationPickerPageController.LOCATION_ADDRESS_KEY
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.LocationPickerPageController.LOCATION_LAT_KEY
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.LocationPickerPageController.LOCATION_LNG_KEY
+import com.no5ing.bbibbi.presentation.feature.view_controller.main.LocationPickerPageController.goLocationPickerPage
 
 object PostUploadPageController : NavigationDestination(
     route = postUploadRoute,
@@ -19,10 +23,25 @@ object PostUploadPageController : NavigationDestination(
         val imageCaptureState = backStackEntry.savedStateHandle
             .getLiveData<Uri?>("imageUrl")
             .observeAsState()
+        val locationLat = backStackEntry.savedStateHandle
+            .getLiveData<Double>(LOCATION_LAT_KEY)
+            .observeAsState()
+        val locationLng = backStackEntry.savedStateHandle
+            .getLiveData<Double>(LOCATION_LNG_KEY)
+            .observeAsState()
+        val locationAddress = backStackEntry.savedStateHandle
+            .getLiveData<String>(LOCATION_ADDRESS_KEY)
+            .observeAsState()
         PostUploadPage(
             imageUrl = imageCaptureState,
+            locationLatitude = locationLat,
+            locationLongitude = locationLng,
+            locationAddress = locationAddress,
             onDispose = {
                 navController.popBackStack()
+            },
+            onNavigateToLocationPicker = {
+                navController.goLocationPickerPage()
             },
         )
     }
@@ -40,11 +59,26 @@ object PostReUploadPageController : NavigationDestination(
     override fun Render(navController: NavHostController, backStackEntry: NavBackStackEntry) {
         val imageCaptureState = backStackEntry.arguments?.getString("imageUrl")
         val uriState = remember { mutableStateOf(Uri.parse(imageCaptureState)) }
+        val locationLat = backStackEntry.savedStateHandle
+            .getLiveData<Double>(LOCATION_LAT_KEY)
+            .observeAsState()
+        val locationLng = backStackEntry.savedStateHandle
+            .getLiveData<Double>(LOCATION_LNG_KEY)
+            .observeAsState()
+        val locationAddress = backStackEntry.savedStateHandle
+            .getLiveData<String>(LOCATION_ADDRESS_KEY)
+            .observeAsState()
         PostUploadPage(
             imageUrl = uriState,
             isUnsaveMode = true,
+            locationLatitude = locationLat,
+            locationLongitude = locationLng,
+            locationAddress = locationAddress,
             onDispose = {
                 navController.popBackStack()
+            },
+            onNavigateToLocationPicker = {
+                navController.goLocationPickerPage()
             },
         )
     }

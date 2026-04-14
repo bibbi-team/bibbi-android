@@ -230,4 +230,7 @@
 
     <string name="post_type_survival">생존</string>
     <string name="post_type_mission">미션</string>
+
+    <string name="location_picker_title">위치 검색</string>
+    <string name="location_search_hint">검색</string>
 </resources>

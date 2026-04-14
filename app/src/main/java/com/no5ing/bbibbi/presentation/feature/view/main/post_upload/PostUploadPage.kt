@@ -44,6 +44,9 @@ import com.no5ing.bbibbi.presentation.component.showSnackBarWithDismiss
 import com.no5ing.bbibbi.presentation.component.snackBarCamera
 import com.no5ing.bbibbi.presentation.component.snackBarWarning
 import com.no5ing.bbibbi.presentation.feature.view_model.post.CreatePostViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.no5ing.bbibbi.util.LocalMixpanelProvider
 import com.no5ing.bbibbi.util.LocalSnackbarHostState
 import com.no5ing.bbibbi.util.codePointLength
@@ -52,11 +55,16 @@ import com.no5ing.bbibbi.util.getErrorMessage
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun PostUploadPage(
     onDispose: () -> Unit,
+    onNavigateToLocationPicker: () -> Unit = {},
     isUnsaveMode: Boolean = false,
     imageUrl: State<Uri?>,
+    locationLatitude: State<Double?> = remember { mutableStateOf(null) },
+    locationLongitude: State<Double?> = remember { mutableStateOf(null) },
+    locationAddress: State<String?> = remember { mutableStateOf(null) },
     imageText: MutableState<String> = remember {
         mutableStateOf("")
     },
@@ -68,6 +76,25 @@ fun PostUploadPage(
     val onDisposeWithSave = {
         createPostViewModel.clearTemporaryUri()
         onDispose()
+    }
+
+    var pendingLocationNavigation by remember { mutableStateOf(false) }
+    val locationPermissionState = rememberPermissionState(
+        permission = android.Manifest.permission.ACCESS_FINE_LOCATION
+    ) { isGranted ->
+        if (isGranted) {
+            onNavigateToLocationPicker()
+        }
+    }
+    LaunchedEffect(pendingLocationNavigation) {
+        if (pendingLocationNavigation) {
+            pendingLocationNavigation = false
+            if (locationPermissionState.status.isGranted) {
+                onNavigateToLocationPicker()
+            } else {
+                locationPermissionState.launchPermissionRequest()
+            }
+        }
     }
 
     val coroutineScope = rememberCoroutineScope()
@@ -121,6 +148,7 @@ fun PostUploadPage(
                         PostUploadPageImagePreview(
                             previewImgUrl = imageUrl.value,
                             imageTextState = imageText,
+                            addressState = locationAddress,
                             onTapImageTextButton = {
                                 mixPanel.track("Click_PhotoText")
                                 textOverlayShown.value = true
@@ -129,15 +157,21 @@ fun PostUploadPage(
                         Spacer(modifier = Modifier.height(48.dp))
                         PostUploadPageUploadBar(
                             isIdle = uploadResult.value.isIdle(),
+                            onClickLocation = {
+                                pendingLocationNavigation = true
+                            },
+                            showLocationButton = true,
                             onClickUpload = {
                                 mixPanel.track("Click_UploadPhoto")
+                                val args = mutableMapOf(
+                                    "imageUri" to imageUrl.value.toString(),
+                                    "content" to imageText.value
+                                )
+                                locationLatitude.value?.let { args["latitude"] = it.toString() }
+                                locationLongitude.value?.let { args["longitude"] = it.toString() }
+                                locationAddress.value?.let { args["address"] = it }
                                 createPostViewModel.invoke(
-                                    Arguments(
-                                        arguments = mapOf(
-                                            "imageUri" to imageUrl.value.toString(),
-                                            "content" to imageText.value
-                                        )
-                                    )
+                                    Arguments(arguments = args)
                                 )
                             },
                             onClickSave = {
@@ -249,7 +283,8 @@ fun PostUploadPagePreview() {
                 )
                 Spacer(modifier = Modifier.height(48.dp))
                 PostUploadPageUploadBar(
-                    isIdle = true
+                    isIdle = true,
+                    showLocationButton = true,
                 )
             }
             AnimatedVisibility(

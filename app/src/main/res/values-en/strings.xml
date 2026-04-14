@@ -226,4 +226,7 @@
 
     <string name="post_type_survival">Survival</string>
     <string name="post_type_mission">Mission</string>
+
+    <string name="location_picker_title">Search Location</string>
+    <string name="location_search_hint">Search</string>
 </resources>

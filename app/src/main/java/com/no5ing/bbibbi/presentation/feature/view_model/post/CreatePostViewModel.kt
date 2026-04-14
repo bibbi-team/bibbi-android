@@ -67,6 +67,9 @@ class CreatePostViewModel @Inject constructor(
                         imageUrl = imageUploadResult,
                         content = content,
                         uploadTime = getZonedDateTimeString(),
+                        latitude = arguments.get("latitude")?.toDoubleOrNull(),
+                        longitude = arguments.get("longitude")?.toDoubleOrNull(),
+                        address = arguments.get("address"),
                     ),
                     type = arguments.get("type")
                 ).wrapToAPIResponse()

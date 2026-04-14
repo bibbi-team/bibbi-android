@@ -63,6 +63,7 @@ class GetAIPostPagingSource @Inject constructor(
             memberId = null,
             page = loadParams.key ?: 1,
             size = loadParams.loadSize,
+            aiPostType = arguments.get("aiPostType"),
         ).mapSuccess {
             Pagination(
                 currentPage = currentPage,
