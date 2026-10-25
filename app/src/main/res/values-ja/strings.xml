@@ -229,4 +229,21 @@
 
     <string name="location_picker_title">場所検索</string>
     <string name="location_search_hint">検索</string>
+
+    <!-- 서비스 종료 / 가족 사진 다운로드 -->
+    <string name="service_end_popup_title">サービス終了のお知らせ</string>
+    <string name="service_end_popup_description">ビープはまもなくサービスを終了します。\n家族と共有した写真を\n今のうちにまとめて保存してください。</string>
+    <string name="service_end_popup_download">写真をすべてダウンロード</string>
+    <string name="service_end_popup_later">あとで</string>
+    <string name="service_end_downloading_title">写真をダウンロード中です</string>
+    <string name="service_end_downloading_description">写真が多い場合は時間がかかることがあります。\n完了するまでアプリを閉じないでください。</string>
+    <string name="service_end_downloading_progress">%1$s ダウンロード済み</string>
+    <string name="service_end_downloading_preparing">写真を準備しています</string>
+    <string name="service_end_download_cancel">キャンセル</string>
+    <string name="service_end_download_success_title">保存が完了しました</string>
+    <string name="service_end_download_success_description">選択した場所にZIPファイルで保存しました。</string>
+    <string name="service_end_download_failed_title">ダウンロードに失敗しました</string>
+    <string name="service_end_download_failed_description">ネットワーク接続を確認して\nもう一度お試しください。</string>
+    <string name="service_end_download_retry">再試行</string>
+    <string name="service_end_download_close">閉じる</string>
 </resources>
