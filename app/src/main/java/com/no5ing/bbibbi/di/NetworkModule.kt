@@ -54,8 +54,11 @@ object NetworkModule {
         val modifiedRequest = with(request) {
             val builder = newBuilder()
             val sessionState = sessionModule.sessionState.value
+            // 파일 다운로드처럼 Accept를 직접 지정한 요청은 덮어쓰지 않는다.
+            if (request.header("Accept") == null) {
+                builder.header("Accept", "application/json")
+            }
             builder
-                .header("Accept", "application/json")
                 .header("X-APP-KEY", BuildConfig.appKey)
                 .header("X-APP-VERSION", BuildConfig.VERSION_NAME)
                 .header("X-USER-PLATFORM", "AOS")

@@ -233,4 +233,21 @@
 
     <string name="location_picker_title">위치 검색</string>
     <string name="location_search_hint">검색</string>
+
+    <!-- 서비스 종료 / 가족 사진 다운로드 -->
+    <string name="service_end_popup_title">서비스 종료 안내</string>
+    <string name="service_end_popup_description">삐삐 서비스가 곧 종료돼요.\n그동안 가족과 함께 남긴 사진을\n지금 한 번에 저장해 두세요.</string>
+    <string name="service_end_popup_download">사진 전체 다운로드</string>
+    <string name="service_end_popup_later">다음에 할게요</string>
+    <string name="service_end_downloading_title">사진을 내려받는 중이에요</string>
+    <string name="service_end_downloading_description">사진이 많으면 시간이 걸릴 수 있어요.\n완료될 때까지 앱을 닫지 말아 주세요.</string>
+    <string name="service_end_downloading_progress">%1$s 받는 중</string>
+    <string name="service_end_downloading_preparing">사진을 준비하고 있어요</string>
+    <string name="service_end_download_cancel">취소</string>
+    <string name="service_end_download_success_title">저장을 완료했어요</string>
+    <string name="service_end_download_success_description">선택한 위치에 ZIP 파일로 저장했어요.</string>
+    <string name="service_end_download_failed_title">다운로드에 실패했어요</string>
+    <string name="service_end_download_failed_description">네트워크 상태를 확인하고\n다시 시도해 주세요.</string>
+    <string name="service_end_download_retry">다시 시도</string>
+    <string name="service_end_download_close">닫기</string>
 </resources>

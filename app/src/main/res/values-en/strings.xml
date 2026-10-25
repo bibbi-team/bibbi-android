@@ -229,4 +229,21 @@
 
     <string name="location_picker_title">Search Location</string>
     <string name="location_search_hint">Search</string>
+
+    <!-- 서비스 종료 / 가족 사진 다운로드 -->
+    <string name="service_end_popup_title">Service Ending Notice</string>
+    <string name="service_end_popup_description">BiBBi will be shutting down soon.\nSave all the photos you shared\nwith your family now.</string>
+    <string name="service_end_popup_download">Download All Photos</string>
+    <string name="service_end_popup_later">Maybe Later</string>
+    <string name="service_end_downloading_title">Downloading photos</string>
+    <string name="service_end_downloading_description">This may take a while if there are many photos.\nPlease keep the app open until it finishes.</string>
+    <string name="service_end_downloading_progress">%1$s downloaded</string>
+    <string name="service_end_downloading_preparing">Preparing your photos</string>
+    <string name="service_end_download_cancel">Cancel</string>
+    <string name="service_end_download_success_title">Download complete</string>
+    <string name="service_end_download_success_description">Saved as a ZIP file to the location you chose.</string>
+    <string name="service_end_download_failed_title">Download failed</string>
+    <string name="service_end_download_failed_description">Please check your network connection\nand try again.</string>
+    <string name="service_end_download_retry">Try Again</string>
+    <string name="service_end_download_close">Close</string>
 </resources>

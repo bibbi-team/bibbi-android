@@ -71,10 +71,10 @@ fun HomePage(
         }
     )
 
-    if (mainPageViewModel.shouldDisplayWidgetPopup) {
-        mainPageViewModel.shouldDisplayWidgetPopup = false
-        TryWidgetPopup()
-    }
+    // 서비스 종료 예정: 위젯 홍보 팝업 대신 앱 실행마다 사진 다운로드 팝업을 띄운다.
+    // (두 팝업이 겹치지 않도록 위젯 팝업 플래그는 소비만 하고 노출하지 않는다.)
+    mainPageViewModel.shouldDisplayWidgetPopup = false
+    FamilyPhotoDownloadPopup()
     BackToExitHandler()
     LaunchedEffect(Unit) {
         val tempUri = mainPageViewModel.getAndDeleteTemporaryUri()
