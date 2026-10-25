@@ -24,6 +24,7 @@
         android:name=".BBiBBiApplication"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="false"
         android:fullBackupContent="@xml/backup_rules"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -36,6 +37,10 @@
         <profileable
             android:shell="true"
             tools:targetApi="29" />
+        <!-- targetSdk 36: 큰 화면에서도 기존 세로 고정을 유지 (Android 16 한정 opt-out) -->
+        <property
+            android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY"
+            android:value="true" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-7835112884789455~6071626275"/>

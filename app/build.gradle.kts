@@ -31,7 +31,7 @@ val secretProperties = Properties().apply {
 
 android {
     namespace = "com.no5ing.bbibbi"
-    compileSdk = 35
+    compileSdk = 36
 
     signingConfigs {
         create("release") {
@@ -45,7 +45,7 @@ android {
     defaultConfig {
         applicationId = "com.no5ing.bbibbi"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 11015
         versionName = "1.6.0"
 
